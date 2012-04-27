@@ -7,10 +7,13 @@ package org.naure.common.web;
  * Time: 11:45 AM
  * To change this template use File | Settings | File Templates.
  */
-public class ControllerBase {
-    protected String view(String name) {
+public abstract class ControllerBase  {
+
+    public String view(String name) {
+        System.out.println("----after advice------");
         return viewPath + name;
     }
 
     protected String viewPath = "";
+
 }

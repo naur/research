@@ -15,6 +15,8 @@
         <jboss.domain>default</jboss.domain>
         <naure.version>1.0</naure.version>
         <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+        <org.aspectj.version>1.6.11</org.aspectj.version>
+        <cglib.version>2.2</cglib.version>
         <org.slf4j.version>1.6.1</org.slf4j.version>
         <log4j.version>1.2.16</log4j.version>
         <restlet.version>2.1-RC1</restlet.version>
@@ -76,6 +78,11 @@
             <!--  Spring -->
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${org.springframework.version}</version>
                 <exclusions>
@@ -90,6 +97,27 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${org.springframework.version}</version>
+            </dependency>
+            <!-- Spring AOP + AspectJ -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${org.aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${org.aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>${cglib.version}</version>
             </dependency>
 
             <!-- Servlet -->
@@ -273,6 +301,22 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
@@ -300,25 +344,25 @@
     </repositories>
 
     <!--<profiles>-->
-        <!--<profile>-->
-            <!--<id>test</id>-->
-        <!--</profile>-->
-        <!--<profile>-->
-            <!--<id>openshift</id>-->
-            <!--<build>-->
-                <!--<finalName>naure</finalName>-->
-                <!--<plugins>-->
-                    <!--<plugin>-->
-                        <!--<artifactId>maven-war-plugin</artifactId>-->
-                        <!--<version>2.1.1</version>-->
-                        <!--<configuration>-->
-                            <!--<outputDirectory>deployments</outputDirectory>-->
-                            <!--<warName>ROOT</warName>-->
-                        <!--</configuration>-->
-                    <!--</plugin>-->
-                <!--</plugins>-->
-            <!--</build>-->
-        <!--</profile>-->
+    <!--<profile>-->
+    <!--<id>test</id>-->
+    <!--</profile>-->
+    <!--<profile>-->
+    <!--<id>openshift</id>-->
+    <!--<build>-->
+    <!--<finalName>naure</finalName>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<artifactId>maven-war-plugin</artifactId>-->
+    <!--<version>2.1.1</version>-->
+    <!--<configuration>-->
+    <!--<outputDirectory>deployments</outputDirectory>-->
+    <!--<warName>ROOT</warName>-->
+    <!--</configuration>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
+    <!--</build>-->
+    <!--</profile>-->
     <!--</profiles>-->
 
 </project>
