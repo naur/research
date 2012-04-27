@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="/css/naure.flyout.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/naure.message.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        #bookmark-message, #bookmark-message-error {
+            border-right: 5px solid #3475BA;
+            border-left: 5px solid #3475BA;
+            background: #FFFFFF;
+            padding: 0;
+            margin: 0;
+        }
+
+        #bookmark-message p {
+            height: 25px;
+            background: #36a328;
+            color: #FFFFFF;
+            font-size: 13px;
+            padding: 10px 0 0 10px;
+            line-height: normal;
+            margin: 0;
+            display: none;
+            margin-top: -6px
+        }
+
+        #bookmark-message-error p {
+            height: 25px;
+            background: red;
+            color: #FFFFFF;
+            font-size: 13px;
+            padding: 10px 0 0 10px;
+            line-height: normal;
+            margin: 0;
+            display: none
+        }
+
+    </style>
+    <script type="text/javascript" src="/js/jquery-1.7.min.js"></script>
+    <script type="text/javascript" src="/js/naure.flyout.js"></script>
+    <script type="text/javascript" src="/js/naure.message.js"></script>
+    <script type="text/javascript" src="/js/graph/graph.ui.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('.flyout_link').flyout({prompt: '采购单号'});
+//            $('input:button').live('click', function(){
+//                $('#dataRenderArea').message.fade({content: '切换表头！'});
+//            });
+        });
+    </script>
+</head>
+
+<body>
+
+<input type="button" value="options"/>
+
+<div id="dataRenderArea">
+    dafsdfasdfsdfsdf
+</div>
+
+<div id="bookmark-message"><p>内容A！</p></div>
+<div id="bookmark-message-error"><p>内容B！</p></div>
+
+<table>
+    <tr>
+        <td>A</td>
+        <td>B</td>
+        <td>C</td>
+        <td style="height: 10px;">
+            <a class="flyout_link" tag="" href="#">Order ID</a>
+        </td>
+        <td>D</td>
+        <td>E</td>
+        <td>D</td>
+    </tr>
+    <tr>
+        <td>A</td>
+        <td>B</td>
+        <td>C</td>
+        <td>
+            <a class="flyout_link" tag="AD123AD1,123SED" href="#">AD123...</a>
+        </td>
+        <td>D</td>
+        <td>E</td>
+        <td>D</td>
+    </tr>
+    <tr>
+        <td>A</td>
+        <td>B</td>
+        <td>C</td>
+        <td>
+            <a class="flyout_link"
+               tag="12309,232302323,232323,E3523,1213121,34134,312222,3416452354,343333,452452,6788,56354" href="#">12309...</a>
+        </td>
+        <td>D</td>
+        <td>E</td>
+        <td>D</td>
+    </tr>
+    <tr>
+        <td>A</td>
+        <td>B</td>
+        <td>C</td>
+        <td>
+            <a class="flyout_link" href="#">Order ID</a>
+        </td>
+        <td>D</td>
+        <td>E</td>
+        <td>D</td>
+    </tr>
+
+</table>
+
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+<html>
+<head>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+        		var dateStr = '2012-01-22 14:36:38.990';
+        		eval(
+        			'var date = new Date(' + dateStr.replace(/[^\d]/g, ',') + ');'
+        		);
+            
+            $('#msg').html(date.getTime());
+        });
+    </script>
+</head>
+<body>
+<div id='msg'></div>
+</body>
+</html>

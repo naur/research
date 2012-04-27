@@ -1,0 +1,5 @@
+# Robots.txt file from http://naure.org
+# All robots will spider the domain
+
+User-agent: *
+Disallow: 

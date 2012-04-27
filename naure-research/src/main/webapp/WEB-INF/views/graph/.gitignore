@@ -1,0 +1,12 @@
+manifest.manifest
+#compiled
+release.html
+min
+tmp
+# OS generated files #
+######################
+.DS_Store
+thumbs.db
+Icon?
+Thumbs.db
+build/*

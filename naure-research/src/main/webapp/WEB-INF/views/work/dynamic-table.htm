@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title> Research DEMO </title>
+    <script type="text/javascript" src="/js/jquery-1.7.1.js"></script>
+    <script src="/js/dynamic-table.js"></script>
+</head>
+<body>
+
+<table class="hgrid">
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>名称</th>
+        <th>数量</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tfoot>
+    </tfoot>
+    <tbody id="dataRender">
+    <tr>
+        <td>1</td>
+        <td><input type="text"/></td>
+        <td>
+            <input type="button" class="number-subtract" value="-"/>
+            <input type="text"/>
+            <input type="button" class="number-add" value="+"/>
+        </td>
+        <td><input type="button" class="row-delete" value="删除"/></td>
+    </tr>
+    </tbody>
+</table>
+
+<input type="button" id="row-add" value="增加"/>
+<input type="button" value="保存"/>
+
+</body>
+</html>
