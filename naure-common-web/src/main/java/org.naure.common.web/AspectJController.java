@@ -28,20 +28,15 @@ public class AspectJController {
         HttpSession session = HttpSessionFilter.session.get();
         String sessionId = session.getId();
         session.getLastAccessedTime();
-
-
-        System.out.println("before------");
     }
 
     @AfterReturning("controllerBean() && methodPointcut() ")
     public void afterReturning() {
-        System.out.println("afterReturning------");
     }
 
     //相当于finally,无论业务方法是否产生异常，执行后都会执行此操作
     @After("controllerBean() && methodPointcut() ")
     public void after() {
-        System.out.println("after------");
     }
 
     //定义切点,匹配规则为(返回类型 方法(参数设置)

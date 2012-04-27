@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jboss.domain>default</jboss.domain>
         <naure.version>1.0</naure.version>
-        <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+        <org.springframework.version>3.1.1.RELEASE</org.springframework.version>
         <org.aspectj.version>1.6.11</org.aspectj.version>
         <cglib.version>2.2</cglib.version>
         <org.slf4j.version>1.6.1</org.slf4j.version>
@@ -25,6 +25,12 @@
         <junit.version>4.7</junit.version>
         <je.version>5.0.34</je.version>
         <jackson.version>1.7.1</jackson.version>
+        <spring-release-mongodb.version>1.0.1.RELEASE</spring-release-mongodb.version>
+        <spring-data-commons-core.version>1.2.1.RELEASE</spring-data-commons-core.version>
+        <mongodb.url></mongodb.url>
+        <mongodb.port>27017</mongodb.port>
+        <mongodb.username></mongodb.username>
+        <mongodb.password></mongodb.password>
     </properties>
 
     <dependencyManagement>
@@ -73,51 +79,6 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.0.1</version>
-            </dependency>
-
-            <!--  Spring -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${org.springframework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${org.springframework.version}</version>
-                <exclusions>
-                    <!-- Exclude Commons Logging in favor of SLF4j -->
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>${org.springframework.version}</version>
-            </dependency>
-            <!-- Spring AOP + AspectJ -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${org.springframework.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjrt</artifactId>
-                <version>${org.aspectj.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.aspectj</groupId>
-                <artifactId>aspectjweaver</artifactId>
-                <version>${org.aspectj.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>${cglib.version}</version>
             </dependency>
 
             <!-- Servlet -->
@@ -241,6 +202,7 @@
                 <version>${poi.version}</version>
             </dependency>
 
+            <!--Berkeley DB Java Edition-->
             <dependency>
                 <groupId>com.sleepycat</groupId>
                 <artifactId>je</artifactId>
@@ -257,6 +219,76 @@
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-mapper-asl</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+            <!--  Spring -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-expression</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${org.springframework.version}</version>
+                <exclusions>
+                    <!-- Exclude Commons Logging in favor of SLF4j -->
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>spring-tx</artifactId>
+                <groupId>org.springframework</groupId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <!-- Spring AOP + AspectJ -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${org.aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${org.aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>${cglib.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-mongodb</artifactId>
+                <version>${spring-release-mongodb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons-core</artifactId>
+                <version>${spring-data-commons-core.version}</version>
             </dependency>
 
         </dependencies>
@@ -341,28 +373,33 @@
             <url>http://repo2.maven.org/maven2</url>
             <layout>default</layout>
         </repository>
+        <repository>
+            <id>spring-release</id>
+            <name>Spring Maven Release Repository</name>
+            <url>http://repo.springsource.org/libs-release</url>
+        </repository>
     </repositories>
 
-    <!--<profiles>-->
-    <!--<profile>-->
-    <!--<id>test</id>-->
-    <!--</profile>-->
-    <!--<profile>-->
-    <!--<id>openshift</id>-->
-    <!--<build>-->
-    <!--<finalName>naure</finalName>-->
-    <!--<plugins>-->
-    <!--<plugin>-->
-    <!--<artifactId>maven-war-plugin</artifactId>-->
-    <!--<version>2.1.1</version>-->
-    <!--<configuration>-->
-    <!--<outputDirectory>deployments</outputDirectory>-->
-    <!--<warName>ROOT</warName>-->
-    <!--</configuration>-->
-    <!--</plugin>-->
-    <!--</plugins>-->
-    <!--</build>-->
-    <!--</profile>-->
-    <!--</profiles>-->
+    <profiles>
+        <profile>
+            <id>product</id>
+        </profile>
+        <profile>
+            <id>openshift</id>
+            <build>
+                <finalName>naure</finalName>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.1.1</version>
+                        <configuration>
+                            <outputDirectory>deployments</outputDirectory>
+                            <warName>ROOT</warName>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

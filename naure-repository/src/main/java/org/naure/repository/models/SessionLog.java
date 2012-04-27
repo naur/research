@@ -1,6 +1,11 @@
 package org.naure.repository.models;
 
+import com.mongodb.DBObject;
+import org.bson.BSONObject;
+
 import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,7 +14,7 @@ import java.util.Date;
  * Time: 3:02 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SessionLog {
+public class SessionLog implements DBObject {
     private String sessionId;
     //private IPAddress ipAddress;
     private String hostName;
@@ -21,4 +26,59 @@ public class SessionLog {
     private String referrerUrl;
     private String requestUrl;
     private Date timestamp;
+
+    @Override
+    public void markAsPartialObject() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean isPartialObject() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Object put(String s, Object o) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void putAll(BSONObject bsonObject) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void putAll(Map map) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Object get(String s) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Map toMap() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Object removeField(String s) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean containsKey(String s) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean containsField(String s) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Set<String> keySet() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
