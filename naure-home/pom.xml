@@ -21,6 +21,10 @@
         </dependency>
         <dependency>
             <groupId>org.naure</groupId>
+            <artifactId>naure-common-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.naure</groupId>
             <artifactId>naure-utility</artifactId>
         </dependency>
 

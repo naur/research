@@ -12,6 +12,7 @@
         <module>naure-parent</module>
         <module>naure-common</module>
         <module>naure-utility</module>
+        <module>naure-common-web</module>
         <module>naure-repository</module>
         <module>naure-research</module>
         <module>naure-home</module>

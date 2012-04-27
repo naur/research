@@ -36,6 +36,11 @@
             </dependency>
             <dependency>
                 <groupId>org.naure</groupId>
+                <artifactId>naure-common-web</artifactId>
+                <version>${naure.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.naure</groupId>
                 <artifactId>naure-utility</artifactId>
                 <version>${naure.version}</version>
             </dependency>

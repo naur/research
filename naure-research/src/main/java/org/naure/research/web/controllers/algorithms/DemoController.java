@@ -1,7 +1,7 @@
 package org.naure.research.web.controllers.algorithms;
 
-import org.naure.common.ControllerBase;
 import org.naure.common.OffsetInfo;
+import org.naure.common.web.ControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
