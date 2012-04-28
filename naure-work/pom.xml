@@ -31,6 +31,10 @@
             <artifactId>servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache</groupId>
+            <artifactId>c</artifactId>
+        </dependency>
         <!--<dependency>-->
         <!--<groupId>javax.servlet.jsp</groupId>-->
         <!--<artifactId>jsp-api</artifactId>-->
