@@ -29,10 +29,6 @@
         <spring-release-mongodb.version>1.0.1.RELEASE</spring-release-mongodb.version>
         <spring-data-commons-core.version>1.2.1.RELEASE</spring-data-commons-core.version>
         <commons-lang3.version>3.1</commons-lang3.version>
-        <mongodb.host>127.0.0.1</mongodb.host>
-        <mongodb.port>27017</mongodb.port>
-        <mongodb.username></mongodb.username>
-        <mongodb.password></mongodb.password>
     </properties>
 
     <dependencyManagement>

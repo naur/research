@@ -28,6 +28,10 @@ public class SessionLog implements DBObject {
     private String requestUrl;
     private Date timestamp;
 
+    public SessionLog(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public void markAsPartialObject() {
         //To change body of implemented methods use File | Settings | File Templates.

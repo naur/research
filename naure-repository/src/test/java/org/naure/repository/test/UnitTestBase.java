@@ -14,7 +14,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @ContextConfiguration(locations = {
-        "classpath*:/spring/applicationContext*.xml"
+        "classpath*:/applicationContext*.xml"
 })
 public class UnitTestBase extends AbstractJUnit4SpringContextTests {
     public <T> boolean contains(List<T> list, Comparator comparator, T... value) {
