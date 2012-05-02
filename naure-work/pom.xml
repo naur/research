@@ -33,8 +33,9 @@
         </dependency>
         <dependency>
             <groupId>org.apache</groupId>
-            <artifactId>c</artifactId>
+            <artifactId>cxf</artifactId>
         </dependency>
+
         <!--<dependency>-->
         <!--<groupId>javax.servlet.jsp</groupId>-->
         <!--<artifactId>jsp-api</artifactId>-->

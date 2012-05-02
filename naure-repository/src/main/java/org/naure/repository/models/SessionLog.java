@@ -2,6 +2,7 @@ package org.naure.repository.models;
 
 import com.mongodb.DBObject;
 import org.bson.BSONObject;
+import org.naure.common.TraceEventType;
 
 import java.util.Date;
 import java.util.Map;
@@ -16,9 +17,9 @@ import java.util.Set;
  */
 public class SessionLog implements DBObject {
     private String sessionId;
-    //private IPAddress ipAddress;
+    private String ipAddress;
     private String hostName;
-    //private TraceEventType severity;
+    private TraceEventType severity;
     private String language;
     private String userAgent;
     private String requestType;
@@ -80,5 +81,11 @@ public class SessionLog implements DBObject {
     @Override
     public Set<String> keySet() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String toString() {
+        return String.format("SessionLog [sessionId={}, ipAddress={}, hostName={}, severity={}, language={}, userAgent={}, requestType={}, statusCode={}, referrerUrl={}, requestUrl={}, timestamp]",
+                sessionId, ipAddress, hostName, severity, language, userAgent, requestType, statusCode, referrerUrl, requestUrl, timestamp);
     }
 }

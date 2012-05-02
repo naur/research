@@ -28,7 +28,8 @@
         <jackson.version>1.7.1</jackson.version>
         <spring-release-mongodb.version>1.0.1.RELEASE</spring-release-mongodb.version>
         <spring-data-commons-core.version>1.2.1.RELEASE</spring-data-commons-core.version>
-        <mongodb.url></mongodb.url>
+        <commons-lang3.version>3.1</commons-lang3.version>
+        <mongodb.host>127.0.0.1</mongodb.host>
         <mongodb.port>27017</mongodb.port>
         <mongodb.username></mongodb.username>
         <mongodb.password></mongodb.password>
@@ -299,6 +300,12 @@
                 <version>${spring-data-commons-core.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -327,6 +334,11 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
 
         <dependency>
