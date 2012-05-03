@@ -52,7 +52,7 @@
             </dependency>
             <dependency>
                 <groupId>org.naure</groupId>
-                <artifactId>naure-repository</artifactId>
+                <artifactId>naure-repositories</artifactId>
                 <version>${naure.version}</version>
             </dependency>
 

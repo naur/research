@@ -1,4 +1,4 @@
-package org.naure.repository.config;
+package org.naure.repositories.config;
 
 import com.mongodb.Mongo;
 import org.springframework.beans.factory.annotation.Value;

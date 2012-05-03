@@ -1,4 +1,4 @@
-package org.naure.repository.test;
+package org.naure.repositories.test;
 
 import org.junit.Test;
 

@@ -13,10 +13,11 @@
         <module>naure-common</module>
         <module>naure-utility</module>
         <module>naure-common-web</module>
-        <module>naure-repository</module>
+        <module>naure-repositories</module>
         <module>naure-research</module>
         <module>naure-home</module>
         <module>naure-work</module>
+        <module>naure-repositories</module>
     </modules>
 
     <profiles>

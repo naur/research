@@ -1,4 +1,4 @@
-package org.naure.repository.models;
+package org.naure.repositories.models;
 
 import com.mongodb.DBObject;
 import org.bson.BSONObject;
@@ -27,6 +27,9 @@ public class SessionLog implements DBObject {
     private String referrerUrl;
     private String requestUrl;
     private Date timestamp;
+
+    public SessionLog() {
+    }
 
     public SessionLog(Date timestamp) {
         this.timestamp = timestamp;
