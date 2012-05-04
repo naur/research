@@ -4,6 +4,7 @@ import org.naure.common.TraceEventType;
 import org.naure.repositories.SessionRepository;
 import org.naure.repositories.models.SessionLog;
 import org.naure.web.integrate.HttpUtility;
+import org.naure.web.integrate.properties.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class SessionService {
 
     public void add(HttpServletRequest request) {
         SessionLog sessionLog = new SessionLog();
+        sessionLog.setApplication(systemProperties.applicationName);
         sessionLog.setSeverity(TraceEventType.Start);
         sessionLog.setSessionId(request.getRequestedSessionId());
         sessionLog.setIpAddress(HttpUtility.getIpAddr(request));
@@ -55,4 +57,6 @@ public class SessionService {
 
     @Autowired
     SessionRepository sessionRepository;
+    @Autowired
+    SystemProperties systemProperties;
 }

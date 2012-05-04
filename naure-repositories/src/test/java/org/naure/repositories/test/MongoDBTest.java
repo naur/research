@@ -2,11 +2,8 @@ package org.naure.repositories.test;
 
 import org.junit.Test;
 import org.naure.repositories.config.MongoConfiguration;
-import org.naure.repositories.models.SessionLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
-
-import java.util.Calendar;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,7 +16,6 @@ public class MongoDBTest extends UnitTestBase {
     @Test
     public void test1() throws Exception {
         MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
-        mongoOps.insert(new SessionLog(Calendar.getInstance().getTime()));
     }
 
     @Autowired

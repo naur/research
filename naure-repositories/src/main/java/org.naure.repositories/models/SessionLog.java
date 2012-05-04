@@ -12,12 +12,12 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class SessionLog {
-
-    public SessionLog() {
-
+    public String getApplication() {
+        return application;
     }
-    public SessionLog(Date timestamp) {
-        this.timestamp = timestamp;
+
+    public void setApplication(String application) {
+        this.application = application;
     }
 
     public String getSessionId() {
@@ -110,10 +110,11 @@ public class SessionLog {
 
     @Override
     public String toString() {
-        return String.format("SessionLog [sessionId=%1$s, ipAddress=%2$s, hostName=%3$s, severity=%4$s, language=%5$s, userAgent=%6$s, requestType=%7$s, statusCode=%8$s, referrerUrl=%9$s, requestUrl=%10$s, timestamp=%11$s]",
+        return String.format("SessionLog [application=%1$s, sessionId=%1$s, ipAddress=%2$s, hostName=%3$s, severity=%4$s, language=%5$s, userAgent=%6$s, requestType=%7$s, statusCode=%8$s, referrerUrl=%9$s, requestUrl=%10$s, timestamp=%11$s]",
                 sessionId, ipAddress, hostName, severity, language, userAgent, requestType, statusCode, referrerUrl, requestUrl, timestamp);
     }
 
+    private String application;
     private String sessionId;
     private String ipAddress;
     private String hostName;
