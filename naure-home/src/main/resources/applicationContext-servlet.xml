@@ -13,6 +13,7 @@
     <context:component-scan base-package="org.naure.home.web.controllers, org.naure.common.web, org.naure.repositories">
         <!--<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect"/>-->
     </context:component-scan>
+    <context:property-placeholder location="classpath:jdbc.properties"/>
 
     <!--<bean id="aspectJLogger" class="org.naure.common.web.AspectJLogger" />-->
     <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->

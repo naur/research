@@ -1,9 +1,13 @@
 package org.naure.common.web;
 
 import org.aspectj.lang.annotation.*;
+import org.naure.common.TraceEventType;
+import org.naure.repositories.SessionRepository;
+import org.naure.repositories.models.SessionLog;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,9 +29,40 @@ public class AspectJController {
 
     @Before("controllerBean() && methodPointcut() ")
     public void before() {
-        HttpSession session = HttpSessionFilter.session.get();
-        String sessionId = session.getId();
-        session.getLastAccessedTime();
+        HttpServletRequest request = HttpSessionFilter.session.get();
+        SessionLog sessionLog = new SessionLog();
+        sessionLog.setSeverity(TraceEventType.Start);
+        sessionLog.setSessionId(request.getRequestedSessionId());
+        sessionLog.setIpAddress(HttpUtility.getIpAddr(request));
+        sessionLog.setHostName(request.getHeader("host"));
+        sessionLog.setLanguage((request.getHeader("accept-language").isEmpty() ? "Unknown" : request.getHeader("accept-language")));
+        sessionLog.setUserAgent(request.getHeader("user-agent"));
+        sessionLog.setRequestType(request.getMethod());
+        sessionLog.setRequestUrl(request.getRequestURI());
+        sessionLog.setReferrerUrl(request.getHeader("Referer"));
+
+//        logEntry.SessionLog.SessionID = HttpContext.Current.Session.SessionID ?? "";
+//        logEntry.SessionLog.IpAddress = IPAddress.Parse(HttpContext.Current.Request.UserHostAddress);
+//        logEntry.SessionLog.HostName = HttpContext.Current.Request.UserHostName ?? "";
+//        //HostName = System.Net.Dns.GetHostEntry(HttpContext.Current.Request.UserHostAddress).HostName,
+//        //HostName = System.Net.Dns.GetHostName(),
+//        if (HttpContext.Current.Request.UserLanguages != null)
+//            logEntry.SessionLog.Language = HttpContext.Current.Request.UserLanguages[0] ?? "";
+//        else
+//        logEntry.SessionLog.Language = "Unknown";
+//        logEntry.SessionLog.UserAgent = HttpContext.Current.Request.UserAgent ?? "";
+//        logEntry.SessionLog.RequestType = HttpContext.Current.Request.RequestType ?? ""; //HttpMethod
+//        logEntry.SessionLog.StatusCode = HttpContext.Current.Response.StatusCode; //Status
+//        logEntry.SessionLog.ReferrerUrl = (HttpContext.Current.Request.UrlReferrer == null) ? "" : HttpContext.Current.Request.UrlReferrer.ToString();
+//        logEntry.SessionLog.RequestUrl = (HttpContext.Current.Request.RawUrl ?? "").ToString();
+//        logEntry.Categories.Add("Session Trace");
+
+        try {
+            sessionRepository.add(sessionLog);
+        } catch (Exception ex) {
+
+        }
+
     }
 
     @AfterReturning("controllerBean() && methodPointcut() ")
@@ -51,4 +86,7 @@ public class AspectJController {
 //    public void after() {
 //        System.out.println("After" + Calendar.getInstance().getTime());
 //    }
+
+    @Autowired
+    SessionRepository sessionRepository;
 }

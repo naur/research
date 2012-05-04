@@ -24,7 +24,7 @@ public class DatastoreWorkspace implements Workspace{
     }
 
     @Override
-    public <U, T> U post(T entity, Class<T> clazz) {
+    public <U, T> U post(T entity, Class<T>... clazz) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

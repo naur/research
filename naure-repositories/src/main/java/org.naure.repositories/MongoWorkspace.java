@@ -2,6 +2,7 @@ package org.naure.repositories;
 
 import org.naure.repositories.config.MongoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,8 +28,10 @@ public class MongoWorkspace implements Workspace {
     }
 
     @Override
-    public <U, T> U post(T entity, Class<T> clazz) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public <U, T> U post(T entity, Class<T>... clazz) throws Exception {
+        MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
+        mongoOps.insert(entity);
+        return null;
     }
 
     @Override

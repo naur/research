@@ -1,6 +1,8 @@
 package org.naure.repositories;
 
 import org.naure.repositories.models.SessionLog;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,13 +15,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionRepository {
 
-    public void add(SessionLog sessionLog) {
-        workspace.put(sessionLog);
+    public void add(SessionLog sessionLog) throws Exception {
+        workspace.post(sessionLog);
     }
 
     public void setWorkspace(Workspace workspace) {
         this.workspace = workspace;
     }
 
+    @Autowired
+    @Qualifier("mongoWorkspace")
     private Workspace workspace;
 }

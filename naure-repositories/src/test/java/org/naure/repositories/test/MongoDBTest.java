@@ -1,8 +1,8 @@
 package org.naure.repositories.test;
 
 import org.junit.Test;
-import org.naure.repository.config.MongoConfiguration;
-import org.naure.repository.models.SessionLog;
+import org.naure.repositories.config.MongoConfiguration;
+import org.naure.repositories.models.SessionLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 
