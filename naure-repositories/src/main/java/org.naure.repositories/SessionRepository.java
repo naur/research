@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: jiaruizhi
@@ -17,6 +19,10 @@ public class SessionRepository {
 
     public void add(SessionLog sessionLog) throws Exception {
         workspace.post(sessionLog);
+    }
+
+    public void get(Map params) throws Exception {
+        workspace.get(params, SessionLog.class);
     }
 
     public void setWorkspace(Workspace workspace) {

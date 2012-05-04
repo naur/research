@@ -11,16 +11,16 @@ import java.util.List;
  */
 public interface Workspace {
     //读取    {Map<String, T> get()}
-    <U, T> List<T> get(U params, Class<T> clazz) throws Exception;
+    <U, T> List<T> get(U params, Class<T> tClass) throws Exception;
 
     //更新和创建 【幂等性】   {void put(T t)}
-    <U, T> U put(T entity, Class<U>... clazz) throws Exception;
+    <U, T> T put(U entity, Class<T>... tClass) throws Exception;
 
     //创建    {void post()}
-    <U, T> U post(T entity, Class<T>... clazz) throws Exception;
+    <U, T> T post(U entity, Class<T>... tClass) throws Exception;
 
     //【幂等性】 {boolean delete(T t)}
     <T> boolean delete(T t) throws Exception;
 
-    //<U, T> List<T> query(U params, Class<T> clazz);
+    //<U, T> List<T> query(U params, Class<T> tClass);
 }

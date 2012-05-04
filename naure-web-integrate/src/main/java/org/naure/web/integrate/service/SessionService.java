@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +22,17 @@ import java.util.Date;
  */
 @Service
 public class SessionService {
+
+    public List<SessionLog> get() {
+        List<SessionLog> logs = new ArrayList<SessionLog>();
+        sessionRepository.
+        logs.add(new SessionLog());
+        logs.add(new SessionLog());
+        logs.add(new SessionLog());
+        logs.add(new SessionLog());
+        logs.add(new SessionLog());
+        return logs;
+    }
 
     public void add(HttpServletRequest request) {
         SessionLog sessionLog = new SessionLog();
