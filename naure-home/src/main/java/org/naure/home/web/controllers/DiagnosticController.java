@@ -1,6 +1,7 @@
 package org.naure.home.web.controllers;
 
-import org.naure.common.web.ControllerBase;
+
+import org.naure.web.integrate.ControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@RequestMapping(value="/diagnostic")
+@RequestMapping(value = "/diagnostic")
 public class DiagnosticController extends ControllerBase {
-    @RequestMapping( method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String test() {
         return view("test");
     }

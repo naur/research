@@ -17,7 +17,7 @@
 
         <dependency>
             <groupId>org.naure</groupId>
-            <artifactId>naure-common-web</artifactId>
+            <artifactId>naure-web-integrate</artifactId>
         </dependency>
 
     </dependencies>

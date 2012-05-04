@@ -29,7 +29,7 @@
 
     <filter>
         <filter-name>httpSessionFilter</filter-name>
-        <filter-class>org.naure.common.web.HttpSessionFilter</filter-class>
+        <filter-class>org.naure.web.integrate.HttpSessionFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>httpSessionFilter</filter-name>
@@ -91,6 +91,22 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.jpeg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.otf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.ico</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.ttf</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
