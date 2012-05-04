@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,13 @@ public class DiagnosticController extends ControllerBase {
     @RequestMapping(method = RequestMethod.GET,  value = "session")
     @ResponseBody
     public List<SessionLog> log() {
-        return sessionService.get();
+        List<SessionLog> list = new ArrayList<SessionLog>();
+        try {
+            list = sessionService.get();
+        } catch (Exception ex) {
+
+        }
+        return list;
     }
 
     public DiagnosticController() {

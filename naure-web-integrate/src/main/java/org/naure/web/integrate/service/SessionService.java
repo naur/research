@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,18 +21,20 @@ import java.util.List;
 @Service
 public class SessionService {
 
-    public List<SessionLog> get() {
-        List<SessionLog> logs = new ArrayList<SessionLog>();
-        sessionRepository.
-        logs.add(new SessionLog());
-        logs.add(new SessionLog());
-        logs.add(new SessionLog());
-        logs.add(new SessionLog());
-        logs.add(new SessionLog());
-        return logs;
+    public List<SessionLog> get() throws Exception {
+        List<SessionLog> list = new ArrayList<SessionLog>();
+        list.add(new SessionLog());
+        list.add(new SessionLog());
+        list.add(new SessionLog());
+        list.add(new SessionLog());
+        return list;
+//        Map<String, String> params = new HashMap<String, String>();
+//        return sessionRepository.get(params);
     }
 
     public void add(HttpServletRequest request) {
+        if (request.getRequestURI().contains("diagnostic")) return;
+
         SessionLog sessionLog = new SessionLog();
         sessionLog.setApplication(systemProperties.applicationName);
         sessionLog.setSeverity(TraceEventType.Start);

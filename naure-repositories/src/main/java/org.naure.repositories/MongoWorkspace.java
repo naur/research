@@ -3,10 +3,12 @@ package org.naure.repositories;
 import org.naure.repositories.config.MongoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,9 +21,12 @@ import java.util.List;
 public class MongoWorkspace implements Workspace {
 
     @Override
-    public <U, T> List<T> get(U params, Class<T> tClass) throws Exception {
+    public <T> List<T> get(Map params, Class<T> tClass) throws Exception {
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
+        for (Object key : params.keySet()) {
+            query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+        }
         return mongoOperations.find(query, tClass);
     }
 
@@ -38,7 +43,7 @@ public class MongoWorkspace implements Workspace {
     }
 
     @Override
-    public <T> boolean delete(T t) throws Exception {
+    public <U, T> boolean delete(U u, Class<T>... tClass) throws Exception {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

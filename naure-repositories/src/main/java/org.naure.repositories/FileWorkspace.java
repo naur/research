@@ -3,6 +3,7 @@ package org.naure.repositories;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,23 +14,24 @@ import java.util.List;
  */
 @Component
 public class FileWorkspace implements Workspace {
+
     @Override
-    public <U, T> List<T> get(U params, Class<T> clazz) {
+    public <T> List<T> get(Map params, Class<T> tClass) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public <U, T> U put(T entity, Class<U>... clazz) {
+    public <U, T> T put(U entity, Class<T>... tClass) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public <U, T> U post(T entity, Class<T>... clazz) {
+    public <U, T> T post(U entity, Class<T>... tClass) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public <T> boolean delete(T t) {
+    public <U, T> boolean delete(U u, Class<T>... tClass) throws Exception {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

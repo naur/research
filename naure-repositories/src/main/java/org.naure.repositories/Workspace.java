@@ -1,6 +1,7 @@
 package org.naure.repositories;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public interface Workspace {
     //读取    {Map<String, T> get()}
-    <U, T> List<T> get(U params, Class<T> tClass) throws Exception;
+    <T> List<T> get(Map params, Class<T> tClass) throws Exception;
 
     //更新和创建 【幂等性】   {void put(T t)}
     <U, T> T put(U entity, Class<T>... tClass) throws Exception;
@@ -20,7 +21,7 @@ public interface Workspace {
     <U, T> T post(U entity, Class<T>... tClass) throws Exception;
 
     //【幂等性】 {boolean delete(T t)}
-    <T> boolean delete(T t) throws Exception;
+    <U, T> boolean delete(U u, Class<T>... tClass) throws Exception;
 
     //<U, T> List<T> query(U params, Class<T> tClass);
 }

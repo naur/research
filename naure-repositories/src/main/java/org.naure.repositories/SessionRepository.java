@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,8 +22,8 @@ public class SessionRepository {
         workspace.post(sessionLog);
     }
 
-    public void get(Map params) throws Exception {
-        workspace.get(params, SessionLog.class);
+    public List<SessionLog> get(Map params) throws Exception {
+        return workspace.get(params, SessionLog.class);
     }
 
     public void setWorkspace(Workspace workspace) {
