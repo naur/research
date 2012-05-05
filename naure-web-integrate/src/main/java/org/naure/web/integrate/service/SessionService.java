@@ -21,15 +21,8 @@ import java.util.*;
 @Service
 public class SessionService {
 
-    public List<SessionLog> get() throws Exception {
-        List<SessionLog> list = new ArrayList<SessionLog>();
-        list.add(new SessionLog());
-        list.add(new SessionLog());
-        list.add(new SessionLog());
-        list.add(new SessionLog());
-        return list;
-//        Map<String, String> params = new HashMap<String, String>();
-//        return sessionRepository.get(params);
+    public List<SessionLog> get(Map params) throws Exception {
+        return sessionRepository.get(params);
     }
 
     public void add(HttpServletRequest request) {
