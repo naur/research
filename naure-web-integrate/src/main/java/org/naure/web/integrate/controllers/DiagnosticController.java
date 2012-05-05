@@ -1,6 +1,7 @@
 package org.naure.web.integrate.controllers;
 
 
+import com.sun.syndication.feed.atom.Feed;
 import org.naure.common.Information;
 import org.naure.repositories.models.SessionLog;
 import org.naure.web.integrate.ControllerBase;
@@ -24,9 +25,9 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@RequestMapping(value = "/diagnostic/")
+@RequestMapping(value = "/diagnostic/", method = {RequestMethod.GET, RequestMethod.POST})
 public class DiagnosticController extends ControllerBase {
-    @RequestMapping(method = RequestMethod.GET,  value = "session", headers = "Accept=application/json, application/xml")
+    @RequestMapping(value = "session")
     @ResponseBody
     public Information session() {
         Information<List<SessionLog>> information = new Information<List<SessionLog>>();
@@ -37,6 +38,36 @@ public class DiagnosticController extends ControllerBase {
 
         }
         return information;
+    }
+
+    @RequestMapping(value = "session/json", headers="Accept=application/json")
+    @ResponseBody
+    public Information sessionJsom() {
+        Information<List<SessionLog>> information = new Information<List<SessionLog>>();
+        try {
+            Map<String, String> params = new HashMap<String, String>();
+            information.setData(sessionService.get(params));
+        } catch (Exception ex) {
+
+        }
+        return information;
+    }
+
+    @RequestMapping(value = "session/atom", headers="Accept=application/atom+xml")
+    @ResponseBody
+    public Feed sessionAtom() {
+        Information<List<SessionLog>> information = new Information<List<SessionLog>>();
+        try {
+            Map<String, String> params = new HashMap<String, String>();
+            information.setData(sessionService.get(params));
+        } catch (Exception ex) {
+
+        }
+        Feed feed = new Feed();
+        feed.setFeedType("atom_1.0");
+        feed.setTitle("Session Logger Atom Feed");
+        //feed.setEntries(information.getData());
+        return feed;
     }
 
     public DiagnosticController() {

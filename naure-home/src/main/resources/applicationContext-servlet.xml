@@ -41,24 +41,25 @@
         <property name="supportedMediaTypes" value="application/json" />
     </bean>
     <bean id="marshallingConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-        <property name="marshaller" ref="castorMarshaller" />
-        <property name="unmarshaller" ref="castorMarshaller" />
-        <!--<constructor-arg ref="jaxbMarshaller" />-->
-        <!--<property name="supportedMediaTypes" value="application/xml"/>-->
+        <!--<property name="marshaller" ref="castorMarshaller" />-->
+        <!--<property name="unmarshaller" ref="castorMarshaller" />-->
+        <constructor-arg ref="jaxbMarshaller" />
+        <property name="supportedMediaTypes" value="application/xml"/>
     </bean>
-    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller" />
+    <!--<bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller" />-->
     <bean id="atomConverter" class="org.springframework.http.converter.feed.AtomFeedHttpMessageConverter">
         <property name="supportedMediaTypes" value="application/atom+xml" />
     </bean>
 
-    <!--<bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">-->
+    <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="packagesToScan" value="org.naure.common, org.naure.repositories.models" />
         <!--<property name="classesToBeBound">-->
             <!--<list>-->
                 <!--<value>dw.spring3.rest.bean.Employee</value>-->
                 <!--<value>dw.spring3.rest.bean.EmployeeList</value>-->
             <!--</list>-->
         <!--</property>-->
-    <!--</bean>-->
+    </bean>
 
     <!--<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />-->
 

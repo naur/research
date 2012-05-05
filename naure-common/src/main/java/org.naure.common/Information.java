@@ -12,8 +12,8 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 //提供通用的关于【HTTP 响应】的数据模型 和 【Web Service 响应】的数据模型结构
-@XmlRootElement
-public class Information<T> implements Serializable {
+//@XmlRootElement
+public class Information<T> { // implements Serializable
 
     public Information() {
     }
