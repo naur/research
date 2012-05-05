@@ -1,4 +1,4 @@
-package org.naure.home.web.controllers;
+package org.naure.web.integrate.controllers;
 
 import org.naure.web.integrate.ControllerBase;
 import org.springframework.stereotype.Controller;
