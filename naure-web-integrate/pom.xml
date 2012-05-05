@@ -58,6 +58,27 @@
             <artifactId>jstl</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.castor</groupId>
+            <artifactId>castor</artifactId>
+        </dependency>
+
+        <!-- Castor need this -->
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

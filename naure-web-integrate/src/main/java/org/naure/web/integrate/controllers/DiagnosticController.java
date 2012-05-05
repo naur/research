@@ -26,7 +26,7 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/diagnostic/")
 public class DiagnosticController extends ControllerBase {
-    @RequestMapping(method = RequestMethod.GET,  value = "session")
+    @RequestMapping(method = RequestMethod.GET,  value = "session", headers = "Accept=application/json, application/xml")
     @ResponseBody
     public Information session() {
         Information<List<SessionLog>> information = new Information<List<SessionLog>>();

@@ -95,10 +95,10 @@
                 <scope>provided</scope>
             </dependency>
             <!--<dependency>-->
-                <!--<groupId>javax.servlet.jsp</groupId>-->
-                <!--<artifactId>jsp-api</artifactId>-->
-                <!--<version>2.1</version>-->
-                <!--<scope>provided</scope>-->
+            <!--<groupId>javax.servlet.jsp</groupId>-->
+            <!--<artifactId>jsp-api</artifactId>-->
+            <!--<version>2.1</version>-->
+            <!--<scope>provided</scope>-->
             <!--</dependency>-->
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -309,8 +309,29 @@
                 <version>${org.springframework.version}</version>
             </dependency>
 
+            <!-- Uses Castor for XML -->
+            <dependency>
+                <groupId>org.codehaus.castor</groupId>
+                <artifactId>castor</artifactId>
+                <version>1.2</version>
+            </dependency>
+
+            <!-- Castor need this -->
+            <dependency>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl</artifactId>
+                <version>2.8.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>rome</groupId>
+                <artifactId>rome</artifactId>
+                <version>1.0</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
+
 
     <dependencies>
 
@@ -379,10 +400,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-oxm</artifactId>
-        </dependency>
     </dependencies>
 
 
@@ -403,6 +420,15 @@
             <id>spring-release</id>
             <name>Spring Maven Release Repository</name>
             <url>http://repo.springsource.org/libs-release</url>
+        </repository>
+        <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+        </repository>
+        <repository>
+            <id>java.net-m2-repository</id>
+            <url>java-net:/maven2-repository/trunk/repository/</url>
         </repository>
     </repositories>
 
