@@ -3,21 +3,21 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:oxm="http://www.springframework.org/schema/oxm"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/aop  http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.1.xsd">
 
     <!-- Scans the classpath of this application for @Components to deploy as beans -->
-    <context:component-scan base-package="org.naure.home.web.controllers, org.naure.web.integrate, org.naure.repositories">
+    <context:component-scan base-package="org.naure.web.integrate, org.naure.repositories">
         <!--<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect"/>-->
     </context:component-scan>
     <!--<context:property-placeholder location="classpath:application.properties"/>-->
     <bean
             class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
-        <property name="ignoreResourceNotFound" value="true" />
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        <property name="ignoreResourceNotFound" value="true"/>
         <property name="locations">
             <list>
                 <value>classpath:application.properties</value>
@@ -25,43 +25,6 @@
             </list>
         </property>
     </bean>
-
-    <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
-
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-        <property name="messageConverters">
-            <list>
-                <ref bean="jsonConverter" />
-                <ref bean="marshallingConverter" />
-                <ref bean="atomConverter" />
-            </list>
-        </property>
-    </bean>
-    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-        <property name="supportedMediaTypes" value="application/json" />
-    </bean>
-    <bean id="marshallingConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-        <!--<property name="marshaller" ref="castorMarshaller" />-->
-        <!--<property name="unmarshaller" ref="castorMarshaller" />-->
-        <constructor-arg ref="jaxbMarshaller" />
-        <property name="supportedMediaTypes" value="application/xml"/>
-    </bean>
-    <!--<bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller" />-->
-    <bean id="atomConverter" class="org.springframework.http.converter.feed.AtomFeedHttpMessageConverter">
-        <property name="supportedMediaTypes" value="application/atom+xml" />
-    </bean>
-
-    <bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-        <property name="packagesToScan" value="org.naure.common, org.naure.repositories.models" />
-        <!--<property name="classesToBeBound">-->
-            <!--<list>-->
-                <!--<value>dw.spring3.rest.bean.Employee</value>-->
-                <!--<value>dw.spring3.rest.bean.EmployeeList</value>-->
-            <!--</list>-->
-        <!--</property>-->
-    </bean>
-
-    <!--<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />-->
 
     <!-- 注册aspectj -->
     <aop:aspectj-autoproxy proxy-target-class="true">
@@ -73,6 +36,106 @@
 
     <!-- Forwards requests to the "/" resource to the "welcome" view -->
     <mvc:view-controller path="/" view-name="diagnostic"/>
+
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="order" value="1"/>
+        <property name="defaultContentType" value="text/html"/>
+        <property name="favorPathExtension" value="true"/>
+        <property name="favorParameter" value="false"/>
+        <property name="ignoreAcceptHeader" value="true"/>
+        <property name="mediaTypes">
+            <map>
+                <entry key="xml" value="application/xml"/>
+                <entry key="json" value="application/json"/>
+                <entry key="atom" value="application/atom+xml"/>
+            </map>
+        </property>
+        <property name="defaultViews">
+            <list>
+                <bean class="org.springframework.web.servlet.view.xml.MarshallingView" >
+                    <property name="marshaller">
+                        <bean class="org.springframework.oxm.xstream.XStreamMarshaller"/>
+                    </property>
+                </bean>
+                <!--<bean class="org.springframework.web.servlet.view.xml.MarshallingView">-->
+                    <!--<constructor-arg>-->
+                        <!--<bean class="org.springframework.oxm.xstream.XStreamMarshaller"/>-->
+                    <!--</constructor-arg>-->
+                <!--</bean>-->
+                <!--<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>-->
+            </list>
+        </property>
+    </bean>
+
+    <!-- Resolves view names to protected .jsp resources within the /WEB-INF/views directory -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="2" />
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".htm"/>
+    </bean>
+
+    <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
+    <!--<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">-->
+    <!--<property name="messageConverters">-->
+    <!--<list>-->
+    <!--<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>-->
+    <!--<bean class="org.springframework.http.converter.feed.AtomFeedHttpMessageConverter"/>-->
+    <!--<bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">-->
+    <!--&lt;!&ndash;<constructor-arg>&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<oxm:jaxb2-marshaller />&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;bean 方法 1&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<bean class="org.springframework.oxm.xstream.XStreamMarshaller">&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<property name="streamDriver">&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<bean class="com.thoughtworks.xstream.io.xml.DomDriver"/>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;</property>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<property name="autodetectAnnotations">&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<value>true</value>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;</property>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;可以与xml互换的对象，需要使用XStream的注解，注解的使用方法请参XStream官网&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<property name="annotatedClasses">&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<list>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<value>org.naure.common.Information</value>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;</list>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;</property>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;</bean>&ndash;&gt;&ndash;&gt;-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;bean 方法 2&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;<property name="packagesToScan" value="org.naure.common, org.naure.repositories.models" />&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<property name="classesToBeBound">&ndash;&gt;-->
+    <!--&lt;!&ndash;<list>&ndash;&gt;-->
+    <!--&lt;!&ndash;<value>org.naure.common.Information</value>&ndash;&gt;-->
+    <!--&lt;!&ndash;<value>org.naure.repositories.models.SessionLog</value>&ndash;&gt;-->
+    <!--&lt;!&ndash;</list>&ndash;&gt;-->
+    <!--&lt;!&ndash;</property>&ndash;&gt;-->
+    <!--&lt;!&ndash;</bean>&ndash;&gt;-->
+    <!--&lt;!&ndash;</constructor-arg>&ndash;&gt;-->
+    <!--<property name="supportedMediaTypes" value="application/vnd.stocks+xml"/>-->
+    <!--<property name="marshaller" ref="castorMarshaller" />-->
+    <!--<property name="unmarshaller" ref="castorMarshaller" />-->
+    <!--</bean>-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="jaxbMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">-->
+    <!--&lt;!&ndash;<property name="classesToBeBound">&ndash;&gt;-->
+    <!--&lt;!&ndash;<list>&ndash;&gt;-->
+    <!--&lt;!&ndash;<value>org.naure.repositories.models.SessionLog</value>&ndash;&gt;-->
+    <!--&lt;!&ndash;<value>org.naure.common.Information</value>&ndash;&gt;-->
+    <!--&lt;!&ndash;</list>&ndash;&gt;-->
+    <!--&lt;!&ndash;</property>&ndash;&gt;-->
+    <!--</bean>-->
+    <!--<bean id="employees" class="org.springframework.web.servlet.view.xml.MarshallingView">-->
+    <!--<constructor-arg ref="jaxbMarshaller"/>-->
+    <!--</bean>-->
+    <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver"/>-->
+
+
+    <!--<bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"/>-->
+
+    <!--<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />-->
+
 
     <!-- Configures Handler Interceptors -->
     <mvc:interceptors>
@@ -90,12 +153,6 @@
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basename" value="/WEB-INF/messages/messages"/>
         <property name="cacheSeconds" value="0"/>
-    </bean>
-
-    <!-- Resolves view names to protected .jsp resources within the /WEB-INF/views directory -->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/"/>
-        <property name="suffix" value=".htm"/>
     </bean>
 
     <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">-->

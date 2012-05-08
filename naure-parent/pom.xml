@@ -316,6 +316,12 @@
                 <version>1.2</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.thoughtworks.xstream</groupId>
+                <artifactId>xstream</artifactId>
+                <version>1.4.2</version>
+            </dependency>
+
             <!-- Castor need this -->
             <dependency>
                 <groupId>xerces</groupId>
@@ -399,6 +405,10 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
         </dependency>
     </dependencies>
 

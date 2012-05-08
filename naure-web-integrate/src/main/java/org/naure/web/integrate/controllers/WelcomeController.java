@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@RequestMapping(value="/welcome")
+@RequestMapping(value="/welcome", method = {RequestMethod.GET, RequestMethod.POST})
 public class WelcomeController extends ControllerBase {
     @RequestMapping( method = RequestMethod.GET)
     public String restfulClient() {

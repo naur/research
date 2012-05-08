@@ -1,6 +1,5 @@
 package org.naure.common;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,8 +11,8 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 //提供通用的关于【HTTP 响应】的数据模型 和 【Web Service 响应】的数据模型结构
-//@XmlRootElement
-public class Information<T> { // implements Serializable
+//StreamAlias("Information")
+public class Information<T> implements Serializable {
 
     public Information() {
     }
@@ -105,7 +104,6 @@ public class Information<T> { // implements Serializable
     public void setTimeCreated(Date timeCreated) {
         TimeCreated = timeCreated;
     }
-
 
     public T getData() {
         return data;

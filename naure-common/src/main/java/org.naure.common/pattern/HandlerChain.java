@@ -8,5 +8,6 @@ package org.naure.common.pattern;
  * To change this template use File | Settings | File Templates.
  */
 public interface HandlerChain<T, U> {
-    U handleRequest(final T request) throws Exception;
+    <U> U handleRequest(final T request, Class<U> clazz) throws Exception;
+    T handleRequest(final T request) throws Exception;
 }

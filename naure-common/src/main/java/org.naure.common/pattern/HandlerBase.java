@@ -34,3 +34,32 @@ public abstract class HandlerBase<T> {
     private HandlerBase<T> successor;
     protected boolean hasBreakPoint = false;
 }
+
+
+//public abstract class HandlerBase<T> {
+//
+//    protected abstract T handleRequest(T request) throws Exception;
+//
+//    public T process(T request) throws Exception {
+//        if (request == null) {
+//            return request;
+//        }
+//        this.hasBreakPoint = false;
+//        request = this.handleRequest(request);
+//        if (successor != null && !hasBreakPoint) {
+//            request = successor.process(request);
+//        }
+//        return request;
+//    }
+//
+//    public HandlerBase<T> getSuccessor() {
+//        return successor;
+//    }
+//
+//    public void setSuccessor(HandlerBase<T> successor) {
+//        this.successor = successor;
+//    }
+//
+//    private HandlerBase<T> successor;
+//    protected boolean hasBreakPoint = false;
+//}
