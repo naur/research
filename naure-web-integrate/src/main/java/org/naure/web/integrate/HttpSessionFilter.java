@@ -22,6 +22,7 @@ public class HttpSessionFilter implements Filter {
         if (((HttpServletRequest) request).getRequestedSessionId() == null) {
             ((HttpServletRequest) request).getSession();
         }
+        //        ((HttpServletResponse) response).getContentType();
         //((HttpServletRequest) request).getHeaderNames()
         session.set((HttpServletRequest) request);
         chain.doFilter(request, response);
