@@ -1,16 +1,19 @@
 package org.naure.web.integrate.controllers;
 
 
+import com.sun.syndication.feed.atom.Feed;
 import org.naure.common.Information;
 import org.naure.repositories.models.SessionLog;
 import org.naure.web.integrate.ControllerBase;
+import org.naure.web.integrate.HttpUtility;
 import org.naure.web.integrate.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.oxm.xstream.XStreamMarshaller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +29,6 @@ import java.util.Map;
 @RequestMapping(value = "/diagnostic/", method = {RequestMethod.GET, RequestMethod.POST})
 public class DiagnosticController extends ControllerBase {
     @RequestMapping(value = "session")
-    @ResponseBody
     public Information session() {
         Information<List<SessionLog>> information = new Information<List<SessionLog>>();
         try {
@@ -38,15 +40,34 @@ public class DiagnosticController extends ControllerBase {
         return information; //.getData().get(1);
     }
 
-//    @RequestMapping(value = "a", headers="Accept=application/xml")
-//    @ResponseBody
-//    public Information a() {
-//        Information<List<SessionLog>> information = new Information<List<SessionLog>>();
-//        information.setCategory("session log");
-//        information.setKeywords("aaaaaaaaaaaaaaaaaaaaa");
-//        return information;
-//    }
-//
+    @RequestMapping(value = "a")
+    public SessionLog a() {
+        Information<List<SessionLog>> information = new Information<List<SessionLog>>();
+        try {
+            Map<String, String> params = new HashMap<String, String>();
+            information.setData(sessionService.get(params));
+        } catch (Exception ex) {
+
+        }
+        information.setCategory("session log");
+        information.setKeywords("aaaaaaaaaaaaaaaaaaaaa");
+        return information.getData().get(0);
+    }
+
+    @RequestMapping(value = "b")
+    public Feed b() throws IOException {
+        Information<List<SessionLog>> information = new Information<List<SessionLog>>();
+        try {
+            Map<String, String> params = new HashMap<String, String>();
+            information.setData(sessionService.get(params));
+        } catch (Exception ex) {
+
+        }
+        information.setCategory("session log");
+        information.setKeywords("aaaaaaaaaaaaaaaaaaaaa");
+        return HttpUtility.getFeed(information.getData(), xStreamMarshaller);
+    }
+
 //    @RequestMapping(value = "session/json", headers="Accept=application/json")
 //    @ResponseBody
 //    public Information sessionJsom() {
@@ -82,5 +103,8 @@ public class DiagnosticController extends ControllerBase {
     }
 
     @Autowired
-    SessionService sessionService;
+    private SessionService sessionService;
+//    @Autowired
+    private XStreamMarshaller xStreamMarshaller;
+    private String XML_VIEW_NAME = "marshallingView";
 }
