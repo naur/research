@@ -66,12 +66,9 @@
         </property>
         <property name="defaultViews">
             <list>
-                <bean id="mappingJacksonJsonView"
-                      class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
-                <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
-                    <constructor-arg ref="xStreamMarshaller"/>
-                    <!--<constructor-arg ref="jaxbMarshaller"/>-->
-                </bean>
+                <!--<bean class="org.springframework.web.servlet.view.feed.AbstractAtomFeedView" />-->
+                <ref bean="mappingJacksonJsonView"/>
+                <ref bean="marshallingView"/>
             </list>
         </property>
         <property name="viewResolvers">
@@ -88,11 +85,11 @@
     </bean>
 
     <!--视图-->
-    <!--<bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">-->
-    <!--<constructor-arg ref="xStreamMarshaller"/>-->
-    <!--&lt;!&ndash;<constructor-arg ref="jaxbMarshaller"/>&ndash;&gt;-->
-    <!--</bean>-->
-    <!--<bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>-->
+    <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
+        <constructor-arg ref="xStreamMarshaller"/>
+        <!--<constructor-arg ref="jaxbMarshaller"/>-->
+    </bean>
+    <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
 
     <!--转换程序-->
     <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
