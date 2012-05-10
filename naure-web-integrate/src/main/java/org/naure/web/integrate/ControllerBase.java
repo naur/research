@@ -10,7 +10,6 @@ package org.naure.web.integrate;
 public abstract class ControllerBase  {
 
     public String view(String name) {
-        System.out.println("----after advice------");
         return viewPath + name;
     }
 
