@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <!--<context:property-placeholder location="classpath:jdbc.properties"/>-->
+
+    <context:component-scan base-package="org.naure.web.integrate"/>
+
+    <!-- 注册aspectj -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!-- Configures the @Controller programming model -->
+    <mvc:annotation-driven/>
+    <!-- Forwards requests to the "/" resource to the "welcome" view -->
+    <mvc:view-controller path="/" view-name="diagnostic/test"/>
+
+    <!--To enable @RequestMapping process on type level and method level-->
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonConverter"/>
+                <ref bean="marshallingConverter"/>
+                <ref bean="atomConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <!--<property name="order" value="1"/>-->
+        <property name="defaultContentType" value="text/html"/>
+        <property name="favorPathExtension" value="true"/>
+        <property name="favorParameter" value="false"/>
+        <property name="ignoreAcceptHeader" value="true"/>
+        <property name="mediaTypes">
+            <map>
+                <entry key="xml" value="application/xml"/>
+                <entry key="json" value="application/json"/>
+                <entry key="atom" value="application/atom+xml"/>
+                <entry key="rss" value="application/rss+xml"/>
+            </map>
+        </property>
+        <property name="defaultViews">
+            <list>
+                <ref bean="marshallingView"/>
+                <ref bean="mappingJacksonJsonView"/>
+                <ref bean="atomView"/>
+                <ref bean="rssView"/>
+            </list>
+        </property>
+        <property name="viewResolvers">
+            <list>
+                <ref bean="viewResolver"/>
+            </list>
+        </property>
+    </bean>
+
+    <!--视图解析器-->
+    <!--使用用户指定的 bean 名称定义一个视图解析器-->
+    <!--<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>-->
+    <!--Default ViewResolver  Resolves view names to protected .jsp resources within the /WEB-INF/views directory-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--<property name="order" value="0"/>-->
+        <!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".htm"/>
+    </bean>
+
+    <!--视图-->
+    <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
+        <constructor-arg ref="xStreamMarshaller"/>
+    </bean>
+    <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+    <bean id="atomView" class="org.naure.web.integrate.view.AtomView"/>
+    <bean id="rssView" class="org.naure.web.integrate.view.RssView"/>
+
+    <!--转换程序-->
+    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/json"/>
+    </bean>
+    <bean id="marshallingConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/xml"/>
+        <!--<property name="supportedMediaTypes" value="application/vnd.stocks+xml"/>-->
+        <property name="marshaller" ref="castorMarshaller"/>
+        <property name="unmarshaller" ref="castorMarshaller"/>
+        <!--<constructor-arg ref="jaxbMarshaller" />-->
+        <!--<constructor-arg ref="xStreamMarshaller"/>-->
+    </bean>
+    <bean id="atomConverter" class="org.springframework.http.converter.feed.AtomFeedHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/atom+xml"/>
+    </bean>
+
+    <!--序列化工具-->
+    <bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller"/>
+    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"/>
+
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+    </mvc:interceptors>
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="/WEB-INF/messages/messages"/>
+        <property name="cacheSeconds" value="0"/>
+    </bean>
+
+</beans>
