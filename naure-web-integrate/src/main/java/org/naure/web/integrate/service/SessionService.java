@@ -58,11 +58,12 @@ public class SessionService {
         try {
             sessionRepository.add(sessionLog);
         } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 
     @Autowired
-    SessionRepository sessionRepository;
+    private SessionRepository sessionRepository;
     @Autowired
-    SystemProperties systemProperties;
+    private SystemProperties systemProperties;
 }
