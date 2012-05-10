@@ -1,6 +1,6 @@
 package org.naure.utility.excel;
 
-import org.naure.common.Notification;
+import org.naure.common.entities.Notification;
 
 import java.util.ArrayList;
 import java.util.List;

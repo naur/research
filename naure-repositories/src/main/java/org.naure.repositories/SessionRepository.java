@@ -1,8 +1,6 @@
 package org.naure.repositories;
 
 import org.naure.repositories.models.SessionLog;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,7 +14,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-public class SessionRepository {
+public class SessionRepository extends Repository {
 
     public void add(SessionLog sessionLog) throws Exception {
         workspace.post(sessionLog);
@@ -25,12 +23,4 @@ public class SessionRepository {
     public List<SessionLog> get(Map params) throws Exception {
         return workspace.get(params, SessionLog.class);
     }
-
-    public void setWorkspace(Workspace workspace) {
-        this.workspace = workspace;
-    }
-
-    @Autowired
-    @Qualifier("mongoWorkspace")
-    private Workspace workspace;
 }

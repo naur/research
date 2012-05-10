@@ -1,8 +1,8 @@
 package org.naure.research.web.controllers;
 
 import com.sleepycat.je.*;
-import org.naure.common.Information;
-import org.naure.common.InformationLevel;
+import org.naure.common.entities.Information;
+import org.naure.common.entities.InformationLevel;
 import org.naure.web.integrate.ControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

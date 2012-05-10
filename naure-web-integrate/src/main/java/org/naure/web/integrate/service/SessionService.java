@@ -1,6 +1,6 @@
 package org.naure.web.integrate.service;
 
-import org.naure.common.TraceEventType;
+import org.naure.common.entities.TraceEventType;
 import org.naure.repositories.SessionRepository;
 import org.naure.repositories.models.SessionLog;
 import org.naure.web.integrate.HttpUtility;

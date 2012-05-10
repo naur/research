@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-public class MailRepository {
+public class MailRepository extends Repository {
 //    Logger logger = LoggerFactory.getLogger(this.getClass());
 //    logger.info("");
 }

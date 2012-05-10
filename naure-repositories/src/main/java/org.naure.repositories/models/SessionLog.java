@@ -1,6 +1,6 @@
 package org.naure.repositories.models;
 
-import org.naure.common.TraceEventType;
+import org.naure.common.entities.TraceEventType;
 
 import java.util.Date;
 

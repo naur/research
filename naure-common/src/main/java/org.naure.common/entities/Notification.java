@@ -1,4 +1,4 @@
-package org.naure.common;
+package org.naure.common.entities;
 
 /**
  * Created by IntelliJ IDEA.

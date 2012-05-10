@@ -1,4 +1,4 @@
-package org.naure.common;
+package org.naure.common.entities;
 
 import java.util.Date;
 

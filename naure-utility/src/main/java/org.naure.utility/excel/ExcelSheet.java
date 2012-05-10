@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.naure.common.OffsetInfo;
+import org.naure.common.entities.OffsetInfo;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
