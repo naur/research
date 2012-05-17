@@ -18,7 +18,7 @@
         <servlet-api.version>3.0-alpha-1</servlet-api.version>
         <org.aspectj.version>1.6.11</org.aspectj.version>
         <cglib.version>2.2</cglib.version>
-        <org.slf4j.version>1.6.1</org.slf4j.version>
+        <org.slf4j.version>1.6.4</org.slf4j.version>
         <log4j.version>1.2.16</log4j.version>
         <restlet.version>2.1-RC1</restlet.version>
         <struts.version>2.2.3.1</struts.version>
@@ -30,6 +30,9 @@
         <spring-data-commons-core.version>1.2.1.RELEASE</spring-data-commons-core.version>
         <commons-lang3.version>3.1</commons-lang3.version>
         <!--<spring-oxm.version>1.5.10</spring-oxm.version>-->
+
+        <naure.log.file.path>/Research/logs</naure.log.file.path>
+
     </properties>
 
     <dependencyManagement>
@@ -445,6 +448,9 @@
     <profiles>
         <profile>
             <id>product</id>
+            <properties>
+                <naure.log.file.path>/usr/share/tomcat7/logs</naure.log.file.path>
+            </properties>
         </profile>
     </profiles>
 
