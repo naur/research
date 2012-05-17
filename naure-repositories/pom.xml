@@ -13,11 +13,10 @@
 
     <artifactId>naure-repositories</artifactId>
 
-
     <properties>
         <mongodb.host>127.0.0.1</mongodb.host>
         <mongodb.port>27017</mongodb.port>
-        <mongodb.dbname>research</mongodb.dbname>
+        <mongodb.dbname>naure</mongodb.dbname>
         <mongodb.username>admin</mongodb.username>
         <mongodb.password>admin</mongodb.password>
     </properties>
@@ -68,5 +67,15 @@
         </dependency>
 
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>publish</id>
+            <properties>
+                <mongodb.username>dbuser</mongodb.username>
+                <mongodb.password>19830618</mongodb.password>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

@@ -19,9 +19,25 @@
         <module>naure-work</module>
     </modules>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+    </build>
+
     <profiles>
         <profile>
-            <id>product</id>
+            <id>publish</id>
         </profile>
     </profiles>
 

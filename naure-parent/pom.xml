@@ -31,7 +31,7 @@
         <commons-lang3.version>3.1</commons-lang3.version>
         <!--<spring-oxm.version>1.5.10</spring-oxm.version>-->
 
-        <naure.log.file.path>/Research/logs</naure.log.file.path>
+        <naure.log.file.path>/data/web/logs</naure.log.file.path>
 
     </properties>
 
@@ -341,7 +341,6 @@
         </dependencies>
     </dependencyManagement>
 
-
     <dependencies>
 
         <dependency>
@@ -415,7 +414,6 @@
         </dependency>
     </dependencies>
 
-
     <repositories>
         <repository>
             <id>oracleReleases</id>
@@ -445,11 +443,27 @@
         </repository>
     </repositories>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+    </build>
+
     <profiles>
         <profile>
-            <id>product</id>
+            <id>publish</id>
             <properties>
-                <naure.log.file.path>/usr/share/tomcat7/logs</naure.log.file.path>
+                <naure.log.file.path>/data/web/logs</naure.log.file.path>
             </properties>
         </profile>
     </profiles>
