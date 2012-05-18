@@ -71,6 +71,7 @@
     <!--视图-->
     <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
         <constructor-arg ref="xStreamMarshaller"/>
+        <property name="modelKey" value="information" />
     </bean>
     <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
     <bean id="atomView" class="org.naure.web.integrate.view.AtomView"/>

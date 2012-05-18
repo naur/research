@@ -4,12 +4,14 @@ package org.naure.web.integrate.controllers;
 import org.naure.common.entities.Information;
 import org.naure.repositories.models.SessionLog;
 import org.naure.web.integrate.ControllerBase;
+import org.naure.web.integrate.HttpSessionFilter;
 import org.naure.web.integrate.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,14 @@ public class DiagnosticController extends ControllerBase {
         }
         return information; //.getData().get(1);
     }
+
+    @RequestMapping(value = "debug")
+    public Information debug() {
+        Information<HttpServletRequest> information = new Information<HttpServletRequest>();
+        information.setData(HttpSessionFilter.session.get());
+        return information;
+    }
+
 
     public DiagnosticController() {
         viewPath = "diagnostic/";
