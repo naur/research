@@ -24,7 +24,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@RequestMapping(value = "/diagnostic/", method = {RequestMethod.GET, RequestMethod.POST})
+@RequestMapping(value = "diagnostic", method = {RequestMethod.GET, RequestMethod.POST})
 public class DiagnosticController extends ControllerBase {
     @RequestMapping(value = "session")
     public Information session() {
@@ -33,9 +33,9 @@ public class DiagnosticController extends ControllerBase {
             Map<String, String> params = new HashMap<String, String>();
             information.setData(sessionService.get(params));
         } catch (Exception ex) {
-
+            information.setKeywords(ex.getMessage());
         }
-        return information; //.getData().get(1);
+        return information;
     }
 
     @RequestMapping(value = "debug")

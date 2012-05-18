@@ -17,7 +17,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@RequestMapping(value = "/algorithms/*")
+@RequestMapping(value = "algorithms")
 public class DemoController extends ControllerBase {
 
     @RequestMapping(value = "demo")

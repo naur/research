@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 
 @Controller
-@RequestMapping(value="/html/canvas")
+@RequestMapping(value="html/canvas")
 public class CanvasController extends ControllerBase {
 
     @RequestMapping(method= RequestMethod.GET)
