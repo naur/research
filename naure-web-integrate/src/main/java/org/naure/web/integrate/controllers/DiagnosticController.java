@@ -26,6 +26,11 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "diagnostic", method = {RequestMethod.GET, RequestMethod.POST})
 public class DiagnosticController extends ControllerBase {
+    @RequestMapping(value = "view")
+    public String view() {
+        return view("view");
+    }
+
     @RequestMapping(value = "session")
     public Information session() {
         Information<List<SessionLog>> information = new Information<List<SessionLog>>();

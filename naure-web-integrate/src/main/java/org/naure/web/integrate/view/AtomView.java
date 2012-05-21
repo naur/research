@@ -1,5 +1,6 @@
 package org.naure.web.integrate.view;
 
+import com.sun.syndication.feed.atom.Content;
 import com.sun.syndication.feed.atom.Entry;
 import org.naure.common.entities.Information;
 import org.springframework.web.servlet.view.feed.AbstractAtomFeedView;
@@ -22,10 +23,16 @@ public class AtomView extends AbstractAtomFeedView {
     protected List<Entry> buildFeedEntries(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Information<List> information = (Information<List>) model.get("information");
         List<Entry> atomList = new ArrayList<Entry>();
+        Entry entry = new Entry();
+        List<Content> contents = new ArrayList<Content>();
         for (Object item : information.getData()) {
-            Entry entry = new Entry();
-            entry.setTitle(item.toString());
+            Content content = new Content();
+            content.setType(Content.TEXT);
+            content.setValue(item.toString());
+            contents.add(content);
         }
+        entry.setContents(contents);
+        atomList.add(entry);
         return atomList;
     }
 }

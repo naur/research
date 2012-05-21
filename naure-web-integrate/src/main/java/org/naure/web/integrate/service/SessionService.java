@@ -22,6 +22,7 @@ import java.util.*;
 public class SessionService {
 
     public List<SessionLog> get(Map params) throws Exception {
+        params.put("application", systemProperties.applicationName);
         return sessionRepository.get(params);
     }
 
