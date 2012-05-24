@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Diagnostic </title>
+
+    <link href="/css/mathquill.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/overlay.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/naure.message.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="/js/oop.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="/js/jquery.utils.js"></script>
+    <script type="text/javascript" src="/js/naure.utility.js"></script>
+    <script type="text/javascript" src="/js/naure.message.js"></script>
+    <script type="text/javascript" src="/js/naure.overlay.js"></script>
+
+    <script type="text/javascript" src="/js/diagnostic-view.js"></script>
+
+    <style>
+        p {
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header></header>
+<nav></nav>
+
+<article>
+    <section></section>
+    <section>
+        <canvas width="800" height="600"></canvas>
+    </section>
+</article>
+
+<aside>
+    <section class="overlay overlay-right">
+        <section>
+            <figure>
+                <!--<figcaption style="background-color: rgb(0, 119, 204);">-->
+                <!--<input title="Show/Hide Graph" CHECKED="checked" type="checkbox">-->
+                <!--</figcaption>-->
+                <!--<span class="matheditor mathquill-rendered-math mathquill-editable"></span>-->
+                <!--<span class="delete"></span>-->
+                <!--<aside style="display: none;"></aside>-->
+            </figure>
+        </section>
+
+        <section class="buttons">
+            <input type="button" title="Clean" onclick="$.message.empty();"/>
+            <input style="display: none;" title="Reset Graph" type="button">
+            <a class="help_button" title="Help Page" href="about/" target="_blank">&nbsp;</a>
+        </section>
+
+    </section>
+</aside>
+
+
+<footer></footer>
+
+<section>
+
+</section>
+
+</body>
+</html>

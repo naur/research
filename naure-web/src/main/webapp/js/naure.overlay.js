@@ -7,31 +7,36 @@
  *
  */
 
-(function($) {
-    $.overlay =  function(options) {
+(function ($) {
+    $.overlay = function (options) {
         var opt = $.extend({
-            target: null,
+            target:null,
             nodes:null,
-            eventHandlers: null,
-            eventType: 'click',  //click, mouse,
-            html:  '<figure>' +
+            eventHandlers:null,
+            eventType:'click', //click, mouse,
+            html:'<figure>' +
                 '<figcaption style="background-color: {0};">' +
                 '<input title="Show/Hide Graph" CHECKED="checked" type="checkbox">' +
                 '</figcaption>' +
-                '<span class="matheditor mathquill-rendered-math mathquill-editable"><span class="button">{1}:{2}</span></span>' +
+                '<span class="matheditor mathquill-rendered-math mathquill-editable"><span class="button">{1}</span></span>' +
                 '<span class="delete"></span>' +
                 '<aside style="display: none;"></aside>' +
                 '</figure>'
         }, options);
 
         $('.overlay section:eq(0)').empty();
-        for (i = 0; i < opt.nodes.length; i++) {
-            $('.overlay section:eq(0)').append($.format(opt.html, '#07C', i + 1, opt.nodes[i]));
+
+        for (key in opt.nodes) {
+            $('.overlay section:eq(0)').append($.format(opt.html, '#07C', key));
         }
+
+//        for (i = 0; i < opt.nodes.length; i++) {
+//            $('.overlay section:eq(0)').append($.format(opt.html, '#07C', i + 1, opt.nodes[i]));
+//        }
 
         //初始化 button 事件
         $('.overlay .button').each(function (index) {
-            $(this).live(opt.eventType, opt.eventHandlers[index + 1]);
+            $(this).live(opt.eventType, opt.nodes[this.innerText]);
         });
     };
 })(jQuery);

@@ -17,6 +17,7 @@
         <module>naure-research</module>
         <module>naure-home</module>
         <module>naure-work</module>
+        <module>naure-web</module>
     </modules>
 
     <build>

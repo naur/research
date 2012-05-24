@@ -60,13 +60,6 @@
                 <version>${naure.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>${servlet-api.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
             <!--<dependency>-->
             <!--<groupId>org.naure</groupId>-->
             <!--<artifactId>naure-research</artifactId>-->
@@ -94,7 +87,7 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>servlet-api</artifactId>
-                <version>2.5</version>
+                <version>${servlet-api.version}</version>
                 <scope>provided</scope>
             </dependency>
             <!--<dependency>-->
@@ -446,7 +439,8 @@
     <build>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${javaSourceDirectory}</directory>
+                <!--<directory>src/main/resources</directory>-->
                 <filtering>true</filtering>
             </resource>
         </resources>

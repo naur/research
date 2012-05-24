@@ -5,9 +5,6 @@ import org.naure.web.integrate.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
-import java.util.Enumeration;
-
 /**
  * Created with IntelliJ IDEA.
  * User: jiaruizhi
@@ -28,16 +25,16 @@ public class AspectJController {
 
     @Before("controllerBean() && methodPointcut() ")
     public void before() {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        try {
-            Enumeration resources = loader.getResources("");
-            while (resources.hasMoreElements()) {
-                URL url = (URL)resources.nextElement();
-                System.out.println(url);
-            }
-        } catch (Exception ex) {
-
-        }
+//        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+//        try {
+//            Enumeration resources = loader.getResources("");
+//            while (resources.hasMoreElements()) {
+//                URL url = (URL)resources.nextElement();
+//                System.out.println(url);
+//            }
+//        } catch (Exception ex) {
+//
+//        }
         //会话日志
         sessionService.add(HttpSessionFilter.session.get());
     }
