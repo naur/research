@@ -60,6 +60,14 @@
                 <version>${naure.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.naure</groupId>
+                <artifactId>naure-web</artifactId>
+                <version>${naure.version}</version>
+                <type>war</type>
+                <scope>runtime</scope>
+            </dependency>
+
             <!--<dependency>-->
             <!--<groupId>org.naure</groupId>-->
             <!--<artifactId>naure-research</artifactId>-->
@@ -439,18 +447,18 @@
     <build>
         <resources>
             <resource>
-                <directory>${javaSourceDirectory}</directory>
-                <!--<directory>src/main/resources</directory>-->
+                <!--<directory>${javaSourceDirectory}</directory>-->
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
 
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-            </testResource>
-        </testResources>
+        <!--<testResources>-->
+            <!--<testResource>-->
+                <!--<directory>src/test/resources</directory>-->
+                <!--<filtering>true</filtering>-->
+            <!--</testResource>-->
+        <!--</testResources>-->
     </build>
 
     <profiles>

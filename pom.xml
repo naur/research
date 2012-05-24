@@ -14,10 +14,10 @@
         <module>naure-utility</module>
         <module>naure-repositories</module>
         <module>naure-web-integrate</module>
-        <module>naure-research</module>
-        <module>naure-home</module>
-        <module>naure-work</module>
         <module>naure-web</module>
+        <module>naure-home</module>
+        <module>naure-research</module>
+        <module>naure-work</module>
     </modules>
 
     <build>
