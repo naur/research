@@ -13,15 +13,6 @@
     <artifactId>naure-home</artifactId>
     <packaging>war</packaging>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-web-integrate</artifactId>
-        </dependency>
-
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>

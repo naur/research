@@ -13,13 +13,4 @@
     <artifactId>naure-research</artifactId>
     <packaging>war</packaging>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-web-integrate</artifactId>
-        </dependency>
-
-    </dependencies>
-
 </project>
