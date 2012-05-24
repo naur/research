@@ -14,10 +14,15 @@
     <packaging>war</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>org.naure</groupId>
             <artifactId>naure-web-integrate</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

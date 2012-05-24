@@ -1,4 +1,4 @@
-package org.naure.web.integrate.controllers;
+package org.naure.web.controllers;
 
 
 import org.naure.common.entities.Information;
