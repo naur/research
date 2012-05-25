@@ -1,12 +1,12 @@
 
 var overlayNodes = {
-    'session': function () {
+    'Session': function () {
         $('article section:eq(1)').xmlAcquire({
             xmlUrl: '/diagnostic/session.xml',
             xslUrl: '/xsl/table.xsl'
         });
     },
-    'A Analysis': function () {
+    'Analysis': function () {
         alert("A Analysis");
     }
 }

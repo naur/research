@@ -137,21 +137,6 @@ li:hover .delete {
     cursor: pointer;
 }
 
-.minimize {
-    background: url(/images/buttons.png) no-repeat;
-    width: 20px;
-    visibility: hidden;
-    height: 21px;
-    background-position: -30px -21px;
-    display: inline-block;
-    position: absolute;
-    right: 0;
-    top: 0;
-    opacity: 0.5;
-    margin: 8px;
-    cursor: pointer;
-}
-
 
 .delete:hover {
     opacity: 1.0;
@@ -181,6 +166,7 @@ input[type=button] {
     margin-left: 4px;
     margin-top: 3px;
     margin-bottom: 4px;
+    cursor: pointer;
 }
 
 h3 {
@@ -194,7 +180,6 @@ h3 {
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgba(194, 194, 194, 0.8)), color-stop(1, rgba(239, 239, 239, 0.8)));
     background-image: -moz-linear-gradient(center bottom, rgba(194, 194, 194, 0.8) 0%, rgba(239, 239, 239, 0.8) 100%);
     background-color: #e8e8e8;
-
 }
 
 .buttons a {
@@ -218,6 +203,27 @@ a.help_button {
     margin-bottom: 4px;
     background-position: 0px 42px;
     margin-right: 6px;
+    right: 34px;
+}
+
+input.minimize {
+    background: url(/images/buttons.png);
+    border: none;
+    opacity: 0.7;
+    width: 30px;
+    height: 21px;
+    color: rgba(0, 0, 0, 0.0);
+    margin-left: 4px;
+    margin-top: 3px;
+    margin-bottom: 4px;
+    background-position: 60px 0px;
+    margin-right: 6px;
+    text-decoration: none;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0px;
+    cursor: pointer;
 }
 
 input[value=".png"] {
@@ -235,107 +241,6 @@ input[value="reload"] {
 input[value="config"] {
     background-position: -30px 21px;
 }
-
-/*#ptd {*/
-    /*position: fixed;*/
-    /*z-Index: 80000;*/
-    /*color: black;*/
-    /*opacity: 0.6;*/
-    /*left: 8px;*/
-    /*bottom: 8px;*/
-    /*background: white;*/
-    /*-webkit-transition: opacity 0.5s ease-in-out;*/
-    /*-moz-transition: opacity 0.5s ease-in-out;*/
-    /*-o-transition: opacity 0.5s ease-in-out;*/
-    /*transition: opacity 0.5s ease-in-out;*/
-    /*font-size: 10pt;*/
-
-/*}*/
-
-/*#conin {*/
-    /*background: url(/images/buttons.png) -83px -21px no-repeat;*/
-    /*border: none;*/
-    /*padding: 0;*/
-    /*outline: none;*/
-    /*width: 100%;*/
-    /*padding-left: 10px*/
-/*}*/
-
-/*.monospace {*/
-/*font-family: 'Menlo', 'Andale Mono', Consolas, 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Monaco, monofur, monospace;*/
-/*}*/
-
-/*#logt {*/
-    /*background: white;*/
-    /*width: 300px;*/
-    /*padding: 2px;*/
-    /*-webkit-user-select: text;*/
-    /*-moz-user-select: text;*/
-    /*-o-user-select: text;*/
-    /*user-select: text;*/
-    /*font-size: 90%;*/
-    /*max-height: 500px;*/
-    /*overflow: auto;*/
-/*}*/
-
-/*#logt .warn {*/
-    /*background: url(/images/buttons.png) -62px -21px no-repeat;*/
-    /*width: 20px;*/
-    /*height: 20px;*/
-    /*float: left;*/
-/*}*/
-
-/*ul.json li.end b:before {*/
-/*color: transparent;*/
-/*}*/
-
-/*ul.json li b:before {*/
-/*content: '▶';*/
-/*font-size: x-small;*/
-/*padding-right: 2px;*/
-/*color: #555;*/
-/*}*/
-
-/*ul.json li.show b:before {*/
-/*content: '▼';*/
-/*}*/
-
-/*ul.json li.hide b:before {*/
-/*content: '▶';*/
-/*}*/
-
-/*ul.json span {*/
-/*color: #1C00CF;*/
-/*}*/
-
-/*ul.json b {*/
-/*color: #881391;*/
-/*font-weight: normal;*/
-/*}*/
-
-/*ul.json strong {*/
-/*font-weight: normal;*/
-/*color: #C41A16;*/
-/*}*/
-
-/*ul.json i {*/
-/*color: #aaa;*/
-/*font-style: normal;*/
-/*}*/
-
-/*ul.json .child {*/
-/*padding-left: 16px;*/
-/*}*/
-
-/*ul.json li.hide .child {*/
-/*display: none;*/
-/*}*/
-
-/*ul.json {*/
-/*list-style: none;*/
-/*font-family: Menlo, Monaco, monospace;*/
-/*font-size: 11px;*/
-/*}*/
 
 /*Mathquill overrides*/
 .mathquill-editable {
