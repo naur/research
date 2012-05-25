@@ -17,6 +17,11 @@
 
         <dependency>
             <groupId>org.naure</groupId>
+            <artifactId>naure-web-integrate</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.naure</groupId>
             <artifactId>naure-web</artifactId>
             <version>1.0</version>
             <type>war</type>
@@ -36,6 +41,9 @@
                         <overlay>
                             <groupId>org.naure</groupId>
                             <artifactId>naure-web</artifactId>
+                            <!--<excludes>-->
+                                <!--<exclude>WEB-INF/classes/images/sampleimage-dependency.jpg</exclude>-->
+                            <!--</excludes>-->
                         </overlay>
                     </overlays>
                 </configuration>

@@ -1,11 +1,11 @@
-package org.naure.home.web.controllers;
+package org.naure.home.web.controllers.acg;
 
 /**
  * Created with IntelliJ IDEA.
  * User: jiaruizhi
- * Date: 5/17/12
- * Time: 11:31 AM
+ * Date: 5/25/12
+ * Time: 10:09 AM
  * To change this template use File | Settings | File Templates.
  */
-public class EngController {
+public class ACGController {
 }
