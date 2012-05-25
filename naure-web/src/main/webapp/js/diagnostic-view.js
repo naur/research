@@ -15,7 +15,7 @@ var overlayNodes = {
 
 $(function () {
     $('article section:eq(0)').message({placement:'append'});
-    $.overlay({
+    $('aside').overlay({
         nodes:overlayNodes
     });
 });

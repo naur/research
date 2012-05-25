@@ -137,6 +137,22 @@ li:hover .delete {
     cursor: pointer;
 }
 
+.minimize {
+    background: url(/images/buttons.png) no-repeat;
+    width: 20px;
+    visibility: hidden;
+    height: 21px;
+    background-position: -30px -21px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0.5;
+    margin: 8px;
+    cursor: pointer;
+}
+
+
 .delete:hover {
     opacity: 1.0;
 }
