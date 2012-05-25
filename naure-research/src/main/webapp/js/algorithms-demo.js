@@ -1,11 +1,11 @@
 // math.sets demo
 
-var eventHndlers = {
-    1:function () {
+var overlayNodes = {
+    'arbor':function () {
         $.message.empty();
         arborGraph();
     },
-    2:function () {
+    'Stacks':function () {
         $.message.empty();
         var S = new Array(10);
         $.message.show({content:'ARRAY - TOP !' + S.top, dateformat:'HH:mm:ss fff'});
@@ -13,9 +13,9 @@ var eventHndlers = {
         S.pushv1('贾睿之');
         $.message.show({content:'ARRAY - TOP !' + S.top, dateformat:'HH:mm:ss fff'});
     },
-    3:function () {
+    'Queues':function () {
     },
-    4:function () {
+    'Linked lists':function () {
         $.message.empty();
         var k1 = new LinkedListNotSentinel(9);
         var k2 = new LinkedListNotSentinel(16);
@@ -53,13 +53,13 @@ var eventHndlers = {
         k1.remove(result);
         $.message.show({content:$.format('Linked lists: {0}', insertKey.keys().join('-')), color:'red', dateformat:'HH:mm:ss fff'});
     },
-    5:function () {
+    'Linked lists (sentinel)':function () {
         $.message.empty();
         var linkedList = new LinkedList(9, 16, 4, 1);
         $.message.show({content:$.format('Linked lists: {0}', linkedList.keys().join('-')), color:'red', dateformat:'HH:mm:ss fff'});
         $.message.show({content:$.format('{0}, prev {1}, next {2}', 'sentinel', linkedList.sentinel.prev.key, linkedList.sentinel.next.key), dateformat:'HH:mm:ss fff'});
     },
-    6:function () {
+    'Binary Search Trees':function () {
         $.message.empty();
         var binaryTree = new BinaryTree(12, 5, 18, 2, 9, 15, 19, 13, 17);
 
@@ -72,7 +72,7 @@ var eventHndlers = {
                 });
             }});
     },
-    7:function () {
+    'Red-Black Trees':function () {
         $.message.empty();
         var redBlackTree = new RedBlackTree('A', 'B', 'C', 'D');  //7, 4, 11, 3, 6, 9, 18, 2, 14, 19, 12, 17, 22, 20
         $.message.show({content:'START'});
@@ -97,7 +97,7 @@ var eventHndlers = {
             }
         });
     },
-    8:function () {
+    'Treaps':function () {
         $.message.empty();
         var treap = new Treap('G', 'B', 'H', 'A', 'E', 'K', 'I');
 
@@ -110,9 +110,9 @@ var eventHndlers = {
                 });
             }});
     },
-    9:function () {
+    'order-statistic tree':function () {
         $.message.empty();
-        var orderStatisticTree = new OrderStatisticTree(1,2,3,4,5,6,7);
+        var orderStatisticTree = new OrderStatisticTree(1, 2, 3, 4, 5, 6, 7);
 
         $.message.show({content:'START'});
 
@@ -235,11 +235,8 @@ $(function () {
 
 $(function () {
     $('article section:eq(0)').message({placement:'append'});
-
-
-    $.overlay({
-        nodes:new Array('arbor', 'Stacks', 'Queues', 'Linked lists', 'Linked lists (sentinel)', 'Binary Search Trees', 'Red-Black Trees', 'Treaps', 'order-statistic tree'),
-        eventHandlers: eventHndlers
+    $('aside').overlay({
+        nodes:overlayNodes
     });
 });
 

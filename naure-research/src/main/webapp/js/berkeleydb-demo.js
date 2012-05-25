@@ -9,17 +9,17 @@
 
 /*-------------------- 全局变量 START --------------------*/
 
-var eventHndlers = {
-    1:function () {
+var overlayNodes = {
+    'Opening Databases':function () {
         $.message.empty();
     },
-    2:function () {
+    'Deferred Write Databases':function () {
         $.message.empty();
     },
-    3:function () {
+    'Temporary Databases':function () {
         $.message.empty();
     },
-    4:function () {
+    'Closing Databases':function () {
         $.message.empty();
     }
 };
@@ -45,9 +45,8 @@ function print(obj, color) {
 
 $(function () {
     $('article section:eq(0)').message({placement:'append'});
-    $.overlay({
-        nodes:new Array('Opening Databases', 'Deferred Write Databases', 'Temporary Databases', 'Closing Databases'),
-        eventHandlers:eventHndlers
+    $('aside').overlay({
+        nodes:overlayNodes
     });
 });
 

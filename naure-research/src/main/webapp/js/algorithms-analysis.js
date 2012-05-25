@@ -9,8 +9,8 @@
 
 /*-------------------- 全局变量 START --------------------*/
 
-var eventHndlers = {
-    1:function () {
+var overlayNodes = {
+    'Dynamic Programming':function () {
         $.message.empty();
         $.message.show({content:'Dynamic Programming', color:'silver'});
         var matrixChain = new MatrixChain(
@@ -42,11 +42,14 @@ var eventHndlers = {
             $.message.show({content:JSON.stringify($.toJSON(item)), color:'yellow'});
         });
     },
-    2:function () {
+    'Longest Common Subsequence':function () {
         $.message.empty();
     },
-    3:function () {
+    'Greedy Algorithms':function () {
         $.message.empty();
+    },
+    'Amortized Analysis': function () {
+
     }
 };
 
@@ -71,9 +74,8 @@ function print(obj, color) {
 
 $(function () {
     $('article section:eq(0)').message({placement:'append'});
-    $.overlay({
-        nodes:new Array('Dynamic Programming', 'Longest Common Subsequence', 'Greedy Algorithms', 'Amortized Analysis'),
-        eventHandlers:eventHndlers
+    $('aside').overlay({
+        nodes:overlayNodes
     });
 });
 
