@@ -44,6 +44,7 @@
                 '</figure>'
         }, options);
 
+        opt.buttonsMinimize = false
         opt.container =
             '<section class="overlay overlay-right">' +
                 '   <section></section>' +
@@ -64,6 +65,13 @@
         //初始化 button 事件
         $('.overlay .button').each(function (index) {
             $(this).live(opt.eventType, opt.nodes[this.innerText]);
+        });
+        $('.minimize').live('click', function () {
+            if (opt.buttonsMinimize)
+                $('.overlay section:eq(0)').fadeIn(500);
+            else
+                $('.overlay section:eq(0)').fadeOut(1000);
+            opt.buttonsMinimize = !opt.buttonsMinimize;
         });
     };
 
