@@ -1,7 +1,10 @@
 
 var overlayNodes = {
     'session': function () {
-        alert("session");
+        $('article section:eq(1)').xmlAcquire({
+            xmlUrl: '/diagnostic/session.xml',
+            xslUrl: '/xsl/table.xsl'
+        });
     },
     'A Analysis': function () {
         alert("A Analysis");
@@ -13,7 +16,6 @@ var overlayNodes = {
 $(function () {
     $('article section:eq(0)').message({placement:'append'});
     $.overlay({
-        //nodes:new Array('Dynamic Programming', 'Longest Common Subsequence', 'Greedy Algorithms', 'Amortized Analysis'),
         nodes:overlayNodes
     });
 });

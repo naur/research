@@ -25,7 +25,7 @@ article section {
 }
 
 article section:last-child {
-    left: 300px;
+    /*left: 300px;*/
 }
 
 .overlay {

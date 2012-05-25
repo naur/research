@@ -30,10 +30,6 @@
             $('.overlay section:eq(0)').append($.format(opt.html, '#07C', key));
         }
 
-//        for (i = 0; i < opt.nodes.length; i++) {
-//            $('.overlay section:eq(0)').append($.format(opt.html, '#07C', i + 1, opt.nodes[i]));
-//        }
-
         //初始化 button 事件
         $('.overlay .button').each(function (index) {
             $(this).live(opt.eventType, opt.nodes[this.innerText]);
