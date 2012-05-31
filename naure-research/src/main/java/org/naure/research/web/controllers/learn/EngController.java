@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(value="learn/eng", method = {RequestMethod.GET, RequestMethod.POST})
 public class EngController extends ControllerBase {
+    @RequestMapping()
     public String view() {
-        return "view";
+        return view("eng-view");
     }
 
     @RequestMapping(value = "get")
@@ -28,19 +29,19 @@ public class EngController extends ControllerBase {
         return information;
     }
 
-    @RequestMapping(value = "add")
+    @RequestMapping(value = "eng/add")
     public Information<String> add() {
         Information<String> information = new Information<String>();
         return information;
     }
 
-    @RequestMapping(value = "del")
+    @RequestMapping(value = "eng/del")
     public Information<String> del() {
         Information<String> information = new Information<String>();
         return information;
     }
 
     public EngController() {
-        viewPath = "learn/eng";
+        viewPath = "learn";
     }
 }

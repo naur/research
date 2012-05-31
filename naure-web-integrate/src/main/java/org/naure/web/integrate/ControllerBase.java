@@ -10,7 +10,7 @@ package org.naure.web.integrate;
 public abstract class ControllerBase  {
 
     public String view(String name) {
-        return viewPath + name;
+        return viewPath + "/" + name;
     }
 
     protected String viewPath = "";

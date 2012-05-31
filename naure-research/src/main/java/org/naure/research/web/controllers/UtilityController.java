@@ -26,6 +26,6 @@ public class UtilityController extends ControllerBase {
     }
 
     public UtilityController(){
-        viewPath = "utility/";
+        viewPath = "utility";
     }
 }

@@ -87,6 +87,6 @@ public class DemoController extends ControllerBase {
     }
 
     public DemoController(){
-        viewPath = "algorithms/";
+        viewPath = "algorithms";
     }
 }

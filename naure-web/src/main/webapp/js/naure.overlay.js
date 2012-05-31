@@ -34,6 +34,7 @@
             renderContainer:null,
             eventHandlers:null,
             eventType:'click', //click, mouse,
+            focus:'test', //'article section:last-child'
             html:'<figure>' +
                 '   <figcaption style="background-color: {0};">' +
                 '       <input title="Show/Hide Graph" CHECKED="checked" type="checkbox">' +
@@ -46,7 +47,7 @@
 
         opt.buttonsMinimize = false
         opt.container =
-            '<section class="overlay overlay-right">' +
+            '<section class="overlay overlay-pile overlay-right">' +
                 '   <section></section>' +
                 '   <section class="buttons">' +
                 '       <input type="button" title="Clean" onclick="$.message.empty();"/>' +
@@ -67,10 +68,13 @@
             $(this).live(opt.eventType, opt.nodes[this.innerText]);
         });
         $('.minimize').live('click', function () {
-            if (opt.buttonsMinimize)
-                $('.overlay section:eq(0)').fadeIn(500);
-            else
-                $('.overlay section:eq(0)').fadeOut(1000);
+            if (opt.buttonsMinimize) {
+                $('.overlay').addClass('overlay-pile')
+                $('.overlay section:eq(0)').fadeIn(400);
+            } else {
+                $('.overlay section:eq(0)').fadeOut(400);
+                $('.overlay').removeClass('overlay-pile')
+            }
             opt.buttonsMinimize = !opt.buttonsMinimize;
         });
     };

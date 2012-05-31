@@ -57,6 +57,6 @@ public class BerkeleydbController extends ControllerBase {
     }
 
     public BerkeleydbController() {
-        viewPath = "berkeleydb/";
+        viewPath = "berkeleydb";
     }
 }

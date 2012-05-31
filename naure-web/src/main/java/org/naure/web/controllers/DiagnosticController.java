@@ -26,7 +26,7 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "diagnostic", method = {RequestMethod.GET, RequestMethod.POST})
 public class DiagnosticController extends ControllerBase {
-    @RequestMapping(value = "view")
+    @RequestMapping()
     public String view() {
         return view("view");
     }
@@ -52,7 +52,7 @@ public class DiagnosticController extends ControllerBase {
 
 
     public DiagnosticController() {
-        viewPath = "diagnostic/";
+        viewPath = "diagnostic";
     }
 
     @Autowired
