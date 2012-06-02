@@ -6,7 +6,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
     <!--<context:property-placeholder location="classpath:jdbc.properties"/>-->
-    <context:component-scan base-package="org.naure.web.integrate,org.naure.web.controllers,org.naure.*.web.controllers"/>
+    <context:component-scan
+            base-package="org.naure.web.integrate,org.naure.web.controllers,org.naure.*.web.controllers"/>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
@@ -24,7 +25,7 @@
     <!-- Configures the @Controller programming model -->
     <mvc:annotation-driven/>
     <!-- Forwards requests to the "/" resource to the "welcome" view -->
-    <mvc:view-controller path="/" view-name="welcome"/>
+    <!--<mvc:view-controller path="/" view-name="welcome"/>-->
 
     <!--To enable @RequestMapping process on type level and method level-->
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
@@ -81,7 +82,7 @@
     <!--视图-->
     <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
         <constructor-arg ref="xStreamMarshaller"/>
-        <property name="modelKey" value="information" />
+        <property name="modelKey" value="information"/>
     </bean>
     <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
     <bean id="atomView" class="org.naure.web.integrate.view.AtomView"/>

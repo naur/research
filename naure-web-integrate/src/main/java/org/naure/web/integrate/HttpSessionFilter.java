@@ -19,11 +19,6 @@ public class HttpSessionFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (((HttpServletRequest) request).getRequestedSessionId() == null) {
-            ((HttpServletRequest) request).getSession();
-        }
-        //        ((HttpServletResponse) response).getContentType();
-        //((HttpServletRequest) request).getHeaderNames()
         session.set((HttpServletRequest) request);
         chain.doFilter(request, response);
     }

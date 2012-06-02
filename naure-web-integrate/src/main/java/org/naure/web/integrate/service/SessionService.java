@@ -28,6 +28,10 @@ public class SessionService {
 
     public void add(HttpServletRequest request) {
         if (request.getRequestURI().contains("diagnostic")) return;
+        if (request.getRequestedSessionId() == null) {
+            request.getSession();
+        }
+        if (null == request.getRequestedSessionId()) return;
 
         SessionLog sessionLog = new SessionLog();
         sessionLog.setApplication(systemProperties.applicationName);
@@ -41,6 +45,7 @@ public class SessionService {
         sessionLog.setRequestUrl(request.getRequestURI());
         sessionLog.setReferrerUrl(request.getHeader("Referer"));
         sessionLog.setTimestamp(new Date(request.getSession().getLastAccessedTime()));
+        sessionLog.setStatusCode(request.getAttribute("javax.servlet.error.status_code") == null ? 200 : Integer.parseInt(request.getAttribute("javax.servlet.error.status_code").toString()));
 //        logEntry.SessionLog.SessionID = HttpContext.Current.Session.SessionID ?? "";
 //        logEntry.SessionLog.IpAddress = IPAddress.Parse(HttpContext.Current.Request.UserHostAddress);
 //        logEntry.SessionLog.HostName = HttpContext.Current.Request.UserHostName ?? "";

@@ -5,6 +5,7 @@
         <table>
             <thead>
                 <tr bgcolor="#9acd32">
+                    <th></th>
                     <xsl:apply-templates select="org.naure.common.entities.Information/data/*[1]/*"/>
                 </tr>
             </thead>
@@ -23,6 +24,9 @@
 
     <xsl:template match="org.naure.common.entities.Information/data/*">
         <tr>
+            <td>
+                <xsl:value-of select="position()" />
+            </td>
             <xsl:for-each select="./*">
                 <td>
                     <xsl:value-of select="."/>

@@ -56,6 +56,16 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <error-page>
+        <error-code>404</error-code>
+        <!--<exception-type>javax.servlet.ServletException</exception-type>-->
+        <location>/error</location>
+    </error-page>
+
+    <welcome-file-list>
+        <welcome-file>welcome</welcome-file>
+    </welcome-file-list>
+    
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.htm</url-pattern>
