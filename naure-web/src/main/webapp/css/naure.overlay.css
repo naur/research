@@ -46,10 +46,20 @@ article section:last-child {
     opacity: 0.9;
 }
 
-.overlay .button {
-    cursor: default;
+.overlay section figure .node {
+    cursor: pointer;
     readonly: true;
     text-wrap: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 115%;
+    line-height: 1;
+    display: -moz-inline-box;
+    display: inline-block;
+    padding-top: .075em;
+    white-space: pre-wrap;
+    font-family: Symbola, "Times New Roman", serif;
 }
 
 .overlay-right {
@@ -95,7 +105,7 @@ article section:last-child {
     display: none;
 }
 
-.overlay-right section figure .matheditor {
+.overlay-right section figure .node {
     margin-top: 5px;
     margin-left: 38px;
     margin-bottom: 4px;

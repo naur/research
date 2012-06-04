@@ -33,13 +33,15 @@
             nodes:null,
             renderContainer:null,
             eventHandlers:null,
+            layout: "",
             eventType:'click', //click, mouse,
             focus:'test', //'article section:last-child'
             html:'<figure>' +
                 '   <figcaption style="background-color: {0};">' +
                 '       <input title="Show/Hide Graph" CHECKED="checked" type="checkbox">' +
                 '   </figcaption>' +
-                '   <span class="matheditor mathquill-rendered-math mathquill-editable"><span class="button">{1}</span></span>' +
+                //'   <span class="matheditor mathquill-rendered-math mathquill-editable"><span class="button">{1}</span></span>' +
+                '   <span class="node">{1}</span>' +
                 '   <span class="delete"></span>' +
                 '   <aside style="display: none;"></aside>' +
                 '</figure>'
@@ -64,7 +66,7 @@
         }
 
         //初始化 button 事件
-        $('.overlay .button').each(function (index) {
+        $('.overlay .node').each(function (index) {
             $(this).live(opt.eventType, opt.nodes[this.innerText]);
         });
         $('.minimize').live('click', function () {

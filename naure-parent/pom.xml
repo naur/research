@@ -29,6 +29,7 @@
         <spring-release-mongodb.version>1.0.1.RELEASE</spring-release-mongodb.version>
         <spring-data-commons-core.version>1.2.1.RELEASE</spring-data-commons-core.version>
         <commons-lang3.version>3.1</commons-lang3.version>
+        <maven-plugins.version>2.1.1</maven-plugins.version>
         <!--<spring-oxm.version>1.5.10</spring-oxm.version>-->
 
         <naure.log.file.path>/data/web/logs</naure.log.file.path>
@@ -339,7 +340,15 @@
                 <version>1.0</version>
             </dependency>
 
+
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven-plugins.version}</version>
+            </dependency>
+
         </dependencies>
+
     </dependencyManagement>
 
     <dependencies>

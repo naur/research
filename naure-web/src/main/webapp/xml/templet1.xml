@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<body>
+    <header></header>
+    <nav></nav>
+    <article>
+        <section></section>
+        <section>
+            <canvas width="800" height="600"></canvas>
+        </section>
+    </article>
+    <aside></aside>
+    <footer></footer>
+    <section></section>
+</body>
+
+
+
