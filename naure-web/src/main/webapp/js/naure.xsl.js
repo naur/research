@@ -54,7 +54,7 @@
             opt.xml = data;
             if (opt.xsl == null && opt.xslUrl == null) {
                 if (opt.renderContainer != null || opt.dataType == 'json') {
-                    $(opt.renderContainer).html(encodeHTML(opt.xml));
+                    $(opt.renderContainer).html(encodeHTML(opt.xml.xml));
                 }
                 if (opt.success != null) {
                     opt.success({target:opt.renderContainer, output:opt.xml, context:opt.context});

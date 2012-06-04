@@ -24,7 +24,7 @@
             xmlUrl: '/xml/' + opt.name + '.xml',
             xmlCache:true,
             //xslUrl: '/xsl/body.xsl',
-            //renderContainer: opt.renderContainer,
+            renderContainer: opt.renderContainer,
             context: opt.context,
             error:function (ex) {
                 if (opt.success != null) {
@@ -32,8 +32,8 @@
                 }
             },
             success:function(obj) {
-                $(opt.renderContainer).html(obj.xml.toString());
-                obj.renderContainer = renderContainer;
+//                $(opt.renderContainer).html(obj.xml.toString());
+//                obj.renderContainer = renderContainer;
                 if (opt.success != null) {
                     opt.success(obj);
                 }

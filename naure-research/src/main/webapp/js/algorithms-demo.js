@@ -212,31 +212,29 @@ function arborDrawing(options) {
 //"article section canvas"
 var parse = Parseur().parse;
 var sys;
-$(function () {
-    $('article section:eq(0)').message({placement:'append'});
-    //初始化 arbor
-    //$.extend(arbor, {System:CoordinateSystem});
-    $.extend(arbor, {System:ParticleSystem});
-    sys = arbor.System({
-        repulsion:600,
-        stiffness:1000,
-        friction:0, //摩擦力
-        gravity:true, //重力,引力
-        //fps: 10,
-        //dt:0.02,
-        //precision : 1
-    }) // create the system with sensible repulsion/stiffness/friction
-    //var sys = arbor.System();
-    //sys.parameters({gravity:true}) // use center-gravity to make the graph settle nicely (ymmv)
-    //sys.renderer = SimpleRenderer("article section canvas") // our newly created renderer will have its .init() method called shortly by sys...
-
-    sys.renderer = SimpleRenderer("article section canvas"); // our newly created renderer will have its .init() method called shortly by sys...
-});
 
 $(function () {
-    $('article section:eq(0)').message({placement:'append'});
-    $('aside').overlay({
-        nodes:overlayNodes
-    });
+    $('body').naure_ui_templet({name: 'templet1', success: function() {
+        $('article section:eq(0)').message({placement:'append'});
+        $('aside').overlay({
+            nodes:overlayNodes
+        });
+        //初始化 arbor
+        //$.extend(arbor, {System:CoordinateSystem});
+        $.extend(arbor, {System:ParticleSystem});
+        sys = arbor.System({
+            repulsion:600,
+            stiffness:1000,
+            friction:0, //摩擦力
+            gravity:true, //重力,引力
+            //fps: 10,
+            //dt:0.02,
+            //precision : 1
+        }) // create the system with sensible repulsion/stiffness/friction
+        //var sys = arbor.System();
+        //sys.parameters({gravity:true}) // use center-gravity to make the graph settle nicely (ymmv)
+        //sys.renderer = SimpleRenderer("article section canvas") // our newly created renderer will have its .init() method called shortly by sys...
+        sys.renderer = SimpleRenderer("article section canvas"); // our newly created renderer will have its .init() method called shortly by sys...
+    }});
 });
 

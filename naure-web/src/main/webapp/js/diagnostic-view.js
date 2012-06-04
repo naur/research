@@ -30,11 +30,12 @@ var overlayNodes = {
 /*-------------------- 初始化 START --------------------*/
 
 $(function () {
-    $('body').naure_ui_templet({name: 'templet1'});
-    $('article section:eq(0)').message({placement:'append'});
-    $('aside').overlay({
-        nodes:overlayNodes
-    });
+    $('body').naure_ui_templet({name: 'templet1', success: function() {
+        $('article section:eq(0)').message({placement:'append'});
+        $('aside').overlay({
+            nodes:overlayNodes
+        });
+    }});
 });
 
 /*-------------------- 初始化 END --------------------*/
