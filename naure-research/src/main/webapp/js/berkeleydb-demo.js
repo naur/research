@@ -11,16 +11,16 @@
 
 var overlayNodes = {
     'Opening Databases':function () {
-        $.message.empty();
+        NAURE.Message.empty();
     },
     'Deferred Write Databases':function () {
-        $.message.empty();
+        NAURE.Message.empty();
     },
     'Temporary Databases':function () {
-        $.message.empty();
+        NAURE.Message.empty();
     },
     'Closing Databases':function () {
-        $.message.empty();
+        NAURE.Message.empty();
     }
 };
 
@@ -30,9 +30,9 @@ var overlayNodes = {
 
 function print(obj, color) {
     if (color)
-        $.message.show({content:JSON.stringify($.toJSON(obj)), color:color});
+        NAURE.Message.show({content:JSON.stringify($.toJSON(obj)), color:color});
     else
-        $.message.show({content:JSON.stringify($.toJSON(obj))});
+        NAURE.Message.show({content:JSON.stringify($.toJSON(obj))});
 }
 
 /*-------------------- 函数 END --------------------*/

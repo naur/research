@@ -12,10 +12,10 @@ function HeapSort(A) {
 function BuildMaxHeap(A) {
     var heapsize = A.length;
     for (i = Math.floor(heapsize / 2); i > 0; i--) {
-        $.message.showLine({message:'BuildMaxHeapify: ' + i});
+        NAURE.Message.showLine({message:'BuildMaxHeapify: ' + i});
         MaxHeapify(A, i);
     }
-    $.message.showLine({message:A.toString()});
+    NAURE.Message.showLine({message:A.toString()});
 }
 
 function MaxHeapify(A, i) {
@@ -31,9 +31,9 @@ function MaxHeapify(A, i) {
         largest = r;
     }
     if (largest != i) {
-        $.message.showLine({message:A.toString() + " -- " + 'i: ' + i + "[" + A[i] + "]" + ",    " + "largest: " + largest + "[" + A[largest] + "]"});
+        NAURE.Message.showLine({message:A.toString() + " -- " + 'i: ' + i + "[" + A[i] + "]" + ",    " + "largest: " + largest + "[" + A[largest] + "]"});
         exchange(A, i, largest);
-        $.message.showLine({message:A.toString()});
+        NAURE.Message.showLine({message:A.toString()});
         MaxHeapify(A, largest);
     }
 }
@@ -65,8 +65,8 @@ $(function () {
 
     $('input[type="button"]').live('click', function () {
         var A = new Array(0, 4, 1, 3, 2, 16, 9, 10, 14, 8, 7);
-        $.message.empty();
-        $.message.prompt(A.toString());
+        NAURE.Message.empty();
+        NAURE.Message.prompt(A.toString());
         BuildMaxHeap(A);
 //        $('#pre1').append('  a\r');
 //        $('#pre1').append('<em style="color: red;">bbb</em> \r');

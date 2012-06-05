@@ -36,12 +36,12 @@ $(function () {
         'fileExt': '*.xls;*.xlsx;*.csv',
         'fileDesc': 'Excel Files (.xls, .xlsx, .csv)',   //这个属性值必须设置fileExt属性后才有效，用来设置选择文件对话框中的提示文本，如设置fileDesc为“请选择rar doc pdf文件”
         'onSelect': function (event, queueID, fileObj) { //选择上传文件时解发以下动作,   fileObj : 选择的文件对象，有name、size、creationDate、modificationDate、type 5个属性
-            $.message.empty();
-            $.message.promptLine({content:  "选择文件【" + fileObj.name + "】"});
+            NAURE.Message.empty();
+            NAURE.Message.promptLine({content:  "选择文件【" + fileObj.name + "】"});
             $('#makeorder').hide();
         },
         'onSelectOnce': function (event, data) {  //在单文件或多文件上传时，选择文件时触发。
-//            $.message.promptLine({content:
+//            NAURE.Message.promptLine({content:
 //                "fileCount: " + data.fileCount + "\t" +
 //                    "filesReplaced:" + data.filesReplaced + "\t" +
 //                    "filesSelected:" + data.filesSelected
@@ -49,30 +49,30 @@ $(function () {
         },
         'onOpen': function(event, queueId, fileObj) {
             $('#uploadfile').attr('disabled', true);
-            $.message.promptLine({content:  "正在准备上传，请稍候... "});
+            NAURE.Message.promptLine({content:  "正在准备上传，请稍候... "});
         },
         'onProgress': function(event, queueId, fileObj, data) {
-            $.message.promptLine({content:  "上传结束！ "});
+            NAURE.Message.promptLine({content:  "上传结束！ "});
             $('#uploadfile').attr('disabled', false);
         },
         'onComment': function (event, queueID, fileObj, response, data) {  //上传成功后动作
-            $.message.promptLine({content: 'onComment'});
+            NAURE.Message.promptLine({content: 'onComment'});
         },
         'onCancel': function (event, queueId, fileObj, data) {
-            $.message.promptLine({content:  "取消上传【" + fileObj.name + "】", color: 'red'});
+            NAURE.Message.promptLine({content:  "取消上传【" + fileObj.name + "】", color: 'red'});
         },
         'onComplete': function(even, queueId, fileObj, response, data) {
-            $.message.promptLine({content:  "上传文件【" + fileObj.name + "】完成！"});
+            NAURE.Message.promptLine({content:  "上传文件【" + fileObj.name + "】完成！"});
             NAURE.HTTP.xmlAcquire({ xml: response, xslUrl: uploadOpt.uploadvalidXsl,
                 error: function(ex) {
-                    $.message.promptLine({content: JSON.stringify(ex.content), color: 'red'});
+                    NAURE.Message.promptLine({content: JSON.stringify(ex.content), color: 'red'});
                 },
                 success: function(obj) {
                     var notificationIndex = 1;
                     $('#makeorder').hide();
                     var jsonArray = $.parseJSON(obj.output.replace('},]', '}]'));
                     if (jsonArray.length <= 0) {
-                        $.message.promptLine({
+                        NAURE.Message.promptLine({
                             content:  '上传文件的过程中发生异常了，请稍候重试！',
                             color: 'red'
                         });
@@ -85,17 +85,17 @@ $(function () {
                     }
 
                     if ($('#makeorder').attr('tag') == null) {
-                        $.message.promptLine({
+                        NAURE.Message.promptLine({
                             content:  '上传的文件有错误，请根据错误提示修改文件后再重新上传！',
                             color: 'red'
                         });
                     } else {
                         if (jsonArray.length > 1) {
-//                            $.message.promptLine({
+//                            NAURE.Message.promptLine({
 //                                content:  '上传的文件有错误，请 <a href="../upload/' + $('#makeorder').attr('tag') + '">下载文件</a> 修改后再重新上传！',
 //                                color: 'red'
 //                            });
-                            $.message.promptLine({
+                            NAURE.Message.promptLine({
                                 content:  '上传的文件有错误，请修改文件后再重新上传！',
                                 color: 'red'
                             });
@@ -108,7 +108,7 @@ $(function () {
 
                     //显示错误信息
                     for (i = notificationIndex; i < jsonArray.length; i++) {
-                        $.message.promptLine({
+                        NAURE.Message.promptLine({
                             content:  jsonArray[i].cell + '：' + jsonArray[i].error,
                             color: 'red'
                         });
@@ -117,18 +117,18 @@ $(function () {
             $('#uploadfile').attr('disabled', false);
         },
         'onAllComplete': function (event, data) {
-            $.message.promptLine({content:  data.filesUploaded + " files uploaded, " + data.errors + " errors."});
+            NAURE.Message.promptLine({content:  data.filesUploaded + " files uploaded, " + data.errors + " errors."});
             $('#uploadfile').attr('disabled', false);
         },
         'onError': function (event, queueId, fileObj, errorObj) {
-            $.message.promptLine({content:  '错误：' + errorObj.info, color: 'red'});
+            NAURE.Message.promptLine({content:  '错误：' + errorObj.info, color: 'red'});
             $('#uploadfile').attr('disabled', false);
         }
     });
 
     $('#makeorder').live('click', function() {
         $('#makeorder').attr('disabled', true);
-        $.message.showLine({content: '正在处理文档，请稍候...... '});
+        NAURE.Message.showLine({content: '正在处理文档，请稍候...... '});
 
         NAURE.HTTP.xmlAcquire({
             xmlUrl: uploadOpt.handler(),
@@ -138,12 +138,12 @@ $(function () {
             },
             error: function(ex) {
 //                alert("更新数据错误！错误信息如下：\r\n" + jqXHR.responseText);
-                $.message.showLine({content: '处理文档的过程中有异常发生了！ ', color: 'red'});
-                $.message.showLine({content: $.stringify(ex), color: 'red'});
+                NAURE.Message.showLine({content: '处理文档的过程中有异常发生了！ ', color: 'red'});
+                NAURE.Message.showLine({content: $.stringify(ex), color: 'red'});
                 $('#makeorder').attr('disabled', false);
             },
             success: function(obj) {
-                $.message.showLine({content: '处理文档结束！ '});
+                NAURE.Message.showLine({content: '处理文档结束！ '});
                 $('#makeorder').hide();
                 $('#makeorder').removeAttr('tag');
                 $('#makeorder').attr('disabled', false);
@@ -155,15 +155,15 @@ $(function () {
                 var searchKey = 'result item';
 
                 if ($(obj.output).find(searchKey).length > 0) {
-                    $.message.showLine({content: '-------------处理文档结束，详细信息如下：---------------'});
+                    NAURE.Message.showLine({content: '-------------处理文档结束，详细信息如下：---------------'});
                 }
 
                 $(obj.output).find(searchKey + ' level:not(:contains("error"))').each(function(index, data) {
-                    $.message.showLine({content:  $(this).parent().find("body message").text()});
+                    NAURE.Message.showLine({content:  $(this).parent().find("body message").text()});
                 });
 
                 $(obj.output).find(searchKey + ' level:contains("error")').each(function(index, data) {
-                    $.message.showLine({
+                    NAURE.Message.showLine({
                         content:  '【' + $(this).parent().find('body column').text() + $(this).parent().find('body row').text() + '】：' + $(this).parent().find("body message").text(),
                         color: 'red'
                     });
@@ -171,28 +171,28 @@ $(function () {
 
 //                $(obj.output).find(searchKey + ' level:contains("error")').each(function(index, data) {
 //                    if ('error' != $(this).find("level").text()) {
-//                        $.message.showLine({content:  $(this).find("body message").text()});
+//                        NAURE.Message.showLine({content:  $(this).find("body message").text()});
 //                    } else {
-//                        $.message.showLine({
+//                        NAURE.Message.showLine({
 //                            content:  '【' + $(this).find('body column').text() + $(this).find('body row').text() + '】：' + $(this).find("body message").text(),
 //                            color: 'red'
 //                        });
 //                    }
 //                });
 
-//                //$.message.promptLine({content: JSON.stringify(obj.output), color: 'orange'});
+//                //NAURE.Message.promptLine({content: JSON.stringify(obj.output), color: 'orange'});
 //                //var jsonArray = $.parseJSON(obj.output);
 //                if (jsonArray.length > 0) {
-//                    //$.message.showLine({content: '处理文档的过程中有异常发生了！ ', color: 'red'});
-//                    $.message.showLine({content: '-------------处理文档结束，详细信息如下：---------------'});
+//                    //NAURE.Message.showLine({content: '处理文档的过程中有异常发生了！ ', color: 'red'});
+//                    NAURE.Message.showLine({content: '-------------处理文档结束，详细信息如下：---------------'});
 //                }
 //                //显示信息, 包含已经成功生成的采购单号 和 错误信息
 //                for (i = 0; i < jsonArray.length; i++) {
 //                    if (jsonArray[i].level == 'success') {
 //                        //if (jsonArray[i].error == null || jsonArray[i].error == 'null') {
-//                        $.message.showLine({content:  jsonArray[i].message});
+//                        NAURE.Message.showLine({content:  jsonArray[i].message});
 //                    } else {
-//                        $.message.showLine({
+//                        NAURE.Message.showLine({
 //                            content:  jsonArray[i].cell + '：' + jsonArray[i].message,
 //                            color: 'red'
 //                        });

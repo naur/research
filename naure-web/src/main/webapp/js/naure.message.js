@@ -10,10 +10,10 @@
  * Usage:
  *     example1:
  *                  $('.className').message({title: '上传文件', comment: '反馈信息'});
- *                  $.message.promptLine({content:  "文本内容信息"});
+ *                  NAURE.Message.promptLine({content:  "文本内容信息"});
  *      example2:
  *                  $('.className').message({content: '查询数据结束！', placement: 'before', fade: true});
- *                  $.message.fade('获取数据错误！', 'red');
+ *                  NAURE.Message.fade('获取数据错误！', 'red');
  *                  $('#className').message.fade({content: '切换表头！', color: 'red'});
  *
  * DOM Element：
@@ -34,7 +34,7 @@
         $(this).append(str + '<br />');
     };
 
-    $.message = (function () {
+    NAURE.Message = (function () {
 
         var isInit = false;
 
@@ -74,7 +74,7 @@
                 $('.message').show();
                 $('.show').hide();
                 $('#information').empty();
-                $('#prompt').append($.message.renderContent(opt));
+                $('#prompt').append(NAURE.Message.renderContent(opt));
             },
             promptLine:function (options) {
                 if (!isInit) {
@@ -83,7 +83,7 @@
 
                 var opt = $.extend({}, message.defaults, options);
                 $('.message').show();
-                $('#prompt').appendLine($.message.renderContent(opt));
+                $('#prompt').appendLine(NAURE.Message.renderContent(opt));
             },
             show:function (options) {
                 if (!isInit) {
@@ -106,7 +106,7 @@
 
                 var opt = $.extend({}, message.defaults, options);
                 $('.show').show();
-                $('#information').html($.message.renderContent(opt));
+                $('#information').html(NAURE.Message.renderContent(opt));
             },
             showLine:function (options) {
                 if (!isInit) {
@@ -120,7 +120,7 @@
 
                 var opt = $.extend({}, message.defaults, options);
                 $('.show').show();
-                $('#information').appendLine($.message.renderContent(opt));
+                $('#information').appendLine(NAURE.Message.renderContent(opt));
             },
             renderContent:function (options) {
                 var opt = $.extend({}, message.defaults, options);
@@ -212,9 +212,9 @@
         }
         options.element = this;
         if (options.fade) {
-            $.message.fade(options);
+            NAURE.Message.fade(options);
         } else {
-            $.message.show(options);
+            NAURE.Message.show(options);
         }
         return this;
     }

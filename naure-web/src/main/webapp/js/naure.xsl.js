@@ -532,7 +532,7 @@
             success:opt.success,
             error:function (ex) {
                 if (opt.errorPrompt != null) {
-                    $.message.show({content:opt.errorPrompt, color:'red', inline:true});
+                    NAURE.Message.show({content:opt.errorPrompt, color:'red', inline:true});
                 }
                 if (opt.error) {
                     opt.error(ex);
@@ -543,7 +543,7 @@
                     opt.success(obj);
                 }
                 if (opt.output == "" && opt.emptyPrompt != null) {
-                    $.message.show({content:opt.emptyPrompt, color:'red', inline:true});
+                    NAURE.Message.show({content:opt.emptyPrompt, color:'red', inline:true});
                     //$('#query').attr('disabled', true);
                     //$('#query').attr('disabled', true);
                     //暂时处理方式：对返回的为空的内容，产生 error 事件。

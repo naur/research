@@ -11,8 +11,8 @@
 
 var overlayNodes = {
     'Dynamic Programming':function () {
-        $.message.empty();
-        $.message.show({content:'Dynamic Programming', color:'silver'});
+        NAURE.Message.empty();
+        NAURE.Message.show({content:'Dynamic Programming', color:'silver'});
         var matrixChain = new MatrixChain(
             '30 x 35',
             '35 x 15',
@@ -23,30 +23,30 @@ var overlayNodes = {
         );
 
         matrixChain.inorderWalk(matrixChain.p, function (item) {
-            $.message.show({content:JSON.stringify($.toJSON(item))});
+            NAURE.Message.show({content:JSON.stringify($.toJSON(item))});
         });
 
         matrixChain.order(matrixChain.p);
 
         matrixChain.inorderWalk(matrixChain.m, function (item) {
-            $.message.show({content:JSON.stringify($.toJSON(item)), color:'blue'});
+            NAURE.Message.show({content:JSON.stringify($.toJSON(item)), color:'blue'});
         });
         matrixChain.inorderWalk(matrixChain.s, function (item) {
-            $.message.show({content:JSON.stringify($.toJSON(item)), color:'red'});
+            NAURE.Message.show({content:JSON.stringify($.toJSON(item)), color:'red'});
         });
 
-        $.message.show({content:'memoized', color:'silver'});
+        NAURE.Message.show({content:'memoized', color:'silver'});
 
         matrixChain.memoized(matrixChain.p);
         matrixChain.inorderWalk(matrixChain.m, function (item) {
-            $.message.show({content:JSON.stringify($.toJSON(item)), color:'yellow'});
+            NAURE.Message.show({content:JSON.stringify($.toJSON(item)), color:'yellow'});
         });
     },
     'Longest Common Subsequence':function () {
-        $.message.empty();
+        NAURE.Message.empty();
     },
     'Greedy Algorithms':function () {
-        $.message.empty();
+        NAURE.Message.empty();
     },
     'Amortized Analysis': function () {
 
@@ -59,9 +59,9 @@ var overlayNodes = {
 
 function print(obj, color) {
     if (color)
-        $.message.show({content:JSON.stringify($.toJSON(obj)), color:color});
+        NAURE.Message.show({content:JSON.stringify($.toJSON(obj)), color:color});
     else
-        $.message.show({content:JSON.stringify($.toJSON(obj))});
+        NAURE.Message.show({content:JSON.stringify($.toJSON(obj))});
 }
 
 /*-------------------- 函数 END --------------------*/
