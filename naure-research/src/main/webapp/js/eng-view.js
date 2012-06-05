@@ -1,27 +1,22 @@
 //EVPageTypes:{dict:"dict", dictComp:"dcomp", home:"home", didYouMean:"dym", err:"err"}, EDictAreas:{def:"def", sen:"sen"}, ELogCategory:{err:"err:", sqm:"sqm:", flag:"flag:", entryFdbk:"entryFdbk:"}
 
 var overlayNodes = {
-    'get':{
-        input:{type: 'button', title: 'Add Eng'},
-        html:' <fieldset>' +
-            '<legend>Method, Content-Type</legend>' +
-            '<input type="text" id="uri" value=""/>' +
-            '</fieldset>',
-        'handler':function () {
-            NAURE.HTTP.Request({
-                uri:'http://dict.bing.com.cn/io.aspx?q=final&t=dict&ut=default&ulang=ZH-CN&tlang=EN-US',
-                success:function (obj) {
-                    //var temp = JAM.parse(obj.http.responseText);
-
-                    //PROS
-                    //DEF
-                }
-            });
+    'Add':{
+        input:{type:'button', title:'Add Eng'},
+        html:'<input type="text" id="uri" value=""/>',
+        handler:function () {
+            alert('Add');
         }},
-    'List':function () {
-        $('article section:eq(1)').xmlAcquire({
-            xmlUrl:'/diagnostic/session.xml',
-            xslUrl:'/xsl/table.xsl'
+    'Get':function () {
+        alert('Get');
+        NAURE.HTTP.Request({
+            uri:'http://dict.bing.com.cn/io.aspx?q=final&t=dict&ut=default&ulang=ZH-CN&tlang=EN-US',
+            success:function (obj) {
+                //var temp = JAM.parse(obj.http.responseText);
+
+                //PROS
+                //DEF
+            }
         });
     },
     'Analysis':function () {

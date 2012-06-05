@@ -21,7 +21,7 @@ import java.util.Map;
 public class MongoWorkspace implements Workspace {
 
     @Override
-    public <T> List<T> get(Map params, Class<T> tClass) throws Exception {t 
+    public <T> List<T> get(Map params, Class<T> tClass) throws Exception {
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
         for (Object key : params.keySet()) {

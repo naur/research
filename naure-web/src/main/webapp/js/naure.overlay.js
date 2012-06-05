@@ -42,13 +42,13 @@
                 '       <input {1}>' +
                 //'       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
                 '   </figcaption>' +
-                '   <span class="node">{2}</span>' +
+                '   <span class="node" tag="{2}">{3}</span>' +
                 '   <span class="delete"></span>' +
                 '   <aside style="display: none;"></aside>' +
                 '</figure>'
         }, options);
 
-        opt.buttonsMinimize = falsecnbe
+        opt.buttonsMinimize = false;
         opt.container =
             '<section class="overlay overlay-pile overlay-right">' +
                 '   <section></section>' +
@@ -65,16 +65,18 @@
         for (key in opt.nodes) {
             $('.overlay section:eq(0)').append($.format(opt.html,
                 '#07C',
-                NAURE.JSON.toHtml(
-                    typeof(opt.nodes[key]) == 'function' ? 'checkbox' : opt.nodes[key].input
-                ),
-                key
+                typeof(opt.nodes[key]) == 'function' ? 'type=checkbox' : NAURE.JSON.toHtml(opt.nodes[key].input),
+                key,
+                typeof(opt.nodes[key]) == 'function' ? key : opt.nodes[key].html
             ));
         }
 
         //初始化 button 事件
         $('.overlay .node').each(function (index) {
-            $(this).live(opt.eventType, typeof(opt.nodes[this.innerText]) == 'function' ? opt.nodes[this.innerText] : opt.nodes[this.innerText].handler);
+            if (typeof(opt.nodes[$(this).attr('tag')]) == 'function')
+                $(this).live(opt.eventType, opt.nodes[this.innerText]);
+            else
+                $(this).prev().children().live(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
         });
 
         $('.minimize').live('click', function () {

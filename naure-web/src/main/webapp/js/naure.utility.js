@@ -32,7 +32,7 @@
 //    };
 
     NAURE.JSON.toHtml = function (obj) {
-        var json = '';
+        var html = '';
         for (var key in obj) {
             if (typeof(obj[key]) == 'number' ||
                 typeof(obj[key]) == 'string' ||
@@ -40,11 +40,10 @@
                 typeof(obj[key]) == 'array' ||
                 typeof(obj[key]) == 'undefined' ||
                 typeof(obj[key]) == 'date')
-                json += ' ' + key + '="' + obj[key] + '" ';
+                html += ' ' + key + '="' + obj[key] + '" ';
         }
-        json = json.replace(/,?$/, '}');
         //return JSON.parse('{"key":7,"color":"black"}');
-        return JSON.parse(json);
+        return html;
     };
 })(jQuery);
 
