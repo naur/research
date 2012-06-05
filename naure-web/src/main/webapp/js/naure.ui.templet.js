@@ -21,7 +21,7 @@
         }, options);
 
         NAURE.HTTP.xmlAcquire({
-            xmlUrl: '/xml/' + opt.name + '.xml',
+            xmlUrl: '/xml/templet/' + opt.name + '.xml',
             xmlCache:true,
             //xslUrl: '/xsl/body.xsl',
             renderContainer: opt.renderContainer,

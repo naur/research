@@ -14,14 +14,14 @@ import java.util.Map;
  * Created with IntelliJ IDEA.
  * User: jiaruizhi
  * Date: 5/3/12
- * Time: 5:13 PM
+ * Time: 5:13 PMgit
  * To change this template use File | Settings | File Templates.
  */
 @Component
 public class MongoWorkspace implements Workspace {
 
     @Override
-    public <T> List<T> get(Map params, Class<T> tClass) throws Exception {
+    public <T> List<T> get(Map params, Class<T> tClass) throws Exception {t 
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
         for (Object key : params.keySet()) {

@@ -30,6 +30,22 @@
 //        }
 //        return;
 //    };
+
+    NAURE.JSON.toHtml = function (obj) {
+        var json = '';
+        for (var key in obj) {
+            if (typeof(obj[key]) == 'number' ||
+                typeof(obj[key]) == 'string' ||
+                typeof(obj[key]) == 'boolean' ||
+                typeof(obj[key]) == 'array' ||
+                typeof(obj[key]) == 'undefined' ||
+                typeof(obj[key]) == 'date')
+                json += ' ' + key + '="' + obj[key] + '" ';
+        }
+        json = json.replace(/,?$/, '}');
+        //return JSON.parse('{"key":7,"color":"black"}');
+        return JSON.parse(json);
+    };
 })(jQuery);
 
 //----- html 字符串过滤  -----------------------------------------------//
@@ -73,7 +89,7 @@ function encodeHTML(data) {
 }
 
 //todo 代码来源于 dict.bing.com.cn 未经过测试
-function  escapeXML(s) {
+function escapeXML(s) {
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
 

@@ -36,6 +36,10 @@ article section:last-child {
     opacity: 0.2;
 }
 
+.overlay section:last-child {
+    padding: 4px;
+}
+
 .overlay-pile {
     -webkit-box-shadow: 0px 0px 5px black;
     -moz-box-shadow: 0px 0px 5px black;
@@ -149,7 +153,6 @@ li:hover .delete {
     cursor: pointer;
 }
 
-
 .delete:hover {
     opacity: 1.0;
 }
@@ -175,9 +178,9 @@ input[type=button] {
     width: 30px;
     height: 21px;
     color: rgba(0, 0, 0, 0.0);
-    margin-left: 4px;
-    margin-top: 3px;
-    margin-bottom: 4px;
+    /*margin-left: 4px;*/
+    /*margin-top: 3px;*/
+    /*margin-bottom: 4px;*/
     cursor: pointer;
 }
 

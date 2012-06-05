@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<body>
+    <header></header>
+    <nav></nav>
+    <article>
+        <section>
+            <fieldset style="margin:2px;font-size: 15px;">
+                <legend> Eng </legend>
+                <input type="text" id="uri" tabindex='1' value=""/>
+                <input type="button" id="Header" value=" Header " tabindex='4'/>
+            </fieldset>
+        </section>
+        <section>
+            <!--<canvas width="800" height="600"></canvas>-->
+        </section>
+    </article>
+    <aside></aside>
+    <footer></footer>
+    <section></section>
+</body>

@@ -439,12 +439,14 @@
     }, 10);
     window.onload = a
 }}};
+
 function $Id(b, a) {
     return JAM.Dom.elById(b, a)
 }
 function $Class(c, b, e, d, a) {
     return JAM.Dom.elByClass(c, b, e, d, a)
 }
+
 var g_fIE = /msie/i.test(navigator.userAgent) && !window.opera, g_fIE6orLess = g_fIE && !window.XMLHttpRequest, g_fIE8StdOrMore = g_fIE && document.documentMode && document.documentMode >= 8, g_fIE7orLess = g_fIE && !g_fIE8StdOrMore, Lingo = {Lang:{ulang:"ZH-CN", tlang:"EN-US"}, init:function (c) {
     this.ADsCtrl.init();
     for (var f in c)Lingo._settings[f] = c[f];
@@ -2580,6 +2582,7 @@ var g_fIE = /msie/i.test(navigator.userAgent) && !window.opera, g_fIE6orLess = g
     } catch (c) {
     }
 }}};
+
 function getCurrentVideo() {
     Lingo.ThCtrl._thPlayer = JAM.Dom.playerById("__thplayer");
     return Lingo.ThCtrl._v_sou

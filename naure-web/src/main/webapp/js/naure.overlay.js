@@ -33,21 +33,22 @@
             nodes:null,
             renderContainer:null,
             eventHandlers:null,
-            layout: "",
+            layout:"",
             eventType:'click', //click, mouse,
             focus:'test', //'article section:last-child'
             html:'<figure>' +
                 '   <figcaption style="background-color: {0};">' +
-                '       <input title="Show/Hide Graph" CHECKED="checked" type="checkbox">' +
+                //'       <input title="{1}" CHECKED="checked" type="{2}">' +
+                '       <input {1}>' +
+                //'       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
                 '   </figcaption>' +
-                //'   <span class="matheditor mathquill-rendered-math mathquill-editable"><span class="button">{1}</span></span>' +
-                '   <span class="node">{1}</span>' +
+                '   <span class="node">{2}</span>' +
                 '   <span class="delete"></span>' +
                 '   <aside style="display: none;"></aside>' +
                 '</figure>'
         }, options);
 
-        opt.buttonsMinimize = false
+        opt.buttonsMinimize = falsecnbe
         opt.container =
             '<section class="overlay overlay-pile overlay-right">' +
                 '   <section></section>' +
@@ -62,13 +63,20 @@
         $(opt.renderContainer).html(opt.container);
         $('.overlay section:eq(0)').empty();
         for (key in opt.nodes) {
-            $('.overlay section:eq(0)').append($.format(opt.html, '#07C', key));
+            $('.overlay section:eq(0)').append($.format(opt.html,
+                '#07C',
+                NAURE.JSON.toHtml(
+                    typeof(opt.nodes[key]) == 'function' ? 'checkbox' : opt.nodes[key].input
+                ),
+                key
+            ));
         }
 
         //初始化 button 事件
         $('.overlay .node').each(function (index) {
-            $(this).live(opt.eventType, opt.nodes[this.innerText]);
+            $(this).live(opt.eventType, typeof(opt.nodes[this.innerText]) == 'function' ? opt.nodes[this.innerText] : opt.nodes[this.innerText].handler);
         });
+
         $('.minimize').live('click', function () {
             if (opt.buttonsMinimize) {
                 $('.overlay').addClass('overlay-pile')
