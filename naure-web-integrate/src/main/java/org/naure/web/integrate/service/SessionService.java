@@ -43,7 +43,7 @@ public class SessionService {
         sessionLog.setUserAgent(request.getHeader("user-agent"));
         sessionLog.setRequestType(request.getMethod());
         sessionLog.setRequestUrl(request.getRequestURI());
-        sessionLog.setReferrerUrl(request.getHeader("Referer"));
+        sessionLog.setRefererUrl(request.getHeader("Referer"));
         sessionLog.setTimestamp(new Date(request.getSession().getLastAccessedTime()));
         sessionLog.setStatusCode(request.getAttribute("javax.servlet.error.status_code") == null ? 200 : Integer.parseInt(request.getAttribute("javax.servlet.error.status_code").toString()));
 //        logEntry.SessionLog.SessionID = HttpContext.Current.Session.SessionID ?? "";

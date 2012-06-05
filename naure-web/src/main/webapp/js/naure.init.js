@@ -7,12 +7,14 @@
  *            提供 全局变量
  * Usage:
  */
-(function ($) {
-    $.naure = {};
-    $.naure.message = {};
-    $.naure.ui = {};
-    $.naure.net = {};
-    $.naure.xml = {};
-})(jQuery);
+
+//(function ($) {
+var NAURE = {};
+NAURE.Message = {};
+NAURE.UI = {};
+NAURE.HTTP = {};
+NAURE.XML = {};
+NAURE.JSON = {};
+//})(jQuery);
 
 

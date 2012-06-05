@@ -72,6 +72,11 @@ function encodeHTML(data) {
     return data.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, '&');
 }
 
+//todo 代码来源于 dict.bing.com.cn 未经过测试
+function  escapeXML(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+}
+
 function parseNull(str1, str2) {
     if (str1 == null || str1 == undefined) {
         return (str2 == null) ? '-' : str2;

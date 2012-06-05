@@ -9,7 +9,7 @@
  */
 
 (function ($) {
-    $.xmlAcquire = function (options) {
+    NAURE.HTTP.xmlAcquire = function (options) {
         var opt = $.extend({
             type:'POST',
             dataType:'xml',
@@ -136,7 +136,7 @@
     };
     $.fn.xmlAcquire = function (options) {
         options.renderContainer = this;
-        $.xmlAcquire(options);
+        NAURE.HTTP.xmlAcquire(options);
         return this;
     }
 })(jQuery);

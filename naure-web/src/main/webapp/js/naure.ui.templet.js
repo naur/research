@@ -9,7 +9,7 @@
  */
 
 (function ($) {
-    $.naure.ui.templet = (function (options) {
+    NAURE.UI.templet = (function (options) {
         var opt = $.extend({
             name: "",
             renderContainer:null,
@@ -20,7 +20,7 @@
             success:null
         }, options);
 
-        $.xmlAcquire({
+        NAURE.HTTP.xmlAcquire({
             xmlUrl: '/xml/' + opt.name + '.xml',
             xmlCache:true,
             //xslUrl: '/xsl/body.xsl',
@@ -46,7 +46,7 @@
             options = {};
         }
         options.renderContainer = this;
-        $.naure.ui.templet(options);
+        NAURE.UI.templet(options);
         return this;
     }
 })(jQuery);

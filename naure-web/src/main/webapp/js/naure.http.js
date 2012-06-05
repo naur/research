@@ -9,8 +9,7 @@
  */
 
 (function ($) {
-
-    $.httpState = function (state) {
+    NAURE.HTTP.State = function (state) {
         switch (state) {
             case 0:
                 return 'Uninitialized';
@@ -27,7 +26,7 @@
         }
     };
 
-    $.httpRequest = function (options) {
+    NAURE.HTTP.Request = function (options) {
         var opt = $.extend({
             method:'GET',
             uri:'',
@@ -47,7 +46,7 @@
 //            if (opt.xmlhttp.status <= 0)
 //                return;
             if (opt.changed) {
-                opt.changed({state:$.httpState(opt.xmlhttp.readyState), http:opt.xmlhttp});
+                opt.changed({state:NAURE.HTTP.State(opt.xmlhttp.readyState), http:opt.xmlhttp});
             }
 
             if (opt.xmlhttp.readyState == 4) {
@@ -57,9 +56,9 @@
                         if (opt.htmlParser) {
                             if (!opt.htmlParser.parser) {
                                 if (opt.xmlhttp.getResponseHeader('Content-Type').search(/xml/g) >= 0)
-                                    opt.htmlParser.parser = $.xmlHttpParser;
+                                    opt.htmlParser.parser = NAURE.XML.Parser;
                                 if (opt.xmlhttp.getResponseHeader('Content-Type').search(/json/g) >= 0)
-                                    opt.htmlParser.parser = $.jsonHttpParser;
+                                    opt.htmlParser.parser = NAURE.JSON.Parser;
                             }
 
                             if (opt.htmlParser.parser)
@@ -69,13 +68,13 @@
                 }
                 else {
                     if (opt.error) {
-                        opt.error({state:$.httpState(opt.xmlhttp.readyState), http:opt.xmlhttp});
+                        opt.error({state:NAURE.HTTP.State(opt.xmlhttp.readyState), http:opt.xmlhttp});
                     }
                 }
             }
         };
 
-        opt.xmlhttp = $.createHttpRequest();
+        opt.xmlhttp = NAURE.HTTP.CreateRequest();
         if (opt.xmlhttp != null) {
             //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
             opt.xmlhttp.onreadystatechange = opt.stateChange;
@@ -96,7 +95,7 @@
         }
     };
 
-    $.createHttpRequest = function () {
+    NAURE.HTTP.CreateRequest = function () {
         if (window.XMLHttpRequest) {// code for all new browsers
             return new XMLHttpRequest();
         }
@@ -107,7 +106,7 @@
     };
 
     var color = '#A22E00';
-    $.xmlHttpParser = function (rootElement, delegate, sp) {
+    NAURE.XML.Parser = function (rootElement, delegate, sp) {
         if (!rootElement) return;
         if (!delegate) return;
         if (!sp) sp = '';
@@ -134,7 +133,7 @@
 
         var currentNode = rootElement.childNodes;
         for (var i = 0; i < currentNode.length; i++) {
-            $.xmlHttpParser(currentNode[i], delegate, span.length <= 0 ? '&nbsp;&nbsp;&nbsp;&nbsp;' : span);
+            NAURE.XML.Parser(currentNode[i], delegate, span.length <= 0 ? '&nbsp;&nbsp;&nbsp;&nbsp;' : span);
         }
 
         if (rootElement.nodeType != 3) {
@@ -146,7 +145,7 @@
             delegate({content:'&lt;/' + rootElement.parentNode.nodeName + '&gt;', datehide:true});
         }
     };
-    $.jsonHttpParser = function (jsonObj, delegate) {
+    NAURE.JSON.Parser = function (jsonObj, delegate) {
         if (!jsonObj) return;
         if (!delegate) return;
         if (typeof(jsonObj) == 'string')
@@ -167,7 +166,7 @@
         for (var key in jsonObj) {
             if (jsonObj[key] && (typeof(jsonObj[key]) == 'object') && jsonObj[key].length) {
                 for (i = 0; i < jsonObj[key].length; i++) {
-                    $.jsonHttpParser(jsonObj[key][i], delegate);
+                    NAURE.JSON.Parser(jsonObj[key][i], delegate);
                 }
             }
             else
@@ -175,7 +174,7 @@
         }
     }
 
-    $.formatXml = function (options) {
+    NAURE.XML.Format = function (options) {
         var opt = $.extend({
             text:''
         }, options);
@@ -202,18 +201,18 @@
             //alert([all,isClosed].join('='));
             var prefix = '';
             if (isBegin == '!') {
-                prefix = $.getPrefix(nodeStack.length);
+                prefix = NAURE.XML.getPrefix(nodeStack.length);
             }
             else {
                 if (isBegin != '/') {
-                    prefix = $.getPrefix(nodeStack.length);
+                    prefix = NAURE.XML.getPrefix(nodeStack.length);
                     if (!isClosed) {
                         nodeStack.push(name);
                     }
                 }
                 else {
                     nodeStack.pop();
-                    prefix = $.getPrefix(nodeStack.length);
+                    prefix = NAURE.XML.getPrefix(nodeStack.length);
                 }
 
 
@@ -240,7 +239,7 @@
         return outputText.replace(/\s+$/g, '').replace(/\r/g, '\r\n');
 
     };
-    $.getPrefix = function (prefixIndex) {
+    NAURE.XML.getPrefix = function (prefixIndex) {
         var span = '    ';
         var output = [];
         for (var i = 0; i < prefixIndex; ++i) {
@@ -250,5 +249,4 @@
         return output.join('');
     };
 
-})
-    (jQuery);
+})  (jQuery);
