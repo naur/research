@@ -33,14 +33,6 @@ article section:last-child {
     color: black;
     padding: 4px;
     background: rgba(255, 255, 255, 0.8);
-    opacity: 0.2;
-}
-
-.overlay section:last-child {
-    padding: 4px;
-}
-
-.overlay-pile {
     -webkit-box-shadow: 0px 0px 5px black;
     -moz-box-shadow: 0px 0px 5px black;
     -o-box-shadow: 0px 0px 5px black;
@@ -50,7 +42,54 @@ article section:last-child {
     opacity: 0.9;
 }
 
+.overlay-pile {
+    -webkit-box-shadow: 0px 0px 0px black;
+    -moz-box-shadow: 0px 0px 0px black;
+    -o-box-shadow: 0px 0px 0px black;
+    box-shadow: 0px 0px 0px black;
+    box-shadow: 0px 0px 0px black;
+    z-Index: 80000;
+    opacity: 0.2;
+}
+
+.overlay section {
+    list-style: none;
+    /*width: 300px;*/
+    min-width: 160px;
+}
+
+.overlay section:last-child {
+    padding: 4px;
+}
+
+.overlay section aside {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: small;
+    padding-bottom: 2px;
+    color: #888;
+    padding-right: 4px;
+}
+
+.overlay section aside:before {
+    background: url(/images/buttons.png) -62px -21px no-repeat;
+    display: block;
+    width: 20px;
+    float: left;
+    color: rgba(0, 0, 0, 0.0);
+    content: "!";
+}
+
+.overlay section figure {
+    border-bottom: 1px solid #444;
+    vertical-align: center;
+    /*min-height: 20px;*/
+    position: relative;
+}
+
 .overlay section figure .node {
+    position: inherit;
     cursor: pointer;
     readonly: true;
     text-wrap: normal;
@@ -64,29 +103,11 @@ article section:last-child {
     padding-top: .075em;
     white-space: pre-wrap;
     font-family: Symbola, "Times New Roman", serif;
+    margin: 4px 6px;
+    /*float:left;*/
 }
 
-.overlay-right {
-    right: 0;
-    /*opacity: 0.5;*/
-    padding: 0;
-    top: 0
-}
-
-.overlay-right section {
-    list-style: none;
-    /*width: 300px;*/
-    min-width: 160px;
-}
-
-.overlay-right section figure {
-    border-bottom: 1px solid #444;
-    vertical-align: center;
-    /*min-height: 20px;*/
-    position: relative;
-}
-
-.overlay-right section figure figcaption {
+.overlay section figure figcaption {
     text-align: center;
     width: 30px;
     position: absolute;
@@ -101,37 +122,34 @@ article section:last-child {
     margin-right: 3px;
 }
 
-.overlay-right section figure:last-child figcaption {
+.panel-left{
+    float:left;
+    position: inherit;
+}
+
+.panel-right{
+    float:right;
+    position: inherit;
+}
+
+.overlay section figure:last-child figcaption {
     border-bottom: none;
 }
 
-.overlay-right section figure:only-child .delete {
+.overlay section figure:only-child .delete {
     display: none;
 }
 
-.overlay-right section figure .node {
-    margin-top: 5px;
-    margin-left: 38px;
-    margin-bottom: 4px;
+.panel-left-hide, .panel-right-hide {
+    width: 0px;
+    visibility: collapse;
 }
 
-.overlay-right section aside {
-    position: absolute;
-    bottom: 0;
+.overlay-right {
     right: 0;
-    font-size: small;
-    padding-bottom: 2px;
-    color: #888;
-    padding-right: 4px;
-}
-
-.overlay-right section aside:before {
-    background: url(/images/buttons.png) -62px -21px no-repeat;
-    display: block;
-    width: 20px;
-    float: left;
-    color: rgba(0, 0, 0, 0.0);
-    content: "!";
+    /*opacity: 0.5;*/
+    padding: 0;
+    top: 0
 }
 
 li:hover .delete {

@@ -33,24 +33,26 @@
             nodes:null,
             renderContainer:null,
             eventHandlers:null,
-            layout:"",
+            layout:"panel-center", //left, right, center
             eventType:'click', //click, mouse,
             focus:'test', //'article section:last-child'
             html:'<figure>' +
-                '   <figcaption style="background-color: {0};">' +
+                '   <figcaption class="panel-left {0}" style="background-color: {1};">' +
                 //'       <input title="{1}" CHECKED="checked" type="{2}">' +
-                '       <input {1}>' +
+                '       <input {2}>' +
                 //'       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
                 '   </figcaption>' +
-                '   <span class="node" tag="{2}">{3}</span>' +
+                '   <span class="node" tag="{3}">{4}</span>' +
                 '   <span class="delete"></span>' +
                 '   <aside style="display: none;"></aside>' +
+                '   <figcaption class="panel-right {5}" style="background-color: {1};">' +
+                '   </figcaption>' +
                 '</figure>'
         }, options);
 
         opt.buttonsMinimize = false;
         opt.container =
-            '<section class="overlay overlay-pile overlay-right">' +
+            '<section class="overlay overlay-right">' +
                 '   <section></section>' +
                 '   <section class="buttons">' +
                 '       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
@@ -64,10 +66,12 @@
         $('.overlay section:eq(0)').empty();
         for (key in opt.nodes) {
             $('.overlay section:eq(0)').append($.format(opt.html,
+                opt.layout.indexOf('left') == 1 ? '' : 'panel-left-hide',
                 '#07C',
                 typeof(opt.nodes[key]) == 'function' ? 'type=checkbox' : NAURE.JSON.toHtml(opt.nodes[key].input),
                 key,
-                typeof(opt.nodes[key]) == 'function' ? key : opt.nodes[key].html
+                typeof(opt.nodes[key]) == 'function' ? key : opt.nodes[key].html,
+                opt.layout.indexOf('right') == 1 ? '' : 'panel-left-hide'
             ));
         }
 
@@ -80,14 +84,14 @@
         });
 
         $('.minimize').live('click', function () {
+            opt.buttonsMinimize = !opt.buttonsMinimize;
             if (opt.buttonsMinimize) {
                 $('.overlay').addClass('overlay-pile')
-                $('.overlay section:eq(0)').fadeIn(400);
-            } else {
                 $('.overlay section:eq(0)').fadeOut(400);
+            } else {
+                $('.overlay section:eq(0)').fadeIn(400);
                 $('.overlay').removeClass('overlay-pile')
             }
-            opt.buttonsMinimize = !opt.buttonsMinimize;
         });
     };
 
