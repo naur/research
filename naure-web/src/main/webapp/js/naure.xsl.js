@@ -43,7 +43,7 @@
         opt.ajaxError = function (jqXHR, textStatus, errorThrown) {
             opt.count = 0;
             if (opt.error != null) {
-                opt.error({jqXHR:jqXHR, textStatus:textStatus, errorThrown:errorThrown});
+                opt.error({jqXHR:jqXHR, textStatus:textStatus, errorThrown:errorThrown, context:opt.context});
             }
         };
         opt.ajaxSuccess = function (data, textStatus, jqXHR) {
@@ -198,7 +198,7 @@
             } else if (opt.hasError) {
                 // Error occured
                 if (opt.error != null) {
-                    opt.error({content:false});
+                    opt.error({content:false, context:opt.context});
                 }
                 return false;
             } else {

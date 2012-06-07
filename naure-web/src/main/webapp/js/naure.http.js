@@ -37,6 +37,7 @@
             error:null,
             success:null,
             changed:null,
+            context:null,
             htmlParser:{parser:null, delegate:null}
         }, options);
 
@@ -52,7 +53,7 @@
             if (opt.xmlhttp.readyState == 4) {
                 if (opt.xmlhttp.status == 200) {
                     if (opt.success) {
-                        opt.success({xmlDocument:opt.xmlhttp.responseXML, http:opt.xmlhttp});
+                        opt.success({xmlDocument:opt.xmlhttp.responseXML, http:opt.xmlhttp, context:opt.context});
                         if (opt.htmlParser) {
                             if (!opt.htmlParser.parser) {
                                 if (opt.xmlhttp.getResponseHeader('Content-Type').search(/xml/g) >= 0)
@@ -68,7 +69,7 @@
                 }
                 else {
                     if (opt.error) {
-                        opt.error({state:NAURE.HTTP.State(opt.xmlhttp.readyState), http:opt.xmlhttp});
+                        opt.error({state:NAURE.HTTP.State(opt.xmlhttp.readyState), http:opt.xmlhttp, context:opt.context});
                     }
                 }
             }
