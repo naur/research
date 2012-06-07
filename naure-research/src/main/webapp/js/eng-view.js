@@ -9,6 +9,7 @@ var overlayNodes = {
             $('article section:eq(1)').empty();
             NAURE.Message.show({content: '正在获取数据...'});
             alert('Add');
+            $(this).attr('disabled', false);
         }},
     Get:function () {
         $(this).attr('disabled', true);
@@ -17,7 +18,11 @@ var overlayNodes = {
 
         NAURE.HTTP.Request({
             uri:'http://dict.bing.com.cn/io.aspx?q=final&t=dict&ut=default&ulang=ZH-CN&tlang=EN-US',
+            error: function (error) {
+                $(this).attr('disabled', false);
+            },
             success:function (obj) {
+                $(this).attr('disabled', false);
                 //var temp = JAM.parse(obj.http.responseText);
 
                 //PROS
@@ -29,7 +34,7 @@ var overlayNodes = {
         $(this).attr('disabled', true);
         $('article section:eq(1)').empty();
         NAURE.Message.show({content: 'Analysis...'});
-
+        $(this).attr('disabled', false);
     }
 }
 
