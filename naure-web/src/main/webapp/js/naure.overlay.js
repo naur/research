@@ -39,11 +39,9 @@
             html:'<figure>' +
                 '   <figcaption class="panel-left {0}" style="background-color: {1};{6}">' +
                 //'       <input title="{1}" CHECKED="checked" type="{2}">' +
-                '       <input {2}>' +
-                //'       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
+                '       <input {2}></input>' +
                 '   </figcaption>' +
-                '   <figcaption class="panel-right {5}" style="background-color: {1};">' +
-                '   </figcaption>' +
+                '   <figcaption class="panel-right {5}" style="background-color: {1};"></figcaption>' +
                 '   <figcaption class="panel-center">' +
                 '       <span class="node" tag="{3}">{4}</span>' +
                 '       <span class="delete"></span>' +
@@ -80,7 +78,7 @@
                 key,
                 isRichNode ? opt.nodes[key].html : key,
                 opt.layout.indexOf('right') != -1 ? '' : 'panel-right-hide',
-                isRichNode ? 'margin-left: -35px;' : ''
+                isRichNode ? 'margin-left: -40px;' : ''
             ));
         }
 
@@ -88,8 +86,10 @@
         $('.overlay .node').each(function (index) {
             if (typeof(opt.nodes[$(this).attr('tag')]) == 'function')
                 $(this).live(opt.eventType, opt.nodes[this.innerText]);
-            else
-                $(this).prev().children('input').live(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
+            else {
+                $(this).parent().prev().prev().children(':first-child').live(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
+                $(this).parent().prev().prev().live(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
+            }
         });
 
         $('.minimize').live('click', function () {

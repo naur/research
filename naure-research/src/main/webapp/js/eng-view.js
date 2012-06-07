@@ -1,13 +1,13 @@
 //EVPageTypes:{dict:"dict", dictComp:"dcomp", home:"home", didYouMean:"dym", err:"err"}, EDictAreas:{def:"def", sen:"sen"}, ELogCategory:{err:"err:", sqm:"sqm:", flag:"flag:", entryFdbk:"entryFdbk:"}
 
 var overlayNodes = {
-    'Add':{
-        input:{type:'button', title:'Add Eng'},
+    Add:{
+        input:{type:'button', title:'Add Eng', value: 'Add', onclock: 'overlayNodes.Add.handler();'},
         html:'<input type="text"  value=""/>',
         handler:function () {
             alert('Add');
         }},
-    'Get':function () {
+    Get:function () {
         alert('Get');
         NAURE.HTTP.Request({
             uri:'http://dict.bing.com.cn/io.aspx?q=final&t=dict&ut=default&ulang=ZH-CN&tlang=EN-US',
