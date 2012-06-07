@@ -37,7 +37,7 @@
             eventType:'click', //click, mouse,
             focus:'test', //'article section:last-child'
             html:'<figure>' +
-                '   <figcaption class="panel-left {0}" style="background-color: {1};">' +
+                '   <figcaption class="panel-left {0}" style="background-color: {1};{6}">' +
                 //'       <input title="{1}" CHECKED="checked" type="{2}">' +
                 '       <input {2}>' +
                 //'       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
@@ -66,14 +66,21 @@
 
         $(opt.renderContainer).html(opt.container);
         $('.overlay section:eq(0)').empty();
+
+        var isRichNode = false;
         for (key in opt.nodes) {
+            if (typeof(opt.nodes[key]) != 'function')
+                isRichNode = true;
+            else
+                isRichNode = false;
             $('.overlay section:eq(0)').append($.format(opt.html,
-                opt.layout.indexOf('left') != -1 ? '' : 'panel-left-hide',
-                '#07C',
-                typeof(opt.nodes[key]) == 'function' ? 'type=checkbox' : NAURE.JSON.toHtml(opt.nodes[key].input),
+                (opt.layout.indexOf('left') != -1 || isRichNode) ? '' : 'panel-left-hide',
+                isRichNode ? 'white' : '#07C',
+                isRichNode ? NAURE.JSON.toHtml(opt.nodes[key].input) : 'type=checkbox',
                 key,
-                typeof(opt.nodes[key]) == 'function' ? key : opt.nodes[key].html,
-                opt.layout.indexOf('right') != -1 ? '' : 'panel-right-hide'
+                isRichNode ? opt.nodes[key].html : key,
+                opt.layout.indexOf('right') != -1 ? '' : 'panel-right-hide',
+                isRichNode ? 'margin-left: -35px;' : ''
             ));
         }
 
@@ -81,8 +88,8 @@
         $('.overlay .node').each(function (index) {
             if (typeof(opt.nodes[$(this).attr('tag')]) == 'function')
                 $(this).live(opt.eventType, opt.nodes[this.innerText]);
-//            else
-//                $(this).prev().children('').live(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
+            else
+                $(this).prev().children('input').live(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
         });
 
         $('.minimize').live('click', function () {

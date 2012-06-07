@@ -24,9 +24,23 @@ public class MongoWorkspace implements Workspace {
     public <T> List<T> get(Map params, Class<T> tClass) throws Exception {
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
+        int pageSize = 30;
+        int pageIndex = 1;
         for (Object key : params.keySet()) {
+            if ("pageSize".equals(key)) {
+                pageSize =  Integer.parseInt(params.get(key).toString());
+                continue;
+            }
+            if ("pageIndex".equals(key)) {
+                pageIndex =  Integer.parseInt(params.get(key).toString());
+                if (pageIndex == 0)
+                    pageIndex = 1;
+                continue;
+            }
             query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
         }
+        query.skip(pageSize * (pageIndex - 1));
+        query.limit(pageSize);
         return mongoOperations.find(query, tClass);
     }
 

@@ -3,7 +3,7 @@
 var overlayNodes = {
     'Add':{
         input:{type:'button', title:'Add Eng'},
-        html:'<input type="text" id="uri" value=""/>',
+        html:'<input type="text"  value=""/>',
         handler:function () {
             alert('Add');
         }},
