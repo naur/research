@@ -29,7 +29,7 @@ var overlayNodes = {
 $(function () {
     $('body').naure_ui_templet({name:'overlay', success:function () {
         $('article section:eq(0)').message({placement:'append'});
-        $('aside').overlay({
+        $('nav').overlay({
             nodes:overlayNodes
         });
     }});

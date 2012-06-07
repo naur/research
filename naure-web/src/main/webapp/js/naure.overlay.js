@@ -42,17 +42,19 @@
                 '       <input {2}>' +
                 //'       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
                 '   </figcaption>' +
-                '   <span class="node" tag="{3}">{4}</span>' +
-                '   <span class="delete"></span>' +
-                '   <aside style="display: none;"></aside>' +
                 '   <figcaption class="panel-right {5}" style="background-color: {1};">' +
+                '   </figcaption>' +
+                '   <figcaption class="panel-center">' +
+                '       <span class="node" tag="{3}">{4}</span>' +
+                '       <span class="delete"></span>' +
+                '       <aside style="display: none;"></aside>' +
                 '   </figcaption>' +
                 '</figure>'
         }, options);
 
         opt.buttonsMinimize = false;
         opt.container =
-            '<section class="overlay overlay-right">' +
+            '<section class="overlay overlay-right-bottom">' +
                 '   <section></section>' +
                 '   <section class="buttons">' +
                 '       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
@@ -66,12 +68,12 @@
         $('.overlay section:eq(0)').empty();
         for (key in opt.nodes) {
             $('.overlay section:eq(0)').append($.format(opt.html,
-                opt.layout.indexOf('left') == 1 ? '' : 'panel-left-hide',
+                opt.layout.indexOf('left') != -1 ? '' : 'panel-left-hide',
                 '#07C',
                 typeof(opt.nodes[key]) == 'function' ? 'type=checkbox' : NAURE.JSON.toHtml(opt.nodes[key].input),
                 key,
                 typeof(opt.nodes[key]) == 'function' ? key : opt.nodes[key].html,
-                opt.layout.indexOf('right') == 1 ? '' : 'panel-left-hide'
+                opt.layout.indexOf('right') != -1 ? '' : 'panel-right-hide'
             ));
         }
 
@@ -79,8 +81,8 @@
         $('.overlay .node').each(function (index) {
             if (typeof(opt.nodes[$(this).attr('tag')]) == 'function')
                 $(this).live(opt.eventType, opt.nodes[this.innerText]);
-            else
-                $(this).prev().children().live(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
+//            else
+//                $(this).prev().children('').live(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
         });
 
         $('.minimize').live('click', function () {

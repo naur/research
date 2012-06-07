@@ -40,6 +40,19 @@
         <profile>
             <id>publish</id>
         </profile>
+        <profile>
+            <id>naure</id>
+            <modules>
+                <module>naure-parent</module>
+                <module>naure-common</module>
+                <module>naure-utility</module>
+                <module>naure-repositories</module>
+                <module>naure-web-integrate</module>
+                <module>naure-web</module>
+                <module>naure-home</module>
+                <module>naure-research</module>
+            </modules>
+        </profile>
     </profiles>
 
 </project>
