@@ -1,4 +1,4 @@
-package org.naure.research.web.models;
+package org.naure.repositories.models;
 
 import java.util.Date;
 

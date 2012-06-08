@@ -10,8 +10,9 @@ var overlayNodes = {
 
             if ($(this).next().next().children(':first-child').val().length > 0) {
                 NAURE.Message.show({content:'Add Eng ' + $(this).next().next().children(':first-child').val() + '...'});
-                NAURE.HTTP.xmlAcquire({
-                    xmlUrl: '/learn/eng/add',
+                $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
+                    xmlUrl: '/learn/eng/add/' + $(this).next().next().children(':first-child').val(),
+                    xslUrl: '/xsl/table.xsl',
                     context: this,
                     error: function(error) {
                         $(error.context).attr('disabled', false);
@@ -28,7 +29,27 @@ var overlayNodes = {
                 $(this).attr('disabled', false);
             }
         }},
-    Get:function () {
+    Get: function () {
+        $(this).attr('disabled', true);
+        $('article section:eq(1)').empty();
+        NAURE.Message.show({content: '正在获取数据...'});
+
+        $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
+            xmlUrl: '/learn/eng/get.xml',
+            xslUrl: '/xsl/table.xsl',
+            context: this,
+            error:function (ex) {
+                NAURE.Message.show({content:'获取数据结束！'});
+                NAURE.Message.show({content:'获取数据错误，请稍后重试！', color:'red'});
+                $(obj.context).attr('disabled', false);
+            },
+            success:function(obj) {
+                $(obj.context).attr('disabled', false);
+                NAURE.Message.empty();
+            }
+        });
+    },
+    EngKoo:function () {
         $(this).attr('disabled', true);
         $('article section:eq(1)').empty();
         NAURE.Message.show({content:'Get Data...'});

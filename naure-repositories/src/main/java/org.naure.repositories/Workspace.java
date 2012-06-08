@@ -12,16 +12,20 @@ import java.util.Map;
  */
 public interface Workspace {
     //读取    {Map<String, T> get()}
-    <T> List<T> get(Map params, Class<T> tClass) throws Exception;
-
-    //更新和创建 【幂等性】   {void put(T t)}
-    <U, T> T put(U entity, Class<T>... tClass) throws Exception;
+    <T, U> List<U> get(T t, Class<U> resultClass) throws Exception;
+    <U> U get(int identifier, Class<U> resultClass) throws Exception;
 
     //创建    {void post()}
-    <U, T> T post(U entity, Class<T>... tClass) throws Exception;
+    <T, U> U add(T t, Class<U>... resultClass) throws Exception;
+    <T> boolean add(T t) throws Exception;
 
     //【幂等性】 {boolean delete(T t)}
-    <U, T> boolean delete(U u, Class<T>... tClass) throws Exception;
+    <T, U> U delete(T t, Class<U>... resultClass) throws Exception;
+    <T> boolean delete(T t) throws Exception;
 
-    //<U, T> List<T> query(U params, Class<T> tClass);
+    //更新和创建 【幂等性】   {void put(T t)}
+    <T, U> U update(T t, Class<U>... resultClass) throws Exception;
+    <T> boolean update(T t) throws Exception;
+
+    //<U, T> List<T> query(U params, Class<T> resultClass);
 }

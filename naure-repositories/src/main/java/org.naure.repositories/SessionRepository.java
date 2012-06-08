@@ -16,11 +16,11 @@ import java.util.Map;
 @Component
 public class SessionRepository extends Repository {
 
-    public void add(SessionLog sessionLog) throws Exception {
-        workspace.post(sessionLog);
+    public boolean add(SessionLog sessionLog) throws Exception {
+        return workspace.add(sessionLog);
     }
 
-    public List<SessionLog> get(Map params) throws Exception {
+    public <T> List<SessionLog> get(T params) throws Exception {
         return workspace.get(params, SessionLog.class);
     }
 }

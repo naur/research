@@ -2,12 +2,18 @@ package org.naure.research.web.controllers.learn;
 
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
-import org.naure.research.web.models.Eng;
+import org.naure.repositories.models.Eng;
 import org.naure.web.integrate.ControllerBase;
+import org.naure.web.integrate.service.EngService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 
 @Controller
-@RequestMapping(value="learn/eng", method = {RequestMethod.GET, RequestMethod.POST})
+@RequestMapping(value = "learn/eng", method = {RequestMethod.GET, RequestMethod.POST})
 public class EngController extends ControllerBase {
     @RequestMapping()
     public String view() {
@@ -27,24 +33,37 @@ public class EngController extends ControllerBase {
 
     @RequestMapping(value = "get")
     public Information get() {
-        Information<Eng> information = new Information<Eng>();
+        Information<List<Eng>> information = new Information<List<Eng>>();
+        try {
+            Map<String, String> params = new HashMap<String, String>();
+            information.setData(engService.get(params));
+        } catch (Exception ex) {
+            information.setKeywords(ex.getMessage());
+        }
         return information;
     }
 
-    @RequestMapping(value = "add/{name}")
-    public Information<String> add(@PathVariable String name) {
+    @RequestMapping(value = "add/{word}")
+    public Information<String> add(@PathVariable String word) {
         Information<String> information = new Information<String>();
-        information.setLevel(InformationLevel.SUCCESS.value());
-        return information;
-    }
+        try {
+            Eng eng = new Eng();
+            eng.setWord(word);
+            information.setData(engService.add(eng) ? "Success" : "Error");
+            information.setLevel(InformationLevel.SUCCESS.value());
+        } catch (Exception ex) {
+            information.setKeywords(ex.getMessage());
+            information.setLevel(InformationLevel.ERROR.value());
+        }
 
-    @RequestMapping(value = "del")
-    public Information<String> del() {
-        Information<String> information = new Information<String>();
         return information;
     }
 
     public EngController() {
         viewPath = "learn";
     }
+
+
+    @Autowired
+    private EngService engService;
 }

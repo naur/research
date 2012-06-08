@@ -21,11 +21,12 @@ import java.util.Map;
 public class MongoWorkspace implements Workspace {
 
     @Override
-    public <T> List<T> get(Map params, Class<T> tClass) throws Exception {
+    public <T, U> List<U> get(T t, Class<U> resultClass) throws Exception {
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
         int pageSize = 30;
         int pageIndex = 1;
+        Map params = (Map)t;
         for (Object key : params.keySet()) {
             if ("pageSize".equals(key)) {
                 pageSize =  Integer.parseInt(params.get(key).toString());
@@ -41,23 +42,46 @@ public class MongoWorkspace implements Workspace {
         }
         query.skip(pageSize * (pageIndex - 1));
         query.limit(pageSize);
-        return mongoOperations.find(query, tClass);
+        return mongoOperations.find(query, resultClass);
     }
 
     @Override
-    public <U, T> T put(U entity, Class<T>... tClass) throws Exception {
+    public <U> U get(int identifier, Class<U> resultClass) throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+
     @Override
-    public <U, T> T post(U entity, Class<T>... tClass) throws Exception {
+    public <T, U> U add(T t, Class<U>... resultClass) throws Exception {
         MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
-        mongoOps.insert(entity);
+        mongoOps.insert(t);
         return null;
     }
 
     @Override
-    public <U, T> boolean delete(U u, Class<T>... tClass) throws Exception {
+    public <T> boolean add(T t) throws Exception {
+        MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
+        mongoOps.insert(t);
+        return true;
+    }
+
+    @Override
+    public <T, U> U delete(T t, Class<U>... resultClass) throws Exception {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public <T> boolean delete(T t) throws Exception {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public <T, U> U update(T t, Class<U>... resultClass) throws Exception {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public <T> boolean update(T t) throws Exception {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

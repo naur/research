@@ -134,7 +134,7 @@
             });
         }
     };
-    $.fn.xmlAcquire = function (options) {
+    $.fn.NAURE_HTTP_xmlAcquire = function (options) {
         options.renderContainer = this;
         NAURE.HTTP.xmlAcquire(options);
         return this;
@@ -521,7 +521,7 @@
             error:null,
             success:null
         }, options);
-        $(opt.container).xmlAcquire({
+        $(opt.container).NAURE_HTTP_xmlAcquire({
             xml:opt.xml,
             xmlUrl:opt.xmlUrl,
             xmlCache:opt.xmlCache,
