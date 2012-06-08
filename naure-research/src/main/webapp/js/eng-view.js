@@ -2,7 +2,7 @@
 
 var overlayNodes = {
     Add:{
-        input:{type:'button', title:'Add Eng', value:'Add', onclick:'overlayNodes.Add.handler();'},
+        input:{type:'button', title:'Add Eng', value:'Add'},
         html:'<input type="text"  value=""/>',
         handler:function () {
             $(this).attr('disabled', true);
@@ -11,7 +11,7 @@ var overlayNodes = {
             if ($(this).next().next().children(':first-child').val().length > 0) {
                 NAURE.Message.show({content:'Add Eng ' + $(this).next().next().children(':first-child').val() + '...'});
                 $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
-                    xmlUrl: '/learn/eng/add/' + $(this).next().next().children(':first-child').val(),
+                    xmlUrl: '/learn/eng/add/' + $(this).next().next().children(':first-child').val() + ".xml",
                     xslUrl: '/xsl/table.xsl',
                     context: this,
                     error: function(error) {

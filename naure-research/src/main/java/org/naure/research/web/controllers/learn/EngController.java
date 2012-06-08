@@ -10,10 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,10 +44,13 @@ public class EngController extends ControllerBase {
     }
 
     @RequestMapping(value = "add/{word}")
-    public Information<String> add(@PathVariable String word) {
+//    @ResponseBody
+    public Information add(@PathVariable String word) {
         Information<String> information = new Information<String>();
         try {
             Eng eng = new Eng();
+            eng.setCreated(Calendar.getInstance(Locale.CHINA).getTime());
+            eng.setUpdated(Calendar.getInstance(Locale.CHINA).getTime());
             eng.setWord(word);
             information.setData(engService.add(eng) ? "Success" : "Error");
             information.setLevel(InformationLevel.SUCCESS.value());
