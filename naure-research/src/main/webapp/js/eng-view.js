@@ -18,11 +18,12 @@ var overlayNodes = {
 
         NAURE.HTTP.Request({
             uri:'http://dict.bing.com.cn/io.aspx?q=final&t=dict&ut=default&ulang=ZH-CN&tlang=EN-US',
+            context: this,
             error: function (error) {
-                $(this).attr('disabled', false);
+                $(error.context).attr('disabled', false);
             },
             success:function (obj) {
-                $(this).attr('disabled', false);
+                $(error.context).attr('disabled', false);
                 //var temp = JAM.parse(obj.http.responseText);
 
                 //PROS
