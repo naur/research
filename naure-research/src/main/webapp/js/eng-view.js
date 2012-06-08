@@ -2,28 +2,45 @@
 
 var overlayNodes = {
     Add:{
-        input:{type:'button', title:'Add Eng', value: 'Add', onclock: 'overlayNodes.Add.handler();'},
+        input:{type:'button', title:'Add Eng', value:'Add', onclick:'overlayNodes.Add.handler();'},
         html:'<input type="text"  value=""/>',
         handler:function () {
             $(this).attr('disabled', true);
             $('article section:eq(1)').empty();
-            NAURE.Message.show({content: '正在获取数据...'});
-            alert('Add');
-            $(this).attr('disabled', false);
+
+            if ($(this).next().next().children(':first-child').val().length > 0) {
+                NAURE.Message.show({content:'Add Eng ' + $(this).next().next().children(':first-child').val() + '...'});
+                NAURE.HTTP.xmlAcquire({
+                    xmlUrl: '/learn/eng/add',
+                    context: this,
+                    error: function(error) {
+                        $(error.context).attr('disabled', false);
+                        NAURE.Message.show({content:'Error: ' + JSON.stringify($.toJSON(error)), color: 'red'});
+                    },
+                    success: function(obj) {
+                        NAURE.Message.show({content:'Add eng success.'});
+                        $(obj.context).attr('disabled', false);
+                    }
+                });
+            }
+            else {
+                NAURE.Message.show({content:'Input is empty.'});
+                $(this).attr('disabled', false);
+            }
         }},
     Get:function () {
         $(this).attr('disabled', true);
         $('article section:eq(1)').empty();
-        NAURE.Message.show({content: 'Get Data...'});
+        NAURE.Message.show({content:'Get Data...'});
 
         NAURE.HTTP.Request({
             uri:'http://dict.bing.com.cn/io.aspx?q=final&t=dict&ut=default&ulang=ZH-CN&tlang=EN-US',
-            context: this,
-            error: function (error) {
+            context:this,
+            error:function (error) {
                 $(error.context).attr('disabled', false);
             },
             success:function (obj) {
-                $(error.context).attr('disabled', false);
+                $(obj.context).attr('disabled', false);
                 //var temp = JAM.parse(obj.http.responseText);
 
                 //PROS
@@ -34,7 +51,7 @@ var overlayNodes = {
     'Analysis':function () {
         $(this).attr('disabled', true);
         $('article section:eq(1)').empty();
-        NAURE.Message.show({content: 'Analysis...'});
+        NAURE.Message.show({content:'Analysis...'});
         $(this).attr('disabled', false);
     }
 }

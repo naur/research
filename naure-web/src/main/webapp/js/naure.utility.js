@@ -45,6 +45,22 @@
         //return JSON.parse('{"key":7,"color":"black"}');
         return html;
     };
+
+    NAURE.JSON.toString = function (obj) {
+        var str = '';
+        for (var key in obj) {
+            if (typeof(obj[key]) == 'number' ||
+                typeof(obj[key]) == 'string' ||
+                typeof(obj[key]) == 'boolean' ||
+                typeof(obj[key]) == 'array' ||
+                typeof(obj[key]) == 'undefined' ||
+                typeof(obj[key]) == 'date')
+                str += '"' + key + '":"' + obj[key] + '",';
+        }
+        str = str.replace(/,?$/, '');
+        //return JSON.parse('{"key":7,"color":"black"}');
+        return str;
+    };
 })(jQuery);
 
 //----- html 字符串过滤  -----------------------------------------------//
