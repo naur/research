@@ -87,7 +87,7 @@
             if (typeof(opt.nodes[$(this).attr('tag')]) == 'function')
                 $(this).live(opt.eventType, opt.nodes[this.innerText]);
             else
-                $(this).parent().prev().prev().children(':first-child').live(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
+                $(this).parent().prev().prev().children(':first-child').bind(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
         });
 
         $('.minimize').live('click', function () {

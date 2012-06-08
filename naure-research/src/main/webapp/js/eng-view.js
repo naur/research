@@ -8,7 +8,7 @@ var overlayNodes = {
             $(this).attr('disabled', true);
             $('article section:eq(1)').empty();
 
-            if ($(this).next().next().children(':first-child').val().length > 0) {
+            if ($(this).parent().next().next().children(':first-child').val().length > 0) {
                 NAURE.Message.show({content:'Add Eng ' + $(this).next().next().children(':first-child').val() + '...'});
                 $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
                     xmlUrl: '/learn/eng/add/' + $(this).next().next().children(':first-child').val() + ".xml",
