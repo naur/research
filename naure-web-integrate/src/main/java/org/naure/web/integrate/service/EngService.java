@@ -7,6 +7,7 @@ import org.naure.repositories.models.SessionLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +29,25 @@ public class EngService {
     }
 
     public boolean add(Eng eng) throws Exception {
-        return engRepository.add(eng);
+        Map<String, String> params =  new HashMap<String, String>();
+        params.put("word", eng.getWord());
+        if (engRepository.get(params).size() > 0)
+            return engRepository.add(eng);
+        else
+            return engRepository.update(eng);
     }
 
     public boolean update(Map params) throws Exception {
         return engRepository.update(params);
+    }
+
+    public <T, U> U aaaa(T t, Class<?>... resultClass) {
+        Map<String, Object> aa = new HashMap<String, Object>();
+        aa.put("class", Eng.class);
+
+
+
+        return null;
     }
 
     @Autowired

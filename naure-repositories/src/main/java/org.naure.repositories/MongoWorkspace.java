@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -77,12 +78,22 @@ public class MongoWorkspace implements Workspace {
 
     @Override
     public <T, U> U update(T t, Class<U>... resultClass) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return  null;
     }
 
     @Override
     public <T> boolean update(T t) throws Exception {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
+        Query query = new Query();
+        Map params = (Map)t;
+        for (Object key : params.keySet()) {
+            if ("class".equals(key))
+                continue;
+            query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+        }
+        Update update = new Update();
+        mongoOps.updateFirst(query, update, (Class)params.get("class"));
+        return true;
     }
 
     @Autowired

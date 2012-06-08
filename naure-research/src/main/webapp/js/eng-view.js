@@ -3,22 +3,23 @@
 var overlayNodes = {
     Add:{
         input:{type:'button', title:'Add Eng', value:'Add'},
-        html:'<input type="text"><//input>',
+        html:'<input type="text" />',
         handler:function () {
             $(this).attr('disabled', true);
             $('article section:eq(1)').empty();
 
-            if ($(this).parent().next().next().children(':first-child').children(':first-child').val().length > 0) {
+            var word = $(this).parent().next().next().children(':first-child').children(':first-child').val();
+            if (word.length > 0) {
                 NAURE.Message.show({content:'Add Eng ' + $(this).next().next().children(':first-child').val() + '...'});
                 $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
-                    xmlUrl: '/learn/eng/add/' + $(this).next().next().children(':first-child').val() + ".xml",
-                    xslUrl: '/xsl/table.xsl',
-                    context: this,
-                    error: function(error) {
+                    xmlUrl:'/learn/eng/add/' + word + ".xml",
+                    xslUrl:'/xsl/table.xsl',
+                    context:this,
+                    error:function (error) {
                         $(error.context).attr('disabled', false);
-                        NAURE.Message.show({content:'Error: ' + JSON.stringify($.toJSON(error)), color: 'red'});
+                        NAURE.Message.show({content:'Error: ' + JSON.stringify($.toJSON(error)), color:'red'});
                     },
-                    success: function(obj) {
+                    success:function (obj) {
                         NAURE.Message.show({content:'Add eng success.'});
                         $(obj.context).attr('disabled', false);
                     }
@@ -29,21 +30,21 @@ var overlayNodes = {
                 $(this).attr('disabled', false);
             }
         }},
-    Get: function () {
+    Get:function () {
         $(this).attr('disabled', true);
         $('article section:eq(1)').empty();
-        NAURE.Message.show({content: '正在获取数据...'});
+        NAURE.Message.show({content:'正在获取数据...'});
 
         $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
-            xmlUrl: '/learn/eng/get.xml',
-            xslUrl: '/xsl/table.xsl',
-            context: this,
+            xmlUrl:'/learn/eng/get.xml',
+            xslUrl:'/xsl/table.xsl',
+            context:this,
             error:function (ex) {
                 NAURE.Message.show({content:'获取数据结束！'});
                 NAURE.Message.show({content:'获取数据错误，请稍后重试！', color:'red'});
                 $(obj.context).attr('disabled', false);
             },
-            success:function(obj) {
+            success:function (obj) {
                 $(obj.context).attr('disabled', false);
                 NAURE.Message.empty();
             }

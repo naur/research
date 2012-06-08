@@ -41,9 +41,9 @@
                 //'       <input title="{1}" CHECKED="checked" type="{2}">' +
                 '       <input {2}></input>' +
                 '   </figcaption>' +
-                '   <figcaption class="panel-right {5}" style="background-color: {1};"></figcaption>' +
+                '   <figcaption class="panel-right {3}" style="background-color: {1};{7}"></figcaption>' +
                 '   <figcaption class="panel-center">' +
-                '       <span class="node" tag="{3}">{4}</span>' +
+                '       <span class="node" tag="{4}">{5}</span>' +
                 '       <span class="delete"></span>' +
                 '       <aside style="display: none;"></aside>' +
                 '   </figcaption>' +
@@ -75,10 +75,11 @@
                 (opt.layout.indexOf('left') != -1 || isRichNode) ? '' : 'panel-left-hide',
                 isRichNode ? 'white' : '#07C',
                 isRichNode ? NAURE.JSON.toHtml(opt.nodes[key].input) : 'type=checkbox',
+                opt.layout.indexOf('right') != -1 ? '' : 'panel-right-hide',
                 key,
                 isRichNode ? opt.nodes[key].html : key,
-                opt.layout.indexOf('right') != -1 ? '' : 'panel-right-hide',
-                isRichNode ? 'margin-left: -40px;' : ''
+                isRichNode ? 'margin-left: -40px;' : '',
+                ''
             ));
         }
 
