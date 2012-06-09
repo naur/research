@@ -52,15 +52,13 @@ public class EngController extends ControllerBase {
             eng.setCreated(Calendar.getInstance(Locale.CHINA).getTime());
             eng.setUpdated(Calendar.getInstance(Locale.CHINA).getTime());
             eng.setWord(word);
+
             information.setData(engService.add(eng) ? "Success" : "Error");
             information.setLevel(InformationLevel.SUCCESS.value());
         } catch (Exception ex) {
             information.setKeywords(ex.getMessage());
             information.setLevel(InformationLevel.ERROR.value());
         }
-
-        Eng engss = new Eng();
-        engService.aaaa(engss, Eng.class);
         return information;
     }
 

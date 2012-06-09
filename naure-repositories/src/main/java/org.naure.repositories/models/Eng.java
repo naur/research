@@ -1,6 +1,7 @@
 package org.naure.repositories.models;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,7 +43,16 @@ public class Eng {
         this.updated = updated;
     }
 
+    public List getEngKoo() {
+        return engKoo;
+    }
+
+    public void setEngKoo(List engKoo) {
+        this.engKoo = engKoo;
+    }
+
     private String word;
+    private List engKoo;
     private String description;
     private Date created; // createDate;
     private Date updated; //updatedDate;

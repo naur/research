@@ -7,10 +7,11 @@ var overlayNodes = {
         handler:function () {
             $(this).attr('disabled', true);
             $('article section:eq(1)').empty();
+            NAURE.Message.empty();
 
             var word = $(this).parent().next().next().children(':first-child').children(':first-child').val();
             if (word.length > 0) {
-                NAURE.Message.show({content:'Add Eng ' + $(this).next().next().children(':first-child').val() + '...'});
+                NAURE.Message.show({content:'Add Eng ' + word + '...'});
                 $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
                     xmlUrl:'/learn/eng/add/' + word + ".xml",
                     xslUrl:'/xsl/table.xsl',
@@ -33,6 +34,7 @@ var overlayNodes = {
     Get:function () {
         $(this).attr('disabled', true);
         $('article section:eq(1)').empty();
+        NAURE.Message.empty();
         NAURE.Message.show({content:'正在获取数据...'});
 
         $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
@@ -53,6 +55,7 @@ var overlayNodes = {
     EngKoo:function () {
         $(this).attr('disabled', true);
         $('article section:eq(1)').empty();
+        NAURE.Message.empty();
         NAURE.Message.show({content:'Get Data...'});
 
         NAURE.HTTP.Request({
@@ -73,6 +76,7 @@ var overlayNodes = {
     'Analysis':function () {
         $(this).attr('disabled', true);
         $('article section:eq(1)').empty();
+        NAURE.Message.empty();
         NAURE.Message.show({content:'Analysis...'});
         $(this).attr('disabled', false);
     }

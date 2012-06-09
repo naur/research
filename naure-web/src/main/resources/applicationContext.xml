@@ -115,7 +115,7 @@
     </bean>
 
     <!--序列化工具-->
-    <bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller"/>
+    <bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller" />
     <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"/>
 
     <mvc:interceptors>

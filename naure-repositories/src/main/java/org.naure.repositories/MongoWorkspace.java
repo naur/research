@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -27,14 +28,14 @@ public class MongoWorkspace implements Workspace {
         Query query = new Query();
         int pageSize = 30;
         int pageIndex = 1;
-        Map params = (Map)t;
+        Map params = (Map) t;
         for (Object key : params.keySet()) {
             if ("pageSize".equals(key)) {
-                pageSize =  Integer.parseInt(params.get(key).toString());
+                pageSize = Integer.parseInt(params.get(key).toString());
                 continue;
             }
             if ("pageIndex".equals(key)) {
-                pageIndex =  Integer.parseInt(params.get(key).toString());
+                pageIndex = Integer.parseInt(params.get(key).toString());
                 if (pageIndex == 0)
                     pageIndex = 1;
                 continue;
@@ -78,21 +79,33 @@ public class MongoWorkspace implements Workspace {
 
     @Override
     public <T, U> U update(T t, Class<U>... resultClass) throws Exception {
-        return  null;
+        return null;
     }
 
     @Override
     public <T> boolean update(T t) throws Exception {
         MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
+        Map params = (Map) t;
         Query query = new Query();
-        Map params = (Map)t;
+        Update update = new Update();
+        Map subMap = null;
         for (Object key : params.keySet()) {
             if ("class".equals(key))
                 continue;
-            query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+            subMap = (Map) params.get(key);
+            if ("query".equals(key))
+                for (Object key1 : subMap.keySet())
+                    query.addCriteria(Criteria.where(key1.toString()).is(subMap.get(key1)));
+            if ("update".equals(key))
+                for (Object key2 : subMap.keySet()) {
+//                    if (subMap.get(key2) instanceof Collection)
+//                        update.set(key2.toString(), subMap.get(key2));
+//                    else
+                        update.set(key2.toString(), subMap.get(key2));
+                }
         }
-        Update update = new Update();
-        mongoOps.updateFirst(query, update, (Class)params.get("class"));
+
+        mongoOps.updateFirst(query, update, (Class) (params.get("class")));
         return true;
     }
 

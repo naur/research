@@ -7,9 +7,7 @@ import org.naure.repositories.models.SessionLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,26 +26,27 @@ public class EngService {
         return engRepository.get(identifier);
     }
 
-    public boolean add(Eng eng) throws Exception {
-        Map<String, String> params =  new HashMap<String, String>();
-        params.put("word", eng.getWord());
-        if (engRepository.get(params).size() > 0)
+    public boolean add(final Eng eng) throws Exception {
+        Map<String, Object> query = new HashMap<String, Object>(){{
+            put("word", eng.getWord());
+        }};
+
+        if (this.get(query).size() > 0) {
+            Map<String, Object> update = new HashMap<String, Object>();
+            update.put("query", query);
+            update.put("update", new HashMap<String, Object>(){{
+                put("description", eng.getDescription());
+                put("updated", eng.getUpdated());
+                put("engKoo", eng.getEngKoo());
+            }});
+            update.put("class", Eng.class);
+            return this.update(update);
+        } else
             return engRepository.add(eng);
-        else
-            return engRepository.update(eng);
     }
 
     public boolean update(Map params) throws Exception {
         return engRepository.update(params);
-    }
-
-    public <T, U> U aaaa(T t, Class<?>... resultClass) {
-        Map<String, Object> aa = new HashMap<String, Object>();
-        aa.put("class", Eng.class);
-
-
-
-        return null;
     }
 
     @Autowired
