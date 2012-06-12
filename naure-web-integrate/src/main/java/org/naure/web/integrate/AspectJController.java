@@ -36,7 +36,12 @@ public class AspectJController {
 //
 //        }
         //会话日志
-        sessionService.add(HttpSessionFilter.session.get());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sessionService.add(HttpSessionFilter.session.get());
+            }
+        }).start();
     }
 
     @AfterReturning("controllerBean() && methodPointcut() ")
