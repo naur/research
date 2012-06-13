@@ -3,6 +3,7 @@ package org.naure.web.integrate.service;
 import org.naure.common.entities.TraceEventType;
 import org.naure.repositories.SessionRepository;
 import org.naure.repositories.models.SessionLog;
+import org.naure.web.integrate.HttpSessionFilter;
 import org.naure.web.integrate.HttpUtility;
 import org.naure.web.integrate.properties.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class SessionService {
         }
         if (null == request.getRequestedSessionId()) return;
 
-        SessionLog sessionLog = new SessionLog();
+        final SessionLog sessionLog = new SessionLog();
         sessionLog.setApplication(systemProperties.applicationName);
         sessionLog.setSeverity(TraceEventType.Start);
         sessionLog.setSessionId(request.getRequestedSessionId());
@@ -62,7 +63,15 @@ public class SessionService {
 //        logEntry.SessionLog.RequestUrl = (HttpContext.Current.Request.RawUrl ?? "").ToString();
 //        logEntry.Categories.Add("Session Trace");
         try {
-            sessionRepository.add(sessionLog);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        sessionRepository.add(sessionLog);
+                    } catch (Exception ex) {
+                    }
+                }
+            }).start();
         } catch (Exception ex) {
             System.out.println(ex);
         }
