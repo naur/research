@@ -28,7 +28,7 @@ public class SessionService {
     }
 
     public void add(HttpServletRequest request) {
-        if (request.getRequestURI().contains("diagnostic")) return;
+        if (null == request || request.getRequestURI().contains("diagnostic")) return;
         if (request.getRequestedSessionId() == null) {
             request.getSession();
         }

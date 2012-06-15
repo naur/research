@@ -2,6 +2,7 @@ package org.naure.web.integrate;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -19,8 +20,25 @@ public class HttpSessionFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        session.set((HttpServletRequest) request);
-        chain.doFilter(request, response);
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        if (httpRequest.getRequestURI().contains("/css/") ||
+                httpRequest.getRequestURI().contains("/images/") ||
+                httpRequest.getRequestURI().contains("/js/") ||
+                httpRequest.getRequestURI().contains("/resources/") ||
+                httpRequest.getRequestURI().contains("/xml/") ||
+                httpRequest.getRequestURI().contains("/xsl/") ||
+                httpRequest.getRequestURI().contains("/xml/") ||
+                httpRequest.getRequestURI().contains("favicon.ico")) {
+            chain.doFilter(request, response);
+        } else {
+            session.set(httpRequest);
+            if ("/".equals(httpRequest.getRequestURI())) {
+                httpRequest.getRequestDispatcher("welcome").forward(request, response);
+            } else {
+                chain.doFilter(request, response);
+            }
+        }
     }
 
     @Override
