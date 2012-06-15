@@ -17,6 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class WelcomeController extends ControllerBase {
     @RequestMapping( method = RequestMethod.GET)
     public String welcome() {
-        return "welcome";
+        return "hello";
     }
 }

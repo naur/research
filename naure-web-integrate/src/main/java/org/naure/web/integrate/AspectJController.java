@@ -35,8 +35,6 @@ public class AspectJController {
 //        } catch (Exception ex) {
 //
 //        }
-        //会话日志
-        sessionService.add(HttpSessionFilter.session.get());
     }
 
     @AfterReturning("controllerBean() && methodPointcut() ")
@@ -46,6 +44,8 @@ public class AspectJController {
     //相当于finally,无论业务方法是否产生异常，执行后都会执行此操作
     @After("controllerBean() && methodPointcut() ")
     public void after() {
+        //会话日志
+        sessionService.add(HttpSessionFilter.session.get());
     }
 
     //定义切点,匹配规则为(返回类型 方法(参数设置)
