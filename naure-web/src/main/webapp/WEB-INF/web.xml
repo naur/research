@@ -62,9 +62,9 @@
         <location>/error</location>
     </error-page>
 
-    <welcome-file-list>
-        <welcome-file>welcome</welcome-file>
-    </welcome-file-list>
+    <!--<welcome-file-list>-->
+        <!--<welcome-file>welcome</welcome-file>-->
+    <!--</welcome-file-list>-->
     <!---->
     <!--<servlet-mapping>-->
         <!--<servlet-name>default</servlet-name>-->
