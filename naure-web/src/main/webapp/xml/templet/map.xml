@@ -5,10 +5,10 @@
     <article>
         <section></section>
         <section>
-            <canvas width="800" height="600"></canvas>
+            <!--<canvas id="map_canvas" width="800" height="600"></canvas>-->
+            <div id="map_canvas" style="width:100%; height:100%"></div>
         </section>
     </article>
-    <aside></aside>
     <footer></footer>
     <section></section>
 </body>
