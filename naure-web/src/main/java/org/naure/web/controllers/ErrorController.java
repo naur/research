@@ -1,7 +1,7 @@
 package org.naure.web.controllers;
 
-import org.naure.web.integrate.ControllerBase;
-import org.naure.web.integrate.HttpSessionFilter;
+import org.naure.web.ControllerBase;
+import org.naure.web.HttpSessionFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

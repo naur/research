@@ -29,7 +29,7 @@
 
     <filter>
         <filter-name>httpSessionFilter</filter-name>
-        <filter-class>org.naure.web.integrate.HttpSessionFilter</filter-class>
+        <filter-class>org.naure.web.HttpSessionFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>httpSessionFilter</filter-name>

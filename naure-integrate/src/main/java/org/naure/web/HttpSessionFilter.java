@@ -1,4 +1,4 @@
-package org.naure.web.integrate;
+package org.naure.web;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

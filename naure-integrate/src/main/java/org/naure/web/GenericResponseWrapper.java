@@ -1,4 +1,4 @@
-package org.naure.web.integrate;
+package org.naure.web;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;

@@ -154,7 +154,9 @@
 
         var containArray = false;
         for (var key in jsonObj) {
-            if (jsonObj[key] && (typeof(jsonObj[key]) == 'object') && jsonObj[key].length) {
+            if (jsonObj[key] && (typeof(jsonObj[key]) == 'object')
+                //&& jsonObj[key].length
+                ) {
                 containArray = true;
                 break;
             }
@@ -249,5 +251,4 @@
 
         return output.join('');
     };
-
 })  (jQuery);

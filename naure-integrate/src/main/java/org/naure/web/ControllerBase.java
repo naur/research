@@ -1,4 +1,4 @@
-package org.naure.web.integrate;
+package org.naure.web;
 
 import java.util.List;
 import java.util.Map;

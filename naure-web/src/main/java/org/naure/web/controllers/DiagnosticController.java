@@ -3,9 +3,9 @@ package org.naure.web.controllers;
 
 import org.naure.common.entities.Information;
 import org.naure.repositories.models.SessionLog;
-import org.naure.web.integrate.ControllerBase;
-import org.naure.web.integrate.HttpSessionFilter;
-import org.naure.web.integrate.service.SessionService;
+import org.naure.web.ControllerBase;
+import org.naure.web.HttpSessionFilter;
+import org.naure.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

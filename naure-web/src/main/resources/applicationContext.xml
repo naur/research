@@ -7,7 +7,7 @@
 
     <!--<context:property-placeholder location="classpath:jdbc.properties"/>-->
     <context:component-scan
-            base-package="org.naure.web.integrate,org.naure.web.controllers,org.naure.*.web.controllers"/>
+            base-package="org.naure.web,org.naure.services,org.naure.web.controllers,org.naure.*.web.controllers"/>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
@@ -96,8 +96,8 @@
         <property name="modelKey" value="information"/>
     </bean>
     <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
-    <bean id="atomView" class="org.naure.web.integrate.view.AtomView"/>
-    <bean id="rssView" class="org.naure.web.integrate.view.RssView"/>
+    <bean id="atomView" class="org.naure.web.views.AtomView"/>
+    <bean id="rssView" class="org.naure.web.views.RssView"/>
 
     <!--转换程序-->
     <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">

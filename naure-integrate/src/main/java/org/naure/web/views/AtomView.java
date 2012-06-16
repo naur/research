@@ -1,4 +1,4 @@
-package org.naure.web.integrate.view;
+package org.naure.web.views;
 
 import com.sun.syndication.feed.atom.Content;
 import com.sun.syndication.feed.atom.Entry;

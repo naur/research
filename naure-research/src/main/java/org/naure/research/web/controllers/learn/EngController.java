@@ -3,15 +3,13 @@ package org.naure.research.web.controllers.learn;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.repositories.models.Eng;
-import org.naure.web.integrate.ControllerBase;
-import org.naure.web.integrate.service.EngService;
+import org.naure.web.ControllerBase;
+import org.naure.services.EngService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.*;
 

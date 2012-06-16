@@ -1,11 +1,11 @@
-package org.naure.web.integrate.service;
+package org.naure.services;
 
 import org.naure.common.entities.TraceEventType;
 import org.naure.repositories.SessionRepository;
 import org.naure.repositories.models.SessionLog;
-import org.naure.web.integrate.HttpSessionFilter;
-import org.naure.web.integrate.HttpUtility;
-import org.naure.web.integrate.properties.SystemProperties;
+import org.naure.web.HttpSessionFilter;
+import org.naure.web.HttpUtility;
+import org.naure.web.properties.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

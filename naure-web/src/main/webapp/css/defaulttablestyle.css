@@ -4,12 +4,14 @@ table tbody
 */
 table {
     border: 0px solid #b3d8ea;
-    /*font-size: 12px;*/
+    font-size: 11px;
+    font-family: 'Comic Sans MS';
     border-collapse: collapse;
     border-spacing: 0;
     clear: both;
     width: 100%;
     text-align: center;
+    background-color: white;
 }
 
 table, table th, table td {

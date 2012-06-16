@@ -67,19 +67,18 @@
         $('.overlay section:eq(0)').empty();
 
         var isRichNode = false;
+
         for (key in opt.nodes) {
-            if (typeof(opt.nodes[key]) != 'function')
-                isRichNode = true;
-            else
-                isRichNode = false;
+            if (typeof(opt.nodes[key]) != 'function') isRichNode = true;
+            else isRichNode = false;
             $('.overlay section:eq(0)').append($.format(opt.html,
                 (opt.layout.indexOf('left') != -1 || isRichNode) ? '' : 'panel-left-hide',
-                isRichNode ? 'white' : '#07C',
+                isRichNode ? 'transparent' : '#07C',
                 isRichNode ? NAURE.JSON.toHtml(opt.nodes[key].input) : 'type=checkbox',
                 opt.layout.indexOf('right') != -1 ? '' : 'panel-right-hide',
                 key,
                 isRichNode ? opt.nodes[key].html : key,
-                isRichNode ? 'margin-left: -40px;' : '',
+                isRichNode ? 'margin-left: -36px;' : '',
                 ''
             ));
         }
@@ -89,7 +88,7 @@
             if (typeof(opt.nodes[$(this).attr('tag')]) == 'function')
                 $(this).live(opt.eventType, opt.nodes[this.innerText]);
             else
-                $(this).parent().prev().prev().children(':first-child').bind(opt.eventType, opt.nodes[$(this).attr('tag')].handler)
+                $(this).parent().prev().prev().children(':first-child').bind(opt.eventType, this, opt.nodes[$(this).attr('tag')].handler)
         });
 
         $('.minimize').live('click', function () {

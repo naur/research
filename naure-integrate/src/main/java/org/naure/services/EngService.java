@@ -1,4 +1,4 @@
-package org.naure.web.integrate.service;
+package org.naure.services;
 
 import org.naure.repositories.EngRepository;
 import org.naure.repositories.SessionRepository;

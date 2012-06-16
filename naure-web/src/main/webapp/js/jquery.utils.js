@@ -2443,28 +2443,28 @@ $.fn.extend({
         */
 
         $(function() {
-                // Append the Slimbox HTML code at the bottom of the document
-                $("body").append(
-                        $([
-                                overlay = $('<div id="lbOverlay" />')[0],
-                                center = $('<div id="lbCenter" />')[0],
-                                bottomContainer = $('<div id="lbBottomContainer" />')[0]
-                        ]).css("display", "none")
-                );
-
-                image = $('<div id="lbImage" />').appendTo(center).append(
-                        sizer = $('<div style="position: relative;" />').append([
-                                prevLink = $('<a id="lbPrevLink" href="#" />').click(previous)[0],
-                                nextLink = $('<a id="lbNextLink" href="#" />').click(next)[0]
-                        ])[0]
-                )[0];
-
-                bottom = $('<div id="lbBottom" />').appendTo(bottomContainer).append([
-                        $('<a id="lbCloseLink" href="#" />').add(overlay).click(close)[0],
-                        caption = $('<div id="lbCaption" />')[0],
-                        number = $('<div id="lbNumber" />')[0],
-                        $('<div style="clear: both;" />')[0]
-                ])[0];
+//                // Append the Slimbox HTML code at the bottom of the document
+//                $("body").append(
+//                        $([
+//                                overlay = $('<div id="lbOverlay" />')[0],
+//                                center = $('<div id="lbCenter" />')[0],
+//                                bottomContainer = $('<div id="lbBottomContainer" />')[0]
+//                        ]).css("display", "none")
+//                );
+//
+//                image = $('<div id="lbImage" />').appendTo(center).append(
+//                        sizer = $('<div style="position: relative;" />').append([
+//                                prevLink = $('<a id="lbPrevLink" href="#" />').click(previous)[0],
+//                                nextLink = $('<a id="lbNextLink" href="#" />').click(next)[0]
+//                        ])[0]
+//                )[0];
+//
+//                bottom = $('<div id="lbBottom" />').appendTo(bottomContainer).append([
+//                        $('<a id="lbCloseLink" href="#" />').add(overlay).click(close)[0],
+//                        caption = $('<div id="lbCaption" />')[0],
+//                        number = $('<div id="lbNumber" />')[0],
+//                        $('<div style="clear: both;" />')[0]
+//                ])[0];
         });
 
 

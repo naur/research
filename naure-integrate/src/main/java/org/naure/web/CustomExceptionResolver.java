@@ -1,4 +1,4 @@
-package org.naure.web.integrate;
+package org.naure.web;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;

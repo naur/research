@@ -57,7 +57,7 @@
             </dependency>
             <dependency>
                 <groupId>org.naure</groupId>
-                <artifactId>naure-web-integrate</artifactId>
+                <artifactId>naure-integrate</artifactId>
                 <version>${naure.version}</version>
             </dependency>
 

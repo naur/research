@@ -11,7 +11,7 @@
     /*relative: 生成相对定位的元素，相对于其正常位置进行定位。 因此，"left:20" 会向元素的 LEFT 位置添加 20 像素。*/
     /*static: 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）。*/
     /*inherit:规定应该从父元素继承 position 属性的值。*/
-    position: absolute;
+    position: fixed;
     float: right;
     display: inline;
     /*position: fixed;*/
@@ -55,7 +55,7 @@
 .overlay section {
     list-style: none;
     /*width: 300px;*/
-    min-width: 160px;
+    min-width: 100px;
 }
 
 .overlay section:last-child {
@@ -88,22 +88,6 @@
     position: relative;
 }
 
-.overlay section figure .node {
-    /*position: inherit;*/
-    cursor: pointer;
-    readonly: true;
-    text-wrap: normal;
-    font-variant: normal;
-    font-weight: normal;
-    font-style: normal;
-    font-size: 115%;
-    /*display: -moz-inline-box;*/
-    /*display: inline-block;*/
-    white-space: pre-wrap;
-    font-family: Symbola, "Times New Roman", serif;
-    margin: 4px 6px;
-    /*float:left;*/
-}
 
 .overlay section figure figcaption {
     text-align: center;
@@ -114,17 +98,45 @@
     /*border-left: 0px rgba(255, 255, 255, 0.7);*/
     /*border-right: 0px rgba(0, 0, 0, 0.7);*/
     /*border-bottom: 0px rgba(0, 0, 0, 0.4);*/
-    background: url(/images/sw.png) repeat-x;
+    /*每一项的背景*/
+    /*background: url(/images/sw.png) repeat-x;*/
     /*border-bottom: none;*/
+}
+
+.overlay section figure figcaption .node {
+    position: inherit;
+    cursor: pointer;
+    readonly: true;;
+    text-wrap: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-style: normal;
+    /*font-size: 115%;*/
+    /*display: -moz-inline-box;*/
+    /*display: inline-block;*/
+    white-space: pre-wrap;
+    font-family: Symbola, "Times New Roman", serif;
+    margin: 3px 5px;
+    height: 30px;
+    /*float:left;*/
 }
 
 .panel-left{
     width: 30px;
     float:left;
+    top:0px;
+    bottom: 0px;
+    left: 0px;
 }
 .panel-right{
     width: 30px;
     float:right;
+    right: 0px;
+    top:0px;
+    bottom: 0px;
+}
+.panel-center {
+
 }
 
 .overlay section figure:only-child .delete {

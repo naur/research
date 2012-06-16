@@ -1,4 +1,4 @@
-package org.naure.web.integrate;
+package org.naure.web;
 
 
 import com.sun.syndication.feed.atom.Feed;
