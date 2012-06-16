@@ -3,18 +3,33 @@
     padding: 0
 }
 
-.overlay {
-    font-size: 11px;
+body {
     font-family: 'Comic Sans MS';
-    /*absolute: 生成绝对定位的元素，相对于 static 定位以外的第一个父元素进行定位。 元素的位置通过 "left", "top", "right" 以及 "bottom" 属性进行规定。*/
-    /*fixed:生成绝对定位的元素，相对于浏览器窗口进行定位。元素的位置通过 "left", "top", "right" 以及 "bottom" 属性进行规定。*/
-    /*relative: 生成相对定位的元素，相对于其正常位置进行定位。 因此，"left:20" 会向元素的 LEFT 位置添加 20 像素。*/
-    /*static: 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）。*/
-    /*inherit:规定应该从父元素继承 position 属性的值。*/
+    position: relative;
+    /*overflow: hidden;*/
+    background: white;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    font-size: 11px;
+}
+
+/*aside section, aside figure, aside figcaption {*/
+    /*display: block;*/
+/*}*/
+
+article section {
     position: absolute;
-    float: right;
-    display: inline;
-    /*position: fixed;*/
+    float: left;
+}
+
+article section:last-child {
+    /*left: 300px;*/
+}
+
+.overlay {
+    position: fixed;
     color: black;
     padding: 4px;
     background: rgba(255, 255, 255, 0.8);
@@ -136,11 +151,11 @@
     visibility: collapse;
 }
 
-.overlay li:hover .delete {
+li:hover .delete {
     visibility: visible
 }
 
-.overlay .delete {
+.delete {
     background: url(/images/buttons.png) no-repeat;
     width: 20px;
     visibility: hidden;
@@ -155,15 +170,25 @@
     cursor: pointer;
 }
 
-.overlay .delete:hover {
+.delete:hover {
     opacity: 1.0;
 }
 
-.overlay input[type=button]:hover, a.help_button:hover {
+#con {
+    top: 0;
+    left: 0;
+    background: white;
+    font-size: small;
+    padding: 8px;
+    border: 8px solid #eee;
+    opacity: 0.97;
+}
+
+input[type=button]:hover, a.help_button:hover {
     opacity: 1.0;
 }
 
-.overlay input[type=button] {
+input[type=button] {
     background: url(/images/buttons.png);
     border: none;
     opacity: 0.7;
@@ -176,7 +201,12 @@
     cursor: pointer;
 }
 
-.overlay .buttons {
+h3 {
+    text-align: center;
+    padding-top: 1em
+}
+
+.buttons {
     position: relative;
     border-top: 1px solid #ececec;
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgba(194, 194, 194, 0.8)), color-stop(1, rgba(239, 239, 239, 0.8)));
@@ -184,7 +214,7 @@
     background-color: #e8e8e8;
 }
 
-.overlay .buttons a {
+.buttons a {
     text-decoration: none;
     display: block;
     width: 50px;
@@ -193,7 +223,7 @@
     right: 0;
 }
 
-.overlay a.help_button {
+a.help_button {
     background: url(/images/buttons.png);
     border: none;
     opacity: 0.7;
@@ -208,7 +238,7 @@
     right: 34px;
 }
 
-.overlay input.minimize {
+input.minimize {
     background: url(/images/buttons.png);
     border: none;
     opacity: 0.7;
@@ -228,18 +258,18 @@
     cursor: pointer;
 }
 
-.overlay input[value=".png"] {
+input[value=".png"] {
     background-position: 30px 0px;
 }
 
-.overlay input[value=">_"] {
+input[value=">_"] {
     background-position: 60px 0px;
 }
 
-.overlay input[value="reload"] {
+input[value="reload"] {
     background-position: 0px 21px;
 }
 
-.overlay input[value="config"] {
+input[value="config"] {
     background-position: -30px 21px;
 }

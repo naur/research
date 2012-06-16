@@ -31,7 +31,8 @@
         var opt = $.extend({
             target:null,
             nodes:null,
-            renderContainer:null,
+            renderContainer:'body',
+            placement:"right-bottom", //left, right, center, top, center, bottom
             eventHandlers:null,
             layout:"panel-center", //left, right, center
             eventType:'click', //click, mouse,
@@ -62,7 +63,7 @@
                 '   </section>' +
                 '</section>';
 
-        $(opt.renderContainer).html(opt.container);
+        $(opt.renderContainer).append(opt.container);
         $('.overlay section:eq(0)').empty();
 
         var isRichNode = false;
