@@ -1,6 +1,7 @@
 * {
     margin: 0;
-    padding: 0
+    padding: 0;
+    text-align: center;
 }
 
 .overlay {
@@ -12,8 +13,7 @@
     /*static: 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right 或者 z-index 声明）。*/
     /*inherit:规定应该从父元素继承 position 属性的值。*/
     position: fixed;
-    float: right;
-    display: inline;
+    display: block;
     /*position: fixed;*/
     color: black;
     padding: 4px;
@@ -46,6 +46,7 @@
 }
 
 .overlay-right-bottom {
+    float: right;
     right: 0;
     /*opacity: 0.5;*/
     padding: 0;
@@ -63,22 +64,22 @@
 }
 
 /*.overlay section aside {*/
-    /*position: absolute;*/
-    /*bottom: 0;*/
-    /*right: 0;*/
-    /*font-size: small;*/
-    /*padding-bottom: 2px;*/
-    /*color: #888;*/
-    /*padding-right: 4px;*/
+/*position: absolute;*/
+/*bottom: 0;*/
+/*right: 0;*/
+/*font-size: small;*/
+/*padding-bottom: 2px;*/
+/*color: #888;*/
+/*padding-right: 4px;*/
 /*}*/
 
 /*.overlay section aside:before {*/
-    /*background: url(/images/buttons.png) -62px -21px no-repeat;*/
-    /*display: block;*/
-    /*width: 20px;*/
-    /*float: left;*/
-    /*color: rgba(0, 0, 0, 0.0);*/
-    /*content: "!";*/
+/*background: url(/images/buttons.png) -62px -21px no-repeat;*/
+/*display: block;*/
+/*width: 20px;*/
+/*float: left;*/
+/*color: rgba(0, 0, 0, 0.0);*/
+/*content: "!";*/
 /*}*/
 
 .overlay section figure {
@@ -91,8 +92,9 @@
 
 .overlay section figure figcaption {
     text-align: center;
-    position: inherit;
     padding: 4px;
+    /*position: absolute;*/
+    /*display: inline-block;*/
     /*padding-top: 8px;*/
     /*border-top: 0px rgba(255, 255, 255, 0.4);*/
     /*border-left: 0px rgba(255, 255, 255, 0.7);*/
@@ -104,7 +106,6 @@
 }
 
 .overlay section figure figcaption .node {
-    position: inherit;
     cursor: pointer;
     readonly: true;;
     text-wrap: normal;
@@ -121,22 +122,38 @@
     /*float:left;*/
 }
 
+/*.panel-left{*/
+/*width: 30px;*/
+/*float:left;*/
+/*top:0px;*/
+/*bottom: 0px;*/
+/*left: 0px;*/
+/*}*/
+/*.panel-right{*/
+/*width: 30px;*/
+/*float:right;*/
+/*right: 0px;*/
+/*top:0px;*/
+/*bottom: 0px;*/
+/*}*/
+/*.panel-center {*/
+
+/*}*/
+
+
 .panel-left{
-    width: 30px;
-    float:left;
-    top:0px;
-    bottom: 0px;
-    left: 0px;
+    float: left;
+    position: absolute;
+    display: inline-block;
 }
 .panel-right{
-    width: 30px;
-    float:right;
-    right: 0px;
-    top:0px;
-    bottom: 0px;
+    float: right;
+    position: absolute;
+    display: inline-block;
 }
 .panel-center {
-
+    display: inline-block;
+    text-align: center;
 }
 
 .overlay section figure:only-child .delete {
