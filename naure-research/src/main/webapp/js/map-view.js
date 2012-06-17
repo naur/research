@@ -31,7 +31,7 @@ var overlayNodes = {
             geocoder.geocode({ 'address':address}, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     map.setCenter(results[0].geometry.location);
-                    map.setZoom(8);
+                    map.setZoom(12);
                     var marker = new google.maps.Marker({
                         map:map, position:results[0].geometry.location
                     });
@@ -50,10 +50,10 @@ var overlayNodes = {
         input:{type:'button', title:'Trace', value:'Trace'},
         html:'<select id="trace-path" onchange="selectTracePath(this);">' +
             '<option value="trace1">trace1</option>' +
-            '<option value="trace1">trace1</option>' +
-            '<option value="trace1">trace1</option>' +
-            '<option value="trace1">trace1</option>' +
-            '<option value="trace1">trace1</option>' +
+            '<option value="trace2">trace2</option>' +
+            '<option value="trace3">trace3</option>' +
+            '<option value="trace4">trace4</option>' +
+            '<option value="trace5">trace5</option>' +
             '</select><input id="trace-path-name" type=text />',
         handler:function (content) {
             $(this).attr('disabled', true);
@@ -84,7 +84,7 @@ function selectTracePath(obj) {
 function initialize() {
     var latlng = new google.maps.LatLng(39.904214, 116.40741300000002);
     var myOptions = {
-        zoom:8,
+        zoom:12,
         center:latlng,
         mapTypeId:google.maps.MapTypeId.ROADMAP
     };
