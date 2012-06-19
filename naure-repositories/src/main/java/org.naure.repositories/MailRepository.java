@@ -1,5 +1,6 @@
 package org.naure.repositories;
 
+import org.naure.repositories.construction.Repository;
 import org.springframework.stereotype.Component;
 
 /**

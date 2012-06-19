@@ -1,4 +1,4 @@
-package org.naure.research.location;
+package org.naure.common.location;
 
 import java.util.Date;
 

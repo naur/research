@@ -1,4 +1,4 @@
-package org.naure.repositories;
+package org.naure.repositories.construction;
 
 import org.naure.common.pattern.FacadeBase;
 import org.naure.common.pattern.IFacadeBase;

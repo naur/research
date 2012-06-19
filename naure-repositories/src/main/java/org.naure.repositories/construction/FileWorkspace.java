@@ -1,4 +1,4 @@
-package org.naure.repositories;
+package org.naure.repositories.construction;
 
 import org.springframework.stereotype.Component;
 
@@ -9,11 +9,11 @@ import java.util.Map;
  * Created with IntelliJ IDEA.
  * User: jiaruizhi
  * Date: 5/3/12
- * Time: 5:26 PM
+ * Time: 5:31 PM
  * To change this template use File | Settings | File Templates.
  */
 //@Component
-//public class DatastoreWorkspace implements Workspace{
+//public class FileWorkspace implements Workspace {
 //
 //    @Override
 //    public <T> List<T> get(Map params, Class<T> resultClass) throws Exception {

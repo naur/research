@@ -1,7 +1,8 @@
 package org.naure.web;
 
-import java.util.List;
-import java.util.Map;
+import org.naure.common.entities.Information;
+import org.naure.common.entities.InformationLevel;
+import org.naure.common.pattern.Func;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +15,16 @@ public abstract class ControllerBase {
 
     public String view(String name) {
         return viewPath + "/" + name;
+    }
+
+    protected Information handler(Information information, Func<Information, Information> func) {
+        try {
+            information = func.execute(information);
+        } catch (Exception ex) {
+            information.setKeywords(ex.toString());
+            information.setLevel(InformationLevel.ERROR.value());
+        }
+        return information;
     }
 
 //    @ExceptionHandler(Exception.class)

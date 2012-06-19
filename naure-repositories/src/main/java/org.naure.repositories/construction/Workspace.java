@@ -1,4 +1,4 @@
-package org.naure.repositories;
+package org.naure.repositories.construction;
 
 import java.util.List;
 import java.util.Map;

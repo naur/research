@@ -1,5 +1,6 @@
 package org.naure.repositories.models;
 
+import org.naure.common.entities.Entity;
 import org.naure.common.entities.TraceEventType;
 
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Date;
  * Time: 3:02 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SessionLog {
+public class SessionLog extends Entity {
     public String getApplication() {
         return application;
     }

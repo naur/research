@@ -1,5 +1,7 @@
 package org.naure.repositories.models;
 
+import org.naure.common.entities.Entity;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
  * Time: 6:08 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Eng {
+public class Eng extends Entity {
     public String getWord() {
         return word;
     }
@@ -26,23 +28,6 @@ public class Eng {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-
     public List getEngKoo() {
         return engKoo;
     }
@@ -54,6 +39,4 @@ public class Eng {
     private String word;
     private List engKoo;
     private String description;
-    private Date created; // createDate;
-    private Date updated; //updatedDate;
 }

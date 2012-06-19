@@ -1,4 +1,4 @@
-package org.naure.research.location;
+package org.naure.common.location;
 
 import java.util.Date;
 
@@ -11,6 +11,14 @@ import java.util.Date;
  */
 //包含 GeoPosition(T) 类的类型参数所指定类型的位置数据。
 public class GeoPosition<T> {
+    public GeoPosition() {
+
+    }
+
+    public GeoPosition(T t) {
+        this.location = t;
+    }
+
     public T getLocation() {
         return location;
     }
