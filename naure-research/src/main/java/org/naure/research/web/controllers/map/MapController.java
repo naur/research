@@ -31,6 +31,11 @@ public class MapController extends ControllerBase {
         return view("view");
     }
 
+    @RequestMapping(value = "geo")
+    public String geo() {
+        return view("geo");
+    }
+
     @RequestMapping(value = "path/{name}")
     public Information path(@PathVariable final String name) {
         return handler(new Information<List<GeoTrace>>(), new Func<Information, Information>() {
