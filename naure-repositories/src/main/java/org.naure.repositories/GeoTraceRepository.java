@@ -2,6 +2,7 @@ package org.naure.repositories;
 
 import org.naure.common.location.GeoTrace;
 import org.naure.repositories.construction.Repository;
+import org.naure.repositories.models.Eng;
 import org.naure.repositories.models.SessionLog;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,15 @@ public class GeoTraceRepository extends Repository {
         return workspace.add(geoTrace);
     }
 
+    public GeoTrace get(int identifier) throws Exception {
+        return workspace.get(identifier, GeoTrace.class);
+    }
+
     public <T> List<GeoTrace> get(T params) throws Exception {
         return workspace.get(params, GeoTrace.class);
+    }
+
+    public <T> boolean update(T params) throws Exception {
+        return workspace.update(params);
     }
 }

@@ -2,6 +2,7 @@ package org.naure.common.location;
 
 import org.naure.common.entities.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +13,11 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GeoTrace extends Entity {
+    public GeoTrace() {
+        name = "";
+        positions = new ArrayList<GeoPosition<GeoCoordinate>>();
+    }
+
     public String getName() {
         return name;
     }

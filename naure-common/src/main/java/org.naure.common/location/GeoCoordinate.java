@@ -11,6 +11,14 @@ import java.util.Date;
  */
 //表示由纬度和经度坐标确定的地理位置。也可以包括海拔高度、精度、速度和航向信息。
 public class GeoCoordinate {
+    public GeoCoordinate() {
+    }
+
+    public GeoCoordinate(double longitude, double latitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+
     public double getAltitude() {
         return altitude;
     }

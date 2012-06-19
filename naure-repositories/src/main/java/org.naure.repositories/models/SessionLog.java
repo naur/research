@@ -109,11 +109,11 @@ public class SessionLog extends Entity {
         this.timestamp = timestamp;
     }
 
-    @Override
-    public String toString() {
-        return String.format("SessionLog [application=%1$s, sessionId=%1$s, ipAddress=%2$s, hostName=%3$s, severity=%4$s, language=%5$s, userAgent=%6$s, requestType=%7$s, statusCode=%8$s, referrerUrl=%9$s, requestUrl=%10$s, timestamp=%11$s]",
-                sessionId, ipAddress, hostName, severity, language, userAgent, requestType, statusCode, refererUrl, requestUrl, timestamp);
-    }
+//    @Override
+//    public String toString() {
+//        return String.format("SessionLog [application=%1$s, sessionId=%1$s, ipAddress=%2$s, hostName=%3$s, severity=%4$s, language=%5$s, userAgent=%6$s, requestType=%7$s, statusCode=%8$s, referrerUrl=%9$s, requestUrl=%10$s, timestamp=%11$s]",
+//                sessionId, ipAddress, hostName, severity, language, userAgent, requestType, statusCode, refererUrl, requestUrl, timestamp);
+//    }
 
     private String application;
     private String sessionId;
@@ -124,7 +124,7 @@ public class SessionLog extends Entity {
     private String userAgent;
     private String requestType;
     private int statusCode;
-    private String refererUrl;
-    private String requestUrl;
     private Date timestamp;
+    private String requestUrl;
+    private String refererUrl;
 }

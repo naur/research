@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -99,9 +100,12 @@ public class MongoWorkspace implements Workspace {
                     query.addCriteria(Criteria.where(key1.toString()).is(subMap.get(key1)));
             if ("update".equals(key))
                 for (Object key2 : subMap.keySet()) {
-//                    if (subMap.get(key2) instanceof Collection)
-//                        update.set(key2.toString(), subMap.get(key2));
-//                    else
+                    //文档参考：http://hi.baidu.com/farmerluo/item/15ba88579b8bbb9409be17bb
+                    if (subMap.get(key2) instanceof Object[])
+                        update.pushAll(key2.toString(), (Object[]) subMap.get(key2));
+                    else if (subMap.get(key2) instanceof Collection)
+                        update.pushAll(key2.toString(), ((Collection) subMap.get(key2)).toArray());
+                    else
                         update.set(key2.toString(), subMap.get(key2));
                 }
         }

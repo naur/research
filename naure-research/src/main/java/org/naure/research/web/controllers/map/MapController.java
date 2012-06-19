@@ -1,6 +1,7 @@
 package org.naure.research.web.controllers.map;
 
 import org.naure.common.entities.Information;
+import org.naure.common.entities.InformationLevel;
 import org.naure.common.pattern.Func;
 import org.naure.common.location.GeoCoordinate;
 import org.naure.common.location.GeoPosition;
@@ -13,10 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,16 +44,40 @@ public class MapController extends ControllerBase {
         });
     }
 
-    @RequestMapping(value = "trace/{longitude}/latitude")
-    public Information trace(@PathVariable double longitude, @PathVariable double latitude) {
-        Information<String> information = information = handler(new Information<String>(), new Func<Information, Information>() {
+    //增加 GeoTrace
+    @RequestMapping(value = "trace/{name}/{longitude}/{latitude}/start")
+    public Information traceStart(@PathVariable final String name, @PathVariable final double longitude, @PathVariable final double latitude) {
+        return handler(new Information<String>(), new Func<Information, Information>() {
             @Override
-            public Information execute(Information information) {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            public Information execute(Information information) throws Exception {
+                GeoTrace geoTrace = new GeoTrace();
+                geoTrace.setName(name);
+                geoTrace.setCreated(Calendar.getInstance().getTime());
+                geoTrace.setUpdated(geoTrace.getCreated());
+                geoTrace.getPositions().add(new GeoPosition<GeoCoordinate>(new GeoCoordinate(longitude, latitude)));
+                information.setData(geoTraceService.add(geoTrace) ? "Success" : "Error");
+                information.setLevel(InformationLevel.SUCCESS.value());
+                return information;
             }
         });
+    }
 
-        return information;
+    //更新 GeoTrace
+    @RequestMapping(value = "trace/{name}/{longitude}/{latitude}")
+    public Information trace(@PathVariable final String name, @PathVariable final double longitude, @PathVariable final double latitude) {
+        return handler(new Information<String>(), new Func<Information, Information>() {
+            @Override
+            public Information execute(Information information) throws Exception {
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put("name", name);
+                params.put("position", new GeoPosition[]{
+                        new GeoPosition<GeoCoordinate>(new GeoCoordinate(longitude, latitude))
+                });
+                information.setData(geoTraceService.update(params) ? "Success" : "Error");
+                information.setLevel(InformationLevel.SUCCESS.value());
+                return information;
+            }
+        });
     }
 
     public MapController() {
