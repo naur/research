@@ -1,6 +1,5 @@
 package org.naure.common.location;
 
-import org.bson.types.ObjectId;
 import org.naure.common.entities.Entity;
 
 import java.util.List;

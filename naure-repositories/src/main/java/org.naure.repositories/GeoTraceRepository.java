@@ -3,6 +3,7 @@ package org.naure.repositories;
 import org.naure.common.location.GeoTrace;
 import org.naure.repositories.construction.Repository;
 import org.naure.repositories.models.SessionLog;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * Time: 9:42 AM
  * To change this template use File | Settings | File Templates.
  */
+@Component
 public class GeoTraceRepository extends Repository {
     public boolean add(GeoTrace geoTrace) throws Exception {
         return workspace.add(geoTrace);

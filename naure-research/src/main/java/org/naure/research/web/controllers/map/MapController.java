@@ -35,17 +35,15 @@ public class MapController extends ControllerBase {
 
     @RequestMapping(value = "path")
     public Information path() {
-        Information<List<GeoTrace>> information = handler(new Information<List<GeoTrace>>(), new Func<Information, Information>() {
+        return handler(new Information<List<GeoTrace>>(), new Func<Information, Information>() {
             @Override
             public Information execute(Information information) throws Exception {
                 Information<List<GeoTrace>> info = (Information<List<GeoTrace>>) information;
                 Map<String, String> params = new HashMap<String, String>();
-                info.setData(MapController.this.geoTraceService.get(params));
+                info.setData(geoTraceService.get(params));
                 return info;
             }
         });
-
-        return information;
     }
 
     @RequestMapping(value = "trace/{longitude}/latitude")

@@ -2,6 +2,8 @@ package org.naure.web.controllers;
 
 
 import org.naure.common.entities.Information;
+import org.naure.common.location.GeoTrace;
+import org.naure.common.pattern.Func;
 import org.naure.repositories.models.SessionLog;
 import org.naure.web.ControllerBase;
 import org.naure.web.HttpSessionFilter;
@@ -33,14 +35,24 @@ public class DiagnosticController extends ControllerBase {
 
     @RequestMapping(value = "session")
     public Information session() {
-        Information<List<SessionLog>> information = new Information<List<SessionLog>>();
-        try {
-            Map<String, String> params = new HashMap<String, String>();
-            information.setData(sessionService.get(params));
-        } catch (Exception ex) {
-            information.setKeywords(ex.getMessage());
-        }
-        return information;
+//        Information<List<SessionLog>> information = new Information<List<SessionLog>>();
+//        try {
+//            Map<String, String> params = new HashMap<String, String>();
+//            information.setData(sessionService.get(params));
+//        } catch (Exception ex) {
+//            information.setKeywords(ex.getMessage());
+//        }
+
+
+        return handler(new Information<List<SessionLog>>(), new Func<Information, Information>() {
+            @Override
+            public Information execute(Information information) throws Exception {
+                Information<List<SessionLog>> info = (Information<List<SessionLog>>) information;
+                Map<String, String> params = new HashMap<String, String>();
+                info.setData(sessionService.get(params));
+                return info;
+            }
+        });
     }
 
     @RequestMapping(value = "debug")
