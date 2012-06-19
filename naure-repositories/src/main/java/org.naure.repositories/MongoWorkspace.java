@@ -101,16 +101,17 @@ public class MongoWorkspace implements Workspace {
             if ("update".equals(key))
                 for (Object key2 : subMap.keySet()) {
                     //文档参考：http://hi.baidu.com/farmerluo/item/15ba88579b8bbb9409be17bb
+                    //对 pushAll 支持有问题 【can't serialize class org.naure.common.location.GeoPosition】
                     if (subMap.get(key2) instanceof Object[])
-                        update.pushAll(key2.toString(), (Object[]) subMap.get(key2));
-                    else if (subMap.get(key2) instanceof Collection)
-                        update.pushAll(key2.toString(), ((Collection) subMap.get(key2)).toArray());
+                        update.push(key2.toString(), ((Object[]) subMap.get(key2))[0]);
+                    else if (subMap.get(key2) instanceof List)
+                        update.push(key2.toString(), ((List) subMap.get(key2)).get(0));
                     else
                         update.set(key2.toString(), subMap.get(key2));
                 }
         }
 
-        mongoOps.updateFirst(query, update, (Class) (params.get("class")));
+        mongoOps.updateMulti(query, update, (Class) (params.get("class")));
         return true;
     }
 

@@ -31,13 +31,14 @@ public class MapController extends ControllerBase {
         return view("view");
     }
 
-    @RequestMapping(value = "path")
-    public Information path() {
+    @RequestMapping(value = "path/{name}")
+    public Information path(@PathVariable final String name) {
         return handler(new Information<List<GeoTrace>>(), new Func<Information, Information>() {
             @Override
             public Information execute(Information information) throws Exception {
                 Information<List<GeoTrace>> info = (Information<List<GeoTrace>>) information;
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("name", name);
                 info.setData(geoTraceService.get(params));
                 return info;
             }
