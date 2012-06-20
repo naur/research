@@ -17,8 +17,12 @@
                 typeof(obj[key]) == 'boolean' ||
                 typeof(obj[key]) == 'array' ||
                 typeof(obj[key]) == 'undefined' ||
-                typeof(obj[key]) == 'date')
+                typeof(obj[key]) == 'date' ||
+                null == obj[key]) {
                 json += '"' + key + '":"' + obj[key] + '",';
+            } else if (typeof(obj[key]) == 'object') {
+                json += '"' + key + '":[' + JSON.stringify($.toJSON(obj[key]))  + '],';
+            }
         }
         json = json.replace(/,?$/, '}');
         //return JSON.parse('{"key":7,"color":"black"}');

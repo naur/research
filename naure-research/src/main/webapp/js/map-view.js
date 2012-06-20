@@ -68,28 +68,33 @@ var overlayNodes = {
                 new google.maps.LatLng(-18.142599, 178.431),
                 new google.maps.LatLng(-27.46758, 153.027892)];
             var tracePath = new google.maps.Polyline({
-                path: tracePlanCoordinates,
-                strokeColor: "#FF0000",
-                strokeOpacity: 1.0,
-                strokeWeight: 2
+                path:tracePlanCoordinates,
+                strokeColor:"#FF0000",
+                strokeOpacity:1.0,
+                strokeWeight:2
             });
             tracePath.setMap(map);
             $(this).attr('disabled', false);
         }
     }
 };
+
+
+
 function selectTracePath(obj) {
     $(obj).next().val($(obj).val());
 }
+
 function initialize() {
     var latlng = new google.maps.LatLng(39.904214, 116.40741300000002);
     var myOptions = {
-        zoom:12,
+        zoom:14,
         center:latlng,
         mapTypeId:google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     geocoder = new google.maps.Geocoder();
+    startGps();
 }
 
 $(function () {

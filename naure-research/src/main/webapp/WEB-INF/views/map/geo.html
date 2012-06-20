@@ -1,15 +1,46 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width = device-width; initial-scale=1">
-    <title>GeoLocation Trace View</title>
-    <link rel="stylesheet" href="/css/jquery.mobile.css" />
-    <script src="/js/jquery.min.js"></script>
-    <script src="jquery.mobile.min.js"></script>
+    <title> GeoLocation Trace View </title>
+    <!--<link rel="stylesheet" href="/css/jquery.mobile.css"/>-->
+    <link href="/css/naure.message.css" rel="stylesheet" type="text/css"/>
+
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.mobile.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.utils.js"></script>
+    <script type="text/javascript" src="/js/naure.init.js"></script>
+    <script type="text/javascript" src="/js/naure.utility.js"></script>
+    <script type="text/javascript" src="/js/naure.message.js"></script>
+    <script type="text/javascript" src="/js/naure.location.js"></script>
+
+    <script type="text/javascript">
+        var watchId;
+        $(function () {
+            $('body').message({placement:'append'});
+            $('#stop').live('click', function () {
+                if (watchId) {
+                    NAURE.Location.End(watchId);
+                    NAURE.Message.show({content:'End watchId: ' + watchId});
+                }
+            });
+            watchId = NAURE.Location.Start({success:function (position) {
+                if (position) {
+                    NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
+                } else {
+                    NAURE.Message.show({content:'position is null'});
+                }
+            }, error:function (error) {
+                NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message});
+            }});
+        });
+    </script>
 </head>
+
 <body>
+
+<input value="Stop" id="stop" type="button"/>
 
 </body>
 </html>

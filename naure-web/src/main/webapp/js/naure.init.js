@@ -16,6 +16,7 @@ NAURE.HTTP = {};
 NAURE.XML = {};
 NAURE.JSON = {};
 NAURE.Utility = {};
+NAURE.Location = {};
 //})(jQuery);
 
 
