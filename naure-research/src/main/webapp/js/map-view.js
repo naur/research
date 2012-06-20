@@ -94,7 +94,21 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     geocoder = new google.maps.Geocoder();
-    startGps();
+    NAURE.Location.Current({success:function (position) {
+        if (position) {
+            //NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
+            map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+            new google.maps.Marker({
+                map:map,
+                position:new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+                title:$.format('您当前所在的位置\r\n经度：{0}\r\n维度： {1}', position.coords.longitude, position.coords.latitude)
+            });
+        } else {
+            NAURE.Message.show({content:'position is null'});
+        }
+    }, error:function (error) {
+        NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message});
+    }});
 }
 
 $(function () {
