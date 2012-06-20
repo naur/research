@@ -113,10 +113,10 @@ function initialize() {
             });
             NAURE.Message.show({content:$.format('您当前所在的位置, 经度：{0}\r\n维度： {1}', position.coords.longitude, position.coords.latitude)});
         } else {
-            NAURE.Message.show({content:'position is null', color: 'red'});
+            NAURE.Message.show({content:'position is null', color:'red'});
         }
     }, error:function (error) {
-        NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message, color: 'red'});
+        NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message, color:'red'});
     }});
 }
 
@@ -125,7 +125,7 @@ function initialize() {
 /*-------------------- 初始化 START --------------------*/
 
 $(function () {
-    $('#map_canvas').message({overlay:'left-bottom'});
+    $('#map_canvas').message({overlay:'left-bottom', multiple:false});
     $('body').overlay({
         nodes:overlayNodes
     });
