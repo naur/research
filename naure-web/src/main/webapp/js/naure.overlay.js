@@ -37,6 +37,7 @@
             layout:"panel-center", //left, right, center
             eventType:'click', //click, mouse,
             focus:'test', //'article section:last-child'
+            //model: 'nav', //nav , text
             html:'<figure>' +
                 '   <figcaption class="panel-left {0}" style="background-color: {1};{6}">' +
                 //'       <input title="{1}" CHECKED="checked" type="{2}">' +
@@ -53,7 +54,7 @@
 
         opt.buttonsMinimize = false;
         opt.container =
-            '<section class="overlay overlay-right-bottom">' +
+            '<nav class="overlay overlay-right-bottom">' +
                 '   <section></section>' +
                 '   <section class="buttons">' +
                 '       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
@@ -61,7 +62,7 @@
                 '       <a class="help_button" title="Help Page" href="about/" target="_blank" />&nbsp;</a>' +
                 '       <input type="button" class="minimize" title="Minimize" onclick="NAURE.Message.empty();"/>' +
                 '   </section>' +
-                '</section>';
+                '</nav>';
 
         $(opt.renderContainer).append(opt.container);
         $('.overlay section:eq(0)').empty();

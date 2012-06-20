@@ -32,7 +32,7 @@ var overlayNodes = {
 $(function () {
     $('body').naure_ui_templet({name: 'overlay', success: function() {
         $('article section:eq(0)').message({placement:'append'});
-        $('nav').overlay({
+        $('body').overlay({
             nodes:overlayNodes
         });
     }});

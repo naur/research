@@ -40,6 +40,10 @@
 
         var message = {
             defaults:{
+                global: {
+                    multiple:true,
+                    transparent:false
+                },
                 content:'',
                 type:'span',
                 level:0,
@@ -52,6 +56,7 @@
                 inline:false,
                 fadeDefaultColor:'green',
                 datehide:false,
+                overlay:null, //left-bottom
                 dateformat:'HH:mm:ss.fff'        //yyyy-MM-dd HH:mm:ss fff
             },
             empty:function () {
@@ -74,7 +79,7 @@
                 $('.message').show();
                 $('.show').hide();
                 $('#information').empty();
-                $('#prompt').append(NAURE.Message.renderContent(opt));
+                NAURE.Message.renderHtml('#prompt', opt);
             },
             promptLine:function (options) {
                 if (!isInit) {
@@ -83,7 +88,7 @@
 
                 var opt = $.extend({}, message.defaults, options);
                 $('.message').show();
-                $('#prompt').appendLine(NAURE.Message.renderContent(opt));
+                NAURE.Message.renderHtml('#prompt', opt);
             },
             show:function (options) {
                 if (!isInit) {
@@ -99,6 +104,8 @@
                     return;
                 }
 
+                if (!options.global.multiple) options.inline = true;
+
                 if (!options.inline) {
                     this.showLine(options);
                     return;
@@ -106,7 +113,7 @@
 
                 var opt = $.extend({}, message.defaults, options);
                 $('.show').show();
-                $('#information').html(NAURE.Message.renderContent(opt));
+                NAURE.Message.renderHtml('#information', opt);
             },
             showLine:function (options) {
                 if (!isInit) {
@@ -120,7 +127,23 @@
 
                 var opt = $.extend({}, message.defaults, options);
                 $('.show').show();
-                $('#information').appendLine(NAURE.Message.renderContent(opt));
+                NAURE.Message.renderHtml('#information', opt);
+            },
+            renderHtml:function (container, options) {
+                if (!options.global.multiple) {
+                    $(container).empty();
+                }
+
+                //todo 对于使用 appendLine 和 append 的情况还需要分析
+                if (!options.inline) $(container).appendLine(NAURE.Message.renderContent(options));
+                else $(container).append(NAURE.Message.renderContent(options));
+
+//                $('#prompt').append(NAURE.Message.renderContent(options));
+//                $('#prompt').appendLine(NAURE.Message.renderContent(opt));
+//
+//                $('#information').html(NAURE.Message.renderContent(opt));
+//                $('#information').appendLine(NAURE.Message.renderContent(opt));
+
             },
             renderContent:function (options) {
                 var opt = $.extend({}, message.defaults, options);
@@ -142,7 +165,7 @@
             },
             init:function (options) {
                 var opt = $.extend({}, message.defaults, options);
-
+                $.extend(message.defaults.global, options);
                 if (!opt.element) {
                     return;
                 }
@@ -150,7 +173,7 @@
                 if (opt.fade) {
                     opt.domElement = '<div class="message-fade"><p>' + opt.content + '</p></div>';
                 } else {
-                    opt.domElement = '<div class="message"><span class="title">' + opt.title + '：</span><span id="prompt"></span><div class="show"><span class="comment">' + opt.comment + '：</span><span id="information"></span></div></div>';
+                    opt.domElement = $.format('<div class="message {0}"><span class="title">' + opt.title + '：</span><span id="prompt"></span><div class="show"><span class="comment">' + opt.comment + '：</span><span id="information"></span></div></div>', opt.overlay ? 'message-' + opt.overlay : '');
                 }
 
                 switch (opt.placement) {
@@ -170,6 +193,12 @@
                         $(opt.element).after(opt.domElement);
                         break;
                 }
+
+                $('.message>.title').live('click', function () {
+                    message.defaults.global.transparent = !message.defaults.global.transparent;
+                    if (message.defaults.global.transparent) $('.message').addClass('message-transparent')
+                    else $('.message').removeClass('message-transparent')
+                });
 
                 isInit = true;
             }

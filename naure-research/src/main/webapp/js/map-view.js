@@ -1,12 +1,17 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Administrator
- * Date: 6/16/12
- * Time: 4:56 PM
- * To change this template use File | Settings | File Templates.
- */
+/*
+ * Script:
+ *              贾睿之
+ * Email:
+ *              jiaruizhi@360buy.com
+ * Date:
+ *              6/16/12 4:56 PM
+ * Description:
+ *              Advanced Design and Analysis Techniques
+ * */
 
-var map, geocoder, eventContext;
+/*-------------------- 全局变量 START --------------------*/
+
+var map, marker, geocoder, eventContext;
 var overlayNodes = {
     "道路":function () {
         map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
@@ -79,7 +84,9 @@ var overlayNodes = {
     }
 };
 
+/*-------------------- 全局变量 END --------------------*/
 
+/*-------------------- 函数 START --------------------*/
 
 function selectTracePath(obj) {
     $(obj).next().val($(obj).val());
@@ -94,25 +101,31 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     geocoder = new google.maps.Geocoder();
-    NAURE.Location.Current({success:function (position) {
+    NAURE.Location.Start({success:function (position) {
         if (position) {
             //NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
             map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-            new google.maps.Marker({
+            if (marker) marker.setMap(null);
+            marker = new google.maps.Marker({
                 map:map,
                 position:new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
                 title:$.format('您当前所在的位置\r\n经度：{0}\r\n维度： {1}', position.coords.longitude, position.coords.latitude)
             });
+            NAURE.Message.show({content:$.format('您当前所在的位置, 经度：{0}\r\n维度： {1}', position.coords.longitude, position.coords.latitude)});
         } else {
-            NAURE.Message.show({content:'position is null'});
+            NAURE.Message.show({content:'position is null', color: 'red'});
         }
     }, error:function (error) {
-        NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message});
+        NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message, color: 'red'});
     }});
 }
 
+/*-------------------- 函数 END --------------------*/
+
+/*-------------------- 初始化 START --------------------*/
+
 $(function () {
-    $('#map_canvas').message();
+    $('#map_canvas').message({overlay:'left-bottom'});
     $('body').overlay({
         nodes:overlayNodes
     });
@@ -122,3 +135,5 @@ $(function () {
     script.src = "http://maps.google.com/maps/api/js?v=3.7&sensor=false&region=zh-CN&language=zh-CN&callback=initialize";
     document.body.appendChild(script);
 });
+
+/*-------------------- 初始化 END --------------------*/

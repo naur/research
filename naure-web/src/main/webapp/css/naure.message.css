@@ -21,7 +21,7 @@
  */
 
 .message {
-    margin: 8px;
+    /*margin: 8px;*/
     position: relative;
     /*min-width: 800px;*/
     width: 95%;
@@ -29,26 +29,37 @@
     display: none;
     font-size: 13.5px;
     font-family: 'Microsoft YaHei';
-    padding: 8px;
+    padding: 6px;
+}
+
+.message-transparent {
+    opacity: 0.3;
+}
+
+.message-left-bottom {
+    left: 0;
+    bottom: 0;
+    position: fixed;
 }
 
 .message pre {
     /*font-weight: 600;*/
-	/*font-size: 12px;*/
-	/*padding: 0;*/
-	/*margin: 0;*/
-	/*background: #f0f0f0;*/
-	/*line-height: 20px; *//* 行距 */
-	/*background: url(pre-bg.gif) repeat-y left top;*/
-	/*width: 600px;*/
-	/*overflow: auto; *//* 超出宽度出现滑动条 */
-	/*overflow-Y:hidden; *//* 作用是隐藏IE的右侧滑动条 */
+    /*font-size: 12px;*/
+    /*padding: 0;*/
+    /*margin: 0;*/
+    /*background: #f0f0f0;*/
+    /*line-height: 20px; *//* 行距 */
+    /*background: url(pre-bg.gif) repeat-y left top;*/
+    /*width: 600px;*/
+    /*overflow: auto; *//* 超出宽度出现滑动条 */
+    /*overflow-Y:hidden; *//* 作用是隐藏IE的右侧滑动条 */
 }
 
 /*ff9300*/
 .message .title {
     /*color: #0000ff;*/
     color: red;
+    cursor: pointer;
     /*color: #3475BA;*/
     /*color: #ff4500;*/
 }
@@ -90,7 +101,6 @@
     line-height: 51px;
     display: none
 }
-
 
 .message-fade {
     /*border-right: 5px solid #3475BA;*/
