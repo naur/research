@@ -16,15 +16,8 @@
     <script type="text/javascript" src="/js/naure.location.js"></script>
 
     <script type="text/javascript">
-        var watchId;
-        $(function () {
-            $('body').message({placement:'append', overlay: 'left-bottom', multiple:false});
-            $('#stop').live('click', function () {
-                if (watchId) {
-                    NAURE.Location.End(watchId);
-                    NAURE.Message.show({content:'End watchId: ' + watchId});
-                }
-            });
+        var watchId, isStart = false;
+        function GeoStart() {
             watchId = NAURE.Location.Start({success:function (position) {
                 if (position) {
                     NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
@@ -33,7 +26,28 @@
                 }
             }, error:function (error) {
                 NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message});
+                isStart = false;
+                $('#stop').val('Start');
             }});
+            isStart = true;
+        }
+
+        $(function () {
+            $('body').message({placement:'append'});
+            $('#stop').live('click', function () {
+                $(this).attr('disabled', true);
+                if (watchId && isStart) {
+                    NAURE.Location.End(watchId);
+                    isStart = false;
+                    $(this).val('Start');
+                } else {
+                    GeoStart();
+                    $(this).val('Stop');
+                }
+                NAURE.Message.show({content:(isStart ? 'Start' : 'End') + ' watchId: ' + watchId});
+                $(this).attr('disabled', false);
+            });
+            GeoStart();
         });
     </script>
 </head>
@@ -41,6 +55,7 @@
 <body>
 
 <input value="Stop" id="stop" type="button"/>
+<input value="Clear" id="clear" type="button" onclick="NAURE.Message.empty();"/>
 
 </body>
 </html>
