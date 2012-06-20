@@ -4,6 +4,16 @@
     /*text-align: center;*/
 }
 
+html {
+    height: 100%
+}
+
+body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px
+}
+
 .overlay {
     font-size: 11px;
     font-family: 'Comic Sans MS';
@@ -90,7 +100,6 @@
     position: relative;
 }
 
-
 .overlay section figure figcaption {
     text-align: center;
     margin: 4px;
@@ -123,23 +132,25 @@
     /*float:left;*/
 }
 
-.panel-left{
+.panel-left {
     float: left;
-    left:0;
+    left: 0;
     position: absolute;
     display: inline-block;
     vertical-align: middle;
 }
-.panel-right{
+
+.panel-right {
     float: right;
-    right:0;
+    right: 0;
     position: absolute;
     display: inline-block;
     vertical-align: middle;
 }
+
 .panel-center {
-    left:0;
-    right:0;
+    left: 0;
+    right: 0;
     display: inline-block;
     text-align: center;
     vertical-align: middle;
@@ -177,10 +188,6 @@
     opacity: 1.0;
 }
 
-.overlay input[type=button]:hover, a.help_button:hover {
-    opacity: 1.0;
-}
-
 .overlay input[type=button] {
     background: url(/images/buttons.png);
     border: none;
@@ -188,10 +195,12 @@
     width: 30px;
     height: 21px;
     color: rgba(0, 0, 0, 0.0);
-    /*margin-left: 4px;*/
-    /*margin-top: 3px;*/
-    /*margin-bottom: 4px;*/
     cursor: pointer;
+    text-decoration: none;
+}
+
+.overlay input[type=button]:hover, .overlay a:hover {
+    opacity: 1.0;
 }
 
 .overlay .buttons {
@@ -200,64 +209,43 @@
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgba(194, 194, 194, 0.8)), color-stop(1, rgba(239, 239, 239, 0.8)));
     background-image: -moz-linear-gradient(center bottom, rgba(194, 194, 194, 0.8) 0%, rgba(239, 239, 239, 0.8) 100%);
     background-color: #e8e8e8;
+    text-align: left;
 }
 
 .overlay .buttons a {
+    background: url(/images/buttons.png);
+    border: none;
+    opacity: 0.7;
+    width: 30px;
+    height: 21px;
+    color: rgba(0, 0, 0, 0.0);
+    display: inline-block;
+    vertical-align: bottom;
     text-decoration: none;
-    display: block;
-    width: 50px;
-    position: absolute;
-    top: 0;
-    right: 0;
 }
 
 .overlay a.help_button {
-    background: url(/images/buttons.png);
-    border: none;
-    opacity: 0.7;
-    width: 30px;
-    height: 21px;
-    color: rgba(0, 0, 0, 0.0);
-    margin-left: 4px;
-    margin-top: 3px;
-    margin-bottom: 4px;
     background-position: 0px 42px;
-    margin-right: 6px;
-    right: 34px;
 }
 
 .overlay input.minimize {
-    background: url(/images/buttons.png);
-    border: none;
-    opacity: 0.7;
-    width: 30px;
-    height: 21px;
-    color: rgba(0, 0, 0, 0.0);
-    margin-left: 4px;
-    margin-top: 3px;
-    margin-bottom: 4px;
     background-position: 60px 0px;
-    margin-right: 6px;
-    text-decoration: none;
-    display: block;
     position: absolute;
-    top: 0;
-    right: 0px;
-    cursor: pointer;
+    right: 4px;
 }
 
-.overlay input[value=".png"] {
-    background-position: 30px 0px;
-}
+/*.overlay input[value=".png"] {*/
+/*background-position: 30px 0px;*/
+/*}*/
 
-.overlay input[value=">_"] {
-    background-position: 60px 0px;
-}
+/*.overlay input[value=">_"] {*/
+/*background-position: 60px 0px;*/
+/*}*/
 
-.overlay input[value="reload"] {
-    background-position: 0px 21px;
-}
+/*.overlay input[value="reload"] {*/
+/*background-position: 0px 21px;*/
+/*}*/
 
-.overlay input[value="config"] {
-    background-position: -30px 21px;
-}
+/*.overlay input[value="config"] {*/
+/*background-position: -30px 21px;*/
+/*}*/

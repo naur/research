@@ -57,8 +57,8 @@
                 '   <section></section>' +
                 '   <section class="buttons">' +
                 '       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
-                '       <input style="display: none;" title="Reset Graph" type="button">' +
-                '       <a class="help_button" title="Help Page" href="about/" target="_blank">&nbsp;</a>' +
+                '       <input style="display: none;" title="Reset Graph" type="button" />' +
+                '       <a class="help_button" title="Help Page" href="about/" target="_blank" />&nbsp;</a>' +
                 '       <input type="button" class="minimize" title="Minimize" onclick="NAURE.Message.empty();"/>' +
                 '   </section>' +
                 '</section>';
