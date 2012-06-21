@@ -16,7 +16,7 @@
     <script type="text/javascript" src="/js/naure.location.js"></script>
 
     <script type="text/javascript">
-        var watchId, isStart = false;
+        var watchId, currentPosition, isStart = false;
         function GeoStart() {
             GeoPosition();
             watchId = self.setInterval("GeoPosition()", parseInt($('#seconds').val()) * 1000);
@@ -34,6 +34,18 @@
             NAURE.Location.Current({success:function (position) {
                 if (position) {
                     NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
+                    if (null != $('#name').val() && $('#name').val().length > 0) {
+                        if (currentPosition && currentPosition.coords.longitude != position.coords.longitude, currentPosition.coords.latitude != position.coords.latitude)
+                            $.ajax({
+                                url:$.format('/map/trace/{0}/{1}/{2}.xml', $('#name').val(), position.coords.longitude, position.coords.latitude),
+                                success:function () {
+                                },
+                                error:function () {
+                                    NAURE.Message.show({content:'trace error ! ' + $.toJSON(position), color:'red'});
+                                }
+                            });
+                    }
+                    currentPosition = position;
                 } else {
                     NAURE.Message.show({content:'position is null'});
                 }

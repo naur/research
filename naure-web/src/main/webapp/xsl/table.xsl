@@ -5,10 +5,8 @@
         <table>
             <thead>
                 <tr bgcolor="#9acd32">
-                    <th>
-                        <xsl:value-of select="count(org.naure.common.entities.Information/data/*/*)"/>
-                    </th>
-                    <xsl:apply-templates select="org.naure.common.entities.Information/data/*[2]/*"/>
+                    <th></th>
+                    <xsl:apply-templates select="org.naure.common.entities.Information/data/*[1]/*"/>
                 </tr>
             </thead>
             <tfoot></tfoot>
@@ -19,7 +17,7 @@
     </xsl:template>
 
     <!--表头-->
-    <xsl:template match="org.naure.common.entities.Information/data/*[2]/*">
+    <xsl:template match="org.naure.common.entities.Information/data/*[1]/*">
         <th>
             <xsl:value-of select="name()"/>
         </th>

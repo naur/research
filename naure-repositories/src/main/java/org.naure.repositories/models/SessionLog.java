@@ -98,7 +98,7 @@ public class SessionLog {
     private TraceEventType severity;
     private String language;
     private String userAgent;
-    private String requestType;
+    private String requestType;  //HttpMethod
     private int statusCode;
     private Date timestamp;
     private String requestUrl;

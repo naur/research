@@ -51,24 +51,22 @@ public class MapController extends ControllerBase {
     }
 
     //增加 GeoTrace
-    @RequestMapping(value = "trace/{name}/{longitude}/{latitude}/start")
-    public Information traceStart(@PathVariable final String name, @PathVariable final double longitude, @PathVariable final double latitude) {
-        return handler(new Information<String>(), new Func<Information, Information>() {
-            @Override
-            public Information execute(Information information) throws Exception {
-                GeoTrace geoTrace = new GeoTrace();
-                geoTrace.setName(name);
-                geoTrace.setCreated(Calendar.getInstance().getTime());
-                geoTrace.setUpdated(geoTrace.getCreated());
-                geoTrace.getPositions().add(new GeoPosition<GeoCoordinate>(new GeoCoordinate(longitude, latitude)));
-                information.setData(geoTraceService.add(geoTrace) ? "Success" : "Error");
-                information.setLevel(InformationLevel.SUCCESS.value());
-                return information;
-            }
-        });
-    }
+//    @RequestMapping(value = "trace/{name}/{longitude}/{latitude}/start")
+//    public Information traceStart(@PathVariable final String name, @PathVariable final double longitude, @PathVariable final double latitude) {
+//        return handler(new Information<String>(), new Func<Information, Information>() {
+//            @Override
+//            public Information execute(Information information) throws Exception {
+//                GeoTrace geoTrace = new GeoTrace();
+//                geoTrace.setName(name);
+//                geoTrace.getPositions().add(new GeoPosition<GeoCoordinate>(new GeoCoordinate(longitude, latitude)));
+//                information.setData(geoTraceService.add(geoTrace) ? "Success" : "Error");
+//                information.setLevel(InformationLevel.SUCCESS.value());
+//                return information;
+//            }
+//        });
+//    }
 
-    //更新 GeoTrace
+    //增加 或 更新 GeoTrace
     @RequestMapping(value = "trace/{name}/{longitude}/{latitude}")
     public Information trace(@PathVariable final String name, @PathVariable final double longitude, @PathVariable final double latitude) {
         return handler(new Information<String>(), new Func<Information, Information>() {

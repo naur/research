@@ -1,5 +1,7 @@
 package org.naure.services;
 
+import org.naure.common.location.GeoCoordinate;
+import org.naure.common.location.GeoPosition;
 import org.naure.common.location.GeoTrace;
 import org.naure.repositories.GeoTraceRepository;
 import org.naure.repositories.models.Eng;
@@ -33,7 +35,6 @@ public class GeoTraceService {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("name", geoTrace.getName());
         }};
-
         if (this.get(query).size() > 0) {
             throw new Exception(String.format("GeoTrace: 已经存在 name=%0$s, 的记录", geoTrace.getName()));
         }
@@ -46,18 +47,15 @@ public class GeoTraceService {
         }};
 
         if (this.get(query).size() <= 0) {
-            throw new Exception(String.format("GeoTrace: 不存在 name=%0$s, 的记录",  params.get("name")));
+            //throw new Exception(String.format("GeoTrace: 不存在 name=%0$s, 的记录",  params.get("name")));
+            //当没有时进行 【增加】操作
+            GeoPosition<GeoCoordinate>[] positions = (GeoPosition<GeoCoordinate>[])params.get("position");
+            GeoTrace geoTrace = new GeoTrace();
+            geoTrace.setName(String.valueOf(params.get("name")));
+            geoTrace.getPositions().add(new GeoPosition<GeoCoordinate>(new GeoCoordinate(positions[0].getLocation().getLongitude(), positions[0].getLocation().getLatitude())));
+            return this.add(geoTrace);
         }
-
-        Map<String, Object> update = new HashMap<String, Object>();
-        update.put("query", query);
-        update.put("update", new HashMap<String, Object>(){{
-            put("positions", params.get("position"));
-            put("updated", Calendar.getInstance().getTime());
-        }});
-        update.put("class", GeoTrace.class);
-
-        return geoTraceRepository.update(update);
+        return geoTraceRepository.update(params);
     }
 
     @Autowired
