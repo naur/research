@@ -35,17 +35,17 @@
                 if (position) {
                     NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
                     if (null != $('#name').val() && $('#name').val().length > 0) {
-                        if (currentPosition && currentPosition.coords.longitude != position.coords.longitude, currentPosition.coords.latitude != position.coords.latitude)
+                        if (!currentPosition || (currentPosition.coords.longitude != position.coords.longitude && currentPosition.coords.latitude != position.coords.latitude))
                             $.ajax({
                                 url:$.format('/map/trace/{0}/{1}/{2}.xml', $('#name').val(), position.coords.longitude, position.coords.latitude),
                                 success:function () {
+                                    currentPosition = position;
                                 },
                                 error:function () {
-                                    NAURE.Message.show({content:'trace error ! ' + $.toJSON(position), color:'red'});
+                                    NAURE.Message.show({content:'trace error ! ' + JSON.stringify(position), color:'red'});
                                 }
                             });
                     }
-                    currentPosition = position;
                 } else {
                     NAURE.Message.show({content:'position is null'});
                 }
@@ -112,11 +112,11 @@
 <body>
 
 <select id="seconds">
-    <option SELECTED value="3">3s</option>
+    <option value="3">3s</option>
     <option value="5">5s</option>
     <option value="10">10s</option>
     <option value="30">30s</option>
-    <option value="60">60s</option>
+    <option SELECTED value="60">60s</option>
 </select>
 <input value="" id="name" type="text"/>
 <input value="Stop" id="stop" type="button"/>
