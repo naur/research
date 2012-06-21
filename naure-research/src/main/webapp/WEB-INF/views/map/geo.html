@@ -5,7 +5,7 @@
     <meta name="viewport" content="width = device-width; initial-scale=1">
     <title> GeoLocation Trace View </title>
     <!--<link rel="stylesheet" href="/css/jquery.mobile.css"/>-->
-    <link href="/css/naure.message.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="/css/naure.message.css"/>
 
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <!--<script type="text/javascript" src="/js/jquery.mobile.min.js"></script>-->
@@ -18,7 +18,20 @@
     <script type="text/javascript">
         var watchId, isStart = false;
         function GeoStart() {
-            watchId = NAURE.Location.Start({success:function (position) {
+            GeoPosition();
+            watchId = self.setInterval("GeoPosition()", parseInt($('#seconds').val()) * 1000);
+            isStart = true;
+            NAURE.Message.show({content:(isStart ? 'Start' : 'End') + ' watchId: ' + watchId});
+        }
+        function GeoEnd() {
+            if (watchId) {
+                window.clearInterval(watchId);
+            }
+            isStart = false;
+            NAURE.Message.show({content:(isStart ? 'Start' : 'End') + ' watchId: ' + watchId});
+        }
+        function GeoPosition() {
+            NAURE.Location.Current({success:function (position) {
                 if (position) {
                     NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
                 } else {
@@ -26,35 +39,74 @@
                 }
             }, error:function (error) {
                 NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message});
-                NAURE.Location.End(watchId);
-                isStart = false;
-                $('#stop').val('Start');
             }});
-            isStart = true;
         }
 
         $(function () {
             $('body').message({placement:'append'});
             $('#stop').live('click', function () {
                 $(this).attr('disabled', true);
-                if (watchId && isStart) {
-                    NAURE.Location.End(watchId);
-                    isStart = false;
-                    $(this).val('Start');
-                } else {
+                if (null == isStart) {
+                    GeoEnd();
                     GeoStart();
                     $(this).val('Stop');
+                } else {
+                    if (isStart) {
+                        GeoEnd()
+                        $(this).val('Start');
+                    } else {
+                        GeoStart();
+                        $(this).val('Stop');
+                    }
                 }
-                NAURE.Message.show({content:(isStart ? 'Start' : 'End') + ' watchId: ' + watchId});
                 $(this).attr('disabled', false);
             });
             GeoStart();
         });
+        $('#seconds').live('change', function () {
+            $('#stop').val('Restart');
+            isStart = null;
+        })
     </script>
+
+    <!--关闭浏览器 -->
+    <script type="text/javascript">
+        var flag = true;
+        window.onbeforeunload = function () {
+            if (flag) {
+                var isLogin = true;
+                if (isLogin = true) {
+                    var evt = window.event || arguments[0];
+                    var userAgent = navigator.userAgent;
+                    if (userAgent.indexOf("MSIE") > 0) {
+                        var n = window.event.screenX - window.screenLeft;
+                        var b = n > document.documentElement.scrollWidth - 20;
+                        if (b && window.event.clientY < 0 || window.event.altKey) {
+                            window.event.returnValue = ("不能关闭窗口！");
+                        }
+                        else {
+                            return ("不能关闭窗口！");
+                        }
+                    }
+                } else if (userAgent.indexOf("Firefox") > 0) {
+                    return ("不能关闭窗口！");
+                }
+            }
+        }
+    </script>
+
 </head>
 
 <body>
 
+<select id="seconds">
+    <option SELECTED value="3">3s</option>
+    <option value="5">5s</option>
+    <option value="10">10s</option>
+    <option value="30">30s</option>
+    <option value="60">60s</option>
+</select>
+<input value="" id="name" type="text"/>
 <input value="Stop" id="stop" type="button"/>
 <input value="Clear" id="clear" type="button" onclick="NAURE.Message.empty();"/>
 
