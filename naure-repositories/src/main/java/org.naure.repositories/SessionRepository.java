@@ -19,6 +19,9 @@ import java.util.*;
 public class SessionRepository extends Repository {
 
     public boolean add(final Session session) throws Exception {
+        if (null == session.getSessionId())
+            return workspace.add(session);
+
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("application", session.getApplication());
             put("sessionId", session.getSessionId());
