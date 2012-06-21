@@ -3,7 +3,7 @@ package org.naure.services;
 import org.naure.repositories.EngRepository;
 import org.naure.repositories.SessionRepository;
 import org.naure.repositories.models.Eng;
-import org.naure.repositories.models.SessionLog;
+import org.naure.repositories.models.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

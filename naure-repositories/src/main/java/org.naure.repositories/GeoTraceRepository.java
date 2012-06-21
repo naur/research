@@ -3,7 +3,7 @@ package org.naure.repositories;
 import org.naure.common.location.GeoTrace;
 import org.naure.repositories.construction.Repository;
 import org.naure.repositories.models.Eng;
-import org.naure.repositories.models.SessionLog;
+import org.naure.repositories.models.Session;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -26,6 +26,7 @@
                 }
             }, error:function (error) {
                 NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message});
+                NAURE.Location.End(watchId);
                 isStart = false;
                 $('#stop').val('Start');
             }});

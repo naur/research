@@ -2,6 +2,7 @@ package org.naure.services;
 
 import org.naure.common.entities.TraceEventType;
 import org.naure.repositories.SessionRepository;
+import org.naure.repositories.models.Session;
 import org.naure.repositories.models.SessionLog;
 import org.naure.web.HttpSessionFilter;
 import org.naure.web.HttpUtility;
@@ -22,7 +23,7 @@ import java.util.*;
 @Service
 public class SessionService {
 
-    public List<SessionLog> get(Map params) throws Exception {
+    public List<Session> get(Map params) throws Exception {
         params.put("application", systemProperties.applicationName);
         return sessionRepository.get(params);
     }
@@ -32,42 +33,44 @@ public class SessionService {
         if (request.getRequestedSessionId() == null) {
             request.getSession();
         }
-        if (null == request.getRequestedSessionId()) return;
+        //if (null == request.getRequestedSessionId()) return;
 
-        final SessionLog sessionLog = new SessionLog();
-        sessionLog.setApplication(systemProperties.applicationName);
-        sessionLog.setSeverity(TraceEventType.Start);
-        sessionLog.setSessionId(request.getRequestedSessionId());
-        sessionLog.setIpAddress(HttpUtility.getIpAddr(request));
-        sessionLog.setHostName(request.getHeader("host"));
-        sessionLog.setLanguage((request.getHeader("accept-language").isEmpty() ? "Unknown" : request.getHeader("accept-language")));
-        sessionLog.setUserAgent(request.getHeader("user-agent"));
-        sessionLog.setRequestType(request.getMethod());
-        sessionLog.setRequestUrl(request.getRequestURI());
-        sessionLog.setRefererUrl(request.getHeader("Referer"));
-        sessionLog.setTimestamp(new Date(request.getSession().getLastAccessedTime()));
-        sessionLog.setStatusCode(request.getAttribute("javax.servlet.error.status_code") == null ? 200 : Integer.parseInt(request.getAttribute("javax.servlet.error.status_code").toString()));
-//        logEntry.SessionLog.SessionID = HttpContext.Current.Session.SessionID ?? "";
-//        logEntry.SessionLog.IpAddress = IPAddress.Parse(HttpContext.Current.Request.UserHostAddress);
-//        logEntry.SessionLog.HostName = HttpContext.Current.Request.UserHostName ?? "";
+        final Session session = new Session();
+        session.setApplication(systemProperties.applicationName);
+        session.setSessionId(request.getRequestedSessionId());
+        SessionLog log = new SessionLog();
+        log.setSeverity(TraceEventType.Start);
+        log.setIpAddress(HttpUtility.getIpAddr(request));
+        log.setHostName(request.getHeader("host"));
+        log.setLanguage((request.getHeader("accept-language").isEmpty() ? "Unknown" : request.getHeader("accept-language")));
+        log.setUserAgent(request.getHeader("user-agent"));
+        log.setRequestType(request.getMethod());
+        log.setRequestUrl(request.getRequestURI());
+        log.setRefererUrl(request.getHeader("Referer"));
+        log.setTimestamp(new Date(request.getSession().getLastAccessedTime()));
+        log.setStatusCode(request.getAttribute("javax.servlet.error.status_code") == null ? 200 : Integer.parseInt(request.getAttribute("javax.servlet.error.status_code").toString()));
+        session.getLogs().add(log);
+//        logEntry.Session.SessionID = HttpContext.Current.Session.SessionID ?? "";
+//        logEntry.Session.IpAddress = IPAddress.Parse(HttpContext.Current.Request.UserHostAddress);
+//        logEntry.Session.HostName = HttpContext.Current.Request.UserHostName ?? "";
 //        //HostName = System.Net.Dns.GetHostEntry(HttpContext.Current.Request.UserHostAddress).HostName,
 //        //HostName = System.Net.Dns.GetHostName(),
 //        if (HttpContext.Current.Request.UserLanguages != null)
-//            logEntry.SessionLog.Language = HttpContext.Current.Request.UserLanguages[0] ?? "";
+//            logEntry.Session.Language = HttpContext.Current.Request.UserLanguages[0] ?? "";
 //        else
-//        logEntry.SessionLog.Language = "Unknown";
-//        logEntry.SessionLog.UserAgent = HttpContext.Current.Request.UserAgent ?? "";
-//        logEntry.SessionLog.RequestType = HttpContext.Current.Request.RequestType ?? ""; //HttpMethod
-//        logEntry.SessionLog.StatusCode = HttpContext.Current.Response.StatusCode; //Status
-//        logEntry.SessionLog.ReferrerUrl = (HttpContext.Current.Request.UrlReferrer == null) ? "" : HttpContext.Current.Request.UrlReferrer.ToString();
-//        logEntry.SessionLog.RequestUrl = (HttpContext.Current.Request.RawUrl ?? "").ToString();
+//        logEntry.Session.Language = "Unknown";
+//        logEntry.Session.UserAgent = HttpContext.Current.Request.UserAgent ?? "";
+//        logEntry.Session.RequestType = HttpContext.Current.Request.RequestType ?? ""; //HttpMethod
+//        logEntry.Session.StatusCode = HttpContext.Current.Response.StatusCode; //Status
+//        logEntry.Session.ReferrerUrl = (HttpContext.Current.Request.UrlReferrer == null) ? "" : HttpContext.Current.Request.UrlReferrer.ToString();
+//        logEntry.Session.RequestUrl = (HttpContext.Current.Request.RawUrl ?? "").ToString();
 //        logEntry.Categories.Add("Session Trace");
         try {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try{
-                        sessionRepository.add(sessionLog);
+                        sessionRepository.add(session);
                     } catch (Exception ex) {
                     }
                 }

@@ -1,6 +1,5 @@
 package org.naure.repositories.models;
 
-import org.naure.common.entities.Entity;
 import org.naure.common.entities.TraceEventType;
 
 import java.util.Date;
@@ -12,22 +11,7 @@ import java.util.Date;
  * Time: 3:02 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SessionLog extends Entity {
-    public String getApplication() {
-        return application;
-    }
-
-    public void setApplication(String application) {
-        this.application = application;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
+public class SessionLog {
 
     public String getIpAddress() {
         return ipAddress;
@@ -109,14 +93,6 @@ public class SessionLog extends Entity {
         this.timestamp = timestamp;
     }
 
-//    @Override
-//    public String toString() {
-//        return String.format("SessionLog [application=%1$s, sessionId=%1$s, ipAddress=%2$s, hostName=%3$s, severity=%4$s, language=%5$s, userAgent=%6$s, requestType=%7$s, statusCode=%8$s, referrerUrl=%9$s, requestUrl=%10$s, timestamp=%11$s]",
-//                sessionId, ipAddress, hostName, severity, language, userAgent, requestType, statusCode, refererUrl, requestUrl, timestamp);
-//    }
-
-    private String application;
-    private String sessionId;
     private String ipAddress;
     private String hostName;
     private TraceEventType severity;

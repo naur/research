@@ -4,7 +4,7 @@ package org.naure.web.controllers;
 import org.naure.common.entities.Information;
 import org.naure.common.location.GeoTrace;
 import org.naure.common.pattern.Func;
-import org.naure.repositories.models.SessionLog;
+import org.naure.repositories.models.Session;
 import org.naure.web.ControllerBase;
 import org.naure.web.HttpSessionFilter;
 import org.naure.services.SessionService;
@@ -35,7 +35,7 @@ public class DiagnosticController extends ControllerBase {
 
     @RequestMapping(value = "session")
     public Information session() {
-//        Information<List<SessionLog>> information = new Information<List<SessionLog>>();
+//        Information<List<Session>> information = new Information<List<Session>>();
 //        try {
 //            Map<String, String> params = new HashMap<String, String>();
 //            information.setData(sessionService.get(params));
@@ -44,10 +44,10 @@ public class DiagnosticController extends ControllerBase {
 //        }
 
 
-        return handler(new Information<List<SessionLog>>(), new Func<Information, Information>() {
+        return handler(new Information<List<Session>>(), new Func<Information, Information>() {
             @Override
             public Information execute(Information information) throws Exception {
-                Information<List<SessionLog>> info = (Information<List<SessionLog>>) information;
+                Information<List<Session>> info = (Information<List<Session>>) information;
                 Map<String, String> params = new HashMap<String, String>();
                 info.setData(sessionService.get(params));
                 return info;
