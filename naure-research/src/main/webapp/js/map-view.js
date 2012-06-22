@@ -11,7 +11,7 @@
 
 /*-------------------- 全局变量 START --------------------*/
 
-var map, marker, geocoder, eventContext;
+var map, marker, tracePathList, geocoder, eventContext, watchId, realTime = false;
 var overlayNodes = {
     "道路":function () {
         map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
@@ -24,6 +24,33 @@ var overlayNodes = {
     },
     "地形":function () {
         map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
+    },
+    "real time":function () {
+        if (marker) marker.setMap(null);
+
+        realTime = !realTime;
+        if (!realTime && watchId) {
+            NAURE.Location.End(watchId);
+            NAURE.Message.show({content:"real time geolocation end", color:'red'});
+            return;
+        }
+        watchId = NAURE.Location.Start({success:function (position) {
+            if (position) {
+                //NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
+                map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+                marker = new google.maps.Marker({
+                    map:map,
+                    position:new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+                    title:$.format('您当前所在的位置\r\n经度：{0}\r\n维度： {1}', position.coords.longitude, position.coords.latitude)
+                });
+                NAURE.Message.show({content:$.format('您当前所在的位置, 经度：{0}\r\n维度： {1}', position.coords.longitude, position.coords.latitude)});
+            } else {
+                NAURE.Message.show({content:'position is null', color:'red'});
+            }
+        }, error:function (error) {
+            NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message, color:'red'});
+        }});
+        NAURE.Message.show({content:"real time geolocation, watchId = " + watchId});
     },
     Geocoder:{
         input:{type:'button', title:'Geocoding', value:'Geocoder'},
@@ -64,22 +91,51 @@ var overlayNodes = {
             $(this).attr('disabled', true);
             NAURE.Message.empty();
             eventContext = this;
-            var traceId = $(content.data).children(':first-child').val();
+            var traceId = $(content.data).children(':last-child').val();
+            if (null == traceId || traceId.length <= 0) {
+                NAURE.Message.show({content:'traceId is empty', color:'red'});
+                return;
+            }
+            NAURE.HTTP.xmlAcquire({
+                xmlUrl:'/map/path/' + traceId + '.xml',
+                context:this,
+                success:function (obj) {
+                    var searchKey = 'location';
+                    if (obj.output == null || obj.output.length <= 0 || $(obj.output).find(searchKey).length <= 0) {
+                        NAURE.Message.show({content:'data of traceId ' + traceId + '" is empty', color:'red'});
+                        return;
+                    }
 
-            map.setCenter(new google.maps.LatLng(37.772323, -122.214897));
-            var tracePlanCoordinates = [
-                new google.maps.LatLng(37.772323, -122.214897),
-                new google.maps.LatLng(21.291982, -157.821856),
-                new google.maps.LatLng(-18.142599, 178.431),
-                new google.maps.LatLng(-27.46758, 153.027892)];
-            var tracePath = new google.maps.Polyline({
-                path:tracePlanCoordinates,
-                strokeColor:"#FF0000",
-                strokeOpacity:1.0,
-                strokeWeight:2
+                    var tracePlanCoordinates = new Array();
+                    $(obj.output).find(searchKey).each(function (index, data) {
+                        tracePlanCoordinates.push(new google.maps.LatLng(
+                            new Number($(this).children('latitude').text()),
+                            new Number($(this).children('longitude').text())));
+                    });
+
+                    map.setCenter(new google.maps.LatLng(
+                        tracePlanCoordinates[0].lat(),
+                        tracePlanCoordinates[0].lng()));
+
+                    //todo 暂时只保存一个
+                    for (i = 0; i < tracePathList.length; i++)
+                        tracePathList[i].setMap(null);
+                    tracePathList.pop();
+                    tracePathList.push(new google.maps.Polyline({
+                        path:tracePlanCoordinates,
+                        strokeColor:"#FF0000",
+                        strokeOpacity:1.0,
+                        strokeWeight:2
+                    }));
+                    tracePathList[0].setMap(map);
+
+                    $(obj.context).attr('disabled', false);
+                },
+                error:function () {
+                    NAURE.Message.show({content:'Got trace data error', color:'red'});
+                    $(obj.context).attr('disabled', false);
+                }
             });
-            tracePath.setMap(map);
-            $(this).attr('disabled', false);
         }
     }
 };
@@ -101,23 +157,6 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     geocoder = new google.maps.Geocoder();
-    NAURE.Location.Start({success:function (position) {
-        if (position) {
-            //NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
-            map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-            if (marker) marker.setMap(null);
-            marker = new google.maps.Marker({
-                map:map,
-                position:new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-                title:$.format('您当前所在的位置\r\n经度：{0}\r\n维度： {1}', position.coords.longitude, position.coords.latitude)
-            });
-            NAURE.Message.show({content:$.format('您当前所在的位置, 经度：{0}\r\n维度： {1}', position.coords.longitude, position.coords.latitude)});
-        } else {
-            NAURE.Message.show({content:'position is null', color:'red'});
-        }
-    }, error:function (error) {
-        NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message, color:'red'});
-    }});
 }
 
 /*-------------------- 函数 END --------------------*/
@@ -129,6 +168,7 @@ $(function () {
     $('body').overlay({
         nodes:overlayNodes
     });
+    tracePathList = new Array();
 
     var script = document.createElement("script");
     script.type = "text/javascript";
