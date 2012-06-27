@@ -1,5 +1,15 @@
-//EVPageTypes:{dict:"dict", dictComp:"dcomp", home:"home", didYouMean:"dym", err:"err"}, EDictAreas:{def:"def", sen:"sen"}, ELogCategory:{err:"err:", sqm:"sqm:", flag:"flag:", entryFdbk:"entryFdbk:"}
+/**
+ * Script:
+ *              贾睿之
+ * Email:
+ *              jiaruizhi@360buy.com
+ * Date:
+ *              6/26/12 6:08 PM
+ * Description:
+ *
+ */
 
+/*-------------------- 全局变量 START ----------------*/
 var overlayNodes = {
     Add:{
         input:{type:'button', title:'Add Eng', value:'Add'},
@@ -53,11 +63,11 @@ var overlayNodes = {
         });
     },
     EngKoo:function () {
+        //EVPageTypes:{dict:"dict", dictComp:"dcomp", home:"home", didYouMean:"dym", err:"err"}, EDictAreas:{def:"def", sen:"sen"}, ELogCategory:{err:"err:", sqm:"sqm:", flag:"flag:", entryFdbk:"entryFdbk:"}
         $(this).attr('disabled', true);
         $('article section:eq(1)').empty();
         NAURE.Message.empty();
         NAURE.Message.show({content:'Get Data...'});
-
         NAURE.HTTP.Request({
             uri:'http://dict.bing.com.cn/io.aspx?q=final&t=dict&ut=default&ulang=ZH-CN&tlang=EN-US',
             context:this,
@@ -73,24 +83,44 @@ var overlayNodes = {
             }
         });
     },
-    'Analysis':function () {
+    'iCIBA':function () {
         $(this).attr('disabled', true);
         $('article section:eq(1)').empty();
         NAURE.Message.empty();
-        NAURE.Message.show({content:'Analysis...'});
+        NAURE.Message.show({content:'iCIBA...'});
+
+        //            http://dict-co.iciba.com/api/dictionary.php?w=lambda
+//                Xml标签说明：
+//返回xml以<dict>开始以</dict>结束
+//        Key 用户查询内容
+//        Ps  音标
+//        Pron 发音
+//        Pos 词性
+//        Acceptation 解释
+//        Sent 短句
+//        Orig 短句内容
+//        Trans 翻译
+
         $(this).attr('disabled', false);
     }
 }
 
-/*-------------------- 初始化 START --------------------*/
+/*-------------------- 全局变量 END ------------------*/
+
+/*-------------------- 函数 START --------------------*/
+/*-------------------- 函数 END ----------------------*/
+
+/*-------------------- 事件 START --------------------*/
+/*-------------------- 事件 END ----------------------*/
+
+/*-------------------- 初始化 START ------------------*/
 
 $(function () {
-    $('body').naure_ui_templet({name:'overlay', success:function () {
-        $('article section:eq(0)').message({placement:'append'});
-        $('nav').overlay({
-            nodes:overlayNodes
-        });
-    }});
+    NAURE.Message.defaults.global.transparent = true;
+    $('body').message({overlay:'left-bottom'});
+    $('body').overlay({
+        nodes:overlayNodes
+    });
 
 //    BingCW.Init({
 //        AppID:"localhost",

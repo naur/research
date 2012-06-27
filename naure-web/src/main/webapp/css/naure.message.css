@@ -42,6 +42,13 @@
     position: fixed;
 }
 
+.message-left-top {
+    left: 0;
+    top: 0;
+    position: fixed;
+}
+
+
 .message pre {
     /*font-weight: 600;*/
     /*font-size: 12px;*/

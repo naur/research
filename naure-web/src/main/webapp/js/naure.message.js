@@ -196,9 +196,11 @@
 
                 $('.message>.title').live('click', function () {
                     message.defaults.global.transparent = !message.defaults.global.transparent;
-                    if (message.defaults.global.transparent) $('.message').addClass('message-transparent')
-                    else $('.message').removeClass('message-transparent')
+                    if (message.defaults.global.transparent) $('.message').addClass('message-transparent');
+                    else $('.message').removeClass('message-transparent');
                 });
+
+                if (message.defaults.global.transparent) $('.message').addClass('message-transparent');
 
                 isInit = true;
             }

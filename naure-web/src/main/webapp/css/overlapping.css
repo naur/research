@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+    /*text-align: center;*/
+}
+
+html {
+    height: 100%
+}
+
+body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px
+}
+
+article {
+    height: 100%;
+    margin: 0px;
+    padding: 0px
+}
+
+article section:first-child {
+    position: absolute;
+    float: left;
+    background: silver;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    opacity: 0.5;
+}
+
+article section:last-child {
+    position: absolute;
+    float: right;
+    background: silver;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    opacity: 0.5;
+}

@@ -6,7 +6,7 @@
  * Date:
  *              6/16/12 4:56 PM
  * Description:
- *              Advanced Design and Analysis Techniques
+ *              Google Map
  * */
 
 /*-------------------- 全局变量 START --------------------*/
