@@ -34,6 +34,10 @@ var overlayNodes = {
             NAURE.Message.show({content:"real time geolocation end", color:'red'});
             return;
         }
+
+        for (i = 0; i < tracePathList.length; i++)
+            tracePathList[i].setMap(null);
+
         watchId = NAURE.Location.Start({success:function (position) {
             if (position) {
                 //NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
@@ -89,13 +93,16 @@ var overlayNodes = {
             '</select><input id="trace-path-name" type=text />',
         handler:function (content) {
             $(this).attr('disabled', true);
+
             NAURE.Message.empty();
             eventContext = this;
             var traceId = $(content.data).children(':last-child').val();
             if (null == traceId || traceId.length <= 0) {
                 NAURE.Message.show({content:'traceId is empty', color:'red'});
+                $(this).attr('disabled', false);
                 return;
             }
+
             NAURE.HTTP.xmlAcquire({
                 xmlUrl:'/map/path/' + traceId + '.xml',
                 context:this,
@@ -103,6 +110,7 @@ var overlayNodes = {
                     var searchKey = 'location';
                     if (obj.output == null || obj.output.length <= 0 || $(obj.output).find(searchKey).length <= 0) {
                         NAURE.Message.show({content:'data of traceId ' + traceId + '" is empty', color:'red'});
+                        $(obj.context).attr('disabled', false);
                         return;
                     }
 
@@ -128,7 +136,6 @@ var overlayNodes = {
                         strokeWeight:2
                     }));
                     tracePathList[0].setMap(map);
-
                     $(obj.context).attr('disabled', false);
                 },
                 error:function () {
