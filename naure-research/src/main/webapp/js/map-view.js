@@ -25,7 +25,25 @@ var overlayNodes = {
     "地形":function () {
         map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
     },
-    "real time":function () {
+    "Current": function() {
+        watchId = NAURE.Location.Current({success:function (position) {
+            if (position) {
+                //NAURE.Message.show({content:JSON.stringify($.toJSON(position))});
+                map.setCenter(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+                marker = new google.maps.Marker({
+                    map:map,
+                    position:new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+                    title:$.format('您当前所在的位置\r\n经度：{0}\r\n维度： {1}', position.coords.longitude, position.coords.latitude)
+                });
+                NAURE.Message.show({content:$.format('您当前所在的位置, 经度：{0}\r\n维度： {1}', position.coords.longitude, position.coords.latitude)});
+            } else {
+                NAURE.Message.show({content:'position is null', color:'red'});
+            }
+        }, error:function (error) {
+            NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message, color:'red'});
+        }});
+    },
+    "Real time":function () {
         if (marker) marker.setMap(null);
 
         realTime = !realTime;
@@ -125,10 +143,6 @@ var overlayNodes = {
                         tracePlanCoordinates[0].lat(),
                         tracePlanCoordinates[0].lng()));
 
-                    //todo 暂时只保存一个
-                    for (i = 0; i < tracePathList.length; i++)
-                        tracePathList[i].setMap(null);
-                    tracePathList.pop();
                     tracePathList.push(new google.maps.Polyline({
                         path:tracePlanCoordinates,
                         strokeColor:"#FF0000",
@@ -173,7 +187,12 @@ function initialize() {
 $(function () {
     $('#map_canvas').message({overlay:'left-bottom', multiple:false});
     $('body').overlay({
-        nodes:overlayNodes
+        nodes:overlayNodes,
+        clear: function() {
+            for (i = 0; i < tracePathList.length; i++)
+                tracePathList[i].setMap(null);
+            tracePathList.clear();
+        }
     });
     tracePathList = new Array();
 

@@ -38,6 +38,8 @@
             eventType:'click', //click, mouse,
             focus:'test', //'article section:last-child'
             //model: 'nav', //nav , text
+            clear:null,
+            minimize:null,
             html:'<figure>' +
                 '   <figcaption class="panel-left {0}" style="background-color: {1};{6}">' +
                 //'       <input title="{1}" CHECKED="checked" type="{2}">' +
@@ -57,10 +59,10 @@
             '<nav class="overlay overlay-right-bottom">' +
                 '   <section></section>' +
                 '   <section class="buttons">' +
-                '       <input type="button" title="Clean" onclick="NAURE.Message.empty();"/>' +
+                '       <input type="button" class="overlay-clean" title="Clean" onclick="NAURE.Message.empty();"/>' +
                 '       <input style="display: none;" title="Reset Graph" type="button" />' +
                 '       <a class="help_button" title="Help Page" href="about/" target="_blank" />&nbsp;</a>' +
-                '       <input type="button" class="minimize" title="Minimize"/>' +
+                '       <input type="button" class="overlay-minimize" title="Minimize"/>' +
                 '   </section>' +
                 '</nav>';
 
@@ -91,8 +93,10 @@
             else
                 $(this).parent().prev().prev().children(':first-child').bind(opt.eventType, this, opt.nodes[$(this).attr('tag')].handler)
         });
+        if (opt.clean)
+            $('.overlay-clean').live('click', opt.clean);
 
-        $('.minimize').live('click', function () {
+        $('.overlay-minimize').live('click', function () {
             opt.buttonsMinimize = !opt.buttonsMinimize;
             if (opt.buttonsMinimize) {
                 $('.overlay').addClass('overlay-pile')
@@ -101,6 +105,8 @@
                 $('.overlay section:eq(0)').fadeIn(400);
                 $('.overlay').removeClass('overlay-pile')
             }
+            if (opt.minimize)
+                opt.minimize();
         });
     };
 

@@ -228,7 +228,7 @@ body {
     background-position: 0px 42px;
 }
 
-.overlay input.minimize {
+.overlay input.overlay-minimize {
     background-position: 60px 0px;
     position: absolute;
     right: 4px;
