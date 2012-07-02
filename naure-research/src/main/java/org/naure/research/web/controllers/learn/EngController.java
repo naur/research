@@ -41,7 +41,26 @@ public class EngController extends ControllerBase {
         return information;
     }
 
-    @RequestMapping(value = "add/{word}")
+    @RequestMapping(value = "{word}")
+//    @ResponseBody
+    public Information query(@PathVariable String word) {
+        Information<String> information = new Information<String>();
+        try {
+            Eng eng = new Eng();
+            eng.setCreated(Calendar.getInstance(Locale.CHINA).getTime());
+            eng.setUpdated(Calendar.getInstance(Locale.CHINA).getTime());
+            eng.setWord(word);
+
+            information.setData(engService.add(eng) ? "Success" : "Error");
+            information.setLevel(InformationLevel.SUCCESS.value());
+        } catch (Exception ex) {
+            information.setKeywords(ex.getMessage());
+            information.setLevel(InformationLevel.ERROR.value());
+        }
+        return information;
+    }
+
+    @RequestMapping(value = "{word}/add")
 //    @ResponseBody
     public Information add(@PathVariable String word) {
         Information<String> information = new Information<String>();

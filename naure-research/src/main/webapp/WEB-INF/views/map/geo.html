@@ -37,7 +37,7 @@
                     if (null != $('#name').val() && $('#name').val().length > 0) {
                         if (!currentPosition || (currentPosition.coords.longitude != position.coords.longitude && currentPosition.coords.latitude != position.coords.latitude))
                             $.ajax({
-                                url:$.format('/map/trace/{0}/{1}/{2}.xml', $('#name').val(), position.coords.longitude, position.coords.latitude),
+                                url:$.format('/map/trace/{0}/{1},{2}.xml', $('#name').val(), position.coords.longitude, position.coords.latitude),
                                 success:function () {
                                     currentPosition = position;
                                 },

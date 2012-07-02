@@ -67,7 +67,7 @@ public class MapController extends ControllerBase {
 //    }
 
     //增加 或 更新 GeoTrace
-    @RequestMapping(value = "trace/{name}/{longitude}/{latitude}")
+    @RequestMapping(value = "trace/{name}/{longitude},{latitude}")
     public Information trace(@PathVariable final String name, @PathVariable final double longitude, @PathVariable final double latitude) {
         return handler(new Information<String>(), new Func<Information, Information>() {
             @Override

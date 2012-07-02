@@ -23,6 +23,14 @@ table, table th, table td {
     white-space: nowrap;
 }
 
+table thead tr {
+    background: #9acd32;
+}
+
+table thead tr, table tfoot tr, table tbody tr {
+    border-left: 1px solid #b3d8ea;
+    border-top: 1px solid #b3d8ea;
+}
 /*f1f9fc*/
 table thead th, table tfoot th, table tbody th {
     border: 1px solid #b3d8ea;
@@ -35,9 +43,9 @@ table thead th, table tfoot th, table tbody th {
 }
 
 table thead td, table tfoot td, table tbody td {
-    border-left: 1px solid #b3d8ea;
+    /*border-left: 1px solid #b3d8ea;*/
     border-right: 1px solid #b3d8ea;
-    border-top: 1px solid #b3d8ea;
+    /*border-top: 1px solid #b3d8ea;*/
     border-bottom: 1px solid #b3d8ea;
     vertical-align: middle;
     padding: 0px 2px 0px 2px;
@@ -169,4 +177,9 @@ tablewhere
     vertical-align: middle;
     padding: 4px;
     font-size: 80%
+}
+
+table .subtable {
+    border: 0px;
+    padding: 0px -2px 0px -2px;
 }

@@ -93,8 +93,26 @@ public class SessionLog {
         this.timestamp = timestamp;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
     private String ipAddress;
     private String hostName;
+    private String user;
+    private int port;
     private TraceEventType severity;
     private String language;
     private String userAgent;

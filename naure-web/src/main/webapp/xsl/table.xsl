@@ -4,7 +4,7 @@
     <xsl:template match="/">
         <table>
             <thead>
-                <tr bgcolor="#9acd32">
+                <tr>
                     <th></th>
                     <xsl:apply-templates select="org.naure.common.entities.Information/data/*[1]/*"/>
                 </tr>
@@ -40,10 +40,15 @@
                 <td>
                     <xsl:choose>
                         <xsl:when test="child::*">
-                            <table>
+                            <table class="subtable">
                                 <!--二级子节点-->
                                 <xsl:for-each select="child::*">
                                     <tr>
+                                        <xsl:if test="position() mod 2 = 0">
+                                            <xsl:attribute name="class">
+                                                <xsl:text>tdeven</xsl:text>
+                                            </xsl:attribute>
+                                        </xsl:if>
                                         <xsl:call-template name="printChild"/>
                                     </tr>
                                 </xsl:for-each>

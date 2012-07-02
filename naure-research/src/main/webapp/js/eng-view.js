@@ -23,7 +23,7 @@ var overlayNodes = {
             if (word.length > 0) {
                 NAURE.Message.show({content:'Add Eng ' + word + '...'});
                 $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
-                    xmlUrl:'/learn/eng/add/' + word + ".xml",
+                    xmlUrl:'/learn/eng/' + word + "/add.xml",
                     xslUrl:'/xsl/table.xsl',
                     context:this,
                     error:function (error) {
