@@ -40,9 +40,10 @@
 
         var message = {
             defaults:{
-                global: {
+                global:{
                     multiple:true,
-                    transparent:false
+                    transparent:false,
+                    overlay:null //left-bottom
                 },
                 content:'',
                 type:'span',
@@ -91,10 +92,10 @@
                 NAURE.Message.renderHtml('#prompt', opt);
             },
             show:function (options) {
+                //初始化
                 if (!isInit) {
                     message.init(options);
                 }
-
                 if (!options.content) {
                     return;
                 }
@@ -170,6 +171,8 @@
                     return;
                 }
 
+                message.defaults.global.overlay = opt.overlay;
+
                 if (opt.fade) {
                     opt.domElement = '<div class="message-fade"><p>' + opt.content + '</p></div>';
                 } else {
@@ -203,6 +206,13 @@
                 if (message.defaults.global.transparent) $('.message').addClass('message-transparent');
 
                 isInit = true;
+            },
+            position:function (str) {
+                //设置位置
+                if (message.defaults.global.overlay)
+                    $('.message').removeClass('message-' + message.defaults.global.overlay);
+                if (str)
+                    $('.message').addClass('message-' + str);
             }
         };
 

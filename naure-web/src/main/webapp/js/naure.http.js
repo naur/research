@@ -41,6 +41,9 @@
             htmlParser:{parser:null, delegate:null}
         }, options);
 
+
+        $(opt.context).attr('disabled', true);
+
         opt.stateChange = function () {
             if (opt.xmlhttp.readyState < 3)
                 return;
@@ -66,11 +69,14 @@
                                 opt.htmlParser.parser(opt.xmlhttp.responseText, opt.htmlParser.delegate);
                         }
                     }
+                    if (opt.context)
+                        $(opt.context).attr('disabled', false);
                 }
                 else {
-                    if (opt.error) {
+                    if (opt.error)
                         opt.error({state:NAURE.HTTP.State(opt.xmlhttp.readyState), http:opt.xmlhttp, context:opt.context});
-                    }
+                    if (opt.context)
+                        $(opt.context).attr('disabled', false);
                 }
             }
         };

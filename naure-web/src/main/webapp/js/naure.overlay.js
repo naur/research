@@ -72,7 +72,7 @@
         var isRichNode = false;
 
         for (key in opt.nodes) {
-            if (typeof(opt.nodes[key]) != 'function') isRichNode = true;
+            if (typeof(opt.nodes[key]) != 'function' && opt.nodes[key].input) isRichNode = true;
             else isRichNode = false;
             $('.overlay section:eq(0)').append($.format(opt.html,
                 (opt.layout.indexOf('left') != -1 || isRichNode) ? '' : 'panel-left-hide',
@@ -80,7 +80,7 @@
                 isRichNode ? NAURE.JSON.toHtml(opt.nodes[key].input) : 'type=checkbox',
                 opt.layout.indexOf('right') != -1 ? '' : 'panel-right-hide',
                 key,
-                isRichNode ? opt.nodes[key].html : key,
+                isRichNode || opt.nodes[key].html ? opt.nodes[key].html : key,
                 isRichNode ? 'margin-left: -36px;' : '',
                 ''
             ));

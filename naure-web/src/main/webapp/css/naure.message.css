@@ -32,6 +32,10 @@
     padding: 6px;
 }
 
+.message-relative{
+    position: relative;
+}
+
 .message-transparent {
     opacity: 0.3;
 }
