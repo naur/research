@@ -189,7 +189,7 @@ require(['http://maps.google.com/maps/api/js?v=3.7&sensor=false&region=zh-CN&lan
 require(['jquery', 'naure.location', 'naure.message', 'naure.overlay'], function ($, NAURE) {
 
     this.NAURE = NAURE;
-    
+
     $(function () {
         $('body').message({overlay:'left-bottom', multiple:false});
         $('body').overlay({
@@ -200,11 +200,6 @@ require(['jquery', 'naure.location', 'naure.message', 'naure.overlay'], function
                 tracePathList.clear();
             }
         });
-
-//        var script = document.createElement("script");
-//        script.type = "text/javascript";
-//        script.src = "http://maps.google.com/maps/api/js?v=3.7&sensor=false&region=zh-CN&language=zh-CN&callback=initialize";
-//        document.body.appendChild(script);
     });
 });
 

@@ -9,29 +9,29 @@
  *
  */
 
+/*-------------------- 全局变量 START ----------------*/
+var NAURE;
+var overlayNodes = {
+    Input:{
+        html:'<input id="overlay-input" type="text" />'
+    },
+    'Stock':function () {
+        NAURE.Graph.UI.drawLine();
+    }
+};
+
+/*-------------------- 全局变量 END ------------------*/
+
+/*-------------------- 函数 START --------------------*/
+/*-------------------- 函数 END ----------------------*/
+
+/*-------------------- 事件 START --------------------*/
+/*-------------------- 事件 END ----------------------*/
+
+/*-------------------- 初始化 START ------------------*/
+
 require(['jquery', 'naure.message', 'naure.overlay', 'naure.graph.ui'], function ($, NAURE) {
-
-    /*-------------------- 全局变量 START ----------------*/
-
-    var overlayNodes = {
-        Input:{
-            html:'<input id="overlay-input" type="text" />'
-        },
-        'Stock':function () {
-            NAURE.Graph.UI.drawLine();
-        }
-    };
-
-    /*-------------------- 全局变量 END ------------------*/
-
-    /*-------------------- 函数 START --------------------*/
-    /*-------------------- 函数 END ----------------------*/
-
-    /*-------------------- 事件 START --------------------*/
-    /*-------------------- 事件 END ----------------------*/
-
-    /*-------------------- 初始化 START ------------------*/
-
+    this.NAURE = NAURE;
     $(function () {
         $('body').message({overlay:'left-bottom'});
         $('body').overlay({
@@ -40,7 +40,7 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.graph.ui'], function
 
         $('article section canvas').NAURE_Graph_UI();
     });
-
-    /*-------------------- 初始化 END --------------------*/
-
 });
+
+/*-------------------- 初始化 END --------------------*/
+
