@@ -25,6 +25,8 @@ article section {
     width: 100%;
     margin: 0px;
     padding: 0px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 article section:first-child {
@@ -32,7 +34,7 @@ article section:first-child {
     float: left;
     /*background: silver;*/
     opacity: 0.5;
-    width: 15%;
+    /*width: 70%;*/
     left: 0;
 }
 
@@ -41,6 +43,6 @@ article section:last-child {
     float: right;
     /*background: #E6E6E6;*/
     opacity: 0.5;
-    width: 85%;
+    /*width: 30%;*/
     right: 0;
 }

@@ -8,7 +8,7 @@
  *
  */
 
-(function ($) {
+define(['jquery', 'naure'], function($, NAURE) {
     NAURE.HTTP.State = function (state) {
         switch (state) {
             case 0:
@@ -130,11 +130,15 @@
                 delegate({content:rootElement.nodeValue, datehide:true, color:color, inline:true});
                 break;
             default:
-                if (rootElement.firstChild.nodeType == 3) {
-                    delegate({content:span + '&lt;' + rootElement.nodeName + '&gt;', datehide:true, inline:true});
+                if (!rootElement.firstChild)
+                    delegate({content:span + '&lt;' + rootElement.nodeName + '/&gt;', datehide:true});
+                else {
+                    if (rootElement.firstChild.nodeType == 3) {
+                        delegate({content:span + '&lt;' + rootElement.nodeName + '&gt;', datehide:true, inline:true});
+                    }
+                    else
+                        delegate({content:span + '&lt;' + rootElement.nodeName + '&gt;', datehide:true});
                 }
-                else
-                    delegate({content:span + '&lt;' + rootElement.nodeName + '&gt;', datehide:true});
                 break;
         }
 
@@ -144,7 +148,7 @@
         }
 
         if (rootElement.nodeType != 3) {
-            if (rootElement.firstChild.nodeType != 3 && rootElement.parentNode.nodeType != 3)
+            if (rootElement.firstChild && rootElement.firstChild.nodeType != 3 && rootElement.parentNode.nodeType != 3)
                 delegate({content:span + '&lt;/' + rootElement.nodeName + '&gt;', datehide:true});
         }
 
@@ -161,7 +165,7 @@
         var containArray = false;
         for (var key in jsonObj) {
             if (jsonObj[key] && (typeof(jsonObj[key]) == 'object')
-                //&& jsonObj[key].length
+            //&& jsonObj[key].length
                 ) {
                 containArray = true;
                 break;
@@ -257,4 +261,5 @@
 
         return output.join('');
     };
-})  (jQuery);
+});
+

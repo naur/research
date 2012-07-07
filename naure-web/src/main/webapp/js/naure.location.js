@@ -1,12 +1,16 @@
 /**
- * Created with IntelliJ IDEA.
- * User: Administrator
- * Date: 6/19/12
- * Time: 6:24 PM
- * To change this template use File | Settings | File Templates.
+ * Script:
+ *              贾睿之
+ * Email:
+ *              naur@live.cn
+ * Date:
+ *              7/4/12 4:21 PM
+ * Description:
+ *              提供 GPS 数据服务
  */
 
-(function ($) {
+define(['jquery', 'naure'], function($, NAURE) {
+
     NAURE.Location.ErrorCode = {
         PERMISSION_DENIED:1, //(数值为1) 表示没有权限使用地理定位API
         POSITION_UNAVAILABLE:2, //(数值为2) 表示无法确定设备的位置，例如一个或多个的用于定位采集程序报告了一个内部错误导致了全部过程的失败
@@ -70,34 +74,36 @@
             navigator.geolocation.getCurrentPosition(opt.success, opt.error);
     };
 
-})(jQuery);
+    return NAURE;
+});
 
-function startGps() {
-    var gps = navigator.geolocation;
-    if (gps) {
-        gps.getCurrentPosition(showGps,
-            function (error) {
-                NAURE.Message.empty();
-                NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message});
-            },
-            {maximumAge:10000}); // 这里设置超时为10000毫秒，即10秒
-    }
-    else {
-        showGps();
-    }
-}
 
-function showGps(position) {
-    if (position) {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
-        map.setCenter(new google.maps.LatLng(latitude, longitude));
-        new google.maps.Marker({
-            position:new google.maps.LatLng(latitude, longitude),
-            map:map,
-            title:$.format("当前你所在的位置！\r\n经度：{0}\r\n纬度：{1}", longitude, latitude)
-        });
-    }
-    else
-        NAURE.Message.show({content:'position is null'});
-}
+//function startGps() {
+//    var gps = navigator.geolocation;
+//    if (gps) {
+//        gps.getCurrentPosition(showGps,
+//            function (error) {
+//                NAURE.Message.empty();
+//                NAURE.Message.show({content:"Got an error, code: " + error.code + " message: " + error.message});
+//            },
+//            {maximumAge:10000}); // 这里设置超时为10000毫秒，即10秒
+//    }
+//    else {
+//        showGps();
+//    }
+//}
+//
+//function showGps(position) {
+//    if (position) {
+//        var latitude = position.coords.latitude;
+//        var longitude = position.coords.longitude;
+//        map.setCenter(new google.maps.LatLng(latitude, longitude));
+//        new google.maps.Marker({
+//            position:new google.maps.LatLng(latitude, longitude),
+//            map:map,
+//            title:$.format("当前你所在的位置！\r\n经度：{0}\r\n纬度：{1}", longitude, latitude)
+//        });
+//    }
+//    else
+//        NAURE.Message.show({content:'position is null'});
+//}

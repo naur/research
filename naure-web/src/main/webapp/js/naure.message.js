@@ -28,8 +28,7 @@
  * </div>
  */
 
-(function ($) {
-
+define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function($, $1, NAURE) {
     $.fn.appendLine = function (str) {
         $(this).append(str + '<br />');
     };
@@ -50,7 +49,7 @@
                 level:0,
                 color:null,
                 element:null,
-                placement:'after', //append, prepend, after, before
+                placement:'append', //append, prepend, after, before
                 title:'RUN',
                 comment:'FEEDBACK',
                 fade:null,
@@ -132,6 +131,10 @@
             },
             renderHtml:function (container, options) {
                 if (!options.global.multiple) {
+                    $(container).empty();
+                }
+
+                if (!options.multiple) {
                     $(container).empty();
                 }
 
@@ -258,6 +261,25 @@
             NAURE.Message.show(options);
         }
         return this;
-    }
+    };
 
-})(jQuery);
+    return NAURE;
+});
+
+
+//(function (window, undefined) {
+//
+//
+//
+//    //对 AMD 的支持
+//    if (typeof define === "function" && define.amd && define.amd.NAURE) {
+//        define("NAURE.Message", ['NAURE'], function (NAURE) {
+//            return NAURE.Message;
+//        });
+//    }
+//
+////    if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
+////        define( "jquery", [], function () { return jQuery; } );
+////    }
+//
+//})(window);

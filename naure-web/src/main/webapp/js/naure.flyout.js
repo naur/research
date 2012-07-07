@@ -7,8 +7,7 @@
  *      $('.link_className').flyout({prompt: '采购单号'});
  */
 
-(function($) {
-
+define(['jquery'], function($) {
     $.flyout = function(options) {
         var opt = $.extend({
             target: null,
@@ -145,5 +144,4 @@
         $.flyout(options);
         return this;
     }
-
-})(jQuery);
+});

@@ -8,7 +8,7 @@
  *
  */
 
-(function ($) {
+define(['jquery', 'naure'], function($, NAURE) {
     NAURE.HTTP.xmlAcquire = function (options) {
         var opt = $.extend({
             type:'POST',
@@ -139,9 +139,7 @@
         NAURE.HTTP.xmlAcquire(options);
         return this;
     }
-})(jQuery);
 
-(function ($) {
     $.xslt = function (options) {
         // Default settings
         var opt = {
@@ -293,61 +291,14 @@
         $.xslt(options);
         return this;
     };
-})(jQuery);
 
-//XSLT Ver 1：提供对 AjaxXSLT 未支持的函数的调用。
-(function ($) {
-    $.fn.xsltv1 = function () {
-        return this;
-    }
-    var str = /^\s*</;
-    if ($.browser.msie) { // IE 5+
-        $.fn.xsltv1 = function (options) {
-            var opt = $.extend({
-                xml:null,
-                xsl:null,
-                target:null,
-                callback:null
-            }, options);
-
-            //var target = $(this);
-            var change = function () {
-                var c = 'complete';
-                if (xm.readyState == c && xs.readyState == c) {
-                    window.setTimeout(function () {
-                        var output = xm.transformNode(xs.XMLDocument)
-                        if (opt.target != null) {
-                            $(opt.target).html(output);
-                        }
-                        if (opt.callback != null) {
-                            opt.callback(output);
-                        }
-                    }, 50);
-                }
-            };
-
-            var xm = document.createElement('xml');
-            xm.onreadystatechange = change;
-            xm[str.test(opt.xml) ? "innerHTML" : "src"] = opt.xml;
-
-            var xs = document.createElement('xml');
-            xs.onreadystatechange = change;
-            xs[str.test(opt.xsl) ? "innerHTML" : "src"] = opt.xsl;
-
-            $('body').append(xm).append(xs);
+    //XSLT Ver 1：提供对 AjaxXSLT 未支持的函数的调用。
+    (function ($) {
+        $.fn.xsltv1 = function () {
             return this;
-        };
-    }
-    else if (window.DOMParser != undefined && window.XMLHttpRequest != undefined && window.XSLTProcessor != undefined) { // Mozilla 0.9.4+, Opera 9+
-        var processor = new XSLTProcessor();
-        var support = false;
-        if ($.isFunction(processor.transformDocument)) {
-            support = window.XMLSerializer != undefined;
         }
-        else {
-            support = true;
-        }
-        if (support) {
+        var str = /^\s*</;
+        if ($.browser.msie) { // IE 5+
             $.fn.xsltv1 = function (options) {
                 var opt = $.extend({
                     xml:null,
@@ -357,111 +308,157 @@
                 }, options);
 
                 //var target = $(this);
-                var transformed = false;
-
-                var xm = {
-                    readyState:4
-                };
-                var xs = {
-                    readyState:4
-                };
-
                 var change = function () {
-                    if (xm.readyState == 4 && xs.readyState == 4 && !transformed) {
-                        var processor = new XSLTProcessor();
-                        var output = null;
-                        if ($.isFunction(processor.transformDocument)) {
-                            // obsolete Mozilla interface
-                            resultDoc = document.implementation.createDocument("", "", null);
-                            processor.transformDocument(xm.responseXML, xs.responseXML, resultDoc, null);
-                            output = new XMLSerializer().serializeToString(resultDoc);
+                    var c = 'complete';
+                    if (xm.readyState == c && xs.readyState == c) {
+                        window.setTimeout(function () {
+                            var output = xm.transformNode(xs.XMLDocument)
                             if (opt.target != null) {
                                 $(opt.target).html(output);
                             }
-                        }
-                        else {
-                            processor.importStylesheet(xs.responseXML);
-                            resultDoc = processor.transformToFragment(xm.responseXML, document);
-                            output = resultDoc;
-                            if (opt.target != null) {
-                                $(opt.target).empty().append(output);
+                            if (opt.callback != null) {
+                                opt.callback(output);
                             }
-                        }
-                        transformed = true;
-                        if (opt.callback != null) {
-                            opt.callback(output);
-                        }
+                        }, 50);
                     }
                 };
 
-                if (str.test(opt.xml)) {
-                    xm.responseXML = new DOMParser().parseFromString(opt.xml, "text/xml");
-                }
-                else {
-                    xm = $.ajax({ dataType:"xml", url:opt.xml});
-                    xm.onreadystatechange = change;
-                }
+                var xm = document.createElement('xml');
+                xm.onreadystatechange = change;
+                xm[str.test(opt.xml) ? "innerHTML" : "src"] = opt.xml;
 
-                if (str.test(opt.xsl)) {
-                    xs.responseXML = new DOMParser().parseFromString(opt.xsl, "text/xml");
-                    change();
-                }
-                else {
-                    xs = $.ajax({ dataType:"xml", url:opt.xsl});
-                    xs.onreadystatechange = change;
-                }
+                var xs = document.createElement('xml');
+                xs.onreadystatechange = change;
+                xs[str.test(opt.xsl) ? "innerHTML" : "src"] = opt.xsl;
+
+                $('body').append(xm).append(xs);
                 return this;
             };
         }
-    }
+        else if (window.DOMParser != undefined && window.XMLHttpRequest != undefined && window.XSLTProcessor != undefined) { // Mozilla 0.9.4+, Opera 9+
+            var processor = new XSLTProcessor();
+            var support = false;
+            if ($.isFunction(processor.transformDocument)) {
+                support = window.XMLSerializer != undefined;
+            }
+            else {
+                support = true;
+            }
+            if (support) {
+                $.fn.xsltv1 = function (options) {
+                    var opt = $.extend({
+                        xml:null,
+                        xsl:null,
+                        target:null,
+                        callback:null
+                    }, options);
 
-    $.xsltv1 = function (options) {
-        var opt = $.extend({
-            xml:null,
-            xsl:null,
-            target:null,
-            callback:null
-        }, options);
-        $.fn.xsltv1(opt);
-        return this;
-    }
-})(jQuery);
+                    //var target = $(this);
+                    var transformed = false;
+
+                    var xm = {
+                        readyState:4
+                    };
+                    var xs = {
+                        readyState:4
+                    };
+
+                    var change = function () {
+                        if (xm.readyState == 4 && xs.readyState == 4 && !transformed) {
+                            var processor = new XSLTProcessor();
+                            var output = null;
+                            if ($.isFunction(processor.transformDocument)) {
+                                // obsolete Mozilla interface
+                                resultDoc = document.implementation.createDocument("", "", null);
+                                processor.transformDocument(xm.responseXML, xs.responseXML, resultDoc, null);
+                                output = new XMLSerializer().serializeToString(resultDoc);
+                                if (opt.target != null) {
+                                    $(opt.target).html(output);
+                                }
+                            }
+                            else {
+                                processor.importStylesheet(xs.responseXML);
+                                resultDoc = processor.transformToFragment(xm.responseXML, document);
+                                output = resultDoc;
+                                if (opt.target != null) {
+                                    $(opt.target).empty().append(output);
+                                }
+                            }
+                            transformed = true;
+                            if (opt.callback != null) {
+                                opt.callback(output);
+                            }
+                        }
+                    };
+
+                    if (str.test(opt.xml)) {
+                        xm.responseXML = new DOMParser().parseFromString(opt.xml, "text/xml");
+                    }
+                    else {
+                        xm = $.ajax({ dataType:"xml", url:opt.xml});
+                        xm.onreadystatechange = change;
+                    }
+
+                    if (str.test(opt.xsl)) {
+                        xs.responseXML = new DOMParser().parseFromString(opt.xsl, "text/xml");
+                        change();
+                    }
+                    else {
+                        xs = $.ajax({ dataType:"xml", url:opt.xsl});
+                        xs.onreadystatechange = change;
+                    }
+                    return this;
+                };
+            }
+        }
+
+        $.xsltv1 = function (options) {
+            var opt = $.extend({
+                xml:null,
+                xsl:null,
+                target:null,
+                callback:null
+            }, options);
+            $.fn.xsltv1(opt);
+            return this;
+        }
+    })(jQuery);
 
 //XSLT Ver 2：提供对 AjaxXSLT 未支持的函数的调用。
-(function ($) {
-    $.xsltv2 = function (options) {
-        var parameters = $.extend({
-            xml:null,
-            xsl:null,
-            target:null,
-            error:null,
-            callback:null
-        }, options);
-        var xmlDoc;
-        var xslDoc;
-        var output;
-        // 判断浏览器的类型
-        if ($.browser.msie) {
-            try {
-                // 支持IE浏览器
-                xmlDoc = new ActiveXObject('Msxml2.DOMDocument');
-                xmlDoc.async = false;
-                xmlDoc.load(parameters.xml);
+    (function ($) {
+        $.xsltv2 = function (options) {
+            var parameters = $.extend({
+                xml:null,
+                xsl:null,
+                target:null,
+                error:null,
+                callback:null
+            }, options);
+            var xmlDoc;
+            var xslDoc;
+            var output;
+            // 判断浏览器的类型
+            if ($.browser.msie) {
+                try {
+                    // 支持IE浏览器
+                    xmlDoc = new ActiveXObject('Msxml2.DOMDocument');
+                    xmlDoc.async = false;
+                    xmlDoc.load(parameters.xml);
 
-                xslDoc = new ActiveXObject('Msxml2.DOMDocument');
-                xslDoc.async = false;
-                xslDoc.load(parameters.xsl);
+                    xslDoc = new ActiveXObject('Msxml2.DOMDocument');
+                    xslDoc.async = false;
+                    xslDoc.load(parameters.xsl);
 
-                output = xmlDoc.documentElement.transformNode(xslDoc);
-            }
-            catch (e) {
-                if (parameters.error != null) {
-                    parameters.error(e);
+                    output = xmlDoc.documentElement.transformNode(xslDoc);
                 }
-            }
-        } else if ($.browser.mozilla || $.browser.opera) {
-            // 支持Mozilla浏览器
-            try {
+                catch (e) {
+                    if (parameters.error != null) {
+                        parameters.error(e);
+                    }
+                }
+            } else if ($.browser.mozilla || $.browser.opera) {
+                // 支持Mozilla浏览器
+                try {
 //                xmlDoc = document.implementation.createDocument("", "", null);
 //                xmlDoc.async = false;
 //                xmlDoc.load(parameters.xml);
@@ -470,97 +467,99 @@
 //                var xmlDoc = domParser.parseFromString(parameters.xml, "text/xml");
 
 
-                xslDoc = document.implementation.createDocument("", "", null);
-                xslDoc.async = false;
-                xslDoc.load(parameters.xsl);
+                    xslDoc = document.implementation.createDocument("", "", null);
+                    xslDoc.async = false;
+                    xslDoc.load(parameters.xsl);
 
-                // 定义XSLTProcessor对象
-                var xsltProcessor = new XSLTProcessor();
-                xsltProcessor.importStylesheet(xslDoc);
-                // transformToDocument方式
-                var result = xsltProcessor.transformToDocument(parameters.xml);
-                var serializer = new XMLSerializer();
-                //output = serializer.serializeToString(result.documentElement);
-                output = result.documentElement.firstChild.data;
-            }
-            catch (e) {
+                    // 定义XSLTProcessor对象
+                    var xsltProcessor = new XSLTProcessor();
+                    xsltProcessor.importStylesheet(xslDoc);
+                    // transformToDocument方式
+                    var result = xsltProcessor.transformToDocument(parameters.xml);
+                    var serializer = new XMLSerializer();
+                    //output = serializer.serializeToString(result.documentElement);
+                    output = result.documentElement.firstChild.data;
+                }
+                catch (e) {
+                    if (parameters.error != null) {
+                        parameters.error(e);
+                    }
+                }
+            } else {
                 if (parameters.error != null) {
-                    parameters.error(e);
+                    parameters.error('不支持');
                 }
             }
-        } else {
-            if (parameters.error != null) {
-                parameters.error('不支持');
+            if (parameters.callback != null) {
+                parameters.callback(output);
             }
         }
-        if (parameters.callback != null) {
-            parameters.callback(output);
+        $.fn.xsltv2 = function (options) {
+            options.target = this;
+            $.xsltv2(options);
+            return this;
         }
-    }
-    $.fn.xsltv2 = function (options) {
-        options.target = this;
-        $.xsltv2(options);
-        return this;
-    }
-})(jQuery);
+    })(jQuery);
 
-(function ($) {
-    $.chainHandler = function (options) {
-        var opt = $.extend({
-            xml:null,
-            xmlUrl:null,
-            xmlCache:false,
-            xsl:null,
-            xslUrl:null,
-            xslCache:true,
-            optionData:null,
-            container:null,
-            successor:null,
-            errorPrompt:'获取数据错误，请稍后重试！',
-            emptyPrompt:null,
-            error:null,
-            success:null
-        }, options);
-        $(opt.container).NAURE_HTTP_xmlAcquire({
-            xml:opt.xml,
-            xmlUrl:opt.xmlUrl,
-            xmlCache:opt.xmlCache,
-            xsl:opt.xsl,
-            xslUrl:opt.xslUrl,
-            xslCache:opt.xslCache,
-            optionData:opt.optionData,
-            success:opt.success,
-            error:function (ex) {
-                if (opt.errorPrompt != null) {
-                    NAURE.Message.show({content:opt.errorPrompt, color:'red', inline:true});
-                }
-                if (opt.error) {
-                    opt.error(ex);
-                }
-            },
-            success:function (obj) {
-                if (opt.success != null) {
-                    opt.success(obj);
-                }
-                if (opt.output == "" && opt.emptyPrompt != null) {
-                    NAURE.Message.show({content:opt.emptyPrompt, color:'red', inline:true});
-                    //$('#query').attr('disabled', true);
-                    //$('#query').attr('disabled', true);
-                    //暂时处理方式：对返回的为空的内容，产生 error 事件。
-                    if (!opt.error) {
+    (function ($) {
+        $.chainHandler = function (options) {
+            var opt = $.extend({
+                xml:null,
+                xmlUrl:null,
+                xmlCache:false,
+                xsl:null,
+                xslUrl:null,
+                xslCache:true,
+                optionData:null,
+                container:null,
+                successor:null,
+                errorPrompt:'获取数据错误，请稍后重试！',
+                emptyPrompt:null,
+                error:null,
+                success:null
+            }, options);
+            $(opt.container).NAURE_HTTP_xmlAcquire({
+                xml:opt.xml,
+                xmlUrl:opt.xmlUrl,
+                xmlCache:opt.xmlCache,
+                xsl:opt.xsl,
+                xslUrl:opt.xslUrl,
+                xslCache:opt.xslCache,
+                optionData:opt.optionData,
+                success:opt.success,
+                error:function (ex) {
+                    if (opt.errorPrompt != null) {
+                        NAURE.Message.show({content:opt.errorPrompt, color:'red', inline:true});
+                    }
+                    if (opt.error) {
                         opt.error(ex);
                     }
-                } else {
-                    if (opt.successor != null) {
-                        opt.successor();
+                },
+                success:function (obj) {
+                    if (opt.success != null) {
+                        opt.success(obj);
+                    }
+                    if (opt.output == "" && opt.emptyPrompt != null) {
+                        NAURE.Message.show({content:opt.emptyPrompt, color:'red', inline:true});
+                        //$('#query').attr('disabled', true);
+                        //$('#query').attr('disabled', true);
+                        //暂时处理方式：对返回的为空的内容，产生 error 事件。
+                        if (!opt.error) {
+                            opt.error(ex);
+                        }
+                    } else {
+                        if (opt.successor != null) {
+                            opt.successor();
+                        }
                     }
                 }
-            }
-        });
-    }
-    $.fn.chainHandler = function (options) {
-        options.container = this;
-        $.chainHandler(options);
-        return this;
-    };
-})(jQuery);
+            });
+        }
+        $.fn.chainHandler = function (options) {
+            options.container = this;
+            $.chainHandler(options);
+            return this;
+        };
+    })(jQuery);
+});
+

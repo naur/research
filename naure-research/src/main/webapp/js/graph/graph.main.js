@@ -1,9 +1,12 @@
-var usr=(function(){
-var usr={"eval":function(_____d){
-    return eval(_____d);
-},"clear":function(){return app.ui.console.clear();}};
+var usr = (function () {
+    var usr = {
+        "eval":function (_____d) {
+            return eval(_____d);
+        }, "clear":function () {
+            return app.ui.console.clear();
+        }};
 
-return usr;
+    return usr;
 })();
 
 
@@ -579,6 +582,8 @@ var Graph=function(n,disabled){
     
   return t;
 };
+
+
 //CAS variables.
 //TODO: use cas.variables in javascript-cas.
 app.variables={};

@@ -8,7 +8,7 @@
  * Usage:
  */
 
-(function ($) {
+define(['jquery', 'naure'], function($, NAURE) {
     NAURE.UI.templet = (function (options) {
         var opt = $.extend({
             name: "",
@@ -49,4 +49,4 @@
         NAURE.UI.templet(options);
         return this;
     }
-})(jQuery);
+});

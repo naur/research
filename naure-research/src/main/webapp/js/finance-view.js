@@ -2,41 +2,23 @@
  * Script:
  *              贾睿之
  * Email:
- *              naur@live.cn
+ *              jiaruizhi@360buy.com
  * Date:
- *              7/4/12 11:01 AM
+ *              7/6/12 9:49 AM
  * Description:
  *
  */
-//require(['/Research/projects/naure/naure-web/src/main/webapp/js/require.config.js'], function () {
-//
-//});
 
 require(['jquery', 'naure.message', 'naure.overlay', 'naure.graph.ui'], function ($, NAURE) {
 
     /*-------------------- 全局变量 START ----------------*/
 
     var overlayNodes = {
-        'arbor':function () {
+        Input:{
+            html:'<input id="overlay-input" type="text" />'
         },
-        'Stacks':function () {
-        },
-        'Queues':function () {
-        },
-        'Linked lists':function () {
-
-        },
-        'Linked lists (sentinel)':function () {
-        },
-        'Binary Search Trees':function () {
-        },
-        'Red-Black Trees':function () {
-            NAURE.Message.empty();
-            NAURE.Message.show({content:'START'});
-        },
-        'Treaps':function () {
-        },
-        'order-statistic tree':function () {
+        'Stock':function () {
+            NAURE.Graph.UI.drawLine();
         }
     };
 
@@ -51,17 +33,14 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.graph.ui'], function
     /*-------------------- 初始化 START ------------------*/
 
     $(function () {
-        $('body:last-child').message({overlay:'left-bottom'});
+        $('body').message({overlay:'left-bottom'});
         $('body').overlay({
             nodes:overlayNodes
         });
 
         $('article section canvas').NAURE_Graph_UI();
     });
-}, function (err) {
-    console.log(err);
 
     /*-------------------- 初始化 END --------------------*/
+
 });
-
-
