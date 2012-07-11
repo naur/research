@@ -26,6 +26,7 @@ require.config({
         'naure.math':'/Research/projects/naure/naure-research/src/main/webapp/js/math/naure.math',
 
         'naure.graphics':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics',
+        'naure.graphics.math':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.math',
         'naure.graphics.ui':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.ui',
         'naure.graphics.layout':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.layout',
         'naure.graphics.equation':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.equation',
