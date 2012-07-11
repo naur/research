@@ -20,16 +20,11 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
             startDrag:{X:0, Y:0},
             prevDrag:{X:0, Y:0},
             currDrag:{X:0, Y:0},
-            defaultCoord: {X1:0, Y1:0, X2:0, Y2:0},
+            defaultCoord:{X1:0, Y1:0, X2:0, Y2:0},
             startCoord:{X1:0, Y1:0, X2:0, Y2:0},
             currCoord:{X1:-5, Y1:-5, X2:5, Y2:5},
             offset:{left:0, top:0},
             centerPosition:{X:null, Y:null, Z:null},
-            currScale:function () {
-                return {
-                    X:this.width / this.range.X,
-                    Y:this.height / this.range.Y}
-            },
 
             Point:function (x, y, z) {
                 this.X = x;
@@ -76,9 +71,6 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
 
                     this.startCoord = NAURE.Utility.clone(this.currCoord);
                     this.defaultCoord = NAURE.Utility.clone(this.currCoord);
-                    this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
-                    this.scale = this.currScale();
-                    //this.scale = {X:this.range.X / this.width, Y:this.range.Y / this.height};
                 }
 
                 //鼠标事件时  【Drag 变化】
@@ -103,10 +95,32 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                     this.currCoord.Y1 = this.startCoord.Y1 + ((this.currDrag.Y - this.startDrag.Y) / this.scale.Y);
                     this.currCoord.Y2 = this.startCoord.Y2 + ((this.currDrag.Y - this.startDrag.Y) / this.scale.Y);
                 }
-
                 if (opt.renew) {
                     this.startCoord = NAURE.Utility.clone(this.currCoord);
                 }
+
+                //ZOOM
+                if (opt.zoom) {
+                    if (opt.zoom.X && opt.zoom.Y) {
+                        var mousetop = 1 - ((opt.zoom.Y - this.offset.Y) / this.height);	//if we divide the screen into two halves based on the position of the mouse, this is the top half
+                        var mouseleft = (opt.zoom.X - this.offset.X) / this.width;	//as above, but the left hald
+
+                        this.currCoord.X1 += this.range.X * opt.zoom.Scale * mouseleft;
+                        this.currCoord.Y1 += this.range.Y * opt.zoom.Scale * mousetop;
+                        this.currCoord.X2 -= this.range.X * opt.zoom.Scale * (1 - mouseleft);
+                        this.currCoord.Y2 -= this.range.Y * opt.zoom.Scale * (1 - mousetop);
+                    }
+                    else {
+                        this.currCoord.X1 += this.range.X * opt.zoom.Scale;
+                        this.currCoord.Y1 += this.range.Y * opt.zoom.Scale;
+                        this.currCoord.X2 -= this.range.X * opt.zoom.Scale;
+                        this.currCoord.Y2 -= this.range.Y * opt.zoom.Scale;
+                    }
+                    this.startCoord = NAURE.Utility.clone(this.currCoord);
+                }
+
+                this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
+                this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
 
                 NAURE.Message.show({content:JSON.stringify({
                     //size:{width:this.width, height:this.height},
@@ -118,7 +132,7 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                 }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
-            reset:function() {
+            reset:function () {
                 this.currCoord = NAURE.Utility.clone(this.defaultCoord);
             },
 

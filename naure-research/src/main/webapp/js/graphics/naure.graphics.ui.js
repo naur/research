@@ -40,7 +40,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
             draw:function (options) {
                 if (options) this.config = options;
                 this.gridlines();
-                //this.drawLine();
+                this.drawLine();
             },
 
             drawLine:function (options) {
@@ -60,7 +60,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
 
                 var x = ui.layout.currCoord.X1 //boundleft;
                 ui.ctx.move(x, pow(x, 2));
-                for (var x = ui.layout.currCoord.x1; x < ui.layout.currCoord.x2; x += (ui.layout.currCoord.x2 - ui.layout.currCoord.x1) / ui.layout.width) {
+                for (var x = ui.layout.currCoord.X1; x < ui.layout.currCoord.X2; x += (ui.layout.currCoord.X2 - ui.layout.currCoord.X1) / ui.layout.width) {
                     ui.ctx.line(x, pow(x, 2));
                 }
                 ui.ctx.stroke();
@@ -133,24 +133,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
             },
 
             zoom:function (scale, event) {
-                range = this.layout.range;
-                if (event) {
-                    mousex = event.pageX - this.layout.offset.X;
-                    mousey = event.pageY - this.layout.offset.Y;
-                    mousetop = 1 - (mousey / this.layout.height);	//if we divide the screen into two halves based on the position of the mouse, this is the top half
-                    mouseleft = mousex / this.layout.width;	//as above, but the left hald
-                    this.layout.currCoord.X1 += range.X * scale * mouseleft;
-                    this.layout.currCoord.Y1 += range.Y * scale * mousetop;
-                    this.layout.currCoord.X2 -= range.X * scale * (1 - mouseleft);
-                    this.layout.currCoord.Y2 -= range.Y * scale * (1 - mousetop);
-                }
-                else {
-                    this.layout.currCoord.X1 += range.X * scale;
-                    this.layout.currCoord.Y1 += range.Y * scale;
-                    this.layout.currCoord.X2 -= range.X * scale;
-                    this.layout.currCoord.Y2 -= range.Y * scale;
-                }
-                this.layout.startCoord = NAURE.Utility.clone(this.layout.currCoord);
+                if (event)
+                    this.layout.refresh({zoom:{X:event.pageX, Y:event.pageY, Scale:scale}});
+                else
+                    this.layout.refresh({zoom:{X:null, Y:null, Scale:scale}});
+
                 this.draw();
             },
 
