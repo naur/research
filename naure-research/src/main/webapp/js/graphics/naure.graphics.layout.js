@@ -24,7 +24,6 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
             startCoord:{X1:0, Y1:0, X2:0, Y2:0},
             currCoord:{X1:-5, Y1:-5, X2:5, Y2:5},
             offset:{left:0, top:0},
-            zeroPosition:{X:null, Y:null, Z:null},
 
             Point:function (x, y, z) {
                 this.X = x;
@@ -121,8 +120,6 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
 
                 this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
                 this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
-                this.zeroPosition = {X:this.scale.X * this.currCoord.X1, Y:this.scale.Y * Math.abs(this.currCoord.Y1)};
-
 
                 NAURE.Message.show({content:JSON.stringify({
                     //size:{width:this.width, height:this.height},
@@ -137,6 +134,8 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
 
             reset:function () {
                 this.currCoord = NAURE.Utility.clone(this.defaultCoord);
+                this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
+                this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
             },
 
             coordinate:function () {
