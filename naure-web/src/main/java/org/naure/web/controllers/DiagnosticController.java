@@ -2,6 +2,7 @@ package org.naure.web.controllers;
 
 
 import org.naure.common.entities.Information;
+import org.naure.common.entities.InformationLevel;
 import org.naure.common.location.GeoTrace;
 import org.naure.common.pattern.Func;
 import org.naure.repositories.models.Session;
@@ -32,6 +33,18 @@ public class DiagnosticController extends ControllerBase {
     @RequestMapping()
     public String view() {
         return view("view");
+    }
+
+    @RequestMapping(value = "session/add")
+    public Information sessionAdd() {
+        return handler(new Information<String>(), new Func<Information, Information>() {
+            @Override
+            public Information execute(Information information) throws Exception {
+                sessionService.add(null);
+                information.setData(InformationLevel.SUCCESS);
+                return information;
+            }
+        });
     }
 
     @RequestMapping(value = "session")

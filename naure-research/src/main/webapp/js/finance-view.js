@@ -30,7 +30,7 @@ var overlayNodes = {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.graph.ui'], function ($, NAURE) {
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.graphics.ui', 'naure.graphics.layout'], function ($, NAURE) {
     this.NAURE = NAURE;
     $(function () {
         $('body').message({overlay:'left-bottom'});
@@ -38,7 +38,7 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.graph.ui'], function
             nodes:overlayNodes
         });
 
-        $('article section canvas').NAURE_Graph_UI();
+        $('article section canvas').NAURE_Graphics();
     });
 });
 

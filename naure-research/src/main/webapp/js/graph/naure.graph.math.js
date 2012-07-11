@@ -12,381 +12,9 @@
 define(['jquery', 'naure', 'math'], function ($, NAURE) {
     NAURE.Graph.Math = (function () {
 
-        var level=0;
-        var eqtype={"product":1,"sum":2,"number":3,"discretevector":6,"continuousvector":7,"power":8,"fn":9,"fraction":10,"derivative":11,"integral":12,"equality":13,"pm":14,"operatorfactor":15,"lessthan":16,"greaterthan":17,"range":18};
-
-        function p(inp){
-            if(typeof inp=="number" || !isNaN(inp)){
-                return Number(inp);
-            }else if(typeof inp=="object"){
-                if(!isNaN(inp)){
-                    app.ui.console.warn("this is returned somewhere instead of Number(this)");
-                    return Number(inp);
-                }
-                return inp;
-            }
-            if(inp=="" || inp===undefined){
-                return 0;
-            }
-//parses brackets recursively and returns an expression
-
-            //level++;
-            //if(level>15){throw("too recursive for debugging");return;}
-            //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"p: "+inp);
-            var eq=[];
-            var e=inp.replace(/\s/g,"").replace(/\]/g,")").replace(/\[/g,"(").replace(/\)\(/g,")*(");
-
-            //TODO: known functions only, otherwise make it a product
-            //TODO: allow things like 2x
-
-            while(e.indexOf("xx")!=-1){
-                e=e.replace(/xx/g,"x*x");
-            }
-
-            //TODO: -- -> +
-            e=e.replace(/∞/g,"Infinity");
-            e=e.replace(/\.([^\d]|$)/g,"*$1");
-            e=e.replace(/([\d]+(\.[\d]+)?)([^\+\-\*\/\^\:\(\)\d\=\<\>\.!])/g,"$1*$3");
-
-            //TODO: Following line is a bit hacky. Specifications need be made to clear things up.
-            e=e.replace(/([xyzπϕ])([exyzπϕ])/g,"$1*$2");
-
-            e=e.replace(/\^([\d]+)\(/g,"^$1:(");
-
-            e=e.replace(/max\(/g,"(max)(");
-
-            e=e.replace(/([xyzπϕ\d∫])\(/g,"$1*(");
-            e=e.replace(/\(max\)/g,"max");
-
-            e=e.replace(/∫([^\*])/g,"∫*$1");
-            e=e.replace(/([xyzπϕ\d\.])∫/g,"$1*∫");
-            e=e.replace(/([^\+\-\*\/\^\:\(\)\d\=\<\>])\(/g,"$1:(");
-
-            e=e.replace(/\)([^\+\-\*\/\^\:\(\)\=\<\>!])/g,")*$1");
-            //multiplicative identity
-            e=e.replace(/\*([\)\=]|$)/g,"$1");
-            //Double factorial
-            e=e.replace(/!!/g,"‼");
-            if(e.indexOf("=")!=-1){
-                var eq=e.replace("==","[equals][equals]").split("=").map(function(e){return e.replace("[equals][equals]","==");});
-                if(eq.length==2){
-                    return [p(eq[0]),p(eq[1])].setType(eqtype.equality);
-                }
-                throw("Too many '='s");
-                return;
-            }else if(e.indexOf("<")!=-1){
-                var eq=e.split("<");
-                if(eq.length==2){
-                    return [p(eq[0]),p(eq[1])].setType(eqtype.lessthan);
-                }
-                throw("Too many '<'s");
-                return;
-            }else if(e.indexOf(">")!=-1){
-                var eq=e.split(">");
-                if(eq.length==2){
-                    return [p(eq[0]),p(eq[1])].setType(eqtype.greaterthan);
-                }
-                throw("Too many '>'s");
-                return;
-            }
-            //---Recursive Parentheses parse
-            while((e.indexOf("(")!=-1) && (e.indexOf(")")!=-1)){
-                var fail=true;
-                e=e.replace(/\([^\(\)]*\)/g,function(n){
-                    fail=false;
-                    var h=random_hash();
-                    obj[h]=p(n.substring(1,n.length-1));
-                    return "aaaa"+h+"aaaa";
-                });
-                if(fail){
-                    throw (MessageStrings.parentheses);
-                    break;
-                }
-            }
-            var terms=[];
-            var last=0;
-            //---Sum parse
-            var term_op="+-";
-            var prod_op="*/";
-
-            if(e.indexOf(",")!=-1){
-                //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"f>: "+e);
-                terms.type=eqtype.discretevector;
-                var be=e.split(",");
-                be.forEach(function(zz){
-                    terms.push(p(zz));
-                });
-
-            }else if((e.indexOf("+")!=-1) || (e.indexOf("-")!=-1)){
-                //__debug(!__debug_parser,0) ||app.ui.console.log(spaces.substring(0,level)+"+>: "+e);
-                terms.type=eqtype.sum;
-                var nextisinverse=false;
-                for(var i=0;i<e.length;i++){
-                    if(term_op.indexOf(e[i])!=-1){
-                        var s=e.substring(last,i);
-                        if(nextisinverse){
-                            terms.push(p(s).multiply(-1));
-                            nextisinverse=false;
-                        }else{
-                            terms.push(p(s));
-                        }
-                        if(e[i]=="-"){
-                            nextisinverse=true;
-                        }
-                        last=i+1;
-                    }
-                }
-                if(nextisinverse){
-                    terms.push(p(e.substring(last,e.length)).multiply(-1));
-                }else{
-                    terms.push(p(e.substring(last,e.length)));
-                }
-
-
-            }else if((e.indexOf("*")!=-1) || (e.indexOf("/")!=-1)){
-                //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"*>: "+e);
-                terms.type=eqtype.product;
-                var denom=[];
-                denom.type=eqtype.product;
-                var nextisinverse=false;
-                //check for d/dx
-                for(var i=0;i<e.length;i++){
-                    if(prod_op.indexOf(e[i])!=-1){
-                        var s=e.substring(last,i);
-                        if(nextisinverse){
-                            denom.push(p(s));
-                            nextisinverse=false;
-                        }else{
-                            terms.push(p(s));
-                        }
-                        if(e[i]=="/"){
-                            nextisinverse=true;
-                        }
-                        last=i+1;
-                    }
-                }
-                if(nextisinverse){
-                    denom.push(p(e.substring(last,e.length)));
-                }else{
-                    terms.push(p(e.substring(last,e.length)));
-                }
-                if(denom.length){
-                    terms=[terms,denom];
-                    terms.type=eqtype.fraction;
-                }
-            }else if(e.indexOf("!")!=-1){
-
-                //TODO: Fix this
-                //DONE: This was fixed March 16, 2011
-                terms.type=eqtype.product;
-                var last=0;
-                for(var i=0;i<e.length;i++){
-                    if(e[i]=="!"){
-                        var s=e.substring(last,i);
-                        if(s==""){
-                            terms[terms.length-1]=["fact",terms[terms.length-1]].setType(eqtype.fn);
-                        }else{
-                            terms.push(["fact",p(s)].setType(eqtype.fn));
-                        }
-                        last=i+1;
-                    }
-                }
-                var final=e.substring(last,e.length);
-                if(final!=""){
-                    terms.push(p(final));
-                }
-
-            }else if(e.indexOf("‼")!=-1){
-
-                //TODO: Fix this
-                //DONE: This was fixed March 16, 2011
-                terms.type=eqtype.product;
-                var last=0;
-                for(var i=0;i<e.length;i++){
-                    if(e[i]=="‼"){
-                        var s=e.substring(last,i);
-                        if(s==""){
-                            terms[terms.length-1]=["doublefact",terms[terms.length-1]].setType(eqtype.fn);
-                        }else{
-                            terms.push(["doublefact",p(s)].setType(eqtype.fn));
-                        }
-                        last=i+1;
-                    }
-                }
-                var final=e.substring(last,e.length);
-                if(final!=""){
-                    terms.push(p(final));
-                }
-
-            }else if(e.indexOf(":")!=-1){
-                //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"f>: "+e);
-                terms.type=eqtype.fn;
-                var be=e.split(":");
-                if(be.length!=2){
-
-                    //alert(e);
-                    throw (MessageStrings.functionchain);
-                    //return;
-                }
-                var dmatch=/^([^\']+)(\'+)$/.exec(be[0]);
-                if(dmatch){
-                    //console.log("found");
-                    terms.type=eqtype.fn;
-                    var b=[dmatch[1],be[1]].setType(eqtype.fn);
-                    for(var count=dmatch[2].length;count--;count>0){
-                        //console.log("diff");
-                        b=["diff",b].setType(eqtype.fn);
-                    }
-                    terms=b;
-
-                }else{
-                    var match=/^log_([\d\.\+\-e]+)$/.exec(be[0]);
-                    if(match){
-                        var fn_=["log",p(be[1])].setType(eqtype.fn);
-                        terms.type=eqtype.fraction;
-                        terms.push(fn_);
-                        terms.push(["log", p(match[1])].setType(eqtype.fn));
-                    }else{
-                        var fname=p(be[0]);
-                        if(fname.type==eqtype.power){
-                            var basefn=fname[0].simplify();
-                            var power=fname[1].simplify();
-                            //if trig
-                            if(power<0){
-                                //find inverse
-                                basefn="a"+basefn;
-                                power=-power;
-                            }
-
-                            if( 1 || is_it_a_trig_function){
-                                terms.type=eqtype.power;
-                                terms.push([basefn,p(be[1])].setType(eqtype.fn));
-                                terms.push(power);
-                            }
-
-
-
-
-                        }else if(typeof fname!="string"){
-                            terms.type=eqtype.product;
-                            terms.push(fname);
-                            terms.push(p(be[1]));
-                        }else{
-                            terms.push(fname);
-                            terms.push(p(be[1]));
-                        }
-                    }
-                }
-            }else if(e.indexOf("^")!=-1){
-                //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"^>: "+e);
-
-                var be=e.split("^");
-                //NOTE: for now
-                //^ is a BINARY operator that goes from right to left.
-                //  1^2^3 = 1^(2^(3))
-                if(be.length!=2){
-                    throw (MessageStrings.expchain);
-                    return;
-                }
-                var base=p(be[0]);
-                terms.type=eqtype.power;
-                terms.push(base);
-                terms.push(p(be[1]));
-
-
-            }else{
-                var parsednumber=NaN;
-                if(!isNaN(parsednumber=Number(e))){
-                    return parsednumber;
-                }else if(!/^aaaa[a-z\d]{20}aaaa$/.test(e)){
-                    var match=/^([\d]+(\.[\d])?)([^\d]+)$/.exec(e);
-                    if(match){
-                        alert("old code: "+e);
-                        terms.type=eqtype.product;
-                        terms.push(p(match[1]));
-                        terms.push(match[3]);
-                    }else{
-                        var vars=e.split(".");
-                        if(vars.length>1){
-                            terms.type=eqtype.product;
-                            vars.forEach(function(v){
-                                terms.push(p(v));
-                            });
-                        }else{
-                            return e;
-                        }
-                    }
-                }else{
-                    terms.type=eqtype.variable;
-                    terms.push(e);
-                }
-
-
-            }
-
-            terms=terms.dreplace(/^aaaa[a-z\d]{20}aaaa$/,function(e){
-                var to_ret=obj[e.substring(4,24)];
-                delete obj[e.substring(4,24)];
-                return to_ret;
-            });
-            /*
-             for(var i=0;i<terms.length;i++){
-             if(/^aaaa[a-z\d]{20}aaaa$/.test(terms[i])){
-             terms[i]=obj[terms[i].substring(4,24)];
-             //terms[i]="e";
-             }
-             }*/
-            //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"@>: "+JSON.stringify(terms));
-            level--;
-            while(typeof terms == "object" && terms.type==eqtype.variable){
-                terms=terms[0];
-            }
-            if(terms.length==2){
-
-                //terms=terms.simplify();
-                if(terms.length==2 && terms.type==eqtype.fraction && terms[0].simplify()=="d" && terms[1].simplify()=="dx"){
-                    return ["diff"].setType(eqtype.operatorfactor);
-                }
-                /*if(terms.length==2 && terms.type==eqtype.fraction && terms[0]=="d" && terms[1]=="dx"){
-                 return ["diff"].setType(eqtype.operatorfactor);
-                 }*/
-                if(terms[0].length==1 && terms[0]=="d" && terms[1].length==1 && terms[1]=="dx"){
-                    return ["diff"].setType(eqtype.operatorfactor);
-                }
-            }
-            //console.log(terms.type+": "+terms.getString());
-            if(terms.type==eqtype.product){
-                var found=[];
-                for(var i=0;i<terms.length;i++){
-                    if(terms[i].type==eqtype.operatorfactor){
-                        var operation=terms.splice(i,1)[0][0];
-                        found.push(operation);
-                        var subject=terms.splice(i).setType(eqtype.product);
-                        if(terms.length){
-                            return [operation,subject].setType(eqtype.fn).multiply(terms);
-                        }else{
-                            return [operation,subject].setType(eqtype.fn);
-                        }
-                    }else if(terms[i]=="∫"){
-                        var operation=terms.splice(i,1)[0];
-                        found.push(operation="int");
-                        var subject=terms.splice(i).setType(eqtype.product);
-                        if(terms.length){
-                            return [operation,subject].setType(eqtype.fn).multiply(terms);
-                        }else{
-                            return [operation,subject].setType(eqtype.fn);
-                        }
-                    }
-                }
-            }
-            //while(typeof terms=="object" && terms.length==1){
-            //	terms=terms[0];
-            //}
-            return terms;
-
-        }
-
         var mathutil = {
+            level:0,
+            eqtype:{"product":1, "sum":2, "number":3, "discretevector":6, "continuousvector":7, "power":8, "fn":9, "fraction":10, "derivative":11, "integral":12, "equality":13, "pm":14, "operatorfactor":15, "lessthan":16, "greaterthan":17, "range":18},
             latexchars:{
                 'gt':">",
                 "left|":"abs:(",
@@ -498,6 +126,377 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
                 "coproduct":"∐",
                 "int":"∫",
                 "integral":"∫"
+            },
+
+            p:function () {
+                if (typeof inp == "number" || !isNaN(inp)) {
+                    return Number(inp);
+                } else if (typeof inp == "object") {
+                    if (!isNaN(inp)) {
+                        app.ui.console.warn("this is returned somewhere instead of Number(this)");
+                        return Number(inp);
+                    }
+                    return inp;
+                }
+                if (inp == "" || inp === undefined) {
+                    return 0;
+                }
+//parses brackets recursively and returns an expression
+
+                //level++;
+                //if(level>15){throw("too recursive for debugging");return;}
+                //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"p: "+inp);
+                var eq = [];
+                var e = inp.replace(/\s/g, "").replace(/\]/g, ")").replace(/\[/g, "(").replace(/\)\(/g, ")*(");
+
+                //TODO: known functions only, otherwise make it a product
+                //TODO: allow things like 2x
+
+                while (e.indexOf("xx") != -1) {
+                    e = e.replace(/xx/g, "x*x");
+                }
+
+                //TODO: -- -> +
+                e = e.replace(/∞/g, "Infinity");
+                e = e.replace(/\.([^\d]|$)/g, "*$1");
+                e = e.replace(/([\d]+(\.[\d]+)?)([^\+\-\*\/\^\:\(\)\d\=\<\>\.!])/g, "$1*$3");
+
+                //TODO: Following line is a bit hacky. Specifications need be made to clear things up.
+                e = e.replace(/([xyzπϕ])([exyzπϕ])/g, "$1*$2");
+
+                e = e.replace(/\^([\d]+)\(/g, "^$1:(");
+
+                e = e.replace(/max\(/g, "(max)(");
+
+                e = e.replace(/([xyzπϕ\d∫])\(/g, "$1*(");
+                e = e.replace(/\(max\)/g, "max");
+
+                e = e.replace(/∫([^\*])/g, "∫*$1");
+                e = e.replace(/([xyzπϕ\d\.])∫/g, "$1*∫");
+                e = e.replace(/([^\+\-\*\/\^\:\(\)\d\=\<\>])\(/g, "$1:(");
+
+                e = e.replace(/\)([^\+\-\*\/\^\:\(\)\=\<\>!])/g, ")*$1");
+                //multiplicative identity
+                e = e.replace(/\*([\)\=]|$)/g, "$1");
+                //Double factorial
+                e = e.replace(/!!/g, "‼");
+                if (e.indexOf("=") != -1) {
+                    var eq = e.replace("==", "[equals][equals]").split("=").map(function (e) {
+                        return e.replace("[equals][equals]", "==");
+                    });
+                    if (eq.length == 2) {
+                        return [p(eq[0]), p(eq[1])].setType(eqtype.equality);
+                    }
+                    throw("Too many '='s");
+                    return;
+                } else if (e.indexOf("<") != -1) {
+                    var eq = e.split("<");
+                    if (eq.length == 2) {
+                        return [p(eq[0]), p(eq[1])].setType(eqtype.lessthan);
+                    }
+                    throw("Too many '<'s");
+                    return;
+                } else if (e.indexOf(">") != -1) {
+                    var eq = e.split(">");
+                    if (eq.length == 2) {
+                        return [p(eq[0]), p(eq[1])].setType(eqtype.greaterthan);
+                    }
+                    throw("Too many '>'s");
+                    return;
+                }
+                //---Recursive Parentheses parse
+                while ((e.indexOf("(") != -1) && (e.indexOf(")") != -1)) {
+                    var fail = true;
+                    e = e.replace(/\([^\(\)]*\)/g, function (n) {
+                        fail = false;
+                        var h = random_hash();
+                        obj[h] = p(n.substring(1, n.length - 1));
+                        return "aaaa" + h + "aaaa";
+                    });
+                    if (fail) {
+                        throw (MessageStrings.parentheses);
+                        break;
+                    }
+                }
+                var terms = [];
+                var last = 0;
+                //---Sum parse
+                var term_op = "+-";
+                var prod_op = "*/";
+
+                if (e.indexOf(",") != -1) {
+                    //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"f>: "+e);
+                    terms.type = eqtype.discretevector;
+                    var be = e.split(",");
+                    be.forEach(function (zz) {
+                        terms.push(p(zz));
+                    });
+
+                } else if ((e.indexOf("+") != -1) || (e.indexOf("-") != -1)) {
+                    //__debug(!__debug_parser,0) ||app.ui.console.log(spaces.substring(0,level)+"+>: "+e);
+                    terms.type = eqtype.sum;
+                    var nextisinverse = false;
+                    for (var i = 0; i < e.length; i++) {
+                        if (term_op.indexOf(e[i]) != -1) {
+                            var s = e.substring(last, i);
+                            if (nextisinverse) {
+                                terms.push(p(s).multiply(-1));
+                                nextisinverse = false;
+                            } else {
+                                terms.push(p(s));
+                            }
+                            if (e[i] == "-") {
+                                nextisinverse = true;
+                            }
+                            last = i + 1;
+                        }
+                    }
+                    if (nextisinverse) {
+                        terms.push(p(e.substring(last, e.length)).multiply(-1));
+                    } else {
+                        terms.push(p(e.substring(last, e.length)));
+                    }
+
+
+                } else if ((e.indexOf("*") != -1) || (e.indexOf("/") != -1)) {
+                    //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"*>: "+e);
+                    terms.type = eqtype.product;
+                    var denom = [];
+                    denom.type = eqtype.product;
+                    var nextisinverse = false;
+                    //check for d/dx
+                    for (var i = 0; i < e.length; i++) {
+                        if (prod_op.indexOf(e[i]) != -1) {
+                            var s = e.substring(last, i);
+                            if (nextisinverse) {
+                                denom.push(p(s));
+                                nextisinverse = false;
+                            } else {
+                                terms.push(p(s));
+                            }
+                            if (e[i] == "/") {
+                                nextisinverse = true;
+                            }
+                            last = i + 1;
+                        }
+                    }
+                    if (nextisinverse) {
+                        denom.push(p(e.substring(last, e.length)));
+                    } else {
+                        terms.push(p(e.substring(last, e.length)));
+                    }
+                    if (denom.length) {
+                        terms = [terms, denom];
+                        terms.type = eqtype.fraction;
+                    }
+                } else if (e.indexOf("!") != -1) {
+
+                    //TODO: Fix this
+                    //DONE: This was fixed March 16, 2011
+                    terms.type = eqtype.product;
+                    var last = 0;
+                    for (var i = 0; i < e.length; i++) {
+                        if (e[i] == "!") {
+                            var s = e.substring(last, i);
+                            if (s == "") {
+                                terms[terms.length - 1] = ["fact", terms[terms.length - 1]].setType(eqtype.fn);
+                            } else {
+                                terms.push(["fact", p(s)].setType(eqtype.fn));
+                            }
+                            last = i + 1;
+                        }
+                    }
+                    var final = e.substring(last, e.length);
+                    if (final != "") {
+                        terms.push(p(final));
+                    }
+
+                } else if (e.indexOf("‼") != -1) {
+
+                    //TODO: Fix this
+                    //DONE: This was fixed March 16, 2011
+                    terms.type = eqtype.product;
+                    var last = 0;
+                    for (var i = 0; i < e.length; i++) {
+                        if (e[i] == "‼") {
+                            var s = e.substring(last, i);
+                            if (s == "") {
+                                terms[terms.length - 1] = ["doublefact", terms[terms.length - 1]].setType(eqtype.fn);
+                            } else {
+                                terms.push(["doublefact", p(s)].setType(eqtype.fn));
+                            }
+                            last = i + 1;
+                        }
+                    }
+                    var final = e.substring(last, e.length);
+                    if (final != "") {
+                        terms.push(p(final));
+                    }
+
+                } else if (e.indexOf(":") != -1) {
+                    //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"f>: "+e);
+                    terms.type = eqtype.fn;
+                    var be = e.split(":");
+                    if (be.length != 2) {
+
+                        //alert(e);
+                        throw (MessageStrings.functionchain);
+                        //return;
+                    }
+                    var dmatch = /^([^\']+)(\'+)$/.exec(be[0]);
+                    if (dmatch) {
+                        //console.log("found");
+                        terms.type = eqtype.fn;
+                        var b = [dmatch[1], be[1]].setType(eqtype.fn);
+                        for (var count = dmatch[2].length; count--; count > 0) {
+                            //console.log("diff");
+                            b = ["diff", b].setType(eqtype.fn);
+                        }
+                        terms = b;
+
+                    } else {
+                        var match = /^log_([\d\.\+\-e]+)$/.exec(be[0]);
+                        if (match) {
+                            var fn_ = ["log", p(be[1])].setType(eqtype.fn);
+                            terms.type = eqtype.fraction;
+                            terms.push(fn_);
+                            terms.push(["log", p(match[1])].setType(eqtype.fn));
+                        } else {
+                            var fname = p(be[0]);
+                            if (fname.type == eqtype.power) {
+                                var basefn = fname[0].simplify();
+                                var power = fname[1].simplify();
+                                //if trig
+                                if (power < 0) {
+                                    //find inverse
+                                    basefn = "a" + basefn;
+                                    power = -power;
+                                }
+
+                                if (1 || is_it_a_trig_function) {
+                                    terms.type = eqtype.power;
+                                    terms.push([basefn, p(be[1])].setType(eqtype.fn));
+                                    terms.push(power);
+                                }
+
+
+                            } else if (typeof fname != "string") {
+                                terms.type = eqtype.product;
+                                terms.push(fname);
+                                terms.push(p(be[1]));
+                            } else {
+                                terms.push(fname);
+                                terms.push(p(be[1]));
+                            }
+                        }
+                    }
+                } else if (e.indexOf("^") != -1) {
+                    //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"^>: "+e);
+
+                    var be = e.split("^");
+                    //NOTE: for now
+                    //^ is a BINARY operator that goes from right to left.
+                    //  1^2^3 = 1^(2^(3))
+                    if (be.length != 2) {
+                        throw (MessageStrings.expchain);
+                        return;
+                    }
+                    var base = p(be[0]);
+                    terms.type = eqtype.power;
+                    terms.push(base);
+                    terms.push(p(be[1]));
+
+
+                } else {
+                    var parsednumber = NaN;
+                    if (!isNaN(parsednumber = Number(e))) {
+                        return parsednumber;
+                    } else if (!/^aaaa[a-z\d]{20}aaaa$/.test(e)) {
+                        var match = /^([\d]+(\.[\d])?)([^\d]+)$/.exec(e);
+                        if (match) {
+                            alert("old code: " + e);
+                            terms.type = eqtype.product;
+                            terms.push(p(match[1]));
+                            terms.push(match[3]);
+                        } else {
+                            var vars = e.split(".");
+                            if (vars.length > 1) {
+                                terms.type = eqtype.product;
+                                vars.forEach(function (v) {
+                                    terms.push(p(v));
+                                });
+                            } else {
+                                return e;
+                            }
+                        }
+                    } else {
+                        terms.type = eqtype.variable;
+                        terms.push(e);
+                    }
+
+
+                }
+
+                terms = terms.dreplace(/^aaaa[a-z\d]{20}aaaa$/, function (e) {
+                    var to_ret = obj[e.substring(4, 24)];
+                    delete obj[e.substring(4, 24)];
+                    return to_ret;
+                });
+                /*
+                 for(var i=0;i<terms.length;i++){
+                 if(/^aaaa[a-z\d]{20}aaaa$/.test(terms[i])){
+                 terms[i]=obj[terms[i].substring(4,24)];
+                 //terms[i]="e";
+                 }
+                 }*/
+                //__debug(!__debug_parser,0) || app.ui.console.log(spaces.substring(0,level)+"@>: "+JSON.stringify(terms));
+                level--;
+                while (typeof terms == "object" && terms.type == eqtype.variable) {
+                    terms = terms[0];
+                }
+                if (terms.length == 2) {
+
+                    //terms=terms.simplify();
+                    if (terms.length == 2 && terms.type == eqtype.fraction && terms[0].simplify() == "d" && terms[1].simplify() == "dx") {
+                        return ["diff"].setType(eqtype.operatorfactor);
+                    }
+                    /*if(terms.length==2 && terms.type==eqtype.fraction && terms[0]=="d" && terms[1]=="dx"){
+                     return ["diff"].setType(eqtype.operatorfactor);
+                     }*/
+                    if (terms[0].length == 1 && terms[0] == "d" && terms[1].length == 1 && terms[1] == "dx") {
+                        return ["diff"].setType(eqtype.operatorfactor);
+                    }
+                }
+                //console.log(terms.type+": "+terms.getString());
+                if (terms.type == eqtype.product) {
+                    var found = [];
+                    for (var i = 0; i < terms.length; i++) {
+                        if (terms[i].type == eqtype.operatorfactor) {
+                            var operation = terms.splice(i, 1)[0][0];
+                            found.push(operation);
+                            var subject = terms.splice(i).setType(eqtype.product);
+                            if (terms.length) {
+                                return [operation, subject].setType(eqtype.fn).multiply(terms);
+                            } else {
+                                return [operation, subject].setType(eqtype.fn);
+                            }
+                        } else if (terms[i] == "∫") {
+                            var operation = terms.splice(i, 1)[0];
+                            found.push(operation = "int");
+                            var subject = terms.splice(i).setType(eqtype.product);
+                            if (terms.length) {
+                                return [operation, subject].setType(eqtype.fn).multiply(terms);
+                            } else {
+                                return [operation, subject].setType(eqtype.fn);
+                            }
+                        }
+                    }
+                }
+                //while(typeof terms=="object" && terms.length==1){
+                //	terms=terms[0];
+                //}
+                return terms;
+
             },
 
             clean:function (n) {

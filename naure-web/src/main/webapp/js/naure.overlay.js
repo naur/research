@@ -74,6 +74,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
             var isRichNode = false;
 
             for (key in opt.nodes) {
+                if (!opt.nodes.hasOwnProperty(key)) return;
                 if (typeof(opt.nodes[key]) != 'function' && opt.nodes[key].input) isRichNode = true;
                 else isRichNode = false;
                 $('.overlay section:eq(0)').append($.format(opt.html,

@@ -93,6 +93,7 @@ var _cy = 0;
 var cx = (window.innerWidth || document.body.clientWidth || 640) / -3;
 var cy = (window.innerHeight || document.body.clientHeight || 120) * 2 / 3;
 var cz = 10000;
+
 var drawwhiledrag_c = 0;
 var gestureBegin_scalex = 1;
 var gestureBegin_scaley = 1;

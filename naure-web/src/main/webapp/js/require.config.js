@@ -24,9 +24,11 @@ require.config({
         'naure.overlay':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.overlay',
 
         'naure.math':'/Research/projects/naure/naure-research/src/main/webapp/js/math/naure.math',
-        'naure.graph':'/Research/projects/naure/naure-research/src/main/webapp/js/graph/naure.graph',
-        'naure.graph.math':'/Research/projects/naure/naure-research/src/main/webapp/js/graph/naure.graph.math',
-        'naure.graph.ui':'/Research/projects/naure/naure-research/src/main/webapp/js/graph/naure.graph.ui',
+
+        'naure.graphics':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics',
+        'naure.graphics.ui':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.ui',
+        'naure.graphics.layout':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.layout',
+        'naure.graphics.equation':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.equation',
 
         'math':'/Research/projects/naure/naure-research/src/main/webapp/js/math/math',
         'math.matrix':'/Research/projects/naure/naure-web/src/main/webapp/js/math/math.matrix'

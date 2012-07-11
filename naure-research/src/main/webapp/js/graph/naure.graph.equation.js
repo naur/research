@@ -4,14 +4,13 @@
  * Email:
  *              jiaruizhi@360buy.com
  * Date:
- *              7/4/12 11:00 AM
+ *              7/10/12 11:38 AM
  * Description:
  *
  */
+define(['jquery', 'naure.message', 'naure.math', 'naure.graph', 'naure.graph.ui'], function ($, NAURE) {
 
-define(['jquery', 'naure.message', 'naure.math', 'naure.graph.math'], function ($, NAURE) {
-
-    NAURE.Graph.UI = (function () {
+    NAURE.Graph.Equation = (function () {
         var ui = {
             width:0,
             height:0,
