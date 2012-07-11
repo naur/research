@@ -20,6 +20,7 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
             startDrag:{X:0, Y:0},
             prevDrag:{X:0, Y:0},
             currDrag:{X:0, Y:0},
+            defaultCoord: {X1:0, Y1:0, X2:0, Y2:0},
             startCoord:{X1:0, Y1:0, X2:0, Y2:0},
             currCoord:{X1:-5, Y1:-5, X2:5, Y2:5},
             offset:{left:0, top:0},
@@ -41,6 +42,11 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
             },
             isDragMove:function () {
                 return !this.isEqualsPoint(this.currDrag, this.prevDrag);
+            },
+
+            absRange:function () {
+                return {X:Math.abs(this.range.X),
+                    Y:Math.abs(this.range.Y)}
             },
 
             refresh:function (options) {
@@ -69,36 +75,50 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                     }
 
                     this.startCoord = NAURE.Utility.clone(this.currCoord);
+                    this.defaultCoord = NAURE.Utility.clone(this.currCoord);
                     this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
                     this.scale = this.currScale();
                     //this.scale = {X:this.range.X / this.width, Y:this.range.Y / this.height};
                 }
 
-                //当鼠标移动时  【Drag 变化】
+                //鼠标事件时  【Drag 变化】
+                if (opt.startDrag) {
+                    this.startDrag.X = opt.startDrag.X - this.offset.X;
+                    this.startDrag.Y = opt.startDrag.Y - this.offset.Y;
+                    //todo
+                    this.startCoord = NAURE.Utility.clone(this.currCoord);
+                }
                 if (opt.currDrag) {
-                    this.currDrag = {
-                        X:opt.currDrag.X - this.offset.X,
-                        Y:opt.currDrag.Y - this.offset.Y
-                    }
-                    if (this.isDragMove()) {
-                        //find the scale of the graph (units per pixel)
-                        this.scale = this.currScale();
-                        //dump(scale.x + " " + scale.y + " -- " + this.startCoord.x1 + " " + this.startCoord.y1);
-                        //dump(this.startCoord.x1 + " " +(y - this.startDrag.y) / scale.y);
-                        this.currCoord.X1 = this.startCoord.X1 - ((this.currDrag.X - this.startDrag.X) / this.scale.X);
-                        this.currCoord.X2 = this.startCoord.X2 - ((this.currDrag.X - this.startDrag.X) / this.scale.X);
-                        this.currCoord.Y1 = this.startCoord.Y1 + ((this.currDrag.Y - this.startDrag.Y) / this.scale.Y);
-                        this.currCoord.Y2 = this.startCoord.Y2 + ((this.currDrag.Y - this.startDrag.Y) / this.scale.Y);
-                    }
+                    this.currDrag.X = opt.currDrag.X - this.offset.X;
+                    this.currDrag.Y = opt.currDrag.Y - this.offset.Y;
+                }
+                //todo
+                if (opt.continue) {
+                    //find the scale of the graph (units per pixel)
+                    //this.scale = this.currScale();
+                    //dump(scale.x + " " + scale.y + " -- " + this.startCoord.x1 + " " + this.startCoord.y1);
+                    //dump(this.startCoord.x1 + " " +(y - this.startDrag.y) / scale.y);
+                    this.currCoord.X1 = this.startCoord.X1 - ((this.currDrag.X - this.startDrag.X) / this.scale.X);
+                    this.currCoord.X2 = this.startCoord.X2 - ((this.currDrag.X - this.startDrag.X) / this.scale.X);
+                    this.currCoord.Y1 = this.startCoord.Y1 + ((this.currDrag.Y - this.startDrag.Y) / this.scale.Y);
+                    this.currCoord.Y2 = this.startCoord.Y2 + ((this.currDrag.Y - this.startDrag.Y) / this.scale.Y);
+                }
+
+                if (opt.renew) {
+                    this.startCoord = NAURE.Utility.clone(this.currCoord);
                 }
 
                 NAURE.Message.show({content:JSON.stringify({
-                    size:{width:this.width, height:this.height},
-                    prevDrag:this.prevDrag,
-                    startCoord:this.startCoord,
-                    currCoord:this.currCoord,
-                    scale:this.scale
+                    //size:{width:this.width, height:this.height},
+                    currDrag:this.currDrag,
+                    //startCoord:this.startCoord,
+                    currCoord:this.currCoord
+                    //scale:this.scale
                 }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+            },
+
+            reset:function() {
+                this.currCoord = NAURE.Utility.clone(this.defaultCoord);
             },
 
             coordinate:function () {

@@ -15,8 +15,11 @@ var overlayNodes = {
     Input:{
         html:'<input id="overlay-input" type="text" />'
     },
-    'Stock':function () {
-        NAURE.Graph.UI.drawLine();
+    'Graph':function () {
+        NAURE.Graphics.draw();
+    },
+    'Reset':function () {
+        NAURE.Graphics.reset();
     }
 };
 

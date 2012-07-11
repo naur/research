@@ -27,8 +27,8 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
             layout:null,
             lines:[],
             config:{
-                gridlines: {
-                    show: true,
+                gridlines:{
+                    show:true,
                     maxgridlines:{X:13, Y:13},
                     charHeight:8
                 },
@@ -99,8 +99,9 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
             },
 
             draw:function (options) {
-                var opt = $.extend({}, graphics.config, options);
-                this.ui.gridlines(this.config.gridlines);
+                var opt = $.extend({}, graphics.config, options)
+
+                this.ui.draw(opt);
 
 //                for (var i in this.lines) {
 //                    //dump(this.lines[i].equation);
@@ -115,11 +116,15 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
 //                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
+            reset:function () {
+                this.ui.reset();
+            },
+
             init:function (options) {
                 graphics.ui = NAURE.Graphics.UI;
                 graphics.layout = NAURE.Graphics.Layout;
 
-                graphics.ui.init( $.extend({
+                graphics.ui.init($.extend({
                     layout:graphics.layout
                 }, options));
 

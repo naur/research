@@ -36,9 +36,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
             mouseDown:function (event) {
                 document.body.style.cursor = "hand";
                 if (ui.mousebutton == 0) {
-                    this.startDrag.x = event.pageX - this.canvasX;
-                    this.startDrag.y = event.pageY - this.canvasY;
-                    this.startCoord = NAURE.Utility.clone(this.currCoord);
+                    ui.layout.refresh({startDrag:{X:event.pageX, Y:event.pageY}});
                 }
                 ui.mousebutton = 1;
             },
@@ -46,7 +44,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
             mouseUp:function (event) {
                 document.body.style.cursor = "auto";
                 ui.mousebutton = 0;
-                this.startCoord = NAURE.Utility.clone(this.currCoord);
+                this.layout.refresh({renew:true});
+                //this.layout.startCoord = NAURE.Utility.clone(this.layout.currCoord);
             },
 
             checkMove:function (x, y) {
@@ -57,30 +56,33 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
 
                 if (!ui.layout.isDragMove()) return
 
-                if (this.mousebutton == 1) this.draw();
+                if (this.mousebutton == 1) {
+                    ui.layout.refresh({continue:true});
+                    this.draw();
+                }
 
                 ui.layout.refresh({prevDrag:{X:x, Y:y}})
             },
 
             zoom:function (scale, event) {
-                range = this.getRange();
+                range = this.layout.range;
                 if (event) {
-                    mousex = event.pageX - this.canvasX;
-                    mousey = event.pageY - this.canvasY;
-                    mousetop = 1 - (mousey / this.height);	//if we divide the screen into two halves based on the position of the mouse, this is the top half
-                    mouseleft = mousex / width;	//as above, but the left hald
-                    this.currCoord.x1 += range.x * scale * mouseleft;
-                    this.currCoord.y1 += range.y * scale * mousetop;
-                    this.currCoord.x2 -= range.x * scale * (1 - mouseleft);
-                    this.currCoord.y2 -= range.y * scale * (1 - mousetop);
+                    mousex = event.pageX - this.layout.offset.X;
+                    mousey = event.pageY - this.layout.offset.Y;
+                    mousetop = 1 - (mousey / this.layout.height);	//if we divide the screen into two halves based on the position of the mouse, this is the top half
+                    mouseleft = mousex / ui.layout.width;	//as above, but the left hald
+                    this.layout.currCoord.X1 += range.X * scale * mouseleft;
+                    this.layout.currCoord.Y1 += range.Y * scale * mousetop;
+                    this.layout.currCoord.X2 -= range.X * scale * (1 - mouseleft);
+                    this.layout.currCoord.Y2 -= range.Y * scale * (1 - mousetop);
                 }
                 else {
-                    this.currCoord.x1 += range.x * scale;
-                    this.currCoord.y1 += range.y * scale;
-                    this.currCoord.x2 -= range.x * scale;
-                    this.currCoord.y2 -= range.y * scale;
+                    this.layout.currCoord.X1 += range.X * scale;
+                    this.layout.currCoord.Y1 += range.Y * scale;
+                    this.layout.currCoord.X2 -= range.X * scale;
+                    this.layout.currCoord.Y2 -= range.Y * scale;
                 }
-                this.startCoord = NAURE.Utility.clone(this.currCoord);
+                this.layout.startCoord = NAURE.Utility.clone(this.layout.currCoord);
                 this.draw();
             },
 
@@ -261,6 +263,44 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
             arrange:function () {
 
             },
+            reset:function () {
+                this.layout.reset();
+                this.draw();
+            },
+            draw:function (options) {
+                if (options) this.config = options;
+                this.gridlines(this.config);
+                //this.drawLine();
+            },
+            drawLine:function (options) {
+                var opt = $.extend({
+                    expression:'y=x^2'
+                }, ui.config, options);
+
+                this.ctx.fillStyle = '#00f';
+                this.ctx.strokeStyle = '#f00';
+
+//                var graph = new this.Graph('y=x^2', true);
+//                graph.disabled = true;
+//
+//                graph.plot(this.ctx);
+                ui.ctx.beginPath();
+
+
+                var x = ui.layout.currCoord.X1 //boundleft;
+                ui.ctx.move(x, pow(x, 2));
+                for (var x = ui.layout.currCoord.x1; x < ui.layout.currCoord.x2; x += (ui.layout.currCoord.x2 - ui.layout.currCoord.x1) / ui.layout.width) {
+                    ui.ctx.line(x, pow(x, 2));
+                }
+                ui.ctx.stroke();
+
+
+                // Done! Now fill the shape, 和 draw the stroke.
+                // Note: your shape will not be visible until you call any of the two methods.
+                //ui.ctx.fill();
+                ui.ctx.stroke();
+                //ui.ctx.closePath();
+            },
 
             init:function (options) {
                 var opt = $.extend({}, options);
@@ -289,7 +329,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
                     self.checkMove(event.pageX, event.pageY);
                 });
                 this.graph.on('mousewheel', this.graph, function (event) {
-                    self.mouseWheel(event.originalEvent, event.originalEvent.wheelDelta);
+                    self.mouseWheel(event.originalEvent);
                     return false;
                 });
                 this.graph.on('mousedown', this.graph, function (event) {
