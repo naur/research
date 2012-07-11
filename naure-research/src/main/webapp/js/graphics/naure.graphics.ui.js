@@ -59,9 +59,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
 
 
                 var x = ui.layout.currCoord.X1 //boundleft;
-                ui.ctx.move(x, pow(x, 2));
+                ui.ctx.move({X:x, Y:pow(x, 2)});
                 for (var x = ui.layout.currCoord.X1; x < ui.layout.currCoord.X2; x += (ui.layout.currCoord.X2 - ui.layout.currCoord.X1) / ui.layout.width) {
-                    ui.ctx.line(x, pow(x, 2));
+                    ui.ctx.line({X:x, Y:pow(x, 2)});
                 }
                 ui.ctx.stroke();
 
@@ -298,15 +298,15 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
 
                 //初始化 ctx 方法
                 ui.ctx.move = function (point) {
-                    var tempPoint = ui.layout.transform(point);
-                    if (!tempPoint) return;
-                    return ui.ctx.moveTo(tempPoint);
+                    var transPoint = ui.layout.transform(point);
+                    if (!transPoint) return;
+                    return ui.ctx.moveTo(transPoint.X, transPoint.Y);
                 };
 
                 ui.ctx.line = function (point) {
-                    var tempPoint = ui.layout.transform(point);
-                    if (!tempPoint) return;
-                    return ui.ctx.lineTo(tempPoint);
+                    var transPoint = ui.layout.transform(point);
+                    if (!transPoint) return;
+                    return ui.ctx.lineTo(transPoint.X, transPoint.Y);
                 };
 
                 //初始化事件

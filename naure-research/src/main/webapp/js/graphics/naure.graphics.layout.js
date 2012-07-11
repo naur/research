@@ -24,7 +24,7 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
             startCoord:{X1:0, Y1:0, X2:0, Y2:0},
             currCoord:{X1:-5, Y1:-5, X2:5, Y2:5},
             offset:{left:0, top:0},
-            centerPosition:{X:null, Y:null, Z:null},
+            zeroPosition:{X:null, Y:null, Z:null},
 
             Point:function (x, y, z) {
                 this.X = x;
@@ -121,6 +121,8 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
 
                 this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
                 this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
+                this.zeroPosition = {X:this.scale.X * this.currCoord.X1, Y:this.scale.Y * Math.abs(this.currCoord.Y1)};
+
 
                 NAURE.Message.show({content:JSON.stringify({
                     //size:{width:this.width, height:this.height},
@@ -128,7 +130,8 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                     //startCoord:this.startCoord,
                     currCoord:this.currCoord,
                     //scale:this.scale,
-                    range:this.range
+                    range:this.range,
+                    zeroPosition:this.zeroPosition
                 }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
@@ -151,7 +154,7 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                     //point.X = layout.currCoord.X1;
                     return null;
                 }
-                if (point.Y > layout.currCoord.y2) {
+                if (point.Y > layout.currCoord.Y2) {
                     //point.Y = layout.currCoord.y2;
                     return null;
                 }
@@ -160,7 +163,14 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                     return null;
                 }
 
-                return new layout.Point(layout.scale.X * point.X - layout.centerPosition.X, layout.centerPosition.Y - layout.scale.Y * point.Y);
+//                return {
+//                    X:this.scale.X * point.X - this.zeroPosition.X,
+//                    Y:this.zeroPosition.Y - this.scale.Y * point.Y
+//                };
+                return {
+                    X:this.scale.X * (point.X - this.currCoord.X1),
+                    Y: this.scale.Y * (this.currCoord.Y2 - point.Y)
+                };
             }
         };
 
