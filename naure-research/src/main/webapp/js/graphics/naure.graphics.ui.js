@@ -24,6 +24,74 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
             mousebutton:0,
             calccache:new Object,
 
+            arrange:function () {
+
+            },
+
+            measure:function () {
+
+            },
+
+            reset:function () {
+                this.layout.reset();
+                this.draw();
+            },
+
+            draw:function (options) {
+                if (options) this.config = options;
+                this.gridlines();
+                //this.drawLine();
+            },
+
+            drawLine:function (options) {
+                var opt = $.extend({
+                    expression:'y=x^2'
+                }, ui.config, options);
+
+                this.ctx.fillStyle = '#00f';
+                this.ctx.strokeStyle = '#f00';
+
+//                var graph = new this.Graph('y=x^2', true);
+//                graph.disabled = true;
+//
+//                graph.plot(this.ctx);
+                ui.ctx.beginPath();
+
+
+                var x = ui.layout.currCoord.X1 //boundleft;
+                ui.ctx.move(x, pow(x, 2));
+                for (var x = ui.layout.currCoord.x1; x < ui.layout.currCoord.x2; x += (ui.layout.currCoord.x2 - ui.layout.currCoord.x1) / ui.layout.width) {
+                    ui.ctx.line(x, pow(x, 2));
+                }
+                ui.ctx.stroke();
+
+
+                // Done! Now fill the shape, 和 draw the stroke.
+                // Note: your shape will not be visible until you call any of the two methods.
+                //ui.ctx.fill();
+                ui.ctx.stroke();
+                //ui.ctx.closePath();
+            },
+
+            resize:function () {
+                //layout refresh
+                ui.layout.refresh({
+                    width:ui.graph.width(),
+                    height:ui.graph.height(),
+                    offset:ui.graph.offset()
+                });
+
+                //Resize the elements
+                this.graph.attr('width', this.layout.width);
+                this.graph.attr('height', this.layout.height);
+                this.ctx.height = this.layout.height;
+                this.ctx.width = this.layout.width;
+
+                //Compute how many grid lines to show
+                this.config.gridlines.maxgridlines.X = 0.015 * this.layout.width;
+                this.config.gridlines.maxgridlines.Y = 0.015 * this.layout.height;
+            },
+
             mouseWheel:function (event) {
                 if (event.wheelDelta > 0) {
                     this.zoom(this.config.zoomFactor, event);
@@ -70,7 +138,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
                     mousex = event.pageX - this.layout.offset.X;
                     mousey = event.pageY - this.layout.offset.Y;
                     mousetop = 1 - (mousey / this.layout.height);	//if we divide the screen into two halves based on the position of the mouse, this is the top half
-                    mouseleft = mousex / ui.layout.width;	//as above, but the left hald
+                    mouseleft = mousex / this.layout.width;	//as above, but the left hald
                     this.layout.currCoord.X1 += range.X * scale * mouseleft;
                     this.layout.currCoord.Y1 += range.Y * scale * mousetop;
                     this.layout.currCoord.X2 -= range.X * scale * (1 - mouseleft);
@@ -86,39 +154,12 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
                 this.draw();
             },
 
-            measure:function () {
-
-            },
-
-            resize:function () {
-                //layout refresh
-                ui.layout.refresh({
-                    width:ui.graph.width(),
-                    height:ui.graph.height(),
-                    offset:ui.graph.offset()
-                });
-
-                //Resize the elements
-                this.graph.attr('width', this.layout.width);
-                this.graph.attr('height', this.layout.height);
-                this.ctx.height = this.layout.height;
-                this.ctx.width = this.layout.width;
-
-                //Compute how many grid lines to show
-//                this.config.maxgridlines.X = 0.015 * this.width;
-//                this.config.maxgridlines.Y = 0.015 * this.height;
-            },
-
             gridlines:function (options) {
-                var opt = $.extend({
-                    show:true,
-                    maxgridlines:{X:13, Y:13},
-                    charHeight:8    //the next two variables are the axis on which text is going to be placed
-                }, options);
+                this.clearScreen();
+
+                var opt = $.extend({}, this.config.gridlines, options);
 
                 if (!opt.show) return;
-
-                this.clearScreen();
 
                 opt.currCoord = this.layout.currCoord;
                 opt.range = this.layout.range;
@@ -260,48 +301,6 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
                 }
             },
 
-            arrange:function () {
-
-            },
-            reset:function () {
-                this.layout.reset();
-                this.draw();
-            },
-            draw:function (options) {
-                if (options) this.config = options;
-                this.gridlines(this.config);
-                //this.drawLine();
-            },
-            drawLine:function (options) {
-                var opt = $.extend({
-                    expression:'y=x^2'
-                }, ui.config, options);
-
-                this.ctx.fillStyle = '#00f';
-                this.ctx.strokeStyle = '#f00';
-
-//                var graph = new this.Graph('y=x^2', true);
-//                graph.disabled = true;
-//
-//                graph.plot(this.ctx);
-                ui.ctx.beginPath();
-
-
-                var x = ui.layout.currCoord.X1 //boundleft;
-                ui.ctx.move(x, pow(x, 2));
-                for (var x = ui.layout.currCoord.x1; x < ui.layout.currCoord.x2; x += (ui.layout.currCoord.x2 - ui.layout.currCoord.x1) / ui.layout.width) {
-                    ui.ctx.line(x, pow(x, 2));
-                }
-                ui.ctx.stroke();
-
-
-                // Done! Now fill the shape, 和 draw the stroke.
-                // Note: your shape will not be visible until you call any of the two methods.
-                //ui.ctx.fill();
-                ui.ctx.stroke();
-                //ui.ctx.closePath();
-            },
-
             init:function (options) {
                 var opt = $.extend({}, options);
                 ui.graph = $(opt.container);
@@ -338,7 +337,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
                 this.graph.on('mouseup', this.graph, function (event) {
                     self.mouseUp(event);
                 });
-
+                this.graph.on('mouseleave', this.graph, function (event) {
+                    self.mouseUp(event);
+                });
                 return ui;
             }
         };

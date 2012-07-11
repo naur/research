@@ -33,6 +33,7 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
                     charHeight:8
                 },
                 quality:1,
+                //todo
                 scale:function (scale) {
                     graphics.layout.scale = scale;
                 },
@@ -99,9 +100,7 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
             },
 
             draw:function (options) {
-                var opt = $.extend({}, graphics.config, options)
-
-                this.ui.draw(opt);
+                this.ui.draw(options);
 
 //                for (var i in this.lines) {
 //                    //dump(this.lines[i].equation);
@@ -122,6 +121,7 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
 
             init:function (options) {
                 graphics.ui = NAURE.Graphics.UI;
+                graphics.ui.config = NAURE.Graphics.config;
                 graphics.layout = NAURE.Graphics.Layout;
 
                 graphics.ui.init($.extend({

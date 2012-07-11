@@ -112,8 +112,9 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                     //size:{width:this.width, height:this.height},
                     currDrag:this.currDrag,
                     //startCoord:this.startCoord,
-                    currCoord:this.currCoord
-                    //scale:this.scale
+                    currCoord:this.currCoord,
+                    //scale:this.scale,
+                    range:this.range
                 }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
