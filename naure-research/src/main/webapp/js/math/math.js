@@ -1942,11 +1942,11 @@ String.prototype.canEval=function(){
         }
     }
 
-    if(window[this.toString()]){
-        if(typeof window[this.toString()]!="function"){
-            return true;
-        }
-    }
+//    if(window[this.toString()]){
+//        if(typeof window[this.toString()]!="function"){
+//            return true;
+//        }
+//    }
     return false;
 };
 

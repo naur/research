@@ -121,6 +121,16 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                 this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
                 this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
 
+
+                //todo
+                boundleft = this.currCoord.X1;
+                boundright = this.currCoord.X2;
+                boundtop = this.currCoord.Y1;
+                boundbottom = this.currCoord.Y2;
+                width = this.width;
+                height = this.height;
+
+
                 NAURE.Message.show({content:JSON.stringify({
                     //size:{width:this.width, height:this.height},
                     currDrag:this.currDrag,
@@ -134,8 +144,17 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
 
             reset:function () {
                 this.currCoord = NAURE.Utility.clone(this.defaultCoord);
+                this.startCoord = NAURE.Utility.clone(this.currCoord);
                 this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
                 this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
+                
+                //todo
+                boundleft = this.currCoord.X1;
+                boundright = this.currCoord.X2;
+                boundtop = this.currCoord.Y1;
+                boundbottom = this.currCoord.Y2;
+                width = this.width;
+                height = this.height;
             },
 
             coordinate:function () {
@@ -168,7 +187,7 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
 //                };
                 return {
                     X:this.scale.X * (point.X - this.currCoord.X1),
-                    Y: this.scale.Y * (this.currCoord.Y2 - point.Y)
+                    Y:this.scale.Y * (this.currCoord.Y2 - point.Y)
                 };
             }
         };
