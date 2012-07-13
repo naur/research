@@ -19,6 +19,8 @@ String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
+var coordinate;
+
 define(['jquery', 'naure', 'math'], function ($, NAURE) {
     NAURE.Graphics = (function () {
         var graphics = {
@@ -42,7 +44,7 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
 
             draw:function (options) {
                 this.lines = [];
-                this.lines.push({equation : 'y=x^2', color : 'green'});
+                this.lines.push({equation : 'y=x^2', color : 'red'});
                 this.ui.draw({lines:this.lines});
 
 //                var graphs = [];

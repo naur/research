@@ -10,12 +10,7 @@
  */
 app = [];
 app.variables = []
-var boundleft = -10;
-var boundright = 10;
-var boundtop = 10;
-var boundbottom = -10;
 var ctx;
-var width, height;
 
 //function anonymous(ctx) {
 //    ctx.beginPath();

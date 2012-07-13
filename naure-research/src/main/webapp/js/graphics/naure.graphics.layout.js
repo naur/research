@@ -43,6 +43,19 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                     Y:Math.abs(this.range.Y)}
             },
 
+            refreshCoordinate: function() {
+//                boundleft = this.currCoord.X1;
+//                boundright = this.currCoord.X2;
+//                boundtop = this.currCoord.Y1;
+//                boundbottom = this.currCoord.Y2;
+//                width = this.width;
+//                height = this.height;
+
+                coordinate = NAURE.Utility.clone(this.currCoord);
+                coordinate.width = this.width;
+                coordinate.height = this.height;
+            },
+
             refresh:function (options) {
                 var opt = $.extend({}, options);
 
@@ -121,15 +134,7 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                 this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
                 this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
 
-
-                //todo
-                boundleft = this.currCoord.X1;
-                boundright = this.currCoord.X2;
-                boundtop = this.currCoord.Y1;
-                boundbottom = this.currCoord.Y2;
-                width = this.width;
-                height = this.height;
-
+                this.refreshCoordinate();
 
                 NAURE.Message.show({content:JSON.stringify({
                     //size:{width:this.width, height:this.height},
@@ -147,14 +152,7 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                 this.startCoord = NAURE.Utility.clone(this.currCoord);
                 this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
                 this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
-                
-                //todo
-                boundleft = this.currCoord.X1;
-                boundright = this.currCoord.X2;
-                boundtop = this.currCoord.Y1;
-                boundbottom = this.currCoord.Y2;
-                width = this.width;
-                height = this.height;
+                this.refreshCoordinate();
             },
 
             coordinate:function () {
@@ -196,4 +194,4 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
     })();
 
     return NAURE;
-});
+});                
