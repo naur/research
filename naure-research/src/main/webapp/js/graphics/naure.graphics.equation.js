@@ -79,14 +79,14 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 var opt = $.extend({}, options);
 
                 //Calculate the scale of the gridlines
-                for (i = 0.000000000001, c = 0; opt.coordinate.range.X / i > opt.maxgridlines.X - 1; c++) {
+                for (i = 0.000000000001, c = 0; opt.coordinate.range.X / i > this.config.gridlines.maxgridlines.X - 1; c++) {
                     if (c % 3 == 1) i *= 2.5;    //alternating between 2, 5 and 10
                     else i *= 2;
                 }
                 opt.xgridscale = i;
 
                 //do the same for the y-axis
-                for (i = 0.000000000001, c = 0; opt.coordinate.range.Y / i > opt.maxgridlines.Y - 1; c++) {
+                for (i = 0.000000000001, c = 0; opt.coordinate.range.Y / i > this.config.gridlines.maxgridlines.Y - 1; c++) {
                     if (c % 3 == 1) i *= 2.5;
                     else i *= 2;
                 }
@@ -100,15 +100,15 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 opt.ymainaxis = -1;
                 opt.currx = Math.round(opt.currx * 100000000000) / 100000000000;	//round to the closest 0.00000001
                 opt.curry = Math.round(opt.curry * 100000000000) / 100000000000;
-                opt.xmainaxis = opt.charHeight;	//the next two variables are the axis on which text is going to be placed
+                opt.xmainaxis = this.gridlines.charHeight;	//the next two variables are the axis on which text is going to be placed
 
                 if (opt.coordinate.Y2 >= 0 && opt.coordinate.Y1 <= 0)    //y=0 appears on the screen - move the text to follow
-                    opt.xmainaxis = opt.coordinate.height - ((0 - opt.coordinate.Y1) / (opt.coordinate.Y2 - opt.coordinate.Y1)) * opt.coordinate.height + (opt.charHeight * 1.2);
+                    opt.xmainaxis = opt.coordinate.height - ((0 - opt.coordinate.Y1) / (opt.coordinate.Y2 - opt.coordinate.Y1)) * opt.coordinate.height + (this.gridlines.charHeight * 1.2);
                 else if (opt.coordinate.Y1 > 0)    //the smallest value of y is above the screen - the x-axis labels get pushed to the top of the screen
                     opt.xmainaxis = opt.coordinate.height - 1;
 
                 //the x-axis labels have to be a certain distance from the bottom of the screen
-                if (opt.xmainaxis > opt.coordinate.height - (opt.charHeight / 2))
+                if (opt.xmainaxis > opt.coordinate.height - (this.gridlines.charHeight / 2))
                     opt.xmainaxis = opt.coordinate.height - 1;
 
                 //do the same as above with the y-axis
@@ -136,7 +136,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 coordinate.ctx.textAlign = "center";
                 opt.sigdigs = String(opt.currx).length + 3;
 
-                for (i = 0; i < opt.maxgridlines.X; i++) {
+                for (i = 0; i < this.config.gridlines.maxgridlines.X; i++) {
                     xpos = ((opt.currx - opt.coordinate.X1) / (opt.coordinate.X2 - opt.coordinate.X1)) * opt.coordinate.width;	//position of the line (in pixels)
                     //make sure it is on the screen
                     if (xpos - 0.5 > opt.coordinate.width + 1 || xpos < 0) {
@@ -176,7 +176,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 coordinate.ctx.textAlign = "right";
                 opt.sigdigs = String(opt.curry).length + 3;
 
-                for (i = 0; i < opt.maxgridlines.Y; i++) {
+                for (i = 0; i < this.config.gridlines.maxgridlines.Y; i++) {
                     ypos = opt.coordinate.height - ((opt.curry - opt.coordinate.Y1) / (opt.coordinate.Y2 - opt.coordinate.Y1)) * opt.coordinate.height;	//position of the line (in pixels)
                     //make sure it is on the screen
                     if (ypos - 0.5 > opt.coordinate.height + 1 || ypos < 0) {
@@ -200,8 +200,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     //Draw label
                     if (opt.curry != 0) {
                         ytextwidth = coordinate.ctx.measureText(opt.curry).width;
-                        if (ypos + (opt.charHeight / 2) > opt.coordinate.height) //cannot overflow the screen
-                            ypos = opt.coordinate.height - (opt.charHeight / 2) - 1;
+                        if (ypos + (this.gridlines.charHeight / 2) > opt.coordinate.height) //cannot overflow the screen
+                            ypos = opt.coordinate.height - (this.gridlines.charHeight / 2) - 1;
                         if (ypos - 4 < 0)
                             ypos = 4;
                         xaxispos = opt.ymainaxis;
@@ -214,7 +214,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             },
 
             init:function () {
-                NAURE.Graphics.system = equation;
+                //NAURE.Graphics.system = equation;
                 return equation;
             }
         };

@@ -15,7 +15,12 @@ var overlayNodes = {
     Input:{
         html:'<input id="overlay-input" type="text" />'
     },
-    'Graph':function () {
+    'Equation':function () {
+        NAURE.Graphics.System(NAURE.Graphics.Equation);
+        NAURE.Graphics.draw();
+    },
+    'Finance':function () {
+        NAURE.Graphics.System(NAURE.Graphics.Finance);
         NAURE.Graphics.draw();
     },
     'Reset':function () {
@@ -33,7 +38,11 @@ var overlayNodes = {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.graphics.ui', 'naure.graphics.layout', 'naure.graphics.equation'], function ($, NAURE) {
+require(['jquery', 'naure.message', 'naure.overlay',
+    'naure.graphics.ui',
+    'naure.graphics.layout',
+    'naure.graphics.equation',
+    'naure.graphics.finance'], function ($, NAURE) {
     this.NAURE = NAURE;
     $(function () {
         $('body').message({overlay:'left-bottom'});

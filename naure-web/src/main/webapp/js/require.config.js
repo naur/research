@@ -30,6 +30,7 @@ require.config({
         'naure.graphics.ui':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.ui',
         'naure.graphics.layout':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.layout',
         'naure.graphics.equation':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.equation',
+        'naure.graphics.finance':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.finance',
 
         'math':'/Research/projects/naure/naure-research/src/main/webapp/js/math/math',
         'math.matrix':'/Research/projects/naure/naure-web/src/main/webapp/js/math/math.matrix'

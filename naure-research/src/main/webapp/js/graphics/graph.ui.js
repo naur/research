@@ -805,6 +805,8 @@ function draw() {
     });
     //}catch(ex){}
     ctx.fillStyle = "#888";
+
+
     for (var x = dblleft; x <= overright; x += gridsize * 4) {
 
         if (x != 0 && alreadydrawnpoints.indexOf(x + "," + 0) == -1) {

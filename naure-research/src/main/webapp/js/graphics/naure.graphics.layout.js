@@ -49,6 +49,7 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                 coordinate.height = this.height;
                 coordinate.range = NAURE.Utility.clone(this.range);
                 coordinate.currDrag = NAURE.Utility.clone(this.currDrag);
+                coordinate.scale = this.scale;
             },
 
             refresh:function (options) {
@@ -150,26 +151,22 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                     return null;
                 }
                 if (point.X > layout.currCoord.X2) {
-                    //point.X = layout.currCoord.X2;
-                    return null;
+                    point.X = layout.currCoord.X2;
+                    //return null;
                 }
                 if (point.X < layout.currCoord.X1) {
-                    //point.X = layout.currCoord.X1;
-                    return null;
+                    point.X = layout.currCoord.X1;
+                    //return null;
                 }
-                if (point.Y > layout.currCoord.Y2) {
-                    //point.Y = layout.currCoord.y2;
-                    return null;
-                }
-                if (point.Y < layout.currCoord.Y1) {
-                    //point.Y = layout.currCoord.Y1;
-                    return null;
-                }
+//                if (point.Y > layout.currCoord.Y2) {
+//                    //point.Y = layout.currCoord.Y2;
+//                    //return null;
+//                }
+//                if (point.Y < layout.currCoord.Y1) {
+//                    //point.Y = layout.currCoord.Y1;
+//                    //return null;
+//                }
 
-//                return {
-//                    X:this.scale.X * point.X - this.zeroPosition.X,
-//                    Y:this.zeroPosition.Y - this.scale.Y * point.Y
-//                };
                 return {
                     X:this.scale.X * (point.X - this.currCoord.X1),
                     Y:this.scale.Y * (this.currCoord.Y2 - point.Y)
@@ -181,4 +178,4 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
     })();
 
     return NAURE;
-});                
+});

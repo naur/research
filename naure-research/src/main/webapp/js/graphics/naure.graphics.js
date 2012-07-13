@@ -39,12 +39,19 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
                 scale:function (scale) {
                     graphics.layout.scale = scale;
                 },
-                zoomFactor:0.1
+                zoomFactor:0.1,
+                "lineWidth":1.5,
+                "pt":true,
+                "font":"12px sans-serif",
+                "minorGridStyle":"#bbb",
+                "majorGridStyle":"#555"
             },
 
             draw:function (options) {
                 this.lines = [];
-                this.lines.push({equation : 'y=x^2', color : 'red'});
+                this.lines.push({equation:'y=x^2', color:'red'});
+                this.lines.push({equation:"\\frac{d}{dx}\\left(sin\\left(x\\right)+log\\left(x+1\\right)\\right)", color:'blue'});
+                //this.lines.push({equation : 'r<\sin \left(4\theta \right)', color : 'red'});
                 this.ui.draw({lines:this.lines});
             },
 
@@ -52,11 +59,23 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
                 this.ui.reset();
             },
 
+            System: function(sys) {
+                //default
+                if (!sys)
+                    graphics.system = NAURE.Graphics.Equation;
+                else
+                    graphics.system = sys;
+                graphics.system.config = graphics.config;
+                graphics.system.layout = graphics.layout;
+            },
+
             init:function (options) {
                 graphics.ui = NAURE.Graphics.UI;
                 graphics.ui.config = NAURE.Graphics.config;
                 graphics.ui.graphics = graphics;
                 graphics.layout = NAURE.Graphics.Layout;
+
+                this.System();
 
                 graphics.ui.init($.extend({
                     layout:graphics.layout

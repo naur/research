@@ -11,28 +11,6 @@
 app = [];
 app.variables = []
 
-//function anonymous(ctx) {
-//    ctx.beginPath();
-//    var x = boundleft;
-//    ctx.move(x, 81);
-//    for (var x = boundleft; x < boundright; x += (boundright - boundleft) / width) {
-//        ctx.line(x, 81);
-//    }
-//    ctx.stroke();
-//    ctx.stroke();
-//}
-
-
-//                ui.ctx.beginPath();
-//
-//
-//                var x = ui.layout.currCoord.X1 //boundleft;
-//                ui.ctx.move({X:x, Y:pow(x, 2)});
-//                for (var x = ui.layout.currCoord.X1; x < ui.layout.currCoord.X2; x += (ui.layout.currCoord.X2 - ui.layout.currCoord.X1) / ui.layout.width) {
-//                    ui.ctx.line({X:x, Y:pow(x, 2)});
-//                }
-//                ui.ctx.stroke();
-
 define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($, NAURE) {
 
     NAURE.Graphics.UI = (function () {
@@ -43,7 +21,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
             ctx:null,
             graphics:null,
             clear:function () {
-                this.ctx.fillStyle = "rgb(255,255,255)";
+                this.ctx.lineCap = "butt";
+                this.ctx.font = this.config.font;
+                this.ctx.strokeStyle = this.ctx.fillStyle = "rgb(255,255,255)";
                 this.ctx.fillRect(0, 0, this.graph.width(), this.graph.height());
             },
             mousebutton:0,
@@ -69,46 +49,26 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
                     lines:[]
                 }, options);
 
-                this.gridlines();
+                this.gridlines(opt);
 
                 this.ctx.fillStyle = '#00f';
+
+//                this.ctx.font = this.config.font;
+//                this.ctx.strokeStyle = this.config.minorGridStyle;
+//                this.ctx.fillStyle = "#888";
+//                this.ctx.lineWidth = 0.1;
 
                 for (key in opt.lines) {
                     //this.drawLine({expression:opt.lines[key]});
                     if (!opt.lines.hasOwnProperty(key)) break
                     this.drawLine(opt.lines[key]);
                 }
-
-
-                //opt.graphs[key].plot(this.ctx);
-                //                var graphs = [];
-//                for (key in this.lines) {
-//                    if (!this.lines.hasOwnProperty(key)) break;
-//                    graphs.push(new graphics.system.Graph(this.lines[key].equation, true, this.lines[key].color));
-//                }
             },
 
             drawLine:function (options) {
                 var opt = $.extend({}, ui.config, options);
                 this.ctx.strokeStyle = opt.color;
                 new ui.graphics.system.Graph(opt.equation, true, opt.color).plot(this.ctx);
-
-//                ui.ctx.beginPath();
-//
-//
-//                var x = ui.layout.currCoord.X1 //boundleft;
-//                ui.ctx.move({X:x, Y:pow(x, 2)});
-//                for (var x = ui.layout.currCoord.X1; x < ui.layout.currCoord.X2; x += (ui.layout.currCoord.X2 - ui.layout.currCoord.X1) / ui.layout.width) {
-//                    ui.ctx.line({X:x, Y:pow(x, 2)});
-//                }
-//                ui.ctx.stroke();
-//
-//
-//                // Done! Now fill the shape, 和 draw the stroke.
-//                // Note: your shape will not be visible until you call any of the two methods.
-//                //ui.ctx.fill();
-//                ui.ctx.stroke();
-//                //ui.ctx.closePath();
             },
 
             resize:function () {
@@ -180,8 +140,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
             },
 
             gridlines:function (options) {
-                var opt = $.extend({coordinate:coordinate}, this.config.gridlines, options);
-                if (!opt.show) return;
+                var opt = $.extend({coordinate:coordinate}, options);
+                if (!this.config.gridlines.show) return;
 
                 this.graphics.system.gridlines(opt);
             },
