@@ -22,6 +22,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 };
             },
 
+            Gridline: function() {
+                Size: 0
+            },
+
             gridlines:function (options) {
                 var opt = $.extend({}, options);
                 //they can be accidentially changed
@@ -32,15 +36,6 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 if (!ctx) {
                     return;
                 }
-                ctx.lineCap = "butt";
-                ctx.strokeStyle = ctx.fillStyle = "black";
-                ctx.clearRect(0, 0, coordinate.width, coordinate.height);
-                //try{
-
-//                coordinate.X1 = cx / scalex;
-//                coordinate.X2 = (coordinate.width + cx) / scale.X;
-//                coordinate.Y1 = -(coordinate.height - cy) / scale.Y;
-//                coordinate.Y2 = cy / scale.Y;
 
                 scale = coordinate.scale;
 
@@ -52,23 +47,30 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     //TODO: Work out the shotest distance from (0,0) to the screen rectangle.
                 }
                 gridsize = pow(2, 6 - Math.round(log(scale.X) / log(2)));
-                overleft = gridsize * ~~ (coordinate.X1 / gridsize) - gridsize;
-                overright = gridsize * ~~ (coordinate.X2 / gridsize) + gridsize;
-                overtop = gridsize * ~~ (coordinate.Y2 / gridsize) + gridsize;
-                overbottom = gridsize * ~~ (coordinate.Y1 / gridsize) - gridsize;
+
+                overleft = gridsize * ~~(coordinate.X1 / gridsize) - gridsize;
+                overright = gridsize * ~~(coordinate.X2 / gridsize) + gridsize;
+                overtop = gridsize * ~~(coordinate.Y2 / gridsize) + gridsize;
+                overbottom = gridsize * ~~(coordinate.Y1 / gridsize) - gridsize;
 
                 //Draw grid lines
-
-
                 ctx.font = this.config.font;
-
-                ctx.strokeStyle = 'red', //this.config.minorGridStyle;
+                ctx.strokeStyle = 'red'; //this.config.minorGridStyle;
                 ctx.fillStyle = "#888";
                 ctx.lineWidth = 0.1;
 
-                var n = 0;
+                // 1/ 4 线
+                //var n = 0;
                 for (var x = overleft; x <= overright; x += gridsize / 4) {
-                    ctx.beginPath();
+                    //ctx.beginPath();
+                    if (0 == x) {
+                        ctx.lineWidth = 1;
+                        ctx.strokeStyle = "black";
+                        ctx.beginPath();
+                        ctx.move(overleft, 0);
+                        ctx.line(overright, 0);
+                        ctx.stroke();
+                    } else (mod )
                     ctx.move(x, overbottom);
                     ctx.line(x, overtop);
                     ctx.stroke();
@@ -84,12 +86,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                  ctx.shadowOffsetY = 0
                  ctx.shadowBlur = 4;*/
                 //Like overleft, but in units of 4*gridsize
-                var dblleft = gridsize * 4 * ~~ (coordinate.X1 / (4 * gridsize)) - 4 * gridsize;
-                var dblleft = gridsize * 4 * ~~ (coordinate.Y1 / (4 * gridsize)) - 4 * gridsize;
+                var dblleft = gridsize * 4 * ~~(coordinate.X1 / (4 * gridsize)) - 4 * gridsize;
+                var dblleft = gridsize * 4 * ~~(coordinate.Y1 / (4 * gridsize)) - 4 * gridsize;
 
-
+                // 1/ 1 线
                 ctx.strokeStyle = this.config.majorGridStyle;
-
                 ctx.lineWidth = 0.4;
                 for (var x = overleft; x <= overright; x += gridsize) {
                     ctx.beginPath();
@@ -97,7 +98,6 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     ctx.line(x, overtop);
                     ctx.stroke();
                 }
-
                 for (var y = overbottom; y <= overtop; y += gridsize) {
                     ctx.beginPath();
                     ctx.move(overleft, y);
@@ -105,53 +105,67 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     ctx.stroke();
                 }
 
-                ctx.lineWidth = 2;
-
-
-                ctx.strokeStyle = "black";
-
-                ctx.beginPath();
-                ctx.move(overleft, 0);
-                ctx.line(overright, 0);
-                ctx.stroke();
-
+                //纵轴
+//                ctx.lineWidth = 1;
+//                ctx.strokeStyle = "black";
+//                ctx.beginPath();
+//                ctx.move(overleft, 0);
+//                ctx.line(overright, 0);
+//                ctx.stroke();
+                //横轴
                 ctx.beginPath();
                 ctx.move(0, overbottom);
                 ctx.line(0, overtop);
                 ctx.stroke();
-
 
                 ctx.lineWidth = this.config.lineWidth;
                 var alreadydrawnpoints = [];
 
                 //}catch(ex){}
                 ctx.fillStyle = "#888";
+                ctx.font = "8pt monospace";	//set the font
+                ctx.textAlign = "left";
+                ctx.textBaseline = "top";
+                //水平线坐标
+                for (var x = dblleft; x <= overright; x += gridsize * 1) {
+                    if (x != 0 && alreadydrawnpoints.indexOf(x + "," + 0) == -1) {
+                        alreadydrawnpoints.push(x + "," + 0);
+                        ctx.beginPath();
 
-                for (var x = dblleft; x <= overright; x += gridsize * 4) {
+                        //ctx.arc(scale.X * x - cx, cy - scale.Y * 0, 2, 0, Math.PI * 2, true);
 
-//                    if (x != 0 && alreadydrawnpoints.indexOf(x + "," + 0) == -1) {
-//                        alreadydrawnpoints.push(x + "," + 0);
-//                        ctx.beginPath();
-//
-//                        //ctx.arc(scale.X * x - cx, cy - scale.Y * 0, 2, 0, Math.PI * 2, true);
-//
-//                        var transPoint = this.layout.transform({X:x, Y:0});
-//                        if (!transPoint) continue;
-//                        ctx.arc(transPoint.X, transPoint.Y, 2, 0, Math.PI * 2, true);
-//
-//                        ctx.fill();
-//                        ctx.fillText(x.toFixed(3).replace(/\.?0+$/, ""), scale.X * x - cx, 14 + cy - scale.Y * 0);
-//                    }
+                        var transPoint = this.layout.transform({X:x, Y:0});
+                        if (!transPoint) continue;
+                        ctx.arc(transPoint.X, transPoint.Y, 2, 0, Math.PI * 2, true);
+
+                        ctx.fill();
+
+                        //ctx.fillText(x.toFixed(3).replace(/\.?0+$/, ""), scale.X * x - cx, 14 + cy - scale.Y * 0);
+                        ctx.fillText(x.toFixed(3).replace(/\.?0+$/, ""), transPoint.X + 4, transPoint.Y + 4);
+                    }
                 }
-                for (var y = dblleft; y <= overright; y += gridsize * 4) {
-//                    if (y != 0 && alreadydrawnpoints.indexOf(0 + "," + y) == -1) {
-//                        alreadydrawnpoints.push(0 + "," + y);
-//                        ctx.beginPath();
-//                        //ctx.arc(-cx, cy - scale.Y * y, 2, 0, Math.PI * 2, true);
-//                        ctx.fill();
-//                        ctx.fillText(y.toFixed(3).replace(/\.?0+$/, ""), 10 - cx, 4 + cy - scale.Y * y);
-//                    }
+                //垂直线坐标
+                ctx.textAlign = "left";
+                ctx.textBaseline = "top";
+                for (var y = dblleft; y <= overright; y += gridsize * 1) {
+                    if (y != 0 && alreadydrawnpoints.indexOf(0 + "," + y) == -1) {
+                        alreadydrawnpoints.push(0 + "," + y);
+                        ctx.beginPath();
+                        //ctx.arc(-cx, cy - scale.Y * y, 2, 0, Math.PI * 2, true);
+                        var transPoint = this.layout.transform({X:0, Y:y});
+                        if (!transPoint) continue;
+                        ctx.arc(transPoint.X, transPoint.Y, 2, 0, Math.PI * 2, true);
+
+                        ctx.fill();
+                        ctx.fillText(y.toFixed(3).replace(/\.?0+$/, ""), transPoint.X + 4, transPoint.Y + 4);
+                    }
                 }
+            },
+            gridlinesHorizontal:function (opt) {
+
+            },
+            gridlinesVertical:function (opt) {
+
             },
 
             init:function () {

@@ -35,12 +35,8 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
                     charHeight:8
                 },
                 quality:1,
-                //todo
-                scale:function (scale) {
-                    graphics.layout.scale = scale;
-                },
                 zoomFactor:0.1,
-                "lineWidth":1.5,
+                "lineWidth":1,
                 "pt":true,
                 "font":"12px sans-serif",
                 "minorGridStyle":"#bbb",
@@ -75,7 +71,7 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
                 graphics.ui.graphics = graphics;
                 graphics.layout = NAURE.Graphics.Layout;
 
-                this.System();
+                this.System(options.sys);
 
                 graphics.ui.init($.extend({
                     layout:graphics.layout
