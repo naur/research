@@ -19,7 +19,7 @@ String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
-var coordinate;
+var coordinate = {};
 
 define(['jquery', 'naure', 'math'], function ($, NAURE) {
     NAURE.Graphics = (function () {
@@ -46,28 +46,6 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
                 this.lines = [];
                 this.lines.push({equation : 'y=x^2', color : 'red'});
                 this.ui.draw({lines:this.lines});
-
-//                var graphs = [];
-//                for (key in this.lines) {
-//                    if (!this.lines.hasOwnProperty(key)) break;
-//                    graphs.push(new graphics.system.Graph(this.lines[key].equation, true, this.lines[key].color));
-//                }
-//
-//                //jsgcalc.lines.push({equation : $("input", this).val(), color : $(".graph_color_indicator", this).css('backgroundColor')});
-//                this.ui.draw({graphs:graphs});
-
-
-//                for (var i in this.lines) {
-//                    //dump(this.lines[i].equation);
-//                    equation = Calc.parseEquation(this.lines[i].equation, true);
-//                    this.drawEquation(equation, this.lines[i].color);
-//                }
-
-//                NAURE.Message.show({content:JSON.stringify({
-//                    size:{width:this.width, height:this.height},
-//                    startCoord:this.startCoord,
-//                    currCoord:this.currCoord
-//                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
             reset:function () {

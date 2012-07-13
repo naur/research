@@ -44,16 +44,11 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
             },
 
             refreshCoordinate: function() {
-//                boundleft = this.currCoord.X1;
-//                boundright = this.currCoord.X2;
-//                boundtop = this.currCoord.Y1;
-//                boundbottom = this.currCoord.Y2;
-//                width = this.width;
-//                height = this.height;
-
-                coordinate = NAURE.Utility.clone(this.currCoord);
+                $.extend(coordinate, this.currCoord)
                 coordinate.width = this.width;
                 coordinate.height = this.height;
+                coordinate.range = NAURE.Utility.clone(this.range);
+                coordinate.currDrag = NAURE.Utility.clone(this.currDrag);
             },
 
             refresh:function (options) {
@@ -136,15 +131,7 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
 
                 this.refreshCoordinate();
 
-                NAURE.Message.show({content:JSON.stringify({
-                    //size:{width:this.width, height:this.height},
-                    currDrag:this.currDrag,
-                    //startCoord:this.startCoord,
-                    currCoord:this.currCoord,
-                    //scale:this.scale,
-                    range:this.range,
-                    zeroPosition:this.zeroPosition
-                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+                NAURE.Message.show({content: JSON.stringify(coordinate).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
             reset:function () {
