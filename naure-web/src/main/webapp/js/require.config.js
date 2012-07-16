@@ -14,6 +14,9 @@ require.config({
         jquery:'/Research/projects/naure/naure-web/src/main/webapp/js/jquery-1.7.2.min',
         'jquery.strings':'/Research/projects/naure/naure-web/src/main/webapp/js/jquery.strings',
         'ajaxslt':'/Research/projects/naure/naure-web/src/main/webapp/js/ajaxslt',
+
+        'jStat':'/Research/projects/naure/naure-web/src/main/webapp/js/jstat-1.0.0',
+
         'naure':'/Research/projects/naure/naure-web/src/main/webapp/js/naure',
         'naure.utility':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.utility',
         'naure.ui.templet':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.ui.templet',

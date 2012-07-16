@@ -25,6 +25,13 @@ var overlayNodes = {
     },
     'Reset':function () {
         NAURE.Graphics.reset();
+    },
+    'Date':function () {
+        var tDate  = new Date();
+        tDate.setTime(new Number($('#overlay-input').val()) * 3600000);
+        NAURE.Message.show({
+            content: tDate.toString() + ' ---- '+ new Date().toString()
+        });
     }
 };
 
@@ -50,7 +57,7 @@ require(['jquery', 'naure.message', 'naure.overlay',
             nodes:overlayNodes
         });
 
-        $('article section canvas').NAURE_Graphics();
+        $('article section canvas').NAURE_Graphics({system:NAURE.Graphics.Finance});
     });
 });
 

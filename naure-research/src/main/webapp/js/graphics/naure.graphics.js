@@ -71,7 +71,7 @@ define(['jquery', 'naure', 'math'], function ($, NAURE) {
                 graphics.ui.graphics = graphics;
                 graphics.layout = NAURE.Graphics.Layout;
 
-                this.System(options.sys);
+                this.System(options.system);
 
                 graphics.ui.init($.extend({
                     layout:graphics.layout

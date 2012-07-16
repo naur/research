@@ -62,15 +62,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 // 1/ 4 线
                 //var n = 0;
                 for (var x = overleft; x <= overright; x += gridsize / 4) {
-                    //ctx.beginPath();
-                    if (0 == x) {
-                        ctx.lineWidth = 1;
-                        ctx.strokeStyle = "black";
-                        ctx.beginPath();
-                        ctx.move(overleft, 0);
-                        ctx.line(overright, 0);
-                        ctx.stroke();
-                    } else (mod )
+                    ctx.beginPath();
                     ctx.move(x, overbottom);
                     ctx.line(x, overtop);
                     ctx.stroke();
