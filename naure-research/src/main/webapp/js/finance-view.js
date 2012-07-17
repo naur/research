@@ -27,11 +27,16 @@ var overlayNodes = {
         NAURE.Graphics.reset();
     },
     'Date':function () {
-        var tDate  = new Date();
+        var tDate = new Date();
         tDate.setTime(new Number($('#overlay-input').val()) * 3600000);
         NAURE.Message.show({
-            content: tDate.toString() + ' ---- '+ new Date().toString()
+            content:tDate.toString() + ' ---- ' + new Date().toString()
         });
+    },
+    'Test':function () {
+        alert(new NAURE.Math.Matrix(0, 0, 1).row());
+        alert(new NAURE.Math.Matrix([0, 0, 1], [1, 2, 2]).row());
+        alert(JSON.stringify(new NAURE.Math.Matrix([0, 0, 1], [1, 2, 2])));
     }
 };
 

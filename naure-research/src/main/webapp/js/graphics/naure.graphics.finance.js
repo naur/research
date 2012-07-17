@@ -11,7 +11,7 @@
 
 
 
-define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math', 'math'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'], function ($, NAURE) {
     NAURE.Graphics.Finance = (function () {
         var finance = {
 
@@ -40,12 +40,6 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 scale = coordinate.scale;
 
                 //This can probably be simplified a bit
-                rmax = Math.sqrt(Math.max(coordinate.X1 * coordinate.X1 + coordinate.Y1 * coordinate.Y1, coordinate.Y1 * coordinate.Y1 + coordinate.X2 * coordinate.X2, coordinate.X2 * coordinate.X2 + coordinate.Y2 * coordinate.Y2, coordinate.Y2 * coordinate.Y2 + coordinate.X1 * coordinate.X1));
-                if (coordinate.X1 < 0 && coordinate.X2 > 0 && coordinate.Y2 > 0 && coordinate.Y1 < 0) {
-                    rmin = 0;
-                } else {
-                    //TODO: Work out the shotest distance from (0,0) to the screen rectangle.
-                }
                 gridsize = pow(2, 6 - Math.round(log(scale.X) / log(2)));
 
                 overleft = gridsize * ~~(coordinate.X1 / gridsize) - gridsize;
@@ -53,33 +47,35 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 overtop = gridsize * ~~(coordinate.Y2 / gridsize) + gridsize;
                 overbottom = gridsize * ~~(coordinate.Y1 / gridsize) - gridsize;
 
-                //Draw grid lines
                 ctx.font = this.config.font;
-                ctx.strokeStyle = 'red'; //this.config.minorGridStyle;
+                //ctx.font = "8pt monospace";	//set the font // Serif Sans-Serif Monospace 字体
                 ctx.fillStyle = "#888";
-                ctx.lineWidth = 0.1;
+                /*ctx.shadowColor = "rgba(255,255,255,1.0)";
+                 ctx.shadowOffsetX = 0;
+                 ctx.shadowOffsetY = 0
+                 ctx.shadowBlur = 4;*/
+                //Like overleft, but in units of 4*gridsize
 
-                // 1/ 4 线
-                //var n = 0;
+
+                // 1/ 4 线 [X 轴 ]
+                ctx.strokeStyle = 'red'; //this.config.minorGridStyle;
+                ctx.lineWidth = 0.1;
                 for (var x = overleft; x <= overright; x += gridsize / 4) {
                     ctx.beginPath();
                     ctx.move(x, overbottom);
                     ctx.line(x, overtop);
                     ctx.stroke();
                 }
+
+                // 1/ 4 线 [Y 轴 ]
+                ctx.strokeStyle = 'red'; //this.config.minorGridStyle;
+                ctx.lineWidth = 0.1;
                 for (var y = overbottom; y <= overtop; y += gridsize / 4) {
                     ctx.beginPath();
                     ctx.move(overleft, y);
                     ctx.line(overright, y);
                     ctx.stroke();
                 }
-                /*ctx.shadowColor = "rgba(255,255,255,1.0)";
-                 ctx.shadowOffsetX = 0;
-                 ctx.shadowOffsetY = 0
-                 ctx.shadowBlur = 4;*/
-                //Like overleft, but in units of 4*gridsize
-                var dblleft = gridsize * 4 * ~~(coordinate.X1 / (4 * gridsize)) - 4 * gridsize;
-                var dblleft = gridsize * 4 * ~~(coordinate.Y1 / (4 * gridsize)) - 4 * gridsize;
 
                 // 1/ 1 线
                 ctx.strokeStyle = this.config.majorGridStyle;
@@ -90,6 +86,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     ctx.line(x, overtop);
                     ctx.stroke();
                 }
+                ctx.strokeStyle = this.config.majorGridStyle;
+                ctx.lineWidth = 0.4;
                 for (var y = overbottom; y <= overtop; y += gridsize) {
                     ctx.beginPath();
                     ctx.move(overleft, y);
@@ -98,12 +96,12 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 }
 
                 //纵轴
-//                ctx.lineWidth = 1;
-//                ctx.strokeStyle = "black";
-//                ctx.beginPath();
-//                ctx.move(overleft, 0);
-//                ctx.line(overright, 0);
-//                ctx.stroke();
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = "black";
+                ctx.beginPath();
+                ctx.move(overleft, 0);
+                ctx.line(overright, 0);
+                ctx.stroke();
                 //横轴
                 ctx.beginPath();
                 ctx.move(0, overbottom);
@@ -112,13 +110,12 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
 
                 ctx.lineWidth = this.config.lineWidth;
                 var alreadydrawnpoints = [];
+                var dblleft = gridsize * 4 * ~~(coordinate.X1 / (4 * gridsize)) - 4 * gridsize;
+                var dblleft = gridsize * 4 * ~~(coordinate.Y1 / (4 * gridsize)) - 4 * gridsize;
 
-                //}catch(ex){}
-                ctx.fillStyle = "#888";
-                ctx.font = "8pt monospace";	//set the font
+                //水平线坐标
                 ctx.textAlign = "left";
                 ctx.textBaseline = "top";
-                //水平线坐标
                 for (var x = dblleft; x <= overright; x += gridsize * 1) {
                     if (x != 0 && alreadydrawnpoints.indexOf(x + "," + 0) == -1) {
                         alreadydrawnpoints.push(x + "," + 0);

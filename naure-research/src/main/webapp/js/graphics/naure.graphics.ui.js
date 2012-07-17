@@ -11,7 +11,7 @@
 app = [];
 app.variables = []
 
-define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) {
 
     NAURE.Graphics.UI = (function () {
         var ui = {
@@ -102,7 +102,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
             mouseDown:function (event) {
                 document.body.style.cursor = "hand";
                 if (ui.mousebutton == 0) {
-                    ui.layout.refresh({startDrag:{X:event.pageX, Y:event.pageY}});
+                    ui.layout.refresh({pixel:{X:event.pageX, Y:event.pageY}, drag:'START'});
                 }
                 ui.mousebutton = 1;
             },
@@ -110,24 +110,21 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'math'], function ($,
             mouseUp:function (event) {
                 document.body.style.cursor = "auto";
                 ui.mousebutton = 0;
-                this.layout.refresh({renew:true});
-                //this.layout.startCoord = NAURE.Utility.clone(this.layout.currCoord);
+                this.layout.refresh({drag:'RENEW'});
             },
 
             checkMove:function (x, y) {
                 ui.layout.refresh({
                     offset:ui.graph.offset(),
-                    currDrag:{X:x, Y:y}
+                    pixel:{X:x, Y:y}
                 });
 
                 if (!ui.layout.isDragMove()) return
 
                 if (this.mousebutton == 1) {
-                    ui.layout.refresh({continue:true});
+                    ui.layout.refresh({drag:'CONTINUE'});
                     this.graphics.draw();
                 }
-
-                ui.layout.refresh({prevDrag:{X:x, Y:y}})
             },
 
             zoom:function (scale, event) {

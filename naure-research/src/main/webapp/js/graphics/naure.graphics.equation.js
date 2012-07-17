@@ -11,7 +11,7 @@
 
 
 
-define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math', 'math'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'], function ($, NAURE) {
     NAURE.Graphics.Equation = (function () {
         var equation = {
             random:{

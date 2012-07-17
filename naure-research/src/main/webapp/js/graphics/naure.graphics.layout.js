@@ -9,33 +9,34 @@
  *
  */
 
-define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.message'], function ($, NAURE) {
 
     NAURE.Graphics.Layout = (function () {
         var layout = {
+            //全局变量
             width:0,
             height:0,
             scale:{X:1, Y:1},
-            range:{X:0, Y:0},
+            offset:{left:0, top:0},
+            range:{X:0, Y:0}, //scope
+            limits:{X1:-5, Y1:-5, X2:5, Y2:5},
+            point:{X:0, Y:0},
+            pixel:{X:0, Y:0},
+            n:{x:10, y:10},
+            metrix:[],
+
+            //局部变量
             startDrag:{X:0, Y:0},
             prevDrag:{X:0, Y:0},
-            currDrag:{X:0, Y:0},
-            defaultCoord:{X1:0, Y1:0, X2:0, Y2:0},
-            startCoord:{X1:0, Y1:0, X2:0, Y2:0},
-            currCoord:{X1:-5, Y1:-5, X2:5, Y2:5},
-            offset:{left:0, top:0},
+            defaultLimits:{X1:0, Y1:0, X2:0, Y2:0},
+            startLimits:{X1:0, Y1:0, X2:0, Y2:0},
 
-            Point:function (x, y, z) {
-                this.X = x;
-                this.Y = y;
-                this.Z = z;
-            },
 
             isEqualsPoint:function (point1, point2) {
                 return point1.X == point2.X && point1.Y == point1.Y
             },
             isDragMove:function () {
-                return !this.isEqualsPoint(this.currDrag, this.prevDrag);
+                return !this.isEqualsPoint(this.pixel, this.prevDrag);
             },
 
             absRange:function () {
@@ -43,14 +44,6 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                     Y:Math.abs(this.range.Y)}
             },
 
-            refreshCoordinate: function() {
-                $.extend(coordinate, this.currCoord)
-                coordinate.width = this.width;
-                coordinate.height = this.height;
-                coordinate.range = NAURE.Utility.clone(this.range);
-                coordinate.currDrag = NAURE.Utility.clone(this.currDrag);
-                coordinate.scale = this.scale;
-            },
 
             refresh:function (options) {
                 var opt = $.extend({}, options);
@@ -58,87 +51,126 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                 if (opt.offset) this.offset = {X:opt.offset.left, Y:opt.offset.top};
                 if (opt.prevDrag) this.prevDrag = opt.prevDrag;
 
-                if (opt.width && opt.height) {
-                    var oldheight = this.height;
-                    var oldwidth = this.width;
-                    this.width = opt.width;
-                    this.height = opt.height;
+                //窗口大小改变时
+                this.refreshSize(opt);
 
-                    if (oldheight != 0) {
-                        //Compute the new boundaries of the graph
-                        this.currCoord.X1 *= (this.width / oldwidth);
-                        this.currCoord.X2 *= (this.width / oldwidth);
-                        this.currCoord.Y1 *= (this.height / oldheight);
-                        this.currCoord.Y2 *= (this.height / oldheight);
-                    } else {
-                        this.currCoord.X1 = this.currCoord.X1 * (this.width / this.height);
-                        this.currCoord.X2 = this.currCoord.X2 * (this.width / this.height);
-                        //this.currCoord.Y1 = (this.height / oldheight);
-                        //this.currCoord.Y2 = (this.height / oldheight);
-                    }
-
-                    this.startCoord = NAURE.Utility.clone(this.currCoord);
-                    this.defaultCoord = NAURE.Utility.clone(this.currCoord);
-                }
-
-                //鼠标事件时  【Drag 变化】
-                if (opt.startDrag) {
-                    this.startDrag.X = opt.startDrag.X - this.offset.X;
-                    this.startDrag.Y = opt.startDrag.Y - this.offset.Y;
-                    //todo
-                    this.startCoord = NAURE.Utility.clone(this.currCoord);
-                }
-                if (opt.currDrag) {
-                    this.currDrag.X = opt.currDrag.X - this.offset.X;
-                    this.currDrag.Y = opt.currDrag.Y - this.offset.Y;
-                }
-                //todo
-                if (opt.continue) {
-                    //find the scale of the graph (units per pixel)
-                    //this.scale = this.currScale();
-                    //dump(scale.x + " " + scale.y + " -- " + this.startCoord.x1 + " " + this.startCoord.y1);
-                    //dump(this.startCoord.x1 + " " +(y - this.startDrag.y) / scale.y);
-                    this.currCoord.X1 = this.startCoord.X1 - ((this.currDrag.X - this.startDrag.X) / this.scale.X);
-                    this.currCoord.X2 = this.startCoord.X2 - ((this.currDrag.X - this.startDrag.X) / this.scale.X);
-                    this.currCoord.Y1 = this.startCoord.Y1 + ((this.currDrag.Y - this.startDrag.Y) / this.scale.Y);
-                    this.currCoord.Y2 = this.startCoord.Y2 + ((this.currDrag.Y - this.startDrag.Y) / this.scale.Y);
-                }
-                if (opt.renew) {
-                    this.startCoord = NAURE.Utility.clone(this.currCoord);
-                }
+                //发生鼠标事件时  【Drag 变化】
+                this.refreshDrag(opt);
 
                 //ZOOM
+                this.refreshZoom(opt);
+
+                //Update Coordinate
+                this.refreshCoordinate();
+
+                NAURE.Message.show({content:JSON.stringify(coordinate).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+                //NAURE.Message.show({content:JSON.stringify(this.transform(coordinate.point)).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+            },
+
+            refreshSize:function (opt) {
+                if (!opt.width || !opt.height)  return;
+
+                var oldheight = this.height;
+                var oldwidth = this.width;
+                this.width = opt.width;
+                this.height = opt.height;
+
+                if (oldheight != 0) {
+                    //Compute the new boundaries of the graph
+                    this.limits.X1 *= (this.width / oldwidth);
+                    this.limits.X2 *= (this.width / oldwidth);
+                    this.limits.Y1 *= (this.height / oldheight);
+                    this.limits.Y2 *= (this.height / oldheight);
+                } else {
+                    this.limits.X1 = this.limits.X1 * (this.width / this.height);
+                    this.limits.X2 = this.limits.X2 * (this.width / this.height);
+
+//                    this.limits.X1 = -1000;
+//                    this.limits.X2 = 1000;
+
+//                        this.limits.Y1 = (this.height / oldheight);
+//                        this.limits.Y2 = (this.height / oldheight);
+                }
+
+                this.startLimits = NAURE.Utility.clone(this.limits);
+                this.defaultLimits = NAURE.Utility.clone(this.limits);
+            },
+            refreshZoom:function (opt) {
                 if (opt.zoom) {
                     if (opt.zoom.X && opt.zoom.Y) {
                         var mousetop = 1 - ((opt.zoom.Y - this.offset.Y) / this.height);	//if we divide the screen into two halves based on the position of the mouse, this is the top half
                         var mouseleft = (opt.zoom.X - this.offset.X) / this.width;	//as above, but the left hald
 
-                        this.currCoord.X1 += this.range.X * opt.zoom.Scale * mouseleft;
-                        this.currCoord.Y1 += this.range.Y * opt.zoom.Scale * mousetop;
-                        this.currCoord.X2 -= this.range.X * opt.zoom.Scale * (1 - mouseleft);
-                        this.currCoord.Y2 -= this.range.Y * opt.zoom.Scale * (1 - mousetop);
+                        this.limits.X1 += this.range.X * opt.zoom.Scale * mouseleft;
+                        this.limits.Y1 += this.range.Y * opt.zoom.Scale * mousetop;
+                        this.limits.X2 -= this.range.X * opt.zoom.Scale * (1 - mouseleft);
+                        this.limits.Y2 -= this.range.Y * opt.zoom.Scale * (1 - mousetop);
                     }
                     else {
-                        this.currCoord.X1 += this.range.X * opt.zoom.Scale;
-                        this.currCoord.Y1 += this.range.Y * opt.zoom.Scale;
-                        this.currCoord.X2 -= this.range.X * opt.zoom.Scale;
-                        this.currCoord.Y2 -= this.range.Y * opt.zoom.Scale;
+                        this.limits.X1 += this.range.X * opt.zoom.Scale;
+                        this.limits.Y1 += this.range.Y * opt.zoom.Scale;
+                        this.limits.X2 -= this.range.X * opt.zoom.Scale;
+                        this.limits.Y2 -= this.range.Y * opt.zoom.Scale;
                     }
-                    this.startCoord = NAURE.Utility.clone(this.currCoord);
+                    this.startLimits = NAURE.Utility.clone(this.limits);
+                }
+            },
+            refreshDrag:function (opt) {
+                if (opt.pixel) {
+                    if (!this.isEqualsPoint(this.pixel, opt.pixel))
+                        this.prevDrag = NAURE.Utility.clone(this.pixel);
+                    this.pixel.X = opt.pixel.X - this.offset.X;
+                    this.pixel.Y = opt.pixel.Y - this.offset.Y;
                 }
 
-                this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
+                if (opt.drag == 'START') {
+                    this.startDrag.X = opt.pixel.X - this.offset.X;
+                    this.startDrag.Y = opt.pixel.Y - this.offset.Y;
+                    //todo
+                    this.startLimits = NAURE.Utility.clone(this.limits);
+                }
+
+                //todo
+                if (opt.drag == 'CONTINUE') {
+                    //find the scale of the graph (units per pixel)
+                    //this.scale = this.currScale();
+                    //dump(scale.x + " " + scale.y + " -- " + this.startLimits.x1 + " " + this.startLimits.y1);
+                    //dump(this.startLimits.x1 + " " +(y - this.startDrag.y) / scale.y);
+                    this.limits.X1 = this.startLimits.X1 - ((this.pixel.X - this.startDrag.X) / this.scale.X);
+                    this.limits.X2 = this.startLimits.X2 - ((this.pixel.X - this.startDrag.X) / this.scale.X);
+                    this.limits.Y1 = this.startLimits.Y1 + ((this.pixel.Y - this.startDrag.Y) / this.scale.Y);
+                    this.limits.Y2 = this.startLimits.Y2 + ((this.pixel.Y - this.startDrag.Y) / this.scale.Y);
+                }
+                if (opt.drag == 'RENEW') {
+                    this.startLimits = NAURE.Utility.clone(this.limits);
+                }
+            },
+
+            refreshCoordinate:function () {
+                this.range = {X:this.limits.X2 - this.limits.X1, Y:this.limits.Y2 - this.limits.Y1 };
                 this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
+                // x' =  Sx * x + 0 * y + width / 2
+                //y' = 0 * x - y * Sy + height / 2
+                this.metrix = [
+                    [this.scale.X, 0, Math.abs(this.limits.X1) * this.scale.X],
+                    [0, -this.scale.Y, Math.abs(this.limits.Y2) * this.scale.Y],
+                    [0, 0, 1]
+                ];
 
-                this.refreshCoordinate();
-
-                NAURE.Message.show({content: JSON.stringify(coordinate).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+                $.extend(coordinate, this.limits)
+                coordinate.width = this.width;
+                coordinate.height = this.height;
+                coordinate.range = NAURE.Utility.clone(this.range);
+                coordinate.pixel = NAURE.Utility.clone(this.pixel);
+                coordinate.scale = this.scale;
+                coordinate.metrix = this.metrix;
+                //coordinate.point = [this.pixel.X, this.pixel.Y].transform(this.metrix);
             },
 
             reset:function () {
-                this.currCoord = NAURE.Utility.clone(this.defaultCoord);
-                this.startCoord = NAURE.Utility.clone(this.currCoord);
-                this.range = {X:this.currCoord.X2 - this.currCoord.X1, Y:this.currCoord.Y2 - this.currCoord.Y1 };
+                this.limits = NAURE.Utility.clone(this.defaultLimits);
+                this.startLimits = NAURE.Utility.clone(this.limits);
+                this.range = {X:this.limits.X2 - this.limits.X1, Y:this.limits.Y2 - this.limits.Y1 };
                 this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
                 this.refreshCoordinate();
             },
@@ -150,27 +182,31 @@ define(['jquery', 'naure', 'math', 'naure.graphics', 'naure.message'], function 
                 if (isNaN(point.X) || isNaN(point.Y)) {
                     return null;
                 }
-                if (point.X > layout.currCoord.X2) {
-                    point.X = layout.currCoord.X2;
+                if (point.X > layout.limits.X2) {
+                    point.X = layout.limits.X2;
                     //return null;
                 }
-                if (point.X < layout.currCoord.X1) {
-                    point.X = layout.currCoord.X1;
+                if (point.X < layout.limits.X1) {
+                    point.X = layout.limits.X1;
                     //return null;
                 }
-//                if (point.Y > layout.currCoord.Y2) {
-//                    //point.Y = layout.currCoord.Y2;
+//                if (point.Y > layout.limits.Y2) {
+//                    //point.Y = layout.limits.Y2;
 //                    //return null;
 //                }
-//                if (point.Y < layout.currCoord.Y1) {
-//                    //point.Y = layout.currCoord.Y1;
+//                if (point.Y < layout.limits.Y1) {
+//                    //point.Y = layout.limits.Y1;
 //                    //return null;
 //                }
 
-                return {
-                    X:this.scale.X * (point.X - this.currCoord.X1),
-                    Y:this.scale.Y * (this.currCoord.Y2 - point.Y)
-                };
+                return new NAURE.Math.Matrix(point.X, point.Y, 1).Transform2DTest(this.metrix);
+            },
+
+            transformPoint:function (pixel) {
+                if (isNaN(pixel.X) || isNaN(pixel.Y)) {
+                    return null;
+                }
+                return [point.X, point.Y].transform(this.metrix);
             }
         };
 

@@ -9,10 +9,21 @@
  *
  */
 
-define(['jquery', 'naure', 'math'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
     NAURE.Graphics.Math = (function () {
 
-        var mathutil = {
+        var mathutil = { //产生x1,x2之间的N点行矢量
+            linspace:function (x1, x2, n) {
+                var xarray = new Array(n);
+                if (!n) n = 100;
+                for (var x = x1; x <= x2; x += gridsize / n) {
+                    xarray.push(x);
+                }
+                return xarray;
+            },
+            logspace:function () {
+
+            },
 
             p:function () {
                 if (typeof inp == "number" || !isNaN(inp)) {

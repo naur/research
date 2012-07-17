@@ -21,7 +21,7 @@ String.prototype.capitalize = function () {
 
 var coordinate = {};
 
-define(['jquery', 'naure', 'math'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
     NAURE.Graphics = (function () {
         var graphics = {
             ui:null,
