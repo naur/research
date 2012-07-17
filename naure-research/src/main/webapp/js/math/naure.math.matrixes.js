@@ -16,35 +16,18 @@ define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
     NAURE.Math.Matrixes = (function () {
         var matrixes = {
 
-            Matrix:function () {
-                this.matrix = [];
-                for (i = 0; i < arguments.length; i++) {
-                    this.matrix[i] = arguments[i];
-                }
-            },
-
             //2D 转换
             Transform2D:function (matrix1, matrix2) {
-                matrix1[2] = 1;
-                var m = this.length;
-                var n = this.length;
-
-                var result = [0, 0, 0];
-                for (var i = 0; i < m; i++) {
-                    for (var j = 0; j < n; j++) {
-                        result[i] += matrix1[i][j] * matrix2[j]
-                    }
-                }
+                matrix2[2] = 1;
+                var result = this.Multiply(matrix1, matrix2);
                 return {X:result[0], Y:result[1]};
             },
-            Transform2DTest:function (matrix1, matrix2) {
-                return null;
-            },
+
             //矩阵加法
             Addition:function (matrix1, matrix2) {
                 var product = [];
                 var m = matrix1.length;
-                var n = matrix1[0].length;
+                var n = matrix2[0].length ? matrix1[0].length : 1;
                 for (var i = 0; i < m; i++) {
                     for (var j = 0; j < n; j++) {
                         product[i][j] = matrix1[i][j] + matrix2[i][j];
@@ -55,14 +38,18 @@ define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
 
             //矩阵相乘
             Multiply:function (matrix1, matrix2) {
+                //[ m x n] * [n x p]
                 var product = [];
                 var m = matrix1.length;
-                var n = matrix2[0].length;
-                for (var i = 0; i < m; i++) {
-                    for (var j = 0; j < n; j++) {
-                        if (!product[i][j])
-                            product[i][j] = 0;
-                        product[i][j] += matrix1[i][j] * matrix2[i][j];
+                var n = matrix1[0].length ? matrix1[0].length : 1;
+                var p = matrix2[0].length ? matrix2[0].length : 1;
+                for (i = 0; i < m; i++) {
+                    product[i] = [];
+                    for (j = 0; j < p; j++) {
+                        product[i][j] = 0;
+                        for (k = 0; k < n; k++) {
+                            product[i][j] += matrix1[i][k] * (matrix2[k][j] ? matrix2[k][j] : matrix2[k]);
+                        }
                     }
                 }
                 return product;
@@ -95,13 +82,6 @@ define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
                     matrix[0][2] * matrix[1][1] * matrix[2][0] -
                     matrix[0][0] * matrix[1][2] * matrix[2][1] -
                     matrix[0][1] * matrix[2][0] * matrix[2][2];
-            },
-
-            row:function () {
-                return this.matrix.length;
-            },
-            column:function () {
-                return this.matrix[0].length;
             }
             //3x3 仿射变换矩阵
 //            1     0    0

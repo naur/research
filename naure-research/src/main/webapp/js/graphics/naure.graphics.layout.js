@@ -9,7 +9,11 @@
  *
  */
 
-define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.message'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.message'], function ($, NAURE) {
+
+    var matrixes = NAURE.Math.Matrixes;
+    var message = NAURE.Message;
+    var utility = NAURE.Utility;
 
     NAURE.Graphics.Layout = (function () {
         var layout = {
@@ -30,7 +34,6 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.message'], fun
             prevDrag:{X:0, Y:0},
             defaultLimits:{X1:0, Y1:0, X2:0, Y2:0},
             startLimits:{X1:0, Y1:0, X2:0, Y2:0},
-
 
             isEqualsPoint:function (point1, point2) {
                 return point1.X == point2.X && point1.Y == point1.Y
@@ -63,7 +66,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.message'], fun
                 //Update Coordinate
                 this.refreshCoordinate();
 
-                NAURE.Message.show({content:JSON.stringify(coordinate).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+                message.show({content:JSON.stringify(coordinate).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
                 //NAURE.Message.show({content:JSON.stringify(this.transform(coordinate.point)).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
@@ -92,8 +95,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.message'], fun
 //                        this.limits.Y2 = (this.height / oldheight);
                 }
 
-                this.startLimits = NAURE.Utility.clone(this.limits);
-                this.defaultLimits = NAURE.Utility.clone(this.limits);
+                this.startLimits = utility.clone(this.limits);
+                this.defaultLimits = utility.clone(this.limits);
             },
             refreshZoom:function (opt) {
                 if (opt.zoom) {
@@ -112,13 +115,13 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.message'], fun
                         this.limits.X2 -= this.range.X * opt.zoom.Scale;
                         this.limits.Y2 -= this.range.Y * opt.zoom.Scale;
                     }
-                    this.startLimits = NAURE.Utility.clone(this.limits);
+                    this.startLimits = utility.clone(this.limits);
                 }
             },
             refreshDrag:function (opt) {
                 if (opt.pixel) {
                     if (!this.isEqualsPoint(this.pixel, opt.pixel))
-                        this.prevDrag = NAURE.Utility.clone(this.pixel);
+                        this.prevDrag = utility.clone(this.pixel);
                     this.pixel.X = opt.pixel.X - this.offset.X;
                     this.pixel.Y = opt.pixel.Y - this.offset.Y;
                 }
@@ -127,7 +130,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.message'], fun
                     this.startDrag.X = opt.pixel.X - this.offset.X;
                     this.startDrag.Y = opt.pixel.Y - this.offset.Y;
                     //todo
-                    this.startLimits = NAURE.Utility.clone(this.limits);
+                    this.startLimits = utility.clone(this.limits);
                 }
 
                 //todo
@@ -142,7 +145,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.message'], fun
                     this.limits.Y2 = this.startLimits.Y2 + ((this.pixel.Y - this.startDrag.Y) / this.scale.Y);
                 }
                 if (opt.drag == 'RENEW') {
-                    this.startLimits = NAURE.Utility.clone(this.limits);
+                    this.startLimits = utility.clone(this.limits);
                 }
             },
 
@@ -160,16 +163,16 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.message'], fun
                 $.extend(coordinate, this.limits)
                 coordinate.width = this.width;
                 coordinate.height = this.height;
-                coordinate.range = NAURE.Utility.clone(this.range);
-                coordinate.pixel = NAURE.Utility.clone(this.pixel);
+                coordinate.range = utility.clone(this.range);
+                coordinate.pixel = utility.clone(this.pixel);
                 coordinate.scale = this.scale;
                 coordinate.metrix = this.metrix;
                 //coordinate.point = [this.pixel.X, this.pixel.Y].transform(this.metrix);
             },
 
             reset:function () {
-                this.limits = NAURE.Utility.clone(this.defaultLimits);
-                this.startLimits = NAURE.Utility.clone(this.limits);
+                this.limits = utility.clone(this.defaultLimits);
+                this.startLimits = utility.clone(this.limits);
                 this.range = {X:this.limits.X2 - this.limits.X1, Y:this.limits.Y2 - this.limits.Y1 };
                 this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
                 this.refreshCoordinate();
@@ -199,7 +202,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.message'], fun
 //                    //return null;
 //                }
 
-                return new NAURE.Math.Matrix(point.X, point.Y, 1).Transform2DTest(this.metrix);
+                return matrixes.Transform2D(this.metrix, [point.X, point.Y]);
             },
 
             transformPoint:function (pixel) {

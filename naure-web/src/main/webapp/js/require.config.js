@@ -27,6 +27,7 @@ require.config({
         'naure.overlay':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.overlay',
 
         'naure.math':'/Research/projects/naure/naure-research/src/main/webapp/js/math/naure.math',
+        'naure.math.matrixes':'/Research/projects/naure/naure-research/src/main/webapp/js/math/naure.math.matrixes',
 
         'naure.graphics':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics',
         'naure.graphics.math':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.math',

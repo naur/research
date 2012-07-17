@@ -34,9 +34,6 @@ var overlayNodes = {
         });
     },
     'Test':function () {
-        alert(new NAURE.Math.Matrix(0, 0, 1).row());
-        alert(new NAURE.Math.Matrix([0, 0, 1], [1, 2, 2]).row());
-        alert(JSON.stringify(new NAURE.Math.Matrix([0, 0, 1], [1, 2, 2])).matrix);
     }
 };
 
