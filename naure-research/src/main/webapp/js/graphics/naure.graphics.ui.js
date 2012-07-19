@@ -14,12 +14,13 @@ app.variables = []
 define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) {
 
     NAURE.Graphics.UI = (function () {
+
+        var layout, graphics;
+
         var ui = {
             container:null,
-            layout:null,
             graph:null,
             ctx:null,
-            graphics:null,
             clear:function () {
                 this.ctx.lineCap = "butt";
                 this.ctx.font = this.config.font;
@@ -38,18 +39,14 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
             },
 
             reset:function () {
-                this.layout.reset();
-                this.graphics.draw();
+                layout.reset();
+                graphics.draw();
             },
 
             draw:function (options) {
-                this.clear();
-                //$.extend(this.config, options);
                 var opt = $.extend({
                     lines:[]
                 }, options);
-
-                this.gridlines(opt);
 
                 this.ctx.fillStyle = '#00f';
 
@@ -68,26 +65,26 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
             drawLine:function (options) {
                 var opt = $.extend({}, ui.config, options);
                 this.ctx.strokeStyle = opt.color;
-                new ui.graphics.system.Graph(opt.equation, true, opt.color).plot(this.ctx);
+                new graphics.system.Graph(opt.equation, true, opt.color).plot(this.ctx, layout.coordinate);
             },
 
             resize:function () {
                 //layout refresh
-                ui.layout.refresh({
+                layout.refresh({
                     width:ui.graph.width(),
                     height:ui.graph.height(),
                     offset:ui.graph.offset()
                 });
 
                 //Resize the elements
-                this.graph.attr('width', this.layout.width);
-                this.graph.attr('height', this.layout.height);
-                this.ctx.height = this.layout.height;
-                this.ctx.width = this.layout.width;
+                this.graph.attr('width', layout.width);
+                this.graph.attr('height', layout.height);
+                this.ctx.height = layout.height;
+                this.ctx.width = layout.width;
 
                 //Compute how many grid lines to show
-                this.config.gridlines.maxgridlines.X = 0.015 * this.layout.width;
-                this.config.gridlines.maxgridlines.Y = 0.015 * this.layout.height;
+                this.config.gridlines.maxgridlines.X = 0.015 * layout.width;
+                this.config.gridlines.maxgridlines.Y = 0.015 * layout.height;
             },
 
             mouseWheel:function (event) {
@@ -102,7 +99,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
             mouseDown:function (event) {
                 document.body.style.cursor = "hand";
                 if (ui.mousebutton == 0) {
-                    ui.layout.refresh({pixel:{X:event.pageX, Y:event.pageY}, drag:'START'});
+                    layout.refresh({pixel:{X:event.pageX, Y:event.pageY}, drag:'START'});
                 }
                 ui.mousebutton = 1;
             },
@@ -110,37 +107,45 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
             mouseUp:function (event) {
                 document.body.style.cursor = "auto";
                 ui.mousebutton = 0;
-                this.layout.refresh({drag:'RENEW'});
+                layout.refresh({drag:'RENEW'});
             },
 
             checkMove:function (x, y) {
-                ui.layout.refresh({
+                layout.refresh({
                     offset:ui.graph.offset(),
                     pixel:{X:x, Y:y}
                 });
 
-                if (!ui.layout.isDragMove()) return
+                if (!layout.isDragMove()) return
 
                 if (this.mousebutton == 1) {
-                    ui.layout.refresh({drag:'CONTINUE'});
-                    this.graphics.draw();
+                    layout.refresh({drag:'CONTINUE'});
+                    graphics.draw();
                 }
             },
 
             zoom:function (scale, event) {
                 if (event)
-                    this.layout.refresh({zoom:{X:event.pageX, Y:event.pageY, Scale:scale}});
+                    layout.refresh({zoom:{X:event.pageX, Y:event.pageY, Scale:scale}});
                 else
-                    this.layout.refresh({zoom:{X:null, Y:null, Scale:scale}});
+                    layout.refresh({zoom:{X:null, Y:null, Scale:scale}});
 
-                this.graphics.draw();
+                graphics.draw();
             },
 
             gridlines:function (options) {
-                var opt = $.extend({coordinate:coordinate}, options);
-                if (!this.config.gridlines.show) return;
+                var opt = $.extend(options);
+                graphics.system.gridlines(opt);
 
-                this.graphics.system.gridlines(opt);
+//                message.show({content:JSON.stringify({
+//                    widht: this.width,
+//                    height: this.height,
+//                    point: this.point,
+//                    pixel: this.pixel,
+//                    coordinate: layout.coordinate,
+//                    matrix: this.matrix
+//                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+                //coordinate.perf = end.getTime() - start.getTime();
             },
 
             init:function (options) {
@@ -148,23 +153,40 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
                 ui.graph = $(opt.container);
                 if (!ui.graph[0].getContext) return;
                 ui.ctx = $(ui.graph)[0].getContext("2d");
-                ui.layout = opt.layout;
+
+                graphics = opt.graphics;
+                layout = opt.layout;
                 ui.resize();
 
-                coordinate.ctx = ui.ctx;
-
                 //初始化 ctx 方法
-                ui.ctx.move = function (pointX, pointY) {
-                    var transPoint = ui.layout.transform({X:pointX, Y:pointY});
+                ui.ctx.move = function (x, y) {
+                    var transPoint = new layout.Point(x, y).transform();
                     if (!transPoint) return;
                     return ui.ctx.moveTo(transPoint.X, transPoint.Y);
                 };
 
-                ui.ctx.line = function (pointX, pointY) {
-                    var transPoint = ui.layout.transform({X:pointX, Y:pointY});
+                ui.ctx.line = function (x, y) {
+                    var transPoint = new layout.Point(x, y).transform();
                     if (!transPoint) return;
                     return ui.ctx.lineTo(transPoint.X, transPoint.Y);
                 };
+
+//                ui.ctx.arc = function (x, y, radius, startAngle, endAngle, anticlockwise) {
+//                    var transPoint = new ui.layout.Point(x, y).transform();
+//                    if (!transPoint) return;
+//                    return ctx.arc(transPoint.X, transPoint.Y, radius, startAngle, endAngle, anticlockwise);
+//                };
+//
+//                ui.ctx.fillText = function(text,x,y,maxWidth) {
+//                    var transPoint = new ui.layout.Point(x, y).transform();
+//                    if (!transPoint) return;
+//                    ctx.fillText(text,transPoint.X,transPoint.Y,maxWidth);
+//                };
+//                ui.ctx.strokeText = function(text,x,y,maxWidth) {
+//                    var transPoint = new ui.layout.Point(x, y).transform();
+//                    if (!transPoint) return;
+//                    ctx.strokeText(text,transPoint.X,transPoint.Y,maxWidth);
+//                };
 
                 //初始化事件
                 var self = this;

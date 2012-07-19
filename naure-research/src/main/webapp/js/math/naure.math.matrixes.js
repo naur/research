@@ -19,8 +19,7 @@ define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
             //2D 转换
             Transform2D:function (matrix1, matrix2) {
                 matrix2[2] = 1;
-                var result = this.Multiply(matrix1, matrix2);
-                return {X:result[0], Y:result[1]};
+                return this.Multiply(matrix1, matrix2);
             },
 
             //矩阵加法

@@ -19,10 +19,11 @@ String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
-var coordinate = {};
-
-define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
     NAURE.Graphics = (function () {
+
+        message = NAURE.Message;
+
         var graphics = {
             ui:null,
             system:null,
@@ -38,16 +39,28 @@ define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
                 zoomFactor:0.1,
                 "lineWidth":1,
                 "pt":true,
-                "font":"12px sans-serif",
+                "font":"8pt sans-serif",
                 "minorGridStyle":"#bbb",
                 "majorGridStyle":"#555"
             },
 
             draw:function (options) {
+                this.ui.clear();
+
+                if (this.config.gridlines.show) {
+                    start = new Date();
+                    this.ui.gridlines(options);
+                    end = new Date();
+                    message.show({content:JSON.stringify({
+                        perf: end.getTime() - start.getTime()
+                    }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+                }
+
                 this.lines = [];
                 this.lines.push({equation:'y=x^2', color:'red'});
                 this.lines.push({equation:"\\frac{d}{dx}\\left(sin\\left(x\\right)+log\\left(x+1\\right)\\right)", color:'blue'});
                 //this.lines.push({equation : 'r<\sin \left(4\theta \right)', color : 'red'});
+
                 this.ui.draw({lines:this.lines});
             },
 
@@ -55,14 +68,17 @@ define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
                 this.ui.reset();
             },
 
-            System: function(sys) {
+            System:function (sys) {
                 //default
                 if (!sys)
                     graphics.system = NAURE.Graphics.Equation;
                 else
                     graphics.system = sys;
-                graphics.system.config = graphics.config;
-                graphics.system.layout = graphics.layout;
+                graphics.system.init({
+                    config:graphics.config,
+                    layout:graphics.layout,
+                    ctx:graphics.ui.ctx
+                });
             },
 
             init:function (options) {
@@ -71,12 +87,14 @@ define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
                 graphics.ui.graphics = graphics;
                 graphics.layout = NAURE.Graphics.Layout;
 
-                this.System(options.system);
-
+                //UI 初始化
                 graphics.ui.init($.extend({
-                    layout:graphics.layout
+                    layout:graphics.layout,
+                    graphics:graphics
                 }, options));
 
+                // System 初始化
+                this.System(options.system);
                 this.draw();
             }
         };

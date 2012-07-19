@@ -22,18 +22,21 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             height:0,
             scale:{X:1, Y:1},
             offset:{left:0, top:0},
-            range:{X:0, Y:0}, //scope
-            limits:{X1:-5, Y1:-5, X2:5, Y2:5},
+
+            scope:{X:0, Y:0},
+            coordinate:{X1:-5, Y1:-5, X2:5, Y2:5}, //range
+
             point:{X:0, Y:0},
             pixel:{X:0, Y:0},
             n:{x:10, y:10},
-            metrix:[],
 
             //局部变量
+            matrix:[],
+            matrixInvertible:[],
             startDrag:{X:0, Y:0},
             prevDrag:{X:0, Y:0},
-            defaultLimits:{X1:0, Y1:0, X2:0, Y2:0},
-            startLimits:{X1:0, Y1:0, X2:0, Y2:0},
+            defaultCoordinate:{X1:0, Y1:0, X2:0, Y2:0},
+            startCoordinate:{X1:0, Y1:0, X2:0, Y2:0},
 
             isEqualsPoint:function (point1, point2) {
                 return point1.X == point2.X && point1.Y == point1.Y
@@ -43,8 +46,8 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             },
 
             absRange:function () {
-                return {X:Math.abs(this.range.X),
-                    Y:Math.abs(this.range.Y)}
+                return {X:Math.abs(this.scope.X),
+                    Y:Math.abs(this.scope.Y)}
             },
 
 
@@ -66,8 +69,12 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 //Update Coordinate
                 this.refreshCoordinate();
 
-                message.show({content:JSON.stringify(coordinate).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
-                //NAURE.Message.show({content:JSON.stringify(this.transform(coordinate.point)).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+                message.show({content:JSON.stringify({
+                    coordinate:layout.coordinate,
+                    matrix:this.matrix,
+                    point:new layout.Pixel(this.pixel.X, this.pixel.Y).transform(),
+                    pixel:this.pixel
+                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
             refreshSize:function (opt) {
@@ -80,23 +87,23 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
 
                 if (oldheight != 0) {
                     //Compute the new boundaries of the graph
-                    this.limits.X1 *= (this.width / oldwidth);
-                    this.limits.X2 *= (this.width / oldwidth);
-                    this.limits.Y1 *= (this.height / oldheight);
-                    this.limits.Y2 *= (this.height / oldheight);
+                    this.coordinate.X1 *= (this.width / oldwidth);
+                    this.coordinate.X2 *= (this.width / oldwidth);
+                    this.coordinate.Y1 *= (this.height / oldheight);
+                    this.coordinate.Y2 *= (this.height / oldheight);
                 } else {
-                    this.limits.X1 = this.limits.X1 * (this.width / this.height);
-                    this.limits.X2 = this.limits.X2 * (this.width / this.height);
+                    this.coordinate.X1 = this.coordinate.X1 * (this.width / this.height);
+                    this.coordinate.X2 = this.coordinate.X2 * (this.width / this.height);
 
-//                    this.limits.X1 = -1000;
-//                    this.limits.X2 = 1000;
+//                    this.coordinate.X1 = -1000;
+//                    this.coordinate.X2 = 1000;
 
-//                        this.limits.Y1 = (this.height / oldheight);
-//                        this.limits.Y2 = (this.height / oldheight);
+//                        this.coordinate.Y1 = (this.height / oldheight);
+//                        this.coordinate.Y2 = (this.height / oldheight);
                 }
 
-                this.startLimits = utility.clone(this.limits);
-                this.defaultLimits = utility.clone(this.limits);
+                this.startCoordinate = utility.clone(this.coordinate);
+                this.defaultCoordinate = utility.clone(this.coordinate);
             },
             refreshZoom:function (opt) {
                 if (opt.zoom) {
@@ -104,18 +111,18 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                         var mousetop = 1 - ((opt.zoom.Y - this.offset.Y) / this.height);	//if we divide the screen into two halves based on the position of the mouse, this is the top half
                         var mouseleft = (opt.zoom.X - this.offset.X) / this.width;	//as above, but the left hald
 
-                        this.limits.X1 += this.range.X * opt.zoom.Scale * mouseleft;
-                        this.limits.Y1 += this.range.Y * opt.zoom.Scale * mousetop;
-                        this.limits.X2 -= this.range.X * opt.zoom.Scale * (1 - mouseleft);
-                        this.limits.Y2 -= this.range.Y * opt.zoom.Scale * (1 - mousetop);
+                        this.coordinate.X1 += this.scope.X * opt.zoom.Scale * mouseleft;
+                        this.coordinate.Y1 += this.scope.Y * opt.zoom.Scale * mousetop;
+                        this.coordinate.X2 -= this.scope.X * opt.zoom.Scale * (1 - mouseleft);
+                        this.coordinate.Y2 -= this.scope.Y * opt.zoom.Scale * (1 - mousetop);
                     }
                     else {
-                        this.limits.X1 += this.range.X * opt.zoom.Scale;
-                        this.limits.Y1 += this.range.Y * opt.zoom.Scale;
-                        this.limits.X2 -= this.range.X * opt.zoom.Scale;
-                        this.limits.Y2 -= this.range.Y * opt.zoom.Scale;
+                        this.coordinate.X1 += this.scope.X * opt.zoom.Scale;
+                        this.coordinate.Y1 += this.scope.Y * opt.zoom.Scale;
+                        this.coordinate.X2 -= this.scope.X * opt.zoom.Scale;
+                        this.coordinate.Y2 -= this.scope.Y * opt.zoom.Scale;
                     }
-                    this.startLimits = utility.clone(this.limits);
+                    this.startCoordinate = utility.clone(this.coordinate);
                 }
             },
             refreshDrag:function (opt) {
@@ -130,86 +137,97 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                     this.startDrag.X = opt.pixel.X - this.offset.X;
                     this.startDrag.Y = opt.pixel.Y - this.offset.Y;
                     //todo
-                    this.startLimits = utility.clone(this.limits);
+                    this.startCoordinate = utility.clone(this.coordinate);
                 }
 
                 //todo
                 if (opt.drag == 'CONTINUE') {
                     //find the scale of the graph (units per pixel)
                     //this.scale = this.currScale();
-                    //dump(scale.x + " " + scale.y + " -- " + this.startLimits.x1 + " " + this.startLimits.y1);
-                    //dump(this.startLimits.x1 + " " +(y - this.startDrag.y) / scale.y);
-                    this.limits.X1 = this.startLimits.X1 - ((this.pixel.X - this.startDrag.X) / this.scale.X);
-                    this.limits.X2 = this.startLimits.X2 - ((this.pixel.X - this.startDrag.X) / this.scale.X);
-                    this.limits.Y1 = this.startLimits.Y1 + ((this.pixel.Y - this.startDrag.Y) / this.scale.Y);
-                    this.limits.Y2 = this.startLimits.Y2 + ((this.pixel.Y - this.startDrag.Y) / this.scale.Y);
+                    //dump(scale.x + " " + scale.y + " -- " + this.startCoordinate.x1 + " " + this.startCoordinate.y1);
+                    //dump(this.startCoordinate.x1 + " " +(y - this.startDrag.y) / scale.y);
+                    this.coordinate.X1 = this.startCoordinate.X1 - ((this.pixel.X - this.startDrag.X) / this.scale.X);
+                    this.coordinate.X2 = this.startCoordinate.X2 - ((this.pixel.X - this.startDrag.X) / this.scale.X);
+                    this.coordinate.Y1 = this.startCoordinate.Y1 + ((this.pixel.Y - this.startDrag.Y) / this.scale.Y);
+                    this.coordinate.Y2 = this.startCoordinate.Y2 + ((this.pixel.Y - this.startDrag.Y) / this.scale.Y);
                 }
                 if (opt.drag == 'RENEW') {
-                    this.startLimits = utility.clone(this.limits);
+                    this.startCoordinate = utility.clone(this.coordinate);
                 }
             },
 
             refreshCoordinate:function () {
-                this.range = {X:this.limits.X2 - this.limits.X1, Y:this.limits.Y2 - this.limits.Y1 };
-                this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
+                this.scope.X = this.coordinate.X2 - this.coordinate.X1;
+                this.scope.Y = this.coordinate.Y2 - this.coordinate.Y1;
+                this.scale.X = this.width / this.scope.X;
+                this.scale.Y = this.height / this.scope.Y;
                 // x' =  Sx * x + 0 * y + width / 2
                 //y' = 0 * x - y * Sy + height / 2
-                this.metrix = [
-                    [this.scale.X, 0, Math.abs(this.limits.X1) * this.scale.X],
-                    [0, -this.scale.Y, Math.abs(this.limits.Y2) * this.scale.Y],
+                this.matrix = [
+                    [this.scale.X, 0, -this.coordinate.X1 * this.scale.X],
+                    [0, this.scale.Y, -this.coordinate.Y2 * this.scale.Y],
+                    [0, 0, 1]
+                ];
+                this.matrixInvertible = [
+                    [1 / this.scale.X, 0, this.coordinate.X1],
+                    [0, 1 / this.scale.Y, this.coordinate.Y2],
                     [0, 0, 1]
                 ];
 
-                $.extend(coordinate, this.limits)
-                coordinate.width = this.width;
-                coordinate.height = this.height;
-                coordinate.range = utility.clone(this.range);
-                coordinate.pixel = utility.clone(this.pixel);
-                coordinate.scale = this.scale;
-                coordinate.metrix = this.metrix;
-                //coordinate.point = [this.pixel.X, this.pixel.Y].transform(this.metrix);
+                this.coordinate.width = this.width;
+                this.coordinate.height = this.height;
             },
 
             reset:function () {
-                this.limits = utility.clone(this.defaultLimits);
-                this.startLimits = utility.clone(this.limits);
-                this.range = {X:this.limits.X2 - this.limits.X1, Y:this.limits.Y2 - this.limits.Y1 };
-                this.scale = { X:this.width / this.range.X, Y:this.height / this.range.Y};
+                this.coordinate.X1 = this.defaultCoordinate.X1;
+                this.coordinate.Y1 = this.defaultCoordinate.Y1;
+                this.coordinate.X2 = this.defaultCoordinate.X2;
+                this.coordinate.Y2 = this.defaultCoordinate.X2;
+                this.startCoordinate = utility.clone(this.coordinate);
+                this.scope.X = this.coordinate.X2 - this.coordinate.X1;
+                this.scope.Y = this.coordinate.Y2 - this.coordinate.Y1;
+                this.scale.X = this.width / this.scope.X;
+                this.scale.Y = this.height / this.scope.Y;
                 this.refreshCoordinate();
             },
 
-            coordinate:function () {
-            },
-
-            transform:function (point) {
-                if (isNaN(point.X) || isNaN(point.Y)) {
-                    return null;
-                }
-                if (point.X > layout.limits.X2) {
-                    point.X = layout.limits.X2;
-                    //return null;
-                }
-                if (point.X < layout.limits.X1) {
-                    point.X = layout.limits.X1;
-                    //return null;
-                }
-//                if (point.Y > layout.limits.Y2) {
-//                    //point.Y = layout.limits.Y2;
+            Point:function (x, y) {
+                this.X = x;
+                this.Y = y;
+                this.transform = function () {
+                    if (isNaN(this.X) || isNaN(this.Y)) {
+                        return null;
+                    }
+                    if (this.X > layout.coordinate.X2) {
+                        this.X = layout.coordinate.X2;
+                        //return null;
+                    }
+                    if (this.X < layout.coordinate.X1) {
+                        this.X = layout.coordinate.X1;
+                        //return null;
+                    }
+//                if (point.Y > layout.coordinate.Y2) {
+//                    //point.Y = layout.coordinate.Y2;
 //                    //return null;
 //                }
-//                if (point.Y < layout.limits.Y1) {
-//                    //point.Y = layout.limits.Y1;
+//                if (point.Y < layout.coordinate.Y1) {
+//                    //point.Y = layout.coordinate.Y1;
 //                    //return null;
 //                }
-
-                return matrixes.Transform2D(this.metrix, [point.X, point.Y]);
-            },
-
-            transformPoint:function (pixel) {
-                if (isNaN(pixel.X) || isNaN(pixel.Y)) {
-                    return null;
+                    var result = matrixes.Transform2D(layout.matrix, [this.X, this.Y]);
+                    return {X:result[0][0], Y:-result[1][0]};
                 }
-                return [point.X, point.Y].transform(this.metrix);
+            },
+            Pixel:function (x, y) {
+                this.X = x;
+                this.Y = y;
+                this.transform = function () {
+                    if (isNaN(this.X) || isNaN(this.Y)) {
+                        return null;
+                    }
+                    var result = matrixes.Transform2D(layout.matrixInvertible, [this.X, -this.Y]);
+                    return {X:result[0][0], Y:result[1][0]};
+                }
             }
         };
 
