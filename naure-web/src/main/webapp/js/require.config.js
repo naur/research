@@ -9,36 +9,40 @@
  *
  */
 
+var jslocalpath = '/Research/projects/naure/naure-web/src/main/webapp';
+jslocalpath = '';
+var jslocalpath1 = jslocalpath.replace('naure-web', 'naure-research');
+
 require.config({
     paths:{
-        jquery:'/Research/projects/naure/naure-web/src/main/webapp/js/jquery-1.7.2.min',
-        'jquery.strings':'/Research/projects/naure/naure-web/src/main/webapp/js/jquery.strings',
-        'ajaxslt':'/Research/projects/naure/naure-web/src/main/webapp/js/ajaxslt',
+        jquery:jslocalpath + '/js/jquery-1.7.2.min',
+        'jquery.strings':jslocalpath + '/js/jquery.strings',
+        'ajaxslt':jslocalpath + '/js/ajaxslt',
 
-        'jStat':'/Research/projects/naure/naure-web/src/main/webapp/js/jstat-1.0.0',
+        'jStat':jslocalpath + '/js/jstat-1.0.0',
 
-        'naure':'/Research/projects/naure/naure-web/src/main/webapp/js/naure',
-        'naure.utility':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.utility',
-        'naure.ui.templet':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.ui.templet',
-        'naure.location':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.location',
-        'naure.http':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.http',
-        'naure.xsl':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.xsl.js',
-        'naure.message':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.message',
-        'naure.overlay':'/Research/projects/naure/naure-web/src/main/webapp/js/naure.overlay',
+        'naure':jslocalpath + '/js/naure',
+        'naure.utility':jslocalpath + '/js/naure.utility',
+        'naure.ui.templet':jslocalpath + '/js/naure.ui.templet',
+        'naure.location':jslocalpath + '/js/naure.location',
+        'naure.http':jslocalpath + '/js/naure.http',
+        'naure.xsl':jslocalpath + '/js/naure.xsl.js',
+        'naure.message':jslocalpath + '/js/naure.message',
+        'naure.overlay':jslocalpath + '/js/naure.overlay',
 
-        'naure.math':'/Research/projects/naure/naure-research/src/main/webapp/js/math/naure.math',
-        'naure.math.matrixes':'/Research/projects/naure/naure-research/src/main/webapp/js/math/naure.math.matrixes',
+        'naure.math':jslocalpath1 + '/js/math/naure.math',
+        'naure.math.matrixes':jslocalpath1 + '/js/math/naure.math.matrixes',
 
-        'naure.graphics':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics',
-        'naure.graphics.math':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.math',
-        'naure.graphics.gridlines':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.gridlines',
-        'naure.graphics.ui':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.ui',
-        'naure.graphics.layout':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.layout',
-        'naure.graphics.equation':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.equation',
-        'naure.graphics.finance':'/Research/projects/naure/naure-research/src/main/webapp/js/graphics/naure.graphics.finance',
+        'naure.graphics':jslocalpath1 + '/js/graphics/naure.graphics',
+        'naure.graphics.math':jslocalpath1 + '/js/graphics/naure.graphics.math',
+        'naure.graphics.gridlines':jslocalpath1 + '/js/graphics/naure.graphics.gridlines',
+        'naure.graphics.ui':jslocalpath1 + '/js/graphics/naure.graphics.ui',
+        'naure.graphics.layout':jslocalpath1 + '/js/graphics/naure.graphics.layout',
+        'naure.graphics.equation':jslocalpath1 + '/js/graphics/naure.graphics.equation',
+        'naure.graphics.finance':jslocalpath1 + '/js/graphics/naure.graphics.finance',
 
-        'math':'/Research/projects/naure/naure-research/src/main/webapp/js/math/math',
-        'math.matrix':'/Research/projects/naure/naure-web/src/main/webapp/js/math/math.matrix'
+        'math':jslocalpath1 + '/js/math/math',
+        'math.matrix':jslocalpath + '/js/math/math.matrix'
     },
     shim:{
         'jquery-strings':['jquery']
