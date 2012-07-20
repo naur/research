@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <title> Finance </title>
-<link href="/Research/projects/naure/naure-web/src/main/webapp/css/left-right.css" rel="stylesheet" type="text/css"/>
-<link href="/Research/projects/naure/naure-web/src/main/webapp/css/mathquill.css" rel="stylesheet" type="text/css"/>
-<link href="/Research/projects/naure/naure-web/src/main/webapp/css/naure.overlay.css" rel="stylesheet" type="text/css"/>
-<link href="/Research/projects/naure/naure-web/src/main/webapp/css/naure.message.css" rel="stylesheet" type="text/css"/>
+<link href="/css/left-right.css" rel="stylesheet" type="text/css"/>
+<link href="/css/mathquill.css" rel="stylesheet" type="text/css"/>
+<link href="/css/naure.overlay.css" rel="stylesheet" type="text/css"/>
+<link href="/css/naure.message.css" rel="stylesheet" type="text/css"/>
 
 <style type="text/css">
     article section:first-child {
@@ -27,9 +27,29 @@
     }
 </style>
 
-<script type="text/javascript" src="/Research/projects/naure/naure-web/src/main/webapp/js/require.js"></script>
-<script type="text/javascript" src="/Research/projects/naure/naure-web/src/main/webapp/js/require.config.js"></script>
-<script type="text/javascript" src="/Research/projects/naure/naure-research/src/main/webapp/js/finance-view.js"></script>
+<script type="text/javascript" src="/js/require.js"></script>
+<script type="text/javascript" src="/js/require.config.js"></script>
+<script type="text/javascript"
+        src="/js/finance-view.js"></script>
+
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    var scope = "http://finance.google.com/finance/feeds/";
+    google.load('gdata', '2.0');
+    google.setOnLoadCallback(googleLoad);
+    function googleLoad() {
+        alert('google loaded');
+        setupMyService();
+    }
+    function googleFinanceService() {
+        alert('googleFinanceService ready');
+    }
+    function setupMyService() {
+        var myService = new google.gdata.finance.FinanceService('googleFinanceService');
+        var token = google.accounts.user.login(scope);
+        return myService;
+    }
+</script>
 
 </head>
 <body>
