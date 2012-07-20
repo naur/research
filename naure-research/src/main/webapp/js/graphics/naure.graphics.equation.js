@@ -19,7 +19,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
 
         var equation = {
 
-            gridlineLabel:function (num) {
+            gridlineLabelX:function (num) {
+                return num.toFixed(3).replace(/\.?0+$/, "")
+            },
+
+            gridlineLabelY:function (num) {
                 return num.toFixed(3).replace(/\.?0+$/, "")
             },
 

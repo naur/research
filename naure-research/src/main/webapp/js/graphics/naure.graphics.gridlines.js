@@ -23,8 +23,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     return;
                 }
 
-                gridsize.X = pow(2, 6 - round(lg(scale.X)));
-                gridsize.Y = pow(2, 6 - round(lg(scale.Y)));
+                gridsize.X = pow(2, 7 - round(lg(scale.X)));
+                gridsize.Y = pow(2, 7 - round(lg(scale.Y)));
 
                 var opt = $.extend({}, options);
                 var roundingCoordinate = {
@@ -83,6 +83,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 //垂直线坐标
                 ctx.lineWidth = config.lineWidth;
                 ctx.textAlign = "right";
+                ctx.fillStyle = 'green'
                 ctx.textBaseline = "top";
                 var labelPixel = {}, labelPixelOffset = {X:-4, Y:4};
                 labelPixel.X = new layout.Point(0, 0).transformX();
@@ -95,7 +96,6 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     labelPixel.X = layout.width;
                     labelPixelOffset.X = -6;
                 }
-
                 for (var y = roundingCoordinate.Y1; y <= roundingCoordinate.Y2; y += gridsize.Y * 1) {
                     if (y != 0 && alreadyDrawNPoints.indexOf(0 + "," + y) == -1) {
                         alreadyDrawNPoints.push(0 + "," + y);
@@ -103,7 +103,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                         labelPixel.Y = new layout.Point(0, y).transformY();
                         ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
                         ctx.fill();
-                        ctx.fillText(system.gridlineLabel(y), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
+                        ctx.fillText(system.gridlineLabelY(y), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
                     }
                 }
             },
@@ -146,6 +146,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.lineWidth = config.lineWidth;
                 ctx.textAlign = "left";
                 ctx.textBaseline = "top";
+                ctx.fillStyle = 'green'
                 var labelPixel = {}, labelPixelOffset = {X:4, Y:4};
                 labelPixel.Y = new layout.Point(0, 0).transformY();
                 if (labelPixel.Y <= 0) {
@@ -164,7 +165,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                         labelPixel.X = new layout.Point(x).transformX();
                         ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
                         ctx.fill();
-                        ctx.fillText(system.gridlineLabel(x), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
+                        ctx.fillText(system.gridlineLabelX(x), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
                     }
                 }
             },

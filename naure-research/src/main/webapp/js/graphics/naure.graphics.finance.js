@@ -14,7 +14,7 @@
 define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'], function ($, NAURE) {
     NAURE.Graphics.Finance = (function () {
 
-        var config, layout, scale, ctx, coordinate;
+        var config, layout, scale, ctx, coordinate, type;
 
         var finance = {
 
@@ -29,9 +29,18 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 Size: 0
             },
 
-            gridlineLabel:function (num) {
-                return new Date(num).getDate();
-                //return num.toFixed(3).replace(/\.?0+$/, "")
+            gridlineLabelX:function (num) {
+                var d = new Date(num);
+                if (type == 'year')
+                    return d.format('YYYY-MM-dd');
+                if (type == 'month')
+                    return d.format('dd HH:mm');
+                if (type == 'date')
+                    return d.format('hh:mm:ss');
+            },
+
+            gridlineLabelY:function (num) {
+                return num.toFixed(3).replace(/\.?0+$/, "")
             },
 
             init:function (options) {
@@ -40,10 +49,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx = options.ctx;
                 scale = layout.scale;
                 coordinate = layout.coordinate;
-                coordinate.X1 = new Date().getTime() - 864000000;
+                coordinate.X1 = (new Date().getTime() - 864000000);
                 coordinate.X2 = new Date().getTime();
                 coordinate.Y1 = -5
                 coordinate.Y2 = 5;
+                type = 'month';
                 return finance;
             }
         };

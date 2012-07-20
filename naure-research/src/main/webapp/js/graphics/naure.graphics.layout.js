@@ -38,7 +38,7 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             defaultCoordinate:{X1:0, Y1:0, X2:0, Y2:0},
             startCoordinate:{X1:0, Y1:0, X2:0, Y2:0},
 
-            isEqualsCoordinate: function(coordinate1, coordinate2) {
+            isEqualsCoordinate:function (coordinate1, coordinate2) {
 
             },
 
@@ -73,44 +73,44 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 //Update Coordinate
                 this.refreshCoordinate();
 
+                var curPoint = new layout.Pixel(this.pixel.X, this.pixel.Y).transform();
                 message.show({content:JSON.stringify({
-                    coordinate:layout.coordinate,
-                    matrix:this.matrix,
-                    point:new layout.Pixel(this.pixel.X, this.pixel.Y).transform(),
-                    pixel:this.pixel
+                    time: curPoint.X < 864000000 ? '' : new Date(curPoint.X).toString(),
+                    point:curPoint,
+                    coordinate:layout.coordinate
                 }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
             refreshSize:function (opt) {
                 if (!opt.width || !opt.height)  return;
 
-//                if (system.coordinate) {
-//                    layout.coordinate.X1 = options.coordinate.X1;
-//                    layout.coordinate.X2 = options.coordinate.X2;
-//                    layout.coordinate.Y1 = options.coordinate.Y1;
-//                    layout.coordinate.Y2 = options.coordinate.Y2;
-//                }
-
                 var oldheight = this.height;
                 var oldwidth = this.width;
                 this.width = opt.width;
                 this.height = opt.height;
 
-                if (oldheight != 0) {
-                    //Compute the new boundaries of the graph
-                    this.coordinate.X1 *= (this.width / oldwidth);
-                    this.coordinate.X2 *= (this.width / oldwidth);
-                    this.coordinate.Y1 *= (this.height / oldheight);
-                    this.coordinate.Y2 *= (this.height / oldheight);
-                } else {
-//                    this.coordinate.X1 = this.coordinate.Y1 * (this.width / this.height);
-//                    this.coordinate.X2 = this.coordinate.Y2 * (this.width / this.height);
+//                var autoRatio = {};
+//                if (oldheight == 0) {
+//                    autoRatio.X = this.width / this.height;
+//                    autoRatio.Y = autoRatio.X;
+//                } else {
+//                    autoRatio.X = this.width / oldwidth;
+//                    autoRatio.Y = this.height / oldheight;
+//                }
 
-//                    this.coordinate.X1 = -50;
-//                    this.coordinate.X2 = 50;
-//                    this.coordinate.X1 = new Date().getTime() - 864000000;
-//                    this.coordinate.X2 = new Date().getTime();
-                }
+//                if (oldheight != 0) {
+//                    //Compute the new boundaries of the graph
+//                    this.coordinate.X1 *= autoRatio.X;
+//                    this.coordinate.X2 *= autoRatio.X;
+//                    this.coordinate.Y1 *= autoRatio.Y;
+//                    this.coordinate.Y2 *= autoRatio.Y;
+//                }
+
+                var autoRatio = this.width / this.height;
+                if (this.coordinate.X1 == this.coordinate.Y1)
+                    this.coordinate.X1 *= autoRatio;
+                if (this.coordinate.X2 == this.coordinate.Y2)
+                    this.coordinate.X2 *= autoRatio;
 
                 if (this.coordinate.X1 == this.coordinate.X2 || this.coordinate.Y1 == this.coordinate.Y2)
                     throw 'coordinate init error! ';

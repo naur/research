@@ -60,8 +60,7 @@ require(['jquery', 'naure.message', 'naure.overlay',
             nodes:overlayNodes
         });
 
-        //{system:NAURE.Graphics.Finance}
-        $('article section canvas').NAURE_Graphics();
+        $('article section canvas').NAURE_Graphics({system:NAURE.Graphics.Finance});
     });
 });
 
