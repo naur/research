@@ -105,6 +105,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 opt.ymainaxis = -1;
                 opt.currx = Math.round(opt.currx * 100000000000) / 100000000000;	//round to the closest 0.00000001
                 opt.curry = Math.round(opt.curry * 100000000000) / 100000000000;
+
                 opt.xmainaxis = config.gridlines.charHeight;	//the next two variables are the axis on which text is going to be placed
 
                 if (coordinate.Y2 >= 0 && coordinate.Y1 <= 0)    //y=0 appears on the screen - move the text to follow

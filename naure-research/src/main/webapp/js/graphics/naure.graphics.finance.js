@@ -71,10 +71,12 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 // 1/ 4 线 [Y 轴 ]
                 ctx.strokeStyle = 'red'; //this.config.minorGridStyle;
                 ctx.lineWidth = 0.1;
+
                 for (var y = overbottom; y <= overtop; y += gridsize / 4) {
+                    pixel = new layout.Point(0, y).transformY();
                     ctx.beginPath();
-                    ctx.move(coordinate.X2, y);
-                    ctx.line(coordinate.X1, y);
+                    ctx.moveTo(0, pixel);
+                    ctx.lineTo(layout.width, pixel);
                     ctx.stroke();
                 }
 
@@ -82,9 +84,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.strokeStyle = config.majorGridStyle;
                 ctx.lineWidth = 0.4;
                 for (var y = overbottom; y <= overtop; y += gridsize) {
+                    pixel = new layout.Point(0, y).transformY();
                     ctx.beginPath();
-                    ctx.move(coordinate.X2, y);
-                    ctx.line(coordinate.X1, y);
+                    ctx.moveTo(0, pixel);
+                    ctx.lineTo(layout.width, pixel);
                     ctx.stroke();
                 }
 
@@ -98,19 +101,29 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
 
                 //垂直线坐标
                 ctx.lineWidth = config.lineWidth;
-                ctx.textAlign = "left";
+                ctx.textAlign = "right";
                 ctx.textBaseline = "top";
+                var labelPixel = {}, labelPixelOffset = {X:-4, Y:4};
+                labelPixel.X = new layout.Point(0, 0).transformX();
+                if (labelPixel.X <= 0) {
+                    ctx.textAlign = "left";
+                    labelPixel.X = 0;
+                    labelPixelOffset.X = 6;
+                }
+                if (labelPixel.X >= layout.width) {
+                    labelPixel.X = layout.width;
+                    labelPixelOffset.X = -6;
+                }
+
+
                 for (var y = floor(overbottom); y <= overtop; y += gridsize * 1) {
                     if (y != 0 && alreadydrawnpoints.indexOf(0 + "," + y) == -1) {
                         alreadydrawnpoints.push(0 + "," + y);
                         ctx.beginPath();
-                        //ctx.arc(-cx, cy - scale.Y * y, 2, 0, Math.PI * 2, true);
-                        var transPoint = new layout.Point(0, y).transform();
-                        if (!transPoint) continue;
-                        ctx.arc(transPoint.X, transPoint.Y, 2, 0, Math.PI * 2, true);
-
+                        labelPixel.Y = new layout.Point(0, y).transformY();
+                        ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
                         ctx.fill();
-                        ctx.fillText(y.toFixed(3).replace(/\.?0+$/, ""), transPoint.X + 4, transPoint.Y + 4);
+                        ctx.fillText(y.toFixed(3).replace(/\.?0+$/, ""), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
                     }
                 }
             },
@@ -121,9 +134,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.strokeStyle = 'red'; //this.config.minorGridStyle;
                 ctx.lineWidth = 0.1;
                 for (var x = overleft; x <= overright; x += gridsize / 4) {
+                    pixel = new layout.Point(x, 0).transformX();
                     ctx.beginPath();
-                    ctx.move(x, coordinate.Y2);
-                    ctx.line(x, coordinate.Y1);
+                    ctx.moveTo(pixel, 0);
+                    ctx.lineTo(pixel, layout.height);
                     ctx.stroke();
                 }
 
@@ -131,9 +145,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.strokeStyle = config.majorGridStyle;
                 ctx.lineWidth = 0.4;
                 for (var x = overleft; x <= overright; x += gridsize) {
+                    pixel = new layout.Point(x, 0).transformX();
                     ctx.beginPath();
-                    ctx.move(x, coordinate.Y2);
-                    ctx.line(x, coordinate.Y1);
+                    ctx.moveTo(pixel, 0);
+                    ctx.lineTo(pixel, layout.height);
                     ctx.stroke();
                 }
 
@@ -149,21 +164,25 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.lineWidth = config.lineWidth;
                 ctx.textAlign = "left";
                 ctx.textBaseline = "top";
+                var labelPixel = {}, labelPixelOffset = {X:4, Y:4};
+                labelPixel.Y = new layout.Point(0, 0).transformY();
+                if (labelPixel.Y <= 0) {
+                    labelPixel.Y = 0;
+                    labelPixelOffset.Y = 6;
+                }
+                if (labelPixel.Y >= layout.height) {
+                    ctx.textBaseline = "bottom";
+                    labelPixel.Y = layout.height;
+                    labelPixelOffset.Y = -6;
+                }
                 for (var x = floor(overleft); x <= overright; x += gridsize * 1) {
                     if (x != 0 && alreadydrawnpoints.indexOf(x + "," + 0) == -1) {
                         alreadydrawnpoints.push(x + "," + 0);
                         ctx.beginPath();
-
-                        //ctx.arc(scale.X * x - cx, cy - scale.Y * 0, 2, 0, Math.PI * 2, true);
-
-                        var transPoint = new layout.Point(x, 0).transform();
-                        if (!transPoint) continue;
-                        ctx.arc(transPoint.X, transPoint.Y, 2, 0, Math.PI * 2, true);
-
+                        labelPixel.X = new layout.Point(x).transformX();
+                        ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
                         ctx.fill();
-
-                        //ctx.fillText(x.toFixed(3).replace(/\.?0+$/, ""), scale.X * x - cx, 14 + cy - scale.Y * 0);
-                        ctx.fillText(x.toFixed(3).replace(/\.?0+$/, ""), transPoint.X + 4, transPoint.Y + 4);
+                        ctx.fillText(x.toFixed(3).replace(/\.?0+$/, ""), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
                     }
                 }
             },
@@ -179,7 +198,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
         };
 
         return finance;
-    })();
+    })
+        ();
 
     return NAURE;
-});
+})
+;

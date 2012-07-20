@@ -216,7 +216,13 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
 //                }
                     var result = matrixes.Transform2D(layout.matrix, [this.X, this.Y]);
                     return {X:result[0][0], Y:-result[1][0]};
-                }
+                };
+                this.transformX = function () {
+                    return x * layout.matrix[0][0] + layout.matrix[0][2];
+                };
+                this.transformY = function () {
+                    return -(y * layout.scale.Y - layout.coordinate.Y2 * layout.scale.Y);
+                };
             },
             Pixel:function (x, y) {
                 this.X = x;
