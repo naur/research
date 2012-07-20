@@ -90,18 +90,18 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
 
             init:function (options) {
                 graphics.ui = NAURE.Graphics.UI;
-                graphics.ui.config = NAURE.Graphics.config;
-                graphics.ui.graphics = graphics;
+                //Step 1: Layout 初始化
                 graphics.layout = NAURE.Graphics.Layout;
-
-                //UI 初始化
+                //Step 2: UI 初始化
                 graphics.ui.init($.extend({
+                    config: NAURE.Graphics.config,
                     layout:graphics.layout,
-                    graphics:graphics
+                    graphics:graphics,
+                    gridlines: NAURE.Graphics.Gridlines
                 }, options));
-
-                // System 初始化
+                //Step 3: System 初始化
                 this.System(options.system);
+                //Step 4: Draw
                 this.draw();
             }
         };

@@ -182,7 +182,7 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 this.coordinate.X1 = this.defaultCoordinate.X1;
                 this.coordinate.Y1 = this.defaultCoordinate.Y1;
                 this.coordinate.X2 = this.defaultCoordinate.X2;
-                this.coordinate.Y2 = this.defaultCoordinate.X2;
+                this.coordinate.Y2 = this.defaultCoordinate.Y2;
                 this.startCoordinate = utility.clone(this.coordinate);
                 this.scope.X = this.coordinate.X2 - this.coordinate.X1;
                 this.scope.Y = this.coordinate.Y2 - this.coordinate.Y1;

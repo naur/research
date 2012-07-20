@@ -11,11 +11,11 @@
 app = [];
 app.variables = []
 
-define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridlines'], function ($, NAURE) {
 
     NAURE.Graphics.UI = (function () {
 
-        var layout, graphics;
+        var layout, graphics, gridlines, config;
 
         var ui = {
             container:null,
@@ -23,7 +23,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
             ctx:null,
             clear:function () {
                 this.ctx.lineCap = "butt";
-                this.ctx.font = this.config.font;
+                this.ctx.font = config.font;
                 this.ctx.strokeStyle = this.ctx.fillStyle = "rgb(255,255,255)";
                 this.ctx.fillRect(0, 0, this.graph.width(), this.graph.height());
             },
@@ -55,7 +55,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
 //                this.ctx.fillStyle = "#888";
 //                this.ctx.lineWidth = 0.1;
 
-                for (key in opt.lines) {
+                for (var key in opt.lines) {
                     //this.drawLine({expression:opt.lines[key]});
                     if (!opt.lines.hasOwnProperty(key)) break
                     this.drawLine(opt.lines[key]);
@@ -63,7 +63,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
             },
 
             drawLine:function (options) {
-                var opt = $.extend({}, ui.config, options);
+                var opt = $.extend({}, config, options);
                 this.ctx.strokeStyle = opt.color;
                 new graphics.system.Graph(opt.equation, true, opt.color).plot(this.ctx, layout.coordinate);
             },
@@ -83,16 +83,16 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
                 this.ctx.width = layout.width;
 
                 //Compute how many grid lines to show
-                this.config.gridlines.maxgridlines.X = 0.015 * layout.width;
-                this.config.gridlines.maxgridlines.Y = 0.015 * layout.height;
+                config.gridlines.maxgridlines.X = 0.015 * layout.width;
+                config.gridlines.maxgridlines.Y = 0.015 * layout.height;
             },
 
             mouseWheel:function (event) {
                 if (event.wheelDelta > 0) {
-                    this.zoom(this.config.zoomFactor, event);
+                    this.zoom(config.zoomFactor, event);
                 }
                 else {
-                    this.zoom(-this.config.zoomFactor, event);
+                    this.zoom(-config.zoomFactor, event);
                 }
             },
 
@@ -135,17 +135,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
 
             gridlines:function (options) {
                 var opt = $.extend(options);
-                graphics.system.gridlines(opt);
-
-//                message.show({content:JSON.stringify({
-//                    widht: this.width,
-//                    height: this.height,
-//                    point: this.point,
-//                    pixel: this.pixel,
-//                    coordinate: layout.coordinate,
-//                    matrix: this.matrix
-//                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
-                //coordinate.perf = end.getTime() - start.getTime();
+                gridlines.draw(opt);
             },
 
             init:function (options) {
@@ -154,8 +144,15 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) 
                 if (!ui.graph[0].getContext) return;
                 ui.ctx = $(ui.graph)[0].getContext("2d");
 
+                config = opt.config;
                 graphics = opt.graphics;
                 layout = opt.layout;
+                gridlines = opt.gridlines;
+                gridlines.init({
+                    config:config,
+                    layout:layout,
+                    ctx:ui.ctx
+                });
                 ui.resize();
 
                 //初始化 ctx 方法
