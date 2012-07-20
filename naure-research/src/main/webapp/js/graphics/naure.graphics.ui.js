@@ -21,8 +21,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
             container:null,
             graph:null,
             ctx:null,
-            isLiveGraphEvent: false,
+            isLiveGraphEvent:false,
             clear:function () {
+                this.ctx.clearRect(0, 0, this.graph.width(), this.graph.height())
                 this.ctx.lineCap = "butt";
                 this.ctx.font = config.font;
                 this.ctx.strokeStyle = this.ctx.fillStyle = "rgb(255,255,255)";
@@ -136,7 +137,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 gridlines.draw(opt);
             },
 
-            liveGraphEvent: function() {
+            liveGraphEvent:function () {
                 if (this.isLiveGraphEvent) return;
 
                 //初始化 ctx 方法

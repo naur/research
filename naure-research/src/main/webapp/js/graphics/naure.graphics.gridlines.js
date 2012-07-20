@@ -50,7 +50,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             horizontal:function (roundingCoordinate, alreadyDrawNPoints) {
                 // 1/ 4 线 [Y 轴 ]
                 ctx.strokeStyle = config.minorStyle;
-                ctx.lineWidth = 0.1;
+                ctx.lineWidth = 0.13;
                 for (var y = roundingCoordinate.Y1; y <= roundingCoordinate.Y2; y += gridsize.Y / 4) {
                     if (y ==0) continue;
                     pixel = new layout.Point(0, y).transformY();
@@ -112,7 +112,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             vertical:function (roundingCoordinate, alreadyDrawNPoints) {
                 // 1/ 4 线 [X 轴 ]
                 ctx.strokeStyle = config.minorStyle;
-                ctx.lineWidth = 0.1;
+                ctx.lineWidth = 0.13;
                 for (var x = roundingCoordinate.X1; x <= roundingCoordinate.X2; x += gridsize.X / 4) {
                     if (x ==0) continue;
                     pixel = new layout.Point(x, 0).transformX();

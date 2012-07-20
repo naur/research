@@ -36,8 +36,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                     charHeight:8,
                     //gridsize: 1,         //pow(2, 6 - Math.round(lg(scale.X)));
                     //style: 'red',
-                    "minorStyle":"red",
-                    "majorStyle":"#555",
+                    "minorStyle":"#555",
+                    "majorStyle":"black",
                     "font":"8pt sans-serif" // "8pt monospace";    Serif Sans-Serif Monospace 字体
                 },
                 quality:1,
