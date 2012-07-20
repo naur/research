@@ -50,6 +50,7 @@ var overlayNodes = {
 require(['jquery', 'naure.message', 'naure.overlay',
     'naure.graphics.ui',
     'naure.graphics.layout',
+    'naure.graphics.gridlines',
     'naure.graphics.equation',
     'naure.graphics.finance'], function ($, NAURE) {
     this.NAURE = NAURE;
@@ -59,7 +60,8 @@ require(['jquery', 'naure.message', 'naure.overlay',
             nodes:overlayNodes
         });
 
-        $('article section canvas').NAURE_Graphics({system:NAURE.Graphics.Finance});
+        //{system:NAURE.Graphics.Finance}
+        $('article section canvas').NAURE_Graphics();
     });
 });
 

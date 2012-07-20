@@ -14,54 +14,45 @@
 define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'], function ($, NAURE) {
     NAURE.Graphics.Gridlines = (function () {
 
-        var config, layout, scale, ctx, coordinate;
+        var config, layout, system, scale, ctx, coordinate, scope, gridsize = {};
 
         var gridlines = {
 
             draw:function (options) {
-                var opt = $.extend({}, options);
-                //they can be accidentially changed
-                e = Math.E;
-                pi = Math.PI;
-
                 if (!ctx) {
                     return;
                 }
 
-                //scale = coordinate.scale;
+                gridsize.X = pow(2, 6 - round(lg(scale.X)));
+                gridsize.Y = pow(2, 6 - round(lg(scale.Y)));
 
-                //This can probably be simplified a bit
-                gridsize = pow(2, 6 - Math.round(lg(scale.X)));
-
-                overleft = floor(coordinate.X1);
-                overright = ceil(coordinate.X2);
-                overtop = ceil(coordinate.Y2);
-                overbottom = floor(coordinate.Y1);
+                var opt = $.extend({}, options);
+                var roundingCoordinate = {
+                    X1:gridsize.X * ~~(coordinate.X1 / gridsize.X) - gridsize.X,
+                    X2:gridsize.X * ~~(coordinate.X2 / gridsize.X) + gridsize.X,
+                    Y2:gridsize.Y * ~~(coordinate.Y2 / gridsize.Y) + gridsize.Y,
+                    Y1:gridsize.Y * ~~(coordinate.Y1 / gridsize.Y) - gridsize.Y
+                };
 
                 ctx.font = config.font;
-                //ctx.font = "8pt monospace";	//set the font // Serif Sans-Serif Monospace 字体
                 ctx.fillStyle = "#888";
                 /*ctx.shadowColor = "rgba(255,255,255,1.0)";
                  ctx.shadowOffsetX = 0;
                  ctx.shadowOffsetY = 0
                  ctx.shadowBlur = 4;*/
-                //Like overleft, but in units of 4*gridsize
 
-                var alreadydrawnpoints = [];
-//                var dblleft = gridsize * 4 * ~~(coordinate.X1 / (4 * gridsize)) - 4 * gridsize;
-//                var dblleft = gridsize * 4 * ~~(coordinate.Y1 / (4 * gridsize)) - 4 * gridsize;
-
-                this.horizontal(overbottom, overtop, gridsize, alreadydrawnpoints);
-                this.vertical(overleft, overright, gridsize, alreadydrawnpoints);
+                var alreadyDrawNPoints = [];
+                this.horizontal(roundingCoordinate, alreadyDrawNPoints);
+                this.vertical(roundingCoordinate, alreadyDrawNPoints);
             },
 
             //水平线
-            horizontal:function (overbottom, overtop, gridsize, alreadydrawnpoints) {
+            horizontal:function (roundingCoordinate, alreadyDrawNPoints) {
                 // 1/ 4 线 [Y 轴 ]
-                ctx.strokeStyle = 'red'; //this.config.minorGridStyle;
+                ctx.strokeStyle = config.minorStyle;
                 ctx.lineWidth = 0.1;
-
-                for (var y = overbottom; y <= overtop; y += gridsize / 4) {
+                for (var y = roundingCoordinate.Y1; y <= roundingCoordinate.Y2; y += gridsize.Y / 4) {
+                    if (y ==0) continue;
                     pixel = new layout.Point(0, y).transformY();
                     ctx.beginPath();
                     ctx.moveTo(0, pixel);
@@ -70,9 +61,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 }
 
                 // 1/ 1 线 [Y 轴 ]
-                ctx.strokeStyle = config.majorGridStyle;
+                ctx.strokeStyle = config.majorStyle;
                 ctx.lineWidth = 0.4;
-                for (var y = overbottom; y <= overtop; y += gridsize) {
+                for (var y = roundingCoordinate.Y1; y <= roundingCoordinate.Y2; y += gridsize.Y) {
+                    if (y ==0) continue;
                     pixel = new layout.Point(0, y).transformY();
                     ctx.beginPath();
                     ctx.moveTo(0, pixel);
@@ -84,8 +76,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = "black";
                 ctx.beginPath();
-                ctx.move(0, overbottom);
-                ctx.line(0, overtop);
+                ctx.move(roundingCoordinate.X1, 0);
+                ctx.line(roundingCoordinate.X2, 0);
                 ctx.stroke();
 
                 //垂直线坐标
@@ -104,25 +96,25 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     labelPixelOffset.X = -6;
                 }
 
-
-                for (var y = floor(overbottom); y <= overtop; y += gridsize * 1) {
-                    if (y != 0 && alreadydrawnpoints.indexOf(0 + "," + y) == -1) {
-                        alreadydrawnpoints.push(0 + "," + y);
+                for (var y = roundingCoordinate.Y1; y <= roundingCoordinate.Y2; y += gridsize.Y * 1) {
+                    if (y != 0 && alreadyDrawNPoints.indexOf(0 + "," + y) == -1) {
+                        alreadyDrawNPoints.push(0 + "," + y);
                         ctx.beginPath();
                         labelPixel.Y = new layout.Point(0, y).transformY();
                         ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
                         ctx.fill();
-                        ctx.fillText(y.toFixed(3).replace(/\.?0+$/, ""), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
+                        ctx.fillText(system.gridlineLabel(y), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
                     }
                 }
             },
 
             //垂直线
-            vertical:function (overleft, overright, gridsize, alreadydrawnpoints) {
+            vertical:function (roundingCoordinate, alreadyDrawNPoints) {
                 // 1/ 4 线 [X 轴 ]
-                ctx.strokeStyle = 'red'; //this.config.minorGridStyle;
+                ctx.strokeStyle = config.minorStyle;
                 ctx.lineWidth = 0.1;
-                for (var x = overleft; x <= overright; x += gridsize / 4) {
+                for (var x = roundingCoordinate.X1; x <= roundingCoordinate.X2; x += gridsize.X / 4) {
+                    if (x ==0) continue;
                     pixel = new layout.Point(x, 0).transformX();
                     ctx.beginPath();
                     ctx.moveTo(pixel, 0);
@@ -131,9 +123,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 }
 
                 // 1/ 1 线 [X 轴 ]
-                ctx.strokeStyle = config.majorGridStyle;
+                ctx.strokeStyle = config.majorStyle;
                 ctx.lineWidth = 0.4;
-                for (var x = overleft; x <= overright; x += gridsize) {
+                for (var x = roundingCoordinate.X1; x <= roundingCoordinate.X2; x += gridsize.X) {
+                    if (x ==0) continue;
                     pixel = new layout.Point(x, 0).transformX();
                     ctx.beginPath();
                     ctx.moveTo(pixel, 0);
@@ -145,8 +138,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.lineWidth = 1;
                 ctx.strokeStyle = "black";
                 ctx.beginPath();
-                ctx.move(overleft, 0);
-                ctx.line(overright, 0);
+                ctx.move(0, roundingCoordinate.Y1);
+                ctx.line(0, roundingCoordinate.Y2);
                 ctx.stroke();
 
                 //水平线坐标
@@ -164,14 +157,14 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     labelPixel.Y = layout.height;
                     labelPixelOffset.Y = -6;
                 }
-                for (var x = floor(overleft); x <= overright; x += gridsize * 1) {
-                    if (x != 0 && alreadydrawnpoints.indexOf(x + "," + 0) == -1) {
-                        alreadydrawnpoints.push(x + "," + 0);
+                for (var x = roundingCoordinate.X1; x <= roundingCoordinate.X2; x += gridsize.X * 1) {
+                    if (x != 0 && alreadyDrawNPoints.indexOf(x + "," + 0) == -1) {
+                        alreadyDrawNPoints.push(x + "," + 0);
                         ctx.beginPath();
                         labelPixel.X = new layout.Point(x).transformX();
                         ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
                         ctx.fill();
-                        ctx.fillText(x.toFixed(3).replace(/\.?0+$/, ""), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
+                        ctx.fillText(system.gridlineLabel(x), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
                     }
                 }
             },
@@ -179,9 +172,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             init:function (options) {
                 config = options.config;
                 layout = options.layout;
+                system = options.system
                 ctx = options.ctx;
                 scale = layout.scale;
                 coordinate = layout.coordinate;
+                scope = layout.scope;
                 return gridlines;
             }
         };

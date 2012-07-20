@@ -22,7 +22,7 @@ String.prototype.capitalize = function () {
 define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
     NAURE.Graphics = (function () {
 
-        message = NAURE.Message;
+        var message = NAURE.Message;
 
         var graphics = {
             ui:null,
@@ -33,15 +33,18 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                 gridlines:{
                     show:true,
                     maxgridlines:{X:13, Y:13},
-                    charHeight:8
+                    charHeight:8,
+                    //gridsize: 1,         //pow(2, 6 - Math.round(lg(scale.X)));
+                    //style: 'red',
+                    "minorStyle":"red",
+                    "majorStyle":"#555",
+                    "font":"8pt sans-serif" // "8pt monospace";    Serif Sans-Serif Monospace 字体
                 },
                 quality:1,
                 zoomFactor:0.1,
                 "lineWidth":1,
                 "pt":true,
-                "font":"8pt sans-serif",
-                "minorGridStyle":"#bbb",
-                "majorGridStyle":"#555"
+                "font":"8pt sans-serif"
             },
 
             draw:function (options) {
@@ -76,9 +79,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
             },
 
             System:function (sys) {
-                //default
+                //Step 3: System 初始化
                 if (!sys)
-                    graphics.system = NAURE.Graphics.Equation;
+                    graphics.system = NAURE.Graphics.Equation; //default
                 else
                     graphics.system = sys;
                 graphics.system.init({
@@ -86,22 +89,31 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                     layout:graphics.layout,
                     ctx:graphics.ui.ctx
                 });
+                //Step 4: Gridlines 初始化
+                graphics.gridlines.init({
+                    config:graphics.config.gridlines,
+                    layout:graphics.layout,
+                    ctx:graphics.ui.ctx,
+                    system: graphics.system
+                });
+                //Step 5: resize
+                graphics.ui.resize();
             },
 
             init:function (options) {
                 graphics.ui = NAURE.Graphics.UI;
+                graphics.gridlines = NAURE.Graphics.Gridlines;
                 //Step 1: Layout 初始化
                 graphics.layout = NAURE.Graphics.Layout;
                 //Step 2: UI 初始化
                 graphics.ui.init($.extend({
-                    config: NAURE.Graphics.config,
+                    config:graphics.config,
                     layout:graphics.layout,
                     graphics:graphics,
-                    gridlines: NAURE.Graphics.Gridlines
+                    gridlines:graphics.gridlines
                 }, options));
-                //Step 3: System 初始化
                 this.System(options.system);
-                //Step 4: Draw
+                //Step 6: Draw
                 this.draw();
             }
         };

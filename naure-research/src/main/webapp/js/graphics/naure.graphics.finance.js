@@ -29,12 +29,21 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 Size: 0
             },
 
+            gridlineLabel:function (num) {
+                return new Date(num).getDate();
+                //return num.toFixed(3).replace(/\.?0+$/, "")
+            },
+
             init:function (options) {
                 config = options.config;
                 layout = options.layout;
                 ctx = options.ctx;
                 scale = layout.scale;
                 coordinate = layout.coordinate;
+                coordinate.X1 = new Date().getTime() - 864000000;
+                coordinate.X2 = new Date().getTime();
+                coordinate.Y1 = -5
+                coordinate.Y2 = 5;
                 return finance;
             }
         };

@@ -18,6 +18,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
         var config, layout, scale, ctx, coordinate;
 
         var equation = {
+
+            gridlineLabel:function (num) {
+                return num.toFixed(3).replace(/\.?0+$/, "")
+            },
+
             random:{
                 index:0,
                 funcs:"y=x^2@y^2=1-x^2@y<2e^{-x}@\\theta=r@2x+3@\\frac{d}{dx}\\left(\\frac{1}{x}\\right)@r<\\sin\\left(4\\theta\\right)@\\int x.dx@\\frac{d}{dx}\\left(sin\\left(x\\right)\\right)@\\lambda=3@e^{-\\lambda\\cdot x}@\\left|x^2-4\\right|+2@\\frac1x@x^{-2}@x!@\\ln x@\\sum_{n=1}^{\\infinity}\\frac{x^n}{n}@\\sin x@\\tan\\left(x\\right)@\\left(x-2\\right)^2@\\Gamma\\left(x\\right)@\\sqrt x".split("@"),
@@ -85,6 +90,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx = options.ctx;
                 scale = layout.scale;
                 coordinate = layout.coordinate;
+                coordinate.X1 = -5;
+                coordinate.X2 = 5;
+                coordinate.Y1 = -5
+                coordinate.Y2 = 5;
                 return equation;
             }
         };

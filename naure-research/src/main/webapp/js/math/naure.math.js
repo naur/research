@@ -10,6 +10,8 @@
  */
 
 //Basic math functions -> window (global)
+var e = Math.E;
+var pi = Math.PI;
 var sin = Math.sin;
 var cos = Math.cos;
 var tan = Math.tan;

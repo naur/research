@@ -21,6 +21,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
             container:null,
             graph:null,
             ctx:null,
+            isLiveGraphEvent: false,
             clear:function () {
                 this.ctx.lineCap = "butt";
                 this.ctx.font = config.font;
@@ -50,11 +51,6 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
 
                 this.ctx.fillStyle = '#00f';
 
-//                this.ctx.font = this.config.font;
-//                this.ctx.strokeStyle = this.config.minorGridStyle;
-//                this.ctx.fillStyle = "#888";
-//                this.ctx.lineWidth = 0.1;
-
                 for (var key in opt.lines) {
                     //this.drawLine({expression:opt.lines[key]});
                     if (!opt.lines.hasOwnProperty(key)) break
@@ -82,9 +78,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 this.ctx.height = layout.height;
                 this.ctx.width = layout.width;
 
-                //Compute how many grid lines to show
+                //todo Compute how many grid lines to show
                 config.gridlines.maxgridlines.X = 0.015 * layout.width;
                 config.gridlines.maxgridlines.Y = 0.015 * layout.height;
+
+                this.liveGraphEvent();
             },
 
             mouseWheel:function (event) {
@@ -138,22 +136,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 gridlines.draw(opt);
             },
 
-            init:function (options) {
-                var opt = $.extend({}, options);
-                ui.graph = $(opt.container);
-                if (!ui.graph[0].getContext) return;
-                ui.ctx = $(ui.graph)[0].getContext("2d");
-
-                config = opt.config;
-                graphics = opt.graphics;
-                layout = opt.layout;
-                gridlines = opt.gridlines;
-                gridlines.init({
-                    config:config,
-                    layout:layout,
-                    ctx:ui.ctx
-                });
-                ui.resize();
+            liveGraphEvent: function() {
+                if (this.isLiveGraphEvent) return;
 
                 //初始化 ctx 方法
                 ui.ctx.move = function (x, y) {
@@ -203,6 +187,21 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 this.graph.on('mouseleave', this.graph, function (event) {
                     self.mouseUp(event);
                 });
+
+                this.isLiveGraphEvent = true;
+            },
+
+            init:function (options) {
+                var opt = $.extend({}, options);
+                ui.graph = $(opt.container);
+                if (!ui.graph[0].getContext) return;
+                ui.ctx = $(ui.graph)[0].getContext("2d");
+
+                config = opt.config;
+                graphics = opt.graphics;
+                layout = opt.layout;
+                gridlines = opt.gridlines;
+                //ui.resize(opt.coordinate);
                 return ui;
             }
         };

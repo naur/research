@@ -24,7 +24,7 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             offset:{left:0, top:0},
 
             scope:{X:0, Y:0},
-            coordinate:{X1:-5, Y1:-5, X2:5, Y2:5}, //range
+            coordinate:{X1:-5, Y1:-5, X2:5, Y2:5},
 
             point:{X:0, Y:0},
             pixel:{X:0, Y:0},
@@ -37,6 +37,10 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             prevDrag:{X:0, Y:0},
             defaultCoordinate:{X1:0, Y1:0, X2:0, Y2:0},
             startCoordinate:{X1:0, Y1:0, X2:0, Y2:0},
+
+            isEqualsCoordinate: function(coordinate1, coordinate2) {
+
+            },
 
             isEqualsPoint:function (point1, point2) {
                 return point1.X == point2.X && point1.Y == point1.Y
@@ -80,6 +84,13 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             refreshSize:function (opt) {
                 if (!opt.width || !opt.height)  return;
 
+//                if (system.coordinate) {
+//                    layout.coordinate.X1 = options.coordinate.X1;
+//                    layout.coordinate.X2 = options.coordinate.X2;
+//                    layout.coordinate.Y1 = options.coordinate.Y1;
+//                    layout.coordinate.Y2 = options.coordinate.Y2;
+//                }
+
                 var oldheight = this.height;
                 var oldwidth = this.width;
                 this.width = opt.width;
@@ -92,15 +103,17 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                     this.coordinate.Y1 *= (this.height / oldheight);
                     this.coordinate.Y2 *= (this.height / oldheight);
                 } else {
-                    this.coordinate.X1 = this.coordinate.X1 * (this.width / this.height);
-                    this.coordinate.X2 = this.coordinate.X2 * (this.width / this.height);
+//                    this.coordinate.X1 = this.coordinate.Y1 * (this.width / this.height);
+//                    this.coordinate.X2 = this.coordinate.Y2 * (this.width / this.height);
 
-//                    this.coordinate.X1 = -1000;
-//                    this.coordinate.X2 = 1000;
-
-//                        this.coordinate.Y1 = (this.height / oldheight);
-//                        this.coordinate.Y2 = (this.height / oldheight);
+//                    this.coordinate.X1 = -50;
+//                    this.coordinate.X2 = 50;
+//                    this.coordinate.X1 = new Date().getTime() - 864000000;
+//                    this.coordinate.X2 = new Date().getTime();
                 }
+
+                if (this.coordinate.X1 == this.coordinate.X2 || this.coordinate.Y1 == this.coordinate.Y2)
+                    throw 'coordinate init error! ';
 
                 this.startCoordinate = utility.clone(this.coordinate);
                 this.defaultCoordinate = utility.clone(this.coordinate);
