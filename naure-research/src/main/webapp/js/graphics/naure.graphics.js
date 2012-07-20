@@ -47,13 +47,12 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
             draw:function (options) {
                 this.ui.clear();
 
+                var gridlinesPerf, drawPerf;
                 if (this.config.gridlines.show) {
                     start = new Date();
                     this.ui.gridlines(options);
                     end = new Date();
-                    message.show({content:JSON.stringify({
-                        perf: end.getTime() - start.getTime()
-                    }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+                    gridlinesPerf = end.getTime() - start.getTime();
                 }
 
                 this.lines = [];
@@ -61,7 +60,15 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                 this.lines.push({equation:"\\frac{d}{dx}\\left(sin\\left(x\\right)+log\\left(x+1\\right)\\right)", color:'blue'});
                 //this.lines.push({equation : 'r<\sin \left(4\theta \right)', color : 'red'});
 
+                start = new Date();
                 this.ui.draw({lines:this.lines});
+                end = new Date();
+                drawPerf = end.getTime() - start.getTime();
+
+                message.show({content:JSON.stringify({
+                    gridlinesPerf:gridlinesPerf,
+                    drawPerf:drawPerf
+                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
             reset:function () {

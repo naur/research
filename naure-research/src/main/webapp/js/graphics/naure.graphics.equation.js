@@ -15,7 +15,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
 
     NAURE.Graphics.Equation = (function () {
 
-        var config, layout, coordinate, range, ctx, scope;
+        var config, layout, scale, ctx, coordinate;
 
         var equation = {
             random:{
@@ -82,151 +82,168 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
 
             gridlines:function (options) {
                 var opt = $.extend({}, options);
+                //they can be accidentially changed
+                e = Math.E;
+                pi = Math.PI;
 
-                //Calculate the scale of the gridlines
-                for (i = 0.000000000001, c = 0; scope.X / i > config.gridlines.maxgridlines.X - 1; c++) {
-                    if (c % 3 == 1) i *= 2.5;    //alternating between 2, 5 and 10
-                    else i *= 2;
-                }
-                opt.xgridscale = i;
-
-                //do the same for the y-axis
-                for (i = 0.000000000001, c = 0; scope.Y / i > config.gridlines.maxgridlines.Y - 1; c++) {
-                    if (c % 3 == 1) i *= 2.5;
-                    else i *= 2;
-                }
-                opt.ygridscale = i;
-
-                opt.xaxis = opt.yaxis = null;
-
-                //currx is the current gridline being drawn, as a numerical value (not a pixel value)
-                opt.currx = NAURE.Math.arbFloor(coordinate.X1, opt.xgridscale);	//set it to before the lowest x-value on the screen
-                opt.curry = NAURE.Math.arbFloor(coordinate.Y1, opt.ygridscale);
-                opt.ymainaxis = -1;
-                opt.currx = Math.round(opt.currx * 100000000000) / 100000000000;	//round to the closest 0.00000001
-                opt.curry = Math.round(opt.curry * 100000000000) / 100000000000;
-
-                opt.xmainaxis = config.gridlines.charHeight;	//the next two variables are the axis on which text is going to be placed
-
-                if (coordinate.Y2 >= 0 && coordinate.Y1 <= 0)    //y=0 appears on the screen - move the text to follow
-                    opt.xmainaxis = layout.height - ((0 - coordinate.Y1) / (coordinate.Y2 - coordinate.Y1)) * layout.height + (config.gridlines.charHeight * 1.2);
-                else if (coordinate.Y1 > 0)    //the smallest value of y is above the screen - the x-axis labels get pushed to the top of the screen
-                    opt.xmainaxis = layout.height - 1;
-
-                //the x-axis labels have to be a certain distance from the bottom of the screen
-                if (opt.xmainaxis > layout.height - (config.gridlines.charHeight / 2))
-                    opt.xmainaxis = layout.height - 1;
-
-                //do the same as above with the y-axis
-                if (coordinate.X2 >= 0 && coordinate.X1 <= 0)    //y-axis in the middle of the screen
-                    opt.ymainaxis = ((0 - coordinate.X1) / (coordinate.X2 - coordinate.X1)) * layout.width - 2;
-                else if (coordinate.X2 < 0)    //y-axis on the right side of the screen
-                    opt.ymainaxis = layout.width - 2;
-
-                if (opt.ymainaxis < (ctx.measureText(opt.curry).width + 1)) {
-                    opt.ymainaxis = -1;
+                if (!ctx) {
+                    return;
                 }
 
-                this.gridlinesVertical(opt);
-                this.gridlinesHorizontal(opt);
+                //scale = coordinate.scale;
 
-                //Draw the axis
-                if (opt.xaxis)
-                    ctx.fillRect(opt.xaxis - 0.5, 0, 1, layout.height);
-                if (opt.yaxis)
-                    ctx.fillRect(0, opt.yaxis - 0.5, layout.width, 1);
+                //This can probably be simplified a bit
+                gridsize = pow(2, 6 - Math.round(lg(scale.X)));
+
+                overleft = floor(coordinate.X1);
+                overright = ceil(coordinate.X2);
+                overtop = ceil(coordinate.Y2);
+                overbottom = floor(coordinate.Y1);
+
+                ctx.font = config.font;
+                //ctx.font = "8pt monospace";	//set the font // Serif Sans-Serif Monospace 字体
+                ctx.fillStyle = "#888";
+                /*ctx.shadowColor = "rgba(255,255,255,1.0)";
+                 ctx.shadowOffsetX = 0;
+                 ctx.shadowOffsetY = 0
+                 ctx.shadowBlur = 4;*/
+                //Like overleft, but in units of 4*gridsize
+
+                var alreadydrawnpoints = [];
+//                var dblleft = gridsize * 4 * ~~(coordinate.X1 / (4 * gridsize)) - 4 * gridsize;
+//                var dblleft = gridsize * 4 * ~~(coordinate.Y1 / (4 * gridsize)) - 4 * gridsize;
+
+                this.gridlinesHorizontal(overbottom, overtop, gridsize, alreadydrawnpoints);
+                this.gridlinesVertical(overleft, overright, gridsize, alreadydrawnpoints);
             },
 
-            //VERTICAL LINES
-            gridlinesVertical:function (opt) {
-                ctx.font = "8pt monospace";	//set the font
-                ctx.textAlign = "center";
-                opt.sigdigs = String(opt.currx).length + 3;
+            //水平线
+            gridlinesHorizontal:function (overbottom, overtop, gridsize, alreadydrawnpoints) {
+                // 1/ 4 线 [Y 轴 ]
+                ctx.strokeStyle = 'red'; //this.config.minorGridStyle;
+                ctx.lineWidth = 0.1;
 
-                for (i = 0; i < config.gridlines.maxgridlines.X; i++) {
-                    xpos = ((opt.currx - coordinate.X1) / (coordinate.X2 - coordinate.X1)) * layout.width;	//position of the line (in pixels)
-                    //make sure it is on the screen
-                    if (xpos - 0.5 > layout.width + 1 || xpos < 0) {
-                        opt.currx += opt.xgridscale;
-                        continue;
-                    }
-
-                    //currx = Calc.roundToSignificantFigures(currx, opt.sigdigs);
-                    opt.currx = Math.round(opt.currx * 100000000000) / 100000000000;
-
-                    if (opt.currx == 0)
-                        opt.xaxis = xpos;
-
-//                    if (jsgui.gridlines == "normal" || (jsgui.gridlines == "less" && Calc.roundFloat(currx) % Calc.roundFloat((this.xgridscale * 2)) == 0)) {
-                    ctx.fillStyle = "rgb(190,190,190)";
-                    ctx.fillRect(xpos - 0.5, 0, 1, layout.height);
-//                    }
-
-                    ctx.fillStyle = "rgb(0,0,0)";
-
-                    //Draw label
-                    if (opt.currx != 0) {
-                        xtextwidth = ctx.measureText(opt.currx).width;
-                        if (xpos + xtextwidth * 0.5 > layout.width) //cannot overflow the screen
-                            xpos = layout.width - xtextwidth * 0.5 + 1;
-                        else if (xpos - xtextwidth * 0.5 < 0)
-                            xpos = xtextwidth * 0.5 + 1;
-                        ctx.fillText(opt.currx, xpos, opt.xmainaxis);
-                    }
-
-                    opt.currx += opt.xgridscale;
-
+                for (var y = overbottom; y <= overtop; y += gridsize / 4) {
+                    pixel = new layout.Point(0, y).transformY();
+                    ctx.beginPath();
+                    ctx.moveTo(0, pixel);
+                    ctx.lineTo(layout.width, pixel);
+                    ctx.stroke();
                 }
-            },
 
-            //HORIZONTAL LINES
-            gridlinesHorizontal:function (opt) {
-                ctx.font = "8pt monospace";	//set the font
+                // 1/ 1 线 [Y 轴 ]
+                ctx.strokeStyle = config.majorGridStyle;
+                ctx.lineWidth = 0.4;
+                for (var y = overbottom; y <= overtop; y += gridsize) {
+                    pixel = new layout.Point(0, y).transformY();
+                    ctx.beginPath();
+                    ctx.moveTo(0, pixel);
+                    ctx.lineTo(layout.width, pixel);
+                    ctx.stroke();
+                }
+
+                //横轴
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = "black";
+                ctx.beginPath();
+                ctx.move(0, overbottom);
+                ctx.line(0, overtop);
+                ctx.stroke();
+
+                //垂直线坐标
+                ctx.lineWidth = config.lineWidth;
                 ctx.textAlign = "right";
-                opt.sigdigs = String(opt.curry).length + 3;
+                ctx.textBaseline = "top";
+                var labelPixel = {}, labelPixelOffset = {X:-4, Y:4};
+                labelPixel.X = new layout.Point(0, 0).transformX();
+                if (labelPixel.X <= 0) {
+                    ctx.textAlign = "left";
+                    labelPixel.X = 0;
+                    labelPixelOffset.X = 6;
+                }
+                if (labelPixel.X >= layout.width) {
+                    labelPixel.X = layout.width;
+                    labelPixelOffset.X = -6;
+                }
 
-                for (i = 0; i < config.gridlines.maxgridlines.Y; i++) {
-                    ypos = layout.height - ((opt.curry - coordinate.Y1) / (coordinate.Y2 - coordinate.Y1)) * layout.height;	//position of the line (in pixels)
-                    //make sure it is on the screen
-                    if (ypos - 0.5 > layout.height + 1 || ypos < 0) {
-                        opt.curry += opt.ygridscale;
-                        continue;
+
+                for (var y = floor(overbottom); y <= overtop; y += gridsize * 1) {
+                    if (y != 0 && alreadydrawnpoints.indexOf(0 + "," + y) == -1) {
+                        alreadydrawnpoints.push(0 + "," + y);
+                        ctx.beginPath();
+                        labelPixel.Y = new layout.Point(0, y).transformY();
+                        ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
+                        ctx.fill();
+                        ctx.fillText(y.toFixed(3).replace(/\.?0+$/, ""), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
                     }
-
-                    //curry = Calc.roundToSignificantFigures(curry, opt.sigdigs);
-                    opt.curry = Math.round(opt.curry * 100000000000) / 100000000000;
-
-                    if (opt.curry == 0)
-                        opt.yaxis = ypos;
-
-//                    if (jsgui.gridlines == "normal" || (jsgui.gridlines == "less" && Calc.roundFloat(curry) % (Calc.roundFloat(this.ygridscale * 2)) == 0)) {
-                    ctx.fillStyle = "rgb(190,190,190)";
-                    ctx.fillRect(0, ypos - 0.5, layout.width, 1);
-//                    }
-
-                    ctx.fillStyle = "rgb(0,0,0)";
-
-                    //Draw label
-                    if (opt.curry != 0) {
-                        ytextwidth = ctx.measureText(opt.curry).width;
-                        if (ypos + (config.gridlines.charHeight / 2) > layout.height) //cannot overflow the screen
-                            ypos = layout.height - (config.gridlines.charHeight / 2) - 1;
-                        if (ypos - 4 < 0)
-                            ypos = 4;
-                        xaxispos = opt.ymainaxis;
-                        if (opt.ymainaxis == -1)
-                            xaxispos = ytextwidth + 1;
-                        ctx.fillText(opt.curry, xaxispos, ypos + 3);
-                    }
-                    opt.curry += opt.ygridscale;
                 }
             },
+
+            //垂直线
+            gridlinesVertical:function (overleft, overright, gridsize, alreadydrawnpoints) {
+                // 1/ 4 线 [X 轴 ]
+                ctx.strokeStyle = 'red'; //this.config.minorGridStyle;
+                ctx.lineWidth = 0.1;
+                for (var x = overleft; x <= overright; x += gridsize / 4) {
+                    pixel = new layout.Point(x, 0).transformX();
+                    ctx.beginPath();
+                    ctx.moveTo(pixel, 0);
+                    ctx.lineTo(pixel, layout.height);
+                    ctx.stroke();
+                }
+
+                // 1/ 1 线 [X 轴 ]
+                ctx.strokeStyle = config.majorGridStyle;
+                ctx.lineWidth = 0.4;
+                for (var x = overleft; x <= overright; x += gridsize) {
+                    pixel = new layout.Point(x, 0).transformX();
+                    ctx.beginPath();
+                    ctx.moveTo(pixel, 0);
+                    ctx.lineTo(pixel, layout.height);
+                    ctx.stroke();
+                }
+
+                //纵轴
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = "black";
+                ctx.beginPath();
+                ctx.move(overleft, 0);
+                ctx.line(overright, 0);
+                ctx.stroke();
+
+                //水平线坐标
+                ctx.lineWidth = config.lineWidth;
+                ctx.textAlign = "left";
+                ctx.textBaseline = "top";
+                var labelPixel = {}, labelPixelOffset = {X:4, Y:4};
+                labelPixel.Y = new layout.Point(0, 0).transformY();
+                if (labelPixel.Y <= 0) {
+                    labelPixel.Y = 0;
+                    labelPixelOffset.Y = 6;
+                }
+                if (labelPixel.Y >= layout.height) {
+                    ctx.textBaseline = "bottom";
+                    labelPixel.Y = layout.height;
+                    labelPixelOffset.Y = -6;
+                }
+                for (var x = floor(overleft); x <= overright; x += gridsize * 1) {
+                    if (x != 0 && alreadydrawnpoints.indexOf(x + "," + 0) == -1) {
+                        alreadydrawnpoints.push(x + "," + 0);
+                        ctx.beginPath();
+                        labelPixel.X = new layout.Point(x).transformX();
+                        ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
+                        ctx.fill();
+                        ctx.fillText(x.toFixed(3).replace(/\.?0+$/, ""), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
+                    }
+                }
+            },
+
 
             init:function (options) {
                 config = options.config;
                 layout = options.layout;
                 ctx = options.ctx;
-                scope = layout.scope;
+                scale = layout.scale;
                 coordinate = layout.coordinate;
                 return equation;
             }
