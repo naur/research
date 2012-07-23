@@ -142,15 +142,15 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
 
                 //初始化 ctx 方法
                 ui.ctx.move = function (x, y) {
-                    var transPoint = new layout.Point(x, y).transform();
-                    if (!transPoint) return;
-                    return ui.ctx.moveTo(transPoint.X, transPoint.Y);
+                    var transPixel = layout.toPixel(x, y); //new layout.Point(x, y).transform();
+                    if (!transPixel) return;
+                    return ui.ctx.moveTo(transPixel.X, transPixel.Y);
                 };
 
                 ui.ctx.line = function (x, y) {
-                    var transPoint = new layout.Point(x, y).transform();
-                    if (!transPoint) return;
-                    return ui.ctx.lineTo(transPoint.X, transPoint.Y);
+                    var transPixel = layout.toPixel(x, y); //new layout.Point(x, y).transform();
+                    if (!transPixel) return;
+                    return ui.ctx.lineTo(transPixel.X, transPixel.Y);
                 };
 
 //                ui.ctx.arc = function (x, y, radius, startAngle, endAngle, anticlockwise) {

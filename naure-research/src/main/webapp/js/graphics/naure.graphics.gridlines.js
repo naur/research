@@ -50,10 +50,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             horizontal:function (roundingCoordinate, alreadyDrawNPoints) {
                 // 1/ 4 线 [Y 轴 ]
                 ctx.strokeStyle = config.minorStyle;
-                ctx.lineWidth = 0.13;
+                ctx.lineWidth = 0.1;
                 for (var y = roundingCoordinate.Y1; y <= roundingCoordinate.Y2; y += gridsize.Y / 4) {
                     if (y ==0) continue;
-                    pixel = new layout.Point(0, y).transformY();
+                    pixel = layout.toPixelY(y); //new layout.Point(0, y).transformY();
                     ctx.beginPath();
                     ctx.moveTo(0, pixel);
                     ctx.lineTo(layout.width, pixel);
@@ -65,7 +65,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.lineWidth = 0.4;
                 for (var y = roundingCoordinate.Y1; y <= roundingCoordinate.Y2; y += gridsize.Y) {
                     if (y ==0) continue;
-                    pixel = new layout.Point(0, y).transformY();
+                    pixel = layout.toPixelY(y); //new layout.Point(0, y).transformY();
                     ctx.beginPath();
                     ctx.moveTo(0, pixel);
                     ctx.lineTo(layout.width, pixel);
@@ -86,7 +86,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.fillStyle = 'green'
                 ctx.textBaseline = "top";
                 var labelPixel = {}, labelPixelOffset = {X:-4, Y:4};
-                labelPixel.X = new layout.Point(0, 0).transformX();
+                labelPixel.X = layout.toPixelX(0); //new layout.Point(0, 0).transformX();
                 if (labelPixel.X <= 0) {
                     ctx.textAlign = "left";
                     labelPixel.X = 0;
@@ -100,7 +100,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     if (y != 0 && alreadyDrawNPoints.indexOf(0 + "," + y) == -1) {
                         alreadyDrawNPoints.push(0 + "," + y);
                         ctx.beginPath();
-                        labelPixel.Y = new layout.Point(0, y).transformY();
+                        labelPixel.Y = layout.toPixelY(y); //new layout.Point(0, y).transformY();
                         ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
                         ctx.fill();
                         ctx.fillText(system.gridlineLabelY(y), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
@@ -112,10 +112,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             vertical:function (roundingCoordinate, alreadyDrawNPoints) {
                 // 1/ 4 线 [X 轴 ]
                 ctx.strokeStyle = config.minorStyle;
-                ctx.lineWidth = 0.13;
+                ctx.lineWidth = 0.1;
                 for (var x = roundingCoordinate.X1; x <= roundingCoordinate.X2; x += gridsize.X / 4) {
                     if (x ==0) continue;
-                    pixel = new layout.Point(x, 0).transformX();
+                    pixel = layout.toPixelX(x); //new layout.Point(x, 0).transformX();
                     ctx.beginPath();
                     ctx.moveTo(pixel, 0);
                     ctx.lineTo(pixel, layout.height);
@@ -127,7 +127,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.lineWidth = 0.4;
                 for (var x = roundingCoordinate.X1; x <= roundingCoordinate.X2; x += gridsize.X) {
                     if (x ==0) continue;
-                    pixel = new layout.Point(x, 0).transformX();
+                    pixel = layout.toPixelX(x); //new layout.Point(x, 0).transformX();
                     ctx.beginPath();
                     ctx.moveTo(pixel, 0);
                     ctx.lineTo(pixel, layout.height);
@@ -148,7 +148,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.textBaseline = "top";
                 ctx.fillStyle = 'green'
                 var labelPixel = {}, labelPixelOffset = {X:4, Y:4};
-                labelPixel.Y = new layout.Point(0, 0).transformY();
+                labelPixel.Y = layout.toPixelY(0); //layout.Point(0, 0).transformY();
                 if (labelPixel.Y <= 0) {
                     labelPixel.Y = 0;
                     labelPixelOffset.Y = 6;
@@ -162,7 +162,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     if (x != 0 && alreadyDrawNPoints.indexOf(x + "," + 0) == -1) {
                         alreadyDrawNPoints.push(x + "," + 0);
                         ctx.beginPath();
-                        labelPixel.X = new layout.Point(x).transformX();
+                        labelPixel.X = layout.toPixelX(x); //layout.Point(x).transformX();
                         ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
                         ctx.fill();
                         ctx.fillText(system.gridlineLabelX(x), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);

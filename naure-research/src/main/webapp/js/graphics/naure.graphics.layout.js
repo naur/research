@@ -14,6 +14,7 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
     var matrixes = NAURE.Math.Matrixes;
     var message = NAURE.Message;
     var utility = NAURE.Utility;
+    var graphics = NAURE.Graphics;
 
     NAURE.Graphics.Layout = (function () {
         var layout = {
@@ -73,10 +74,9 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 //Update Coordinate
                 this.refreshCoordinate();
 
-                var curPoint = new layout.Pixel(this.pixel.X, this.pixel.Y).transform();
+                var curPoint = layout.toPoint(this.pixel.X, this.pixel.Y); //new layout.Pixel(this.pixel.X, this.pixel.Y).transform();
                 message.show({content:JSON.stringify({
-                    time: curPoint.X < 864000000 ? '' : new Date(curPoint.X).toString(),
-                    point:curPoint,
+                    point:graphics.system.parseCoordinate(curPoint),
                     coordinate:layout.coordinate
                 }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
@@ -204,21 +204,18 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 this.refreshCoordinate();
             },
 
-            Point:function (x, y) {
-                this.X = x;
-                this.Y = y;
-                this.transform = function () {
-                    if (isNaN(this.X) || isNaN(this.Y)) {
-                        return null;
-                    }
-                    if (this.X > layout.coordinate.X2) {
-                        this.X = layout.coordinate.X2;
-                        //return null;
-                    }
-                    if (this.X < layout.coordinate.X1) {
-                        this.X = layout.coordinate.X1;
-                        //return null;
-                    }
+            toPixel:function (x, y) {
+                if (isNaN(x) || isNaN(y)) {
+                    return null;
+                }
+                if (x > layout.coordinate.X2) {
+                    x = layout.coordinate.X2;
+                    //return null;
+                }
+                if (x < layout.coordinate.X1) {
+                    x = layout.coordinate.X1;
+                    //return null;
+                }
 //                if (point.Y > layout.coordinate.Y2) {
 //                    //point.Y = layout.coordinate.Y2;
 //                    //return null;
@@ -227,26 +224,26 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
 //                    //point.Y = layout.coordinate.Y1;
 //                    //return null;
 //                }
-                    var result = matrixes.Transform2D(layout.matrix, [this.X, this.Y]);
-                    return {X:result[0][0], Y:-result[1][0]};
-                };
-                this.transformX = function () {
-                    return x * layout.matrix[0][0] + layout.matrix[0][2];
-                };
-                this.transformY = function () {
-                    return -(y * layout.scale.Y - layout.coordinate.Y2 * layout.scale.Y);
-                };
+                var result = matrixes.Transform2D(layout.matrix, [x, y]);
+                return {X:result[0][0], Y:-result[1][0]};
             },
-            Pixel:function (x, y) {
-                this.X = x;
-                this.Y = y;
-                this.transform = function () {
-                    if (isNaN(this.X) || isNaN(this.Y)) {
-                        return null;
-                    }
-                    var result = matrixes.Transform2D(layout.matrixInvertible, [this.X, -this.Y]);
-                    return {X:result[0][0], Y:result[1][0]};
+            toPixelX:function (x) {
+                return x * layout.matrix[0][0] + layout.matrix[0][2];
+            },
+            toPixelY:function (y) {
+                return -(y * layout.scale.Y - layout.coordinate.Y2 * layout.scale.Y);
+            },
+
+            toPoint:function (x, y) {
+                if (isNaN(x) || isNaN(y)) {
+                    return null;
                 }
+                var result = matrixes.Transform2D(layout.matrixInvertible, [x, -y]);
+                return {X:result[0][0], Y:result[1][0]};
+            },
+            toPointX:function (x, y) {
+            },
+            toPointY:function (x, y) {
             }
         };
 

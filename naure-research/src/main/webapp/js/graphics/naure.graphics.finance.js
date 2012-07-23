@@ -30,17 +30,26 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             },
 
             gridlineLabelX:function (num) {
-                var d = new Date(num);
+                var d = finance.parseCoordinate({X:num, Y:0}).X;
                 if (type == 'year')
                     return d.format('YYYY-MM-dd');
                 if (type == 'month')
                     return d.format('dd HH:mm');
                 if (type == 'date')
                     return d.format('hh:mm:ss');
+                if (type == 'day')
+                    return d.format('MM-dd HH:mm');
             },
 
             gridlineLabelY:function (num) {
                 return num.toFixed(3).replace(/\.?0+$/, "")
+            },
+
+            parseCoordinate:function (point) {
+                return {
+                    X:new Date(point.X * 86400000),
+                    Y:point.Y
+                };
             },
 
             init:function (options) {
@@ -49,11 +58,12 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx = options.ctx;
                 scale = layout.scale;
                 coordinate = layout.coordinate;
-                coordinate.X1 = (new Date().getTime() - 864000000);
-                coordinate.X2 = new Date().getTime();
+
+                coordinate.X1 = floor(new Date(2012, 3, 24).getTime() / 86400000);
+                coordinate.X2 = ceil(new Date(2012, 6, 23).getTime() / 86400000);
                 coordinate.Y1 = -5
                 coordinate.Y2 = 5;
-                type = 'month';
+                type = 'day';
                 return finance;
             }
         };
