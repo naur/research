@@ -68,7 +68,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
             return str;
         };
 
-        NAURE.Utility.clone = function(obj) {
+        NAURE.Utility.clone = function (obj) {
             var cloneObject = new Object();
             for (var key in obj) {
                 cloneObject[key] = obj[key];
@@ -222,23 +222,40 @@ define(['jquery', 'naure'], function ($, NAURE) {
     }
 
 //日期格式化
-    Date.prototype.format = function (format) {
+    Date.prototype.format = function (format, utc) {
         /*
          * eg:format="YYYY-MM-dd hh:mm:ss";
          *                  yyyy-MM-dd HH:mm:ss fff
          */
-        var o = {
-            "M":this.getMonth() + 1, //month
-            "d":this.getDate(), //day
-            "H":this.getHours(), //hour
-            "m":this.getMinutes(), //minute
-            "s":this.getSeconds(), //second
-            "q":Math.floor((this.getMonth() + 3) / 3), //quarter
-            "f":this.getMilliseconds() //millisecond
-        }
+        var o;
+        if (utc) {
+            o = {
+                "M":this.getUTCMonth() + 1, //month
+                "d":this.getUTCDate(), //day
+                "H":this.getUTCHours(), //hour
+                "m":this.getUTCMinutes(), //minute
+                "s":this.getUTCSeconds(), //second
+                "q":Math.floor((this.getUTCMonth() + 3) / 3), //quarter
+                "f":this.getUTCMilliseconds() //millisecond
+            }
 
-        if (/(y+)/.test(format)) {
-            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            if (/(y+)/.test(format)) {
+                format = format.replace(RegExp.$1, (this.getUTCFullYear() + "").substr(4 - RegExp.$1.length));
+            }
+        } else {
+            o = {
+                "M":this.getMonth() + 1, //month
+                "d":this.getDate(), //day
+                "H":this.getHours(), //hour
+                "m":this.getMinutes(), //minute
+                "s":this.getSeconds(), //second
+                "q":Math.floor((this.getMonth() + 3) / 3), //quarter
+                "f":this.getMilliseconds() //millisecond
+            }
+
+            if (/(y+)/.test(format)) {
+                format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            }
         }
 
         for (var k in o) {

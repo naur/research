@@ -15,6 +15,7 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
     var message = NAURE.Message;
     var utility = NAURE.Utility;
     var graphics = NAURE.Graphics;
+    var system;
 
     NAURE.Graphics.Layout = (function () {
         var layout = {
@@ -74,9 +75,12 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 //Update Coordinate
                 this.refreshCoordinate();
 
-                var curPoint = layout.toPoint(this.pixel.X, this.pixel.Y); //new layout.Pixel(this.pixel.X, this.pixel.Y).transform();
+                var curPoint = system.parseCoordinate(
+                    layout.toPoint(this.pixel.X, this.pixel.Y)
+                );
+                curPoint.X = curPoint.X.toString();
                 message.show({content:JSON.stringify({
-                    point:graphics.system.parseCoordinate(curPoint),
+                    point:curPoint,
                     coordinate:layout.coordinate
                 }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
@@ -120,16 +124,18 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             },
             refreshZoom:function (opt) {
                 if (opt.zoom) {
-                    if (opt.zoom.X && opt.zoom.Y) {
-                        var mousetop = 1 - ((opt.zoom.Y - this.offset.Y) / this.height);	//if we divide the screen into two halves based on the position of the mouse, this is the top half
+                    opt.zoom = system.zoomAxis(opt.zoom);
+                    if (opt.zoom.X) {
                         var mouseleft = (opt.zoom.X - this.offset.X) / this.width;	//as above, but the left hald
-
                         this.coordinate.X1 += this.scope.X * opt.zoom.Scale * mouseleft;
-                        this.coordinate.Y1 += this.scope.Y * opt.zoom.Scale * mousetop;
                         this.coordinate.X2 -= this.scope.X * opt.zoom.Scale * (1 - mouseleft);
+                    }
+                    if (opt.zoom.Y) {
+                        var mousetop = 1 - ((opt.zoom.Y - this.offset.Y) / this.height);
+                        this.coordinate.Y1 += this.scope.Y * opt.zoom.Scale * mousetop;
                         this.coordinate.Y2 -= this.scope.Y * opt.zoom.Scale * (1 - mousetop);
                     }
-                    else {
+                    if (!opt.zoom.X && !opt.zoom.Y) {
                         this.coordinate.X1 += this.scope.X * opt.zoom.Scale;
                         this.coordinate.Y1 += this.scope.Y * opt.zoom.Scale;
                         this.coordinate.X2 -= this.scope.X * opt.zoom.Scale;
@@ -244,6 +250,11 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             toPointX:function (x, y) {
             },
             toPointY:function (x, y) {
+            },
+
+            init: function(options) {
+                system = options.system;
+                return layout;
             }
         };
 

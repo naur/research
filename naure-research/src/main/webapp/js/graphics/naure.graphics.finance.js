@@ -32,7 +32,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             gridlineLabelX:function (num) {
                 var d = finance.parseCoordinate({X:num, Y:0}).X;
                 if (type == 'year')
-                    return d.format('YYYY-MM-dd');
+                    return d.format('yyyy-MM-dd');
                 if (type == 'month')
                     return d.format('dd HH:mm');
                 if (type == 'date')
@@ -47,9 +47,14 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
 
             parseCoordinate:function (point) {
                 return {
-                    X:new Date(point.X * 86400000),
+                    X:new Date(point.X * 86400000 + new Date().getTimezoneOffset() * MinMilli),
                     Y:point.Y
                 };
+            },
+
+            zoomAxis: function(zoom) {
+                zoom.Y = null;
+                return zoom;
             },
 
             init:function (options) {

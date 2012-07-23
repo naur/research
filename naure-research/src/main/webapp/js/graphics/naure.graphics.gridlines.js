@@ -34,6 +34,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     Y1:gridsize.Y * ~~(coordinate.Y1 / gridsize.Y) - gridsize.Y
                 };
 
+                //roundingCoordinate = coordinate;
+
                 ctx.font = config.font;
                 ctx.fillStyle = "#888";
                 /*ctx.shadowColor = "rgba(255,255,255,1.0)";

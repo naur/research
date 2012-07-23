@@ -79,24 +79,28 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
             },
 
             System:function (sys) {
-                //Step 3: System 初始化
+                //Step 1: System 初始化
                 if (!sys)
                     graphics.system = NAURE.Graphics.Equation; //default
                 else
                     graphics.system = sys;
+
                 graphics.system.init({
                     config:graphics.config,
                     layout:graphics.layout,
                     ctx:graphics.ui.ctx
                 });
-                //Step 4: Gridlines 初始化
+                graphics.layout.init({
+                    system: graphics.system
+                });
+                //Step 2: Gridlines 初始化
                 graphics.gridlines.init({
                     config:graphics.config.gridlines,
                     layout:graphics.layout,
                     ctx:graphics.ui.ctx,
                     system: graphics.system
                 });
-                //Step 5: resize
+                //Step 3: resize
                 graphics.ui.resize();
             },
 
@@ -112,8 +116,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                     graphics:graphics,
                     gridlines:graphics.gridlines
                 }, options));
+                //Step 3:  System 初始化
                 this.System(options.system);
-                //Step 6: Draw
+                //Step 4: Draw
                 this.draw();
             }
         };
