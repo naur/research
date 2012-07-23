@@ -18,6 +18,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
 
         var gridlines = {
 
+            alreadyDrawnPoints:null,
+
             draw:function (options) {
                 if (!ctx) {
                     return;
@@ -43,18 +45,18 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                  ctx.shadowOffsetY = 0
                  ctx.shadowBlur = 4;*/
 
-                var alreadyDrawNPoints = [];
-                this.horizontal(roundingCoordinate, alreadyDrawNPoints);
-                this.vertical(roundingCoordinate, alreadyDrawNPoints);
+                this.alreadyDrawnPoints = [];
+                this.horizontal(roundingCoordinate);
+                this.vertical(roundingCoordinate);
             },
 
             //水平线
-            horizontal:function (roundingCoordinate, alreadyDrawNPoints) {
+            horizontal:function (roundingCoordinate) {
                 // 1/ 4 线 [Y 轴 ]
                 ctx.strokeStyle = config.minorStyle;
                 ctx.lineWidth = 0.1;
                 for (var y = roundingCoordinate.Y1; y <= roundingCoordinate.Y2; y += gridsize.Y / 4) {
-                    if (y ==0) continue;
+                    if (y == 0) continue;
                     pixel = layout.toPixelY(y); //new layout.Point(0, y).transformY();
                     ctx.beginPath();
                     ctx.moveTo(0, pixel);
@@ -66,7 +68,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.strokeStyle = config.majorStyle;
                 ctx.lineWidth = 0.4;
                 for (var y = roundingCoordinate.Y1; y <= roundingCoordinate.Y2; y += gridsize.Y) {
-                    if (y ==0) continue;
+                    if (y == 0) continue;
                     pixel = layout.toPixelY(y); //new layout.Point(0, y).transformY();
                     ctx.beginPath();
                     ctx.moveTo(0, pixel);
@@ -99,8 +101,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     labelPixelOffset.X = -6;
                 }
                 for (var y = roundingCoordinate.Y1; y <= roundingCoordinate.Y2; y += gridsize.Y * 1) {
-                    if (y != 0 && alreadyDrawNPoints.indexOf(0 + "," + y) == -1) {
-                        alreadyDrawNPoints.push(0 + "," + y);
+                    if (y != 0 && this.alreadyDrawnPoints.indexOf(0 + "," + y) == -1) {
+                        this.alreadyDrawnPoints.push(0 + "," + y);
                         ctx.beginPath();
                         labelPixel.Y = layout.toPixelY(y); //new layout.Point(0, y).transformY();
                         ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
@@ -111,12 +113,12 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             },
 
             //垂直线
-            vertical:function (roundingCoordinate, alreadyDrawNPoints) {
+            vertical:function (roundingCoordinate) {
                 // 1/ 4 线 [X 轴 ]
                 ctx.strokeStyle = config.minorStyle;
                 ctx.lineWidth = 0.1;
                 for (var x = roundingCoordinate.X1; x <= roundingCoordinate.X2; x += gridsize.X / 4) {
-                    if (x ==0) continue;
+                    if (x == 0) continue;
                     pixel = layout.toPixelX(x); //new layout.Point(x, 0).transformX();
                     ctx.beginPath();
                     ctx.moveTo(pixel, 0);
@@ -128,7 +130,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.strokeStyle = config.majorStyle;
                 ctx.lineWidth = 0.4;
                 for (var x = roundingCoordinate.X1; x <= roundingCoordinate.X2; x += gridsize.X) {
-                    if (x ==0) continue;
+                    if (x == 0) continue;
                     pixel = layout.toPixelX(x); //new layout.Point(x, 0).transformX();
                     ctx.beginPath();
                     ctx.moveTo(pixel, 0);
@@ -161,8 +163,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     labelPixelOffset.Y = -6;
                 }
                 for (var x = roundingCoordinate.X1; x <= roundingCoordinate.X2; x += gridsize.X * 1) {
-                    if (x != 0 && alreadyDrawNPoints.indexOf(x + "," + 0) == -1) {
-                        alreadyDrawNPoints.push(x + "," + 0);
+                    if (x != 0 && this.alreadyDrawnPoints.indexOf(x + "," + 0) == -1) {
+                        this.alreadyDrawnPoints.push(x + "," + 0);
                         ctx.beginPath();
                         labelPixel.X = layout.toPixelX(x); //layout.Point(x).transformX();
                         ctx.arc(labelPixel.X, labelPixel.Y, 2, 0, Math.PI * 2, true);
