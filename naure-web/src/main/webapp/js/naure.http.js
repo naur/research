@@ -56,7 +56,7 @@ define(['jquery', 'naure'], function($, NAURE) {
             if (opt.xmlhttp.readyState == 4) {
                 if (opt.xmlhttp.status == 200) {
                     if (opt.success) {
-                        opt.success({xmlDocument:opt.xmlhttp.responseXML, http:opt.xmlhttp, context:opt.context});
+                        opt.success({output:opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText, http:opt.xmlhttp, context:opt.context});
                         if (opt.htmlParser) {
                             if (!opt.htmlParser.parser) {
                                 if (opt.xmlhttp.getResponseHeader('Content-Type').search(/xml/g) >= 0)
@@ -262,4 +262,3 @@ define(['jquery', 'naure'], function($, NAURE) {
         return output.join('');
     };
 });
-

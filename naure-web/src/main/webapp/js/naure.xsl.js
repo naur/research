@@ -8,7 +8,7 @@
  *
  */
 
-define(['jquery', 'naure'], function($, NAURE) {
+define(['jquery', 'naure', 'ajaxslt'], function ($, NAURE) {
     NAURE.HTTP.xmlAcquire = function (options) {
         var opt = $.extend({
             type:'POST',

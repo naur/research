@@ -26,7 +26,7 @@ require.config({
         'naure.ui.templet':jslocalpath + '/js/naure.ui.templet',
         'naure.location':jslocalpath + '/js/naure.location',
         'naure.http':jslocalpath + '/js/naure.http',
-        'naure.xsl':jslocalpath + '/js/naure.xsl.js',
+        'naure.xsl':jslocalpath + '/js/naure.xsl',
         'naure.message':jslocalpath + '/js/naure.message',
         'naure.overlay':jslocalpath + '/js/naure.overlay',
 

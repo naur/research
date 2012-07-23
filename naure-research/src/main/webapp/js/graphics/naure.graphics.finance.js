@@ -19,8 +19,16 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
         var finance = {
 
             Graph:function (n, disabled, color) {
+                var equation = n;
                 return {
-                    plot:function () {
+                    plot:function (ctx, coordinate) {
+                        ctx.beginPath();
+                        for (var key in equation) {
+                            if (!equation.hasOwnProperty(key)) continue
+                            ctx.move(Date.parse(equation[key].X) / 86400000, equation[key].Y1);
+                            ctx.line(Date.parse(equation[key].X) / 86400000, equation[key].Y2);
+                        }
+                        ctx.stroke();
                     }
                 };
             },
@@ -38,7 +46,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 if (type == 'date')
                     return d.format('hh:mm:ss');
                 if (type == 'day')
-                    return d.format('MM-dd HH:mm');
+                    return d.format('yy-MM-dd HH:mm');
             },
 
             gridlineLabelY:function (num) {
@@ -52,7 +60,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 };
             },
 
-            zoomAxis: function(zoom) {
+            zoomAxis:function (zoom) {
                 zoom.Y = null;
                 return zoom;
             },
@@ -64,10 +72,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 scale = layout.scale;
                 coordinate = layout.coordinate;
 
-                coordinate.X1 = floor(new Date(2012, 3, 24).getTime() / 86400000);
-                coordinate.X2 = ceil(new Date(2012, 6, 23).getTime() / 86400000);
-                coordinate.Y1 = -5
-                coordinate.Y2 = 5;
+                coordinate.X1 = floor(Date.parse('2000-01-04') / 86400000);
+                coordinate.X2 = ceil(Date.parse('2012-07-23') / 86400000);
+                coordinate.Y1 = -20
+                coordinate.Y2 = 20;
                 type = 'day';
                 return finance;
             }

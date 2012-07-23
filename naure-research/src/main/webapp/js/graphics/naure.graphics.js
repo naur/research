@@ -48,6 +48,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
             },
 
             draw:function (options) {
+                var opt = $.extend({}, options)
+
                 this.ui.clear();
 
                 var gridlinesPerf, drawPerf;
@@ -58,10 +60,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                     gridlinesPerf = end.getTime() - start.getTime();
                 }
 
-                this.lines = [];
-                this.lines.push({equation:'y=x^2', color:'red'});
-                this.lines.push({equation:"\\frac{d}{dx}\\left(sin\\left(x\\right)+log\\left(x+1\\right)\\right)", color:'blue'});
-                //this.lines.push({equation : 'r<\sin \left(4\theta \right)', color : 'red'});
+                if (opt.lines)
+                    this.lines = opt.lines;
 
                 start = new Date();
                 this.ui.draw({lines:this.lines});
