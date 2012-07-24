@@ -23,10 +23,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 return {
                     plot:function (ctx, coordinate) {
                         ctx.beginPath();
+                        ctx.move(Date.parse(equation[0].X) / 86400000, equation[0].Y1);
                         for (var key in equation) {
                             if (!equation.hasOwnProperty(key)) continue
-                            ctx.move(Date.parse(equation[key].X) / 86400000, equation[key].Y1);
-                            ctx.line(Date.parse(equation[key].X) / 86400000, equation[key].Y2);
+                            ctx.line(Date.parse(equation[key].X) / 86400000, equation[key].Y1);
                         }
                         ctx.stroke();
                     }
@@ -72,10 +72,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 scale = layout.scale;
                 coordinate = layout.coordinate;
 
-                coordinate.X1 = floor(Date.parse('2000-01-04') / 86400000);
-                coordinate.X2 = ceil(Date.parse('2012-07-23') / 86400000);
-                coordinate.Y1 = -20
-                coordinate.Y2 = 20;
+                coordinate.X1 = floor(Date.parse('2012-01-01') / 86400000);
+                coordinate.X2 = ceil(Date.parse('2012-07-24') / 86400000);
+                coordinate.Y1 = 8;
+                coordinate.Y2 = 15;
                 type = 'day';
                 return finance;
             }

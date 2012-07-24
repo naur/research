@@ -15,7 +15,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
 
     NAURE.Graphics.UI = (function () {
 
-        var layout, graphics, gridlines, config;
+        var layout, graphics, gridlines, config, location = [];
 
         var ui = {
             container:null,
@@ -24,10 +24,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
             isLiveGraphEvent:false,
             clear:function () {
                 this.ctx.clearRect(0, 0, this.graph.width(), this.graph.height())
-                this.ctx.lineCap = "butt";
-                this.ctx.font = config.font;
-                this.ctx.strokeStyle = this.ctx.fillStyle = "rgb(255,255,255)";
-                this.ctx.fillRect(0, 0, this.graph.width(), this.graph.height());
+//                this.ctx.lineCap = "butt";
+//                this.ctx.font = config.font;
+//                this.ctx.strokeStyle = this.ctx.fillStyle = "rgb(255,255,255)";
+//                this.ctx.fillRect(0, 0, this.graph.width(), this.graph.height());
             },
             mousebutton:0,
             calccache:new Object,
@@ -120,6 +120,22 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 if (this.mousebutton == 1) {
                     layout.refresh({drag:'CONTINUE'});
                     graphics.draw();
+                } else {
+
+                    gridlines.alreadyDrawnPoints;
+                    var prev = location.pop();
+                    if (prev) {
+                        ui.ctx.clearRect(prev.X, 0, 1, layout.height);
+                        ui.ctx.clearRect(0, prev.Y, layout.width, 1);
+                        graphics.draw();
+                    }
+                    ui.ctx.save();
+                    //ui.ctx.globalCompositeOperation = config.CompositeOperation;
+                    ui.ctx.fillStyle = "red";
+                    ui.ctx.fillRect(x, 0, 1, layout.height);
+                    ui.ctx.fillRect(0, y, layout.width, 1);
+                    ui.ctx.restore();
+                    location.push({X:x, Y:y});
                 }
             },
 

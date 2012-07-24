@@ -13,8 +13,30 @@
 var naure, message, http, graphics, lines;
 
 var overlayNodes = {
+    StartDate:{
+        html:'<input id="start-date" type="text" />'
+    },
+    EndDate:{
+        html:'<input id="end-date" type="text" />'
+    },
     Input:{
         html:'<input id="overlay-input" type="text" />'
+    },
+    CompositeOperation:{
+        html:'<select id=composite-operation>' +
+            '<option>source-over</option>' +
+            '<option>source-in</option>' +
+            '<option>source-out</option>' +
+            '<option>source-atop</option>' +
+            '<option>lighter</option>' +
+            '<option>xor</option>' +
+            '<option>destination-over</option>' +
+            '<option>destination-in</option>' +
+            '<option>destination-out</option>' +
+            '<option>destination-atop</option>' +
+            '<option>darker</option>' +
+            '<option>copy</option>' +
+            '</select>'
     },
     'Equation':function () {
         lines = [];
@@ -58,20 +80,21 @@ var overlayNodes = {
                 message.show({content:'获取数据成功！'});
                 lines = [];
 
-                var equation = []
-                $(obj.output).find('content').each(function (index, data) {
-                    var content = $(this);
-                    equation.push({
-                        X:content.attr('d'),
-                        Y:content.attr('v'),
-                        Y1:content.attr('l'),
-                        Y2:content.attr('c'),
-                        Y3:content.attr('h'),
-                        Y4:content.attr('o')
-                    });
-                });
+                var price = ['l', 'c', 'h', 'o'];
 
-                lines.push({equation:equation, color:'red'});
+                for (var key in price) {
+                    if (!price.hasOwnProperty(key)) continue;
+                    var equation = []
+                    $(obj.output).find('content').each(function (index, data) {
+                        var content = $(this);
+                        equation.push({
+                            X:content.attr('d'),
+                            Y:content.attr('v'),
+                            Y1:parseFloat(content.attr(price[key]))
+                        });
+                    });
+                    lines.push({equation:equation, color:'#' + random().toString(16).substring(2, 5)});
+                }
                 graphics.draw({
                     lines:lines
                 });
@@ -86,6 +109,13 @@ var overlayNodes = {
 /*-------------------- 函数 END ----------------------*/
 
 /*-------------------- 事件 START --------------------*/
+
+function initEvent() {
+    $('#composite-operation').on('change', function () {
+        graphics.config.CompositeOperation = $(this).val();
+    });
+}
+
 /*-------------------- 事件 END ----------------------*/
 
 /*-------------------- 初始化 START ------------------*/
@@ -101,7 +131,6 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http',
     graphics = NAURE.Graphics;
     message = NAURE.Message;
 
-
     $(function () {
         $('body').message({overlay:'left-bottom'});
         $('body').overlay({
@@ -109,6 +138,8 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http',
         });
 
         $('article section canvas').NAURE_Graphics({system:graphics.Finance});
+
+        initEvent();
     });
 });
 
