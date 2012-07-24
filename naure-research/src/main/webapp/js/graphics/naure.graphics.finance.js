@@ -22,6 +22,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 var equation = n;
                 return {
                     plot:function (ctx, coordinate) {
+                        if (equation.length <= 0) return;
                         ctx.beginPath();
                         ctx.move(Date.parse(equation[0].X) / 86400000, equation[0].Y1);
                         for (var key in equation) {

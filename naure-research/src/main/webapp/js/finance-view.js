@@ -68,8 +68,13 @@ var overlayNodes = {
         message.empty();
         message.show({content:'正在获取数据...'});
 
+        var startDate = $('#start-date').val().length > 0 ? new Date(Date.parse($('#start-date').val())) : new Date('2012-01-01');
+        var endDate = $('#end-date').val().length > 0 ? Date.parse($('#end-date').val()) : new Date();
+        var symbol = $('#overlay-input').val().length > 0 ? $('#overlay-input').val() : 'sz000010';
+
+        //http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=20120101&end_date=20120701&type=xml
         http.Request({
-            uri:'http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=19950802&end_date=20120723&type=xml',
+            uri:'http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=' + symbol + '&begin_date=' + startDate.format('yyyyMMdd') + '&end_date=' + endDate.format('yyyyMMdd') + '&type=xml',
             context:this,
             error:function (ex) {
                 message.show({content:'获取数据错误，请稍后重试！', color:'red'});
@@ -80,8 +85,7 @@ var overlayNodes = {
                 message.show({content:'获取数据成功！'});
                 lines = [];
 
-                var price = ['l', 'c', 'h', 'o'];
-
+                var y1, y2, price = ['l', 'c', 'h', 'o'];
                 for (var key in price) {
                     if (!price.hasOwnProperty(key)) continue;
                     var equation = []
@@ -92,10 +96,25 @@ var overlayNodes = {
                             Y:content.attr('v'),
                             Y1:parseFloat(content.attr(price[key]))
                         });
+                        if (!y1)
+                            y1 = parseFloat(content.attr(price[key]));
+                        else if (parseFloat(content.attr(price[key])) < y1)
+                            y1 = parseFloat(content.attr(price[key]));
+
+                        if (!y2)
+                            y2 = parseFloat(content.attr(price[key]));
+                        else if (parseFloat(content.attr(price[key])) > y2)
+                            y2 = parseFloat(content.attr(price[key]));
                     });
                     lines.push({equation:equation, color:'#' + random().toString(16).substring(2, 5)});
                 }
+
                 graphics.draw({
+                    coordinate:{
+                        X1:floor(startDate.getTime() / 86400000),
+                        X2:ceil(endDate.getTime() / 86400000),
+                        Y1:y1, Y2:y2
+                    },
                     lines:lines
                 });
             }

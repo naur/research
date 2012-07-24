@@ -50,6 +50,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
             draw:function (options) {
                 var opt = $.extend({}, options)
 
+                if (opt.coordinate) {
+                    graphics.layout.refresh({coordinate:opt.coordinate});
+                }
+
                 this.ui.clear();
 
                 var gridlinesPerf, drawPerf;
@@ -91,14 +95,14 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                     ctx:graphics.ui.ctx
                 });
                 graphics.layout.init({
-                    system: graphics.system
+                    system:graphics.system
                 });
                 //Step 2: Gridlines 初始化
                 graphics.gridlines.init({
                     config:graphics.config.gridlines,
                     layout:graphics.layout,
                     ctx:graphics.ui.ctx,
-                    system: graphics.system
+                    system:graphics.system
                 });
                 //Step 3: resize
                 graphics.ui.resize();

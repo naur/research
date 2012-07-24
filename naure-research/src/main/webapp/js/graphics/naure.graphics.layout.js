@@ -73,12 +73,12 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 this.refreshZoom(opt);
 
                 //Update Coordinate
-                this.refreshCoordinate();
+                this.refreshCoordinate(opt);
 
                 var curPoint = system.parseCoordinate(
                     layout.toPoint(this.pixel.X, this.pixel.Y)
                 );
-                curPoint.X = curPoint.X.format('yyyy-MM-dd HH:mm:ss');
+                //curPoint.X = curPoint.X.format('yyyy-MM-dd HH:mm:ss');
                 message.show({content:JSON.stringify({
                     point:curPoint,
                     coordinate:layout.coordinate
@@ -175,7 +175,18 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 }
             },
 
-            refreshCoordinate:function () {
+            refreshCoordinate:function (opt) {
+                if (opt.coordinate) {
+                    if (opt.coordinate.X1)
+                        graphics.layout.coordinate.X1 = opt.coordinate.X1;
+                    if (opt.coordinate.X2)
+                        graphics.layout.coordinate.X2 = opt.coordinate.X2;
+                    if (opt.coordinate.Y1)
+                        graphics.layout.coordinate.Y1 = opt.coordinate.Y1;
+                    if (opt.coordinate.Y2)
+                        graphics.layout.coordinate.Y2 = opt.coordinate.Y2;
+                }
+
                 this.scope.X = this.coordinate.X2 - this.coordinate.X1;
                 this.scope.Y = this.coordinate.Y2 - this.coordinate.Y1;
                 this.scale.X = this.width / this.scope.X;
