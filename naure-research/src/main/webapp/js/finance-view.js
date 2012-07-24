@@ -132,11 +132,12 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http',
     message = NAURE.Message;
 
     $(function () {
-        $('body').message({overlay:'left-bottom'});
+        $('body').message({overlay:'left-bottom', title:''});
         $('body').overlay({
             nodes:overlayNodes
         });
 
+        message.position('left-top');
         $('article section canvas').NAURE_Graphics({system:graphics.Finance});
 
         initEvent();

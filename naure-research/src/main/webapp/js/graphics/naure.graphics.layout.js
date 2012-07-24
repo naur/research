@@ -78,7 +78,7 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 var curPoint = system.parseCoordinate(
                     layout.toPoint(this.pixel.X, this.pixel.Y)
                 );
-                curPoint.X = curPoint.X.toString();
+                curPoint.X = curPoint.X.format('yyyy-MM-dd HH:mm:ss');
                 message.show({content:JSON.stringify({
                     point:curPoint,
                     coordinate:layout.coordinate

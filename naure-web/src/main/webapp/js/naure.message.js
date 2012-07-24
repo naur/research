@@ -28,7 +28,7 @@
  * </div>
  */
 
-define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function($, $1, NAURE) {
+define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, NAURE) {
     $.fn.appendLine = function (str) {
         $(this).append(str + '<br />');
     };
@@ -179,7 +179,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function($, $1, N
                 if (opt.fade) {
                     opt.domElement = '<div class="message-fade"><p>' + opt.content + '</p></div>';
                 } else {
-                    opt.domElement = $.format('<div class="message {0}"><span class="title">' + opt.title + '：</span><span id="prompt"></span><div class="show"><span class="comment">' + opt.comment + '：</span><span id="information"></span></div></div>', opt.overlay ? 'message-' + opt.overlay : '');
+                    opt.domElement = $.format('<div class="message {0}"><span class="title">' + (opt.title.length > 0 ? opt.title + '：' : '') + '</span><span id="prompt"></span><div class="show"><span class="comment">' + opt.comment + '：</span><span id="information"></span></div></div>', opt.overlay ? 'message-' + opt.overlay : '');
                 }
 
                 switch (opt.placement) {

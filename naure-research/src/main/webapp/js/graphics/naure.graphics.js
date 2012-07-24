@@ -68,10 +68,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                 end = new Date();
                 drawPerf = end.getTime() - start.getTime();
 
-                message.show({content:JSON.stringify({
-                    gridlinesPerf:gridlinesPerf,
-                    drawPerf:drawPerf
-                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+//                message.show({content:JSON.stringify({
+//                    gridlinesPerf:gridlinesPerf,
+//                    drawPerf:drawPerf
+//                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             },
 
             reset:function () {
