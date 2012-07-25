@@ -27,14 +27,14 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <filter>
-        <filter-name>httpSessionFilter</filter-name>
-        <filter-class>org.naure.web.HttpSessionFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>httpSessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    <!--<filter>-->
+        <!--<filter-name>httpSessionFilter</filter-name>-->
+        <!--<filter-class>org.naure.web.HttpSessionFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>httpSessionFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
 
     <!--<listener>-->
         <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->

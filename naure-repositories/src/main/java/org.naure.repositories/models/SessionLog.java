@@ -13,6 +13,38 @@ import java.util.Date;
  */
 public class SessionLog {
 
+    public SessionLog(String ipAddress,
+                      String hostName,
+                      String cpu,
+                      String user,
+                      String language,
+                      String platform,
+                      String userAgent,
+                      Integer port,
+                      int statusCode,
+                      TraceEventType severity,
+                      String requestType,  //HttpMethod
+                      String requestHost,
+                      String requestPath,
+                      String refererUrl,
+                      Date timestamp) {
+        this.ipAddress = ipAddress;
+        this.hostName = hostName;
+        this.cpu = cpu;
+        this.user = user;
+        this.language = language;
+        this.platform = platform;
+        this.port = port;
+        this.severity = severity;
+        this.userAgent = userAgent;
+        this.requestType = requestType;
+        this.statusCode = statusCode;
+        this.timestamp = timestamp;
+        this.requestHost = requestHost;
+        this.requestPath = requestPath;
+        this.refererUrl = refererUrl;
+    }
+
     public String getIpAddress() {
         return ipAddress;
     }
@@ -77,14 +109,6 @@ public class SessionLog {
         this.refererUrl = refererUrl;
     }
 
-    public String getRequestUrl() {
-        return requestUrl;
-    }
-
-    public void setRequestUrl(String requestUrl) {
-        this.requestUrl = requestUrl;
-    }
-
     public Date getTimestamp() {
         return timestamp;
     }
@@ -101,24 +125,60 @@ public class SessionLog {
         this.user = user;
     }
 
-    public int getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public String getCpu() {
+        return cpu;
+    }
+
+    public void setCpu(String cpu) {
+        this.cpu = cpu;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public String getRequestHost() {
+        return requestHost;
+    }
+
+    public void setRequestHost(String requestHost) {
+        this.requestHost = requestHost;
+    }
+
+    public String getRequestPath() {
+        return requestPath;
+    }
+
+    public void setRequestPath(String requestPath) {
+        this.requestPath = requestPath;
     }
 
     private String ipAddress;
     private String hostName;
+    private String cpu;
     private String user;
-    private int port;
-    private TraceEventType severity;
     private String language;
+    private String platform;
+    private Integer port;
+
+    private TraceEventType severity;
     private String userAgent;
     private String requestType;  //HttpMethod
     private int statusCode;
     private Date timestamp;
-    private String requestUrl;
+    private String requestHost;
+    private String requestPath;
     private String refererUrl;
 }

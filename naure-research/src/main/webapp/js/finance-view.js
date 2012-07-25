@@ -139,7 +139,7 @@ function initEvent() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.http',
+require(['jquery', 'naure.analytics', 'naure.message', 'naure.overlay', 'naure.http',
     'naure.graphics.ui',
     'naure.graphics.layout',
     'naure.graphics.gridlines',

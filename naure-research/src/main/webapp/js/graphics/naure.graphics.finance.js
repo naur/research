@@ -83,9 +83,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
         };
 
         return finance;
-    })
-        ();
+    })();
 
     return NAURE;
-})
-;
+});

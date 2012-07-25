@@ -23,6 +23,7 @@ require.config({
 
         'naure':jslocalpath + '/js/naure',
         'naure.utility':jslocalpath + '/js/naure.utility',
+        'naure.analytics':jslocalpath + '/js/naure.analytics',
         'naure.ui.templet':jslocalpath + '/js/naure.ui.templet',
         'naure.location':jslocalpath + '/js/naure.location',
         'naure.http':jslocalpath + '/js/naure.http',

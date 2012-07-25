@@ -45,7 +45,7 @@ public class AspectJController {
     @After("controllerBean() && methodPointcut() ")
     public void after() {
         //会话日志
-        sessionService.add(HttpSessionFilter.session.get());
+        //sessionService.add(HttpSessionFilter.session.get());
     }
 
     //定义切点,匹配规则为(返回类型 方法(参数设置)

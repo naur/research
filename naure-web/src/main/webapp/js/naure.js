@@ -10,6 +10,7 @@
  */
 
 define({
+    Analytics:{},
     Message:{},
     UI:{},
     HTTP:{},
@@ -17,6 +18,6 @@ define({
     JSON:{},
     Utility:{},
     Location:{},
-    Math: {},
-    Graph: {}
+    Math:{},
+    Graph:{}
 });
