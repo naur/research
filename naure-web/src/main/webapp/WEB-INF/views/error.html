@@ -10,11 +10,13 @@
     <script type="text/javascript" src="/js/require.config.js"></script>
 
     <script type="text/javascript">
-        $(function () {
-            $('body').naure_ui_templet({name: 'overlay', success: function() {
-                $('article section:eq(0)').message({placement:'append'});
-                NAURE.Message.show({content:'404', color:'red'});
-            }});
+        var message;
+        require(['jquery', 'naure.message', 'naure.analytics'], function ($, NAURE) {
+            message = NAURE.Message;
+            $(function () {
+                $('body').message();
+                message.show({content:'404', color:'red'});
+            });
         });
     </script>
 
