@@ -29,7 +29,8 @@
         <spring-release-mongodb.version>1.0.1.RELEASE</spring-release-mongodb.version>
         <spring-data-commons-core.version>1.2.1.RELEASE</spring-data-commons-core.version>
         <commons-lang3.version>3.1</commons-lang3.version>
-        <maven-plugins.version>2.1.1</maven-plugins.version>
+        <maven-plugins.version>2.2</maven-plugins.version>
+        <!--3.0.5-->
         <!--<spring-oxm.version>1.5.10</spring-oxm.version>-->
 
         <naure.log.file.path>/data/web/logs</naure.log.file.path>
@@ -174,27 +175,27 @@
                 <version>1.0</version>
             </dependency>
 
-            <!--struts-->
-            <dependency>
-                <groupId>org.apache.struts</groupId>
-                <artifactId>struts2-core</artifactId>
-                <version>${struts.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.struts</groupId>
-                <artifactId>struts2-convention-plugin</artifactId>
-                <version>${struts.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.struts</groupId>
-                <artifactId>struts2-config-browser-plugin</artifactId>
-                <version>${struts.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.struts</groupId>
-                <artifactId>struts2-rest-plugin</artifactId>
-                <version>${struts.version}</version>
-            </dependency>
+            <!--&lt;!&ndash;struts&ndash;&gt;-->
+            <!--<dependency>-->
+                <!--<groupId>org.apache.struts</groupId>-->
+                <!--<artifactId>struts2-core</artifactId>-->
+                <!--<version>${struts.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.apache.struts</groupId>-->
+                <!--<artifactId>struts2-convention-plugin</artifactId>-->
+                <!--<version>${struts.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.apache.struts</groupId>-->
+                <!--<artifactId>struts2-config-browser-plugin</artifactId>-->
+                <!--<version>${struts.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.apache.struts</groupId>-->
+                <!--<artifactId>struts2-rest-plugin</artifactId>-->
+                <!--<version>${struts.version}</version>-->
+            <!--</dependency>-->
 
             <!--poi-->
             <dependency>

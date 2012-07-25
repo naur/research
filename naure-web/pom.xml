@@ -39,7 +39,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <!--<version>3.0.5</version>-->
                 <configuration>
                     <packagingExcludes>WEB-INF/web.xml</packagingExcludes>
                     <!--<dependentWarIncludes></dependentWarIncludes>-->
