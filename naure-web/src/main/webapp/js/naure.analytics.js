@@ -9,7 +9,9 @@
  *              NAURE Analytics Service
  */
 
-define(['jquery', 'jquery.strings', 'naure'], function ($, $1, NAURE) {
+define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, NAURE) {
+
+    var utility = NAURE.Utility;
 
     NAURE.Analytics = (function () {
         var analytics = {
@@ -27,6 +29,7 @@ define(['jquery', 'jquery.strings', 'naure'], function ($, $1, NAURE) {
                     dataType:'xml',
                     cache:false,
                     data:{
+                        user:utility.cookie('user'),
                         host:opt.host,
                         statusCode:opt.code,
                         type:opt.type,
@@ -47,10 +50,16 @@ define(['jquery', 'jquery.strings', 'naure'], function ($, $1, NAURE) {
                     success:function (obj) {
                     }
                 });
+            },
+
+            track:function () {
+
             }
         };
 
         $(function () {
+            if (!utility.cookie('user'))
+                utility.cookie('user', Math.random().toString(16).substr(2), {expires:1});
             analytics.log();
         });
 
