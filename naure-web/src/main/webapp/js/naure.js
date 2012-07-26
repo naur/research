@@ -9,7 +9,7 @@
  *
  */
 
-define({
+define(['oop'], {
     Analytics:{},
     Message:{},
     UI:{},

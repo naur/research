@@ -71,7 +71,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
         return utility;
     })();
 
-    $.toJSON = function (obj) {
+    $.toJSON = function (obj, deep) {
         var json = '{';
         for (var key in obj) {
             if (typeof(obj[key]) == 'number' ||
@@ -82,7 +82,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 typeof(obj[key]) == 'date' ||
                 null == obj[key]) {
                 json += '"' + key + '":"' + obj[key] + '",';
-            } else if (typeof(obj[key]) == 'object') {
+            } else if (deep && typeof(obj[key]) == 'object') {
                 json += '"' + key + '":[' + JSON.stringify($.toJSON(obj[key])) + '],';
             }
         }

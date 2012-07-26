@@ -5,17 +5,36 @@ var arborDefault = {
     edgeColor:'#aa9',
     edgeDirected:true
 };
+var trace, objmerge, objcopy, parse, SimpleRenderer, NumberRenderer;
 
-trace = arbor.etc.trace;
-objmerge = arbor.etc.objmerge;
-objcopy = arbor.etc.objcopy;
-var parse = Parseur().parse;
+require(['jquery', 'naure.message',
+    'arbor-etc',
+    'arbor-kernel',
+    'arbor-graphics-colors',
+    'arbor-graphics-primitives',
+    'arbor-graphics-graphics',
+    'arbor-physics-atoms',
+    'arbor-physics-system',
+    'arbor-physics-barnes-hut',
+    'arbor-physics-physics',
+    'arbor-dev',
+    'arbor-parseur',
+    'arbor-renderer',
 
-(function ($) {
+    'naure.math.sets',
+    'naure.math.sets.tree',
+    'naure.math.sets.tree.augmenting',
+    'naure.analytics'], function ($, NAURE) {
+
+    trace = arbor.etc.trace;
+    objmerge = arbor.etc.objmerge;
+    objcopy = arbor.etc.objcopy;
+    parse = Parseur().parse;
 
     SimpleRenderer = function (canvas) {
         var canvas = $(canvas).get(0)
         var ctx = canvas.getContext("2d");
+
         var gfx = arbor.Graphics(canvas)
         var particleSystem = null
 
@@ -422,6 +441,7 @@ var parse = Parseur().parse;
         return that
     };
 
-})(jQuery);
+});
+
 
 

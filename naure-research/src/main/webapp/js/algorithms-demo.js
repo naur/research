@@ -14,7 +14,7 @@
 var naure, message, http, graphics, lines;
 var points, arborPoints;
 //"article section canvas"
-var parse = Parseur().parse;
+var parse;
 var sys;
 
 var overlayNodes = {
@@ -90,7 +90,7 @@ var overlayNodes = {
             }});
     },
     'Red-Black Trees':function () {
-        m.empty();
+        message.empty();
         var redBlackTree = new RedBlackTree('A', 'B', 'C', 'D');  //7, 4, 11, 3, 6, 9, 18, 2, 14, 19, 12, 17, 22, 20
         message.show({content:'START'});
 
@@ -235,15 +235,38 @@ function arborDrawing(options) {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics'], function ($, NAURE) {
+require(['jquery', 'naure.message', 'naure.overlay',
+    'naure.xsl',
+    'arbor-etc',
+    'arbor-kernel',
+    'arbor-graphics-colors',
+    'arbor-graphics-primitives',
+    'arbor-graphics-graphics',
+    'arbor-physics-atoms',
+    'arbor-physics-system',
+    'arbor-physics-barnes-hut',
+    'arbor-physics-physics',
+    'arbor-dev',
+    'arbor-parseur',
+    'arbor-renderer',
+
+    'naure.math.sets',
+    'naure.math.sets.tree',
+    'naure.math.sets.tree.augmenting',
+    'naure.analytics'], function ($, NAURE) {
     naure = NAURE;
     message = NAURE.Message;
 
     $(function () {
-        $('article section:eq(0)').message();
+        $('body').message({overlay:'left-top', transparent:true});
         $('body').overlay({
             nodes:overlayNodes
         });
+
+        var width = $('article').width();
+        var height = $('article').height();
+        $('article canvas').attr('width', height);
+        $('article canvas').attr('height', height);
 
         //初始化 arbor
         //$.extend(arbor, {System:CoordinateSystem});
@@ -256,11 +279,11 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics'], functio
             //fps: 10,
             //dt:0.02,
             //precision : 1
-        }) // create the system with sensible repulsion/stiffness/friction
+        }); // create the system with sensible repulsion/stiffness/friction
         //var sys = arbor.System();
         //sys.parameters({gravity:true}) // use center-gravity to make the graph settle nicely (ymmv)
         //sys.renderer = SimpleRenderer("article section canvas") // our newly created renderer will have its .init() method called shortly by sys...
-        sys.renderer = SimpleRenderer("article section canvas"); // our newly created renderer will have its .init() method called shortly by sys...
+        sys.renderer = SimpleRenderer("article canvas"); // our newly created renderer will have its .init() method called shortly by sys...
     });
 });
 

@@ -42,7 +42,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 global:{
                     multiple:true,
                     transparent:false,
-                    overlay:null //left-bottom
+                    overlay: null //'left-top'
                 },
                 content:'',
                 type:'span',
@@ -130,11 +130,10 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 NAURE.Message.renderHtml('#information', opt);
             },
             renderHtml:function (container, options) {
-                if (!options.global.multiple) {
-                    $(container).empty();
-                }
+                if (options.multiple)
+                    message.defaults.global.multiple = options.multiple;
 
-                if (!options.multiple) {
+                if (!message.defaults.global.multiple) {
                     $(container).empty();
                 }
 
@@ -174,7 +173,10 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                     return;
                 }
 
-                message.defaults.global.overlay = opt.overlay;
+                if (opt.overlay)
+                    message.defaults.global.overlay = opt.overlay;
+                if (opt.transparent)
+                    message.defaults.global.transparent = opt.transparent;
 
                 if (opt.fade) {
                     opt.domElement = '<div class="message-fade"><p>' + opt.content + '</p></div>';
