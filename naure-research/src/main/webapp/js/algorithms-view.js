@@ -48,7 +48,7 @@ var overlayNodes = {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.graph.ui'], function ($, NAURE) {
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.graph.ui', 'naure.analytics'], function ($, NAURE) {
     this.NAURE = NAURE;
     $(function () {
         $('body:last-child').message({overlay:'left-bottom'});

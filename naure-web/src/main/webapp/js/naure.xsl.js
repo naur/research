@@ -8,7 +8,10 @@
  *
  */
 
-define(['jquery', 'naure', 'ajaxslt'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
+
+    var utility = NAURE.Utility;
+
     NAURE.HTTP.xmlAcquire = function (options) {
         var opt = $.extend({
             type:'POST',
@@ -54,7 +57,7 @@ define(['jquery', 'naure', 'ajaxslt'], function ($, NAURE) {
             opt.xml = data;
             if (opt.xsl == null && opt.xslUrl == null) {
                 if (opt.renderContainer != null || opt.dataType == 'json') {
-                    $(opt.renderContainer).html(encodeHTML(opt.xml.xml));
+                    $(opt.renderContainer).html(utility.encodeHTML(opt.xml.xml));
                 }
                 if (opt.success != null) {
                     opt.success({target:opt.renderContainer, output:opt.xml, context:opt.context});
@@ -184,7 +187,7 @@ define(['jquery', 'naure', 'ajaxslt'], function ($, NAURE) {
 
                 // Set target content to transformed XML
                 if (opt.target != null) {
-                    $(opt.target).html(encodeHTML(output));
+                    $(opt.target).html(utility.encodeHTML(output));
                     //$(opt.target).html(output);
                 }
 

@@ -9,10 +9,12 @@
 
 /*-------------------- 全局变量 START --------------------*/
 
+var naure, message, http, graphics, lines;
+
 var overlayNodes = {
     'Dynamic Programming':function () {
-        NAURE.Message.empty();
-        NAURE.Message.show({content:'Dynamic Programming', color:'silver'});
+        message.empty();
+        message.show({content:'Dynamic Programming', color:'silver'});
         var matrixChain = new MatrixChain(
             '30 x 35',
             '35 x 15',
@@ -23,30 +25,30 @@ var overlayNodes = {
         );
 
         matrixChain.inorderWalk(matrixChain.p, function (item) {
-            NAURE.Message.show({content:JSON.stringify($.toJSON(item))});
+            message.show({content:JSON.stringify($.toJSON(item))});
         });
 
         matrixChain.order(matrixChain.p);
 
         matrixChain.inorderWalk(matrixChain.m, function (item) {
-            NAURE.Message.show({content:JSON.stringify($.toJSON(item)), color:'blue'});
+            message.show({content:JSON.stringify($.toJSON(item)), color:'blue'});
         });
         matrixChain.inorderWalk(matrixChain.s, function (item) {
-            NAURE.Message.show({content:JSON.stringify($.toJSON(item)), color:'red'});
+            message.show({content:JSON.stringify($.toJSON(item)), color:'red'});
         });
 
-        NAURE.Message.show({content:'memoized', color:'silver'});
+        message.show({content:'memoized', color:'silver'});
 
         matrixChain.memoized(matrixChain.p);
         matrixChain.inorderWalk(matrixChain.m, function (item) {
-            NAURE.Message.show({content:JSON.stringify($.toJSON(item)), color:'yellow'});
+            message.show({content:JSON.stringify($.toJSON(item)), color:'yellow'});
         });
     },
     'Longest Common Subsequence':function () {
-        NAURE.Message.empty();
+        message.empty();
     },
     'Greedy Algorithms':function () {
-        NAURE.Message.empty();
+        message.empty();
     },
     'Amortized Analysis': function () {
 
@@ -59,9 +61,9 @@ var overlayNodes = {
 
 function print(obj, color) {
     if (color)
-        NAURE.Message.show({content:JSON.stringify($.toJSON(obj)), color:color});
+        message.show({content:JSON.stringify($.toJSON(obj)), color:color});
     else
-        NAURE.Message.show({content:JSON.stringify($.toJSON(obj))});
+        message.show({content:JSON.stringify($.toJSON(obj))});
 }
 
 /*-------------------- 函数 END --------------------*/
@@ -72,13 +74,16 @@ function print(obj, color) {
 
 /*-------------------- 初始化 START --------------------*/
 
-$(function () {
-    $('body').naure_ui_templet({name: 'overlay', success: function() {
-        $('article section:eq(0)').message({placement:'append'});
-        $('nav').overlay({
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics'], function ($, NAURE) {
+    naure = NAURE;
+    message = NAURE.Message;
+
+    $(function () {
+        $('article section:eq(0)').message();
+        $('body').overlay({
             nodes:overlayNodes
         });
-    }});
+    });
 });
 
 /*-------------------- 初始化 END --------------------*/

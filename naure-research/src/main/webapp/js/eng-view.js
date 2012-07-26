@@ -138,7 +138,7 @@ var overlayNodes = {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.http'], function ($, NAURE) {
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.http', 'naure.analytics'], function ($, NAURE) {
     this.NAURE = NAURE;
     $(function () {
         NAURE.Message.defaults.global.transparent = true;

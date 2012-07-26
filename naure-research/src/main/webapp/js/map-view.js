@@ -11,7 +11,7 @@
 
 /*-------------------- 全局变量 START --------------------*/
 
-var NAURE, map, marker, tracePathList, geocoder, eventContext, watchId, realTime = false,tracePathList = new Array();
+var NAURE, map, marker, tracePathList, geocoder, eventContext, watchId, realTime = false, tracePathList = new Array();
 var overlayNodes = {
     "道路":function () {
         map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
@@ -186,7 +186,7 @@ function initialize() {
 
 require(['http://maps.google.com/maps/api/js?v=3.7&sensor=false&region=zh-CN&language=zh-CN&callback=initialize']);
 
-require(['jquery', 'naure.location', 'naure.message', 'naure.overlay'], function ($, NAURE) {
+require(['jquery', 'naure.location', 'naure.message', 'naure.overlay', 'naure.analytics'], function ($, NAURE) {
 
     this.NAURE = NAURE;
 

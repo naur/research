@@ -1,22 +1,39 @@
-// math.sets demo
+/**
+ * Script:
+ *              贾睿之
+ * Email:
+ *              jiaruizhi@360buy.com
+ * Date:
+ *              7/26/12 10:15 AM
+ * Description:
+ *              math.sets demo
+ */
+
+/*-------------------- 全局变量 START ----------------*/
+
+var naure, message, http, graphics, lines;
+var points, arborPoints;
+//"article section canvas"
+var parse = Parseur().parse;
+var sys;
 
 var overlayNodes = {
     'arbor':function () {
-        NAURE.Message.empty();
+        message.empty();
         arborGraph();
     },
     'Stacks':function () {
-        NAURE.Message.empty();
+        message.empty();
         var S = new Array(10);
-        NAURE.Message.show({content:'ARRAY - TOP !' + S.top, dateformat:'HH:mm:ss fff'});
+        message.show({content:'ARRAY - TOP !' + S.top, dateformat:'HH:mm:ss fff'});
         S.pushv1('A');
         S.pushv1('贾睿之');
-        NAURE.Message.show({content:'ARRAY - TOP !' + S.top, dateformat:'HH:mm:ss fff'});
+        message.show({content:'ARRAY - TOP !' + S.top, dateformat:'HH:mm:ss fff'});
     },
     'Queues':function () {
     },
     'Linked lists':function () {
-        NAURE.Message.empty();
+        message.empty();
         var k1 = new LinkedListNotSentinel(9);
         var k2 = new LinkedListNotSentinel(16);
         var k3 = new LinkedListNotSentinel(4);
@@ -30,40 +47,40 @@ var overlayNodes = {
         k4.prev = k3;
 
         //init Linked lists
-        NAURE.Message.show({content:$.format('Linked lists: {0}', k1.keys().join('-')), color:'red', dateformat:'HH:mm:ss fff'});
+        message.show({content:$.format('Linked lists: {0}', k1.keys().join('-')), color:'red', dateformat:'HH:mm:ss fff'});
 
         //seacrh procedure
         var searchKey = 4;
-        NAURE.Message.show({content:$.format('Search Key: {0}', searchKey), dateformat:'HH:mm:ss fff'});
+        message.show({content:$.format('Search Key: {0}', searchKey), dateformat:'HH:mm:ss fff'});
         var result = k1.search(searchKey);
-        NAURE.Message.show({content:$.format('{0}: prev {1}, next {2}, head {3}', result.key, result.prev.key, result.next.key, result.head().key), dateformat:'HH:mm:ss fff'});
+        message.show({content:$.format('{0}: prev {1}, next {2}, head {3}', result.key, result.prev.key, result.next.key, result.head().key), dateformat:'HH:mm:ss fff'});
 
         //insert procedure
         var insertKey = new LinkedListNotSentinel(18);
-        NAURE.Message.show({content:$.format('Insert Key: {0}', insertKey.key), dateformat:'HH:mm:ss fff'});
+        message.show({content:$.format('Insert Key: {0}', insertKey.key), dateformat:'HH:mm:ss fff'});
         k1.insert(insertKey);
-        NAURE.Message.show({content:$.format('{0}: prev {1}, next {2}, head {3}', insertKey.key, insertKey.prev == null ? 'NIL' : insertKey.prev.key, insertKey.next.key, insertKey.head().key), dateformat:'HH:mm:ss fff'});
+        message.show({content:$.format('{0}: prev {1}, next {2}, head {3}', insertKey.key, insertKey.prev == null ? 'NIL' : insertKey.prev.key, insertKey.next.key, insertKey.head().key), dateformat:'HH:mm:ss fff'});
 
-        NAURE.Message.show({content:$.format('Linked lists: {0}', insertKey.keys().join('-')), color:'red', dateformat:'HH:mm:ss fff'});
+        message.show({content:$.format('Linked lists: {0}', insertKey.keys().join('-')), color:'red', dateformat:'HH:mm:ss fff'});
 
         //delete procedure
         var deleteKey = 4;
-        NAURE.Message.show({content:$.format('Delete Key: {0}', deleteKey), dateformat:'HH:mm:ss fff'});
+        message.show({content:$.format('Delete Key: {0}', deleteKey), dateformat:'HH:mm:ss fff'});
         result = k1.search(deleteKey);
         k1.remove(result);
-        NAURE.Message.show({content:$.format('Linked lists: {0}', insertKey.keys().join('-')), color:'red', dateformat:'HH:mm:ss fff'});
+        message.show({content:$.format('Linked lists: {0}', insertKey.keys().join('-')), color:'red', dateformat:'HH:mm:ss fff'});
     },
     'Linked lists (sentinel)':function () {
-        NAURE.Message.empty();
+        message.empty();
         var linkedList = new LinkedList(9, 16, 4, 1);
-        NAURE.Message.show({content:$.format('Linked lists: {0}', linkedList.keys().join('-')), color:'red', dateformat:'HH:mm:ss fff'});
-        NAURE.Message.show({content:$.format('{0}, prev {1}, next {2}', 'sentinel', linkedList.sentinel.prev.key, linkedList.sentinel.next.key), dateformat:'HH:mm:ss fff'});
+        message.show({content:$.format('Linked lists: {0}', linkedList.keys().join('-')), color:'red', dateformat:'HH:mm:ss fff'});
+        message.show({content:$.format('{0}, prev {1}, next {2}', 'sentinel', linkedList.sentinel.prev.key, linkedList.sentinel.next.key), dateformat:'HH:mm:ss fff'});
     },
     'Binary Search Trees':function () {
-        NAURE.Message.empty();
+        message.empty();
         var binaryTree = new BinaryTree(12, 5, 18, 2, 9, 15, 19, 13, 17);
 
-        NAURE.Message.show({content:'START'});
+        message.show({content:'START'});
 
         arborDrawing({
             method:function () {
@@ -73,9 +90,9 @@ var overlayNodes = {
             }});
     },
     'Red-Black Trees':function () {
-        NAURE.Message.empty();
+        m.empty();
         var redBlackTree = new RedBlackTree('A', 'B', 'C', 'D');  //7, 4, 11, 3, 6, 9, 18, 2, 14, 19, 12, 17, 22, 20
-        NAURE.Message.show({content:'START'});
+        message.show({content:'START'});
 
         arborDrawing({
             method:function () {
@@ -86,22 +103,22 @@ var overlayNodes = {
             method1:function () {
                 //旋转
 //                var searchNode = redBlackTree.Search(redBlackTree.root, 11);
-//                NAURE.Message.show({content:'Rotations: ' + JSON.stringify($.toJSON(searchNode)), color:'#000080'});
+//                message.show({content:'Rotations: ' + JSON.stringify($.toJSON(searchNode)), color:'#000080'});
 //                redBlackTree.LeftRotate(redBlackTree, searchNode);
 //                redBlackTree.InorderTreeWalk(redBlackTree.root, function (x) {
 //                    arborPoints += pointsFormat(x);
 //                    arborPoints += pointsFormat(x, x.left);
 //                    arborPoints += pointsFormat(x, x.right);
-//                    NAURE.Message.show({content:JSON.stringify($.toJSON(x))});
+//                    message.show({content:JSON.stringify($.toJSON(x))});
 //                });
             }
         });
     },
     'Treaps':function () {
-        NAURE.Message.empty();
+        message.empty();
         var treap = new Treap('G', 'B', 'H', 'A', 'E', 'K', 'I');
 
-        NAURE.Message.show({content:'START'});
+        message.show({content:'START'});
 
         arborDrawing({
             method:function () {
@@ -111,10 +128,10 @@ var overlayNodes = {
             }});
     },
     'order-statistic tree':function () {
-        NAURE.Message.empty();
+        message.empty();
         var orderStatisticTree = new OrderStatisticTree(1, 2, 3, 4, 5, 6, 7);
 
-        NAURE.Message.show({content:'START'});
+        message.show({content:'START'});
 
         arborDrawing({
             method:function () {
@@ -125,7 +142,9 @@ var overlayNodes = {
     }
 };
 
-var points, arborPoints;
+/*-------------------- 全局变量 END ------------------*/
+
+/*-------------------- 函数 START --------------------*/
 
 function pointsFormat(x, y) {
     if (!x.key)
@@ -157,7 +176,7 @@ function arborGraph(points) {
 //                ndata.label = nname;
 //        });
 //
-//        NAURE.Message.show({content:JSON.stringify(network)});
+//        message.show({content:JSON.stringify(network)});
 //        sys.merge(network);
 //    });
 //    mapping: '1 -> 2\n' +
@@ -181,7 +200,7 @@ function arborGraph(points) {
             ndata.label = nname;
     });
 
-    //NAURE.Message.show({content:JSON.stringify(network)});
+    //message.show({content:JSON.stringify(network)});
     sys.merge(network);
 }
 function arborDrawing(options) {
@@ -199,7 +218,7 @@ function arborDrawing(options) {
                 arborGraph(arborPoints);
             return;
         }
-        NAURE.Message.show({content:JSON.stringify($.toJSON(point))});
+        message.show({content:JSON.stringify($.toJSON(point))});
         arborPoints += pointsFormat(point);
         arborPoints += pointsFormat(point, point.left);
         arborPoints += pointsFormat(point, point.right);
@@ -209,16 +228,23 @@ function arborDrawing(options) {
     }, 2000);
 }
 
-//"article section canvas"
-var parse = Parseur().parse;
-var sys;
+/*-------------------- 函数 END ----------------------*/
 
-$(function () {
-    $('body').naure_ui_templet({name: 'overlay', success: function() {
-        $('article section:eq(0)').message({placement:'append'});
-        $('nav').overlay({
+/*-------------------- 事件 START --------------------*/
+/*-------------------- 事件 END ----------------------*/
+
+/*-------------------- 初始化 START ------------------*/
+
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics'], function ($, NAURE) {
+    naure = NAURE;
+    message = NAURE.Message;
+
+    $(function () {
+        $('article section:eq(0)').message();
+        $('body').overlay({
             nodes:overlayNodes
         });
+
         //初始化 arbor
         //$.extend(arbor, {System:CoordinateSystem});
         $.extend(arbor, {System:ParticleSystem});
@@ -235,6 +261,7 @@ $(function () {
         //sys.parameters({gravity:true}) // use center-gravity to make the graph settle nicely (ymmv)
         //sys.renderer = SimpleRenderer("article section canvas") // our newly created renderer will have its .init() method called shortly by sys...
         sys.renderer = SimpleRenderer("article section canvas"); // our newly created renderer will have its .init() method called shortly by sys...
-    }});
+    });
 });
 
+/*-------------------- 初始化 END --------------------*/

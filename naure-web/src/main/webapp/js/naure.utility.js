@@ -10,26 +10,44 @@
 
 define(['jquery', 'naure'], function ($, NAURE) {
 
-    (function ($) {
-        $.toJSON = function (obj) {
-            var json = '{';
-            for (var key in obj) {
-                if (typeof(obj[key]) == 'number' ||
-                    typeof(obj[key]) == 'string' ||
-                    typeof(obj[key]) == 'boolean' ||
-                    typeof(obj[key]) == 'array' ||
-                    typeof(obj[key]) == 'undefined' ||
-                    typeof(obj[key]) == 'date' ||
-                    null == obj[key]) {
-                    json += '"' + key + '":"' + obj[key] + '",';
-                } else if (typeof(obj[key]) == 'object') {
-                    json += '"' + key + '":[' + JSON.stringify($.toJSON(obj[key])) + '],';
+    NAURE.Utility = (function () {
+
+        var utility = {
+            clone:function (obj) {
+                var cloneObject = new Object();
+                for (var key in obj) {
+                    cloneObject[key] = obj[key];
                 }
+                return cloneObject;
+            },
+
+            encodeHTML:function (data) {
+                return data.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, '&');
             }
-            json = json.replace(/,?$/, '}');
-            //return JSON.parse('{"key":7,"color":"black"}');
-            return JSON.parse(json);
         };
+
+        return utility;
+    })();
+
+    $.toJSON = function (obj) {
+        var json = '{';
+        for (var key in obj) {
+            if (typeof(obj[key]) == 'number' ||
+                typeof(obj[key]) == 'string' ||
+                typeof(obj[key]) == 'boolean' ||
+                typeof(obj[key]) == 'array' ||
+                typeof(obj[key]) == 'undefined' ||
+                typeof(obj[key]) == 'date' ||
+                null == obj[key]) {
+                json += '"' + key + '":"' + obj[key] + '",';
+            } else if (typeof(obj[key]) == 'object') {
+                json += '"' + key + '":[' + JSON.stringify($.toJSON(obj[key])) + '],';
+            }
+        }
+        json = json.replace(/,?$/, '}');
+        //return JSON.parse('{"key":7,"color":"black"}');
+        return JSON.parse(json);
+    };
 //    $.sleep = function (sec) {
 //        var startTime = new Date().getTime();
 //        while ((new Date().getTime() - startTime) < sec) {
@@ -37,45 +55,37 @@ define(['jquery', 'naure'], function ($, NAURE) {
 //        return;
 //    };
 
-        NAURE.JSON.toHtml = function (obj) {
-            var html = '';
-            for (var key in obj) {
-                if (typeof(obj[key]) == 'number' ||
-                    typeof(obj[key]) == 'string' ||
-                    typeof(obj[key]) == 'boolean' ||
-                    typeof(obj[key]) == 'array' ||
-                    typeof(obj[key]) == 'undefined' ||
-                    typeof(obj[key]) == 'date')
-                    html += ' ' + key + '="' + obj[key] + '" ';
-            }
-            //return JSON.parse('{"key":7,"color":"black"}');
-            return html;
-        };
+    NAURE.JSON.toHtml = function (obj) {
+        var html = '';
+        for (var key in obj) {
+            if (typeof(obj[key]) == 'number' ||
+                typeof(obj[key]) == 'string' ||
+                typeof(obj[key]) == 'boolean' ||
+                typeof(obj[key]) == 'array' ||
+                typeof(obj[key]) == 'undefined' ||
+                typeof(obj[key]) == 'date')
+                html += ' ' + key + '="' + obj[key] + '" ';
+        }
+        //return JSON.parse('{"key":7,"color":"black"}');
+        return html;
+    };
 
-        NAURE.JSON.toString = function (obj) {
-            var str = '';
-            for (var key in obj) {
-                if (typeof(obj[key]) == 'number' ||
-                    typeof(obj[key]) == 'string' ||
-                    typeof(obj[key]) == 'boolean' ||
-                    typeof(obj[key]) == 'array' ||
-                    typeof(obj[key]) == 'undefined' ||
-                    typeof(obj[key]) == 'date')
-                    str += '"' + key + '":"' + obj[key] + '",';
-            }
-            str = str.replace(/,?$/, '');
-            //return JSON.parse('{"key":7,"color":"black"}');
-            return str;
-        };
+    NAURE.JSON.toString = function (obj) {
+        var str = '';
+        for (var key in obj) {
+            if (typeof(obj[key]) == 'number' ||
+                typeof(obj[key]) == 'string' ||
+                typeof(obj[key]) == 'boolean' ||
+                typeof(obj[key]) == 'array' ||
+                typeof(obj[key]) == 'undefined' ||
+                typeof(obj[key]) == 'date')
+                str += '"' + key + '":"' + obj[key] + '",';
+        }
+        str = str.replace(/,?$/, '');
+        //return JSON.parse('{"key":7,"color":"black"}');
+        return str;
+    };
 
-        NAURE.Utility.clone = function (obj) {
-            var cloneObject = new Object();
-            for (var key in obj) {
-                cloneObject[key] = obj[key];
-            }
-            return cloneObject;
-        };
-    })(jQuery);
 
 //----- html 字符串过滤  -----------------------------------------------//
     (function ($) {
@@ -112,10 +122,6 @@ define(['jquery', 'naure'], function ($, NAURE) {
         };
 
     })(jQuery);
-
-    function encodeHTML(data) {
-        return data.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, '&');
-    }
 
 //todo 代码来源于 dict.bing.com.cn 未经过测试
     function escapeXML(s) {
