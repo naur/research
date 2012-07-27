@@ -152,7 +152,7 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http',
     message = NAURE.Message;
 
     $(function () {
-        $('body').message({overlay:'left-bottom', title:''});
+        $('body').message({overlay:'left-bottom', title:'', multiple: false});
         $('body').overlay({
             nodes:overlayNodes
         });
