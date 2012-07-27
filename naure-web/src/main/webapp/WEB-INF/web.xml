@@ -33,7 +33,7 @@
     <!--</filter>-->
     <!--<filter-mapping>-->
         <!--<filter-name>httpSessionFilter</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
+        <!--<url-pattern>/*.xml</url-pattern>-->
     <!--</filter-mapping>-->
 
     <!--<listener>-->
@@ -62,9 +62,10 @@
         <location>/error</location>
     </error-page>
 
-    <!--<welcome-file-list>-->
-        <!--<welcome-file>welcome</welcome-file>-->
-    <!--</welcome-file-list>-->
+    <welcome-file-list>
+        <welcome-file>welcome</welcome-file>
+    </welcome-file-list>
+
     <!---->
     <!--<servlet-mapping>-->
         <!--<servlet-name>default</servlet-name>-->
