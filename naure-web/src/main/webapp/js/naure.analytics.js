@@ -8,13 +8,18 @@
  * Description:
  *              NAURE Analytics Service
  */
-
 define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, NAURE) {
-
     var utility = NAURE.Utility;
 
     NAURE.Analytics = (function () {
         var analytics = {
+            isTrack:true,
+
+            track:function (options) {
+                if (analytics.isTrack)
+                    analytics.log(options);
+            },
+
             log:function (options) {
                 var opt = $.extend({
                     code:200,
@@ -50,17 +55,13 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                     success:function (obj) {
                     }
                 });
-            },
-
-            track:function () {
-
             }
         };
 
         $(function () {
             if (!utility.cookie('user'))
                 utility.cookie('user', Math.random().toString(16).substr(2), {expires:1});
-            analytics.log();
+            analytics.track();
         });
 
         return analytics;

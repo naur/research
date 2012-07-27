@@ -1,10 +1,12 @@
 package org.naure.web.controllers;
 
 import org.naure.web.ControllerBase;
-import org.naure.web.HttpSessionFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "error", method = {RequestMethod.GET, RequestMethod.POST})
 public class ErrorController extends ControllerBase {
     @RequestMapping()
-    public String view() {
-        HttpSessionFilter.session.get();
-        return view("error");
+    public String view(ServletRequest request) {
+        String queryString = ((HttpServletRequest) request).getQueryString();
+        if (queryString == null || queryString == "")
+            queryString = "error";
+
+        return view(queryString);
     }
 }

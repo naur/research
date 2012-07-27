@@ -59,7 +59,7 @@
     <error-page>
         <error-code>404</error-code>
         <!--<exception-type>javax.servlet.ServletException</exception-type>-->
-        <location>/error</location>
+        <location>/error?404</location>
     </error-page>
 
     <welcome-file-list>

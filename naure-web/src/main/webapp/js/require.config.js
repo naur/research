@@ -14,6 +14,7 @@ jslocalpath = '';
 var jslocalpath1 = jslocalpath.replace('naure-web', 'naure-research');
 
 require.config({
+    //baseUrl: '',
     paths:{
         jquery:jslocalpath + '/js/jquery-1.7.2.min',
         'jquery.strings':jslocalpath + '/js/jquery.strings',
@@ -63,6 +64,11 @@ require.config({
         'math':jslocalpath1 + '/js/math/math',
         'math.matrix':jslocalpath + '/js/math/math.matrix'
     },
+//    config: {
+//        'naure.analytics': {
+//            isTrack: true
+//        }
+//    },
     shim:{
         'jquery-strings':['jquery']
     }
