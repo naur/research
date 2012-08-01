@@ -1,12 +1,10 @@
 package org.naure.repositories;
 
 import org.naure.repositories.construction.Repository;
-import org.naure.repositories.models.Eng;
-import org.naure.repositories.models.Session;
+import org.naure.repositories.models.learn.Eng;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

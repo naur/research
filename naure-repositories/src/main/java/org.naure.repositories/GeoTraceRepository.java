@@ -2,8 +2,6 @@ package org.naure.repositories;
 
 import org.naure.common.location.GeoTrace;
 import org.naure.repositories.construction.Repository;
-import org.naure.repositories.models.Eng;
-import org.naure.repositories.models.Session;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
@@ -44,7 +42,7 @@ public class GeoTraceRepository extends Repository {
             put("positions", params.get("position"));
             put("updated", Calendar.getInstance().getTime());
         }});
-        update.put("class", GeoTrace.class);
+        update.put("class", new GeoTrace().collectionName());
         return workspace.update(update);
     }
 }

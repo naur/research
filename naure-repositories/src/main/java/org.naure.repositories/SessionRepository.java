@@ -1,12 +1,13 @@
 package org.naure.repositories;
 
-import org.naure.common.entities.TraceEventType;
-import org.naure.common.location.GeoTrace;
 import org.naure.repositories.construction.Repository;
 import org.naure.repositories.models.Session;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +35,7 @@ public class SessionRepository extends Repository {
                 put("updated", Calendar.getInstance().getTime());
                 put("logs", session.getLogs());
             }});
-            update.put("class", Session.class);
+            update.put("class", session.collectionName());
             return update(update);
         } else {
             session.setCreated(Calendar.getInstance().getTime());

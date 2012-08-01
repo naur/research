@@ -37,4 +37,11 @@ public abstract class Entity {
     private String id;
     private Date created; // createDate;
     private Date updated; //updatedDate;
+
+    public String collectionName() {
+        String classFullName = toString();
+        return classFullName.substring(
+                classFullName.indexOf("models.") + 7
+        ).toLowerCase();
+    }
 }

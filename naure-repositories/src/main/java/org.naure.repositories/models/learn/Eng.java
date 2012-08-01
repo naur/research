@@ -1,4 +1,4 @@
-package org.naure.repositories.models;
+package org.naure.repositories.models.learn;
 
 import org.naure.common.entities.Entity;
 

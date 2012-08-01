@@ -1,5 +1,6 @@
 package org.naure.repositories;
 
+import org.naure.common.entities.Entity;
 import org.naure.repositories.config.MongoConfiguration;
 import org.naure.repositories.construction.Workspace;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -46,42 +45,42 @@ public class MongoWorkspace implements Workspace {
         }
         query.skip(pageSize * (pageIndex - 1));
         query.limit(pageSize);
-        return mongoOperations.find(query, resultClass);
+        return mongoOperations.find(query, resultClass, ((Entity)resultClass.newInstance()).collectionName());
     }
 
     @Override
     public <U> U get(int identifier, Class<U> resultClass) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new Exception("Not implemented");
     }
 
 
     @Override
     public <T, U> U add(T t, Class<U>... resultClass) throws Exception {
-        MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
-        mongoOps.insert(t);
-        return null;
+//        MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
+//        mongoOps.insert(t);
+        throw new Exception("Not implemented");
     }
 
     @Override
     public <T> boolean add(T t) throws Exception {
         MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
-        mongoOps.insert(t);
+        mongoOps.insert(t, ((Entity)t).collectionName());
         return true;
     }
 
     @Override
     public <T, U> U delete(T t, Class<U>... resultClass) throws Exception {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new Exception("Not implemented");
     }
 
     @Override
     public <T> boolean delete(T t) throws Exception {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new Exception("Not implemented");
     }
 
     @Override
     public <T, U> U update(T t, Class<U>... resultClass) throws Exception {
-        return null;
+        throw new Exception("Not implemented");
     }
 
     @Override
@@ -111,7 +110,7 @@ public class MongoWorkspace implements Workspace {
                 }
         }
 
-        mongoOps.updateMulti(query, update, (Class) (params.get("class")));
+        mongoOps.updateMulti(query, update, params.get("class").toString());
         return true;
     }
 

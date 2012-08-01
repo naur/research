@@ -4,11 +4,9 @@ import org.naure.common.location.GeoCoordinate;
 import org.naure.common.location.GeoPosition;
 import org.naure.common.location.GeoTrace;
 import org.naure.repositories.GeoTraceRepository;
-import org.naure.repositories.models.Eng;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
