@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,13 +19,6 @@ import java.util.Map;
  */
 @Component
 public class GeoTraceRepository extends Repository {
-    public GeoTrace get(int identifier) throws Exception {
-        return workspace.get(identifier, GeoTrace.class);
-    }
-
-    public <T> List<GeoTrace> get(T params) throws Exception {
-        return workspace.get(params, GeoTrace.class);
-    }
 
     public boolean add(final GeoTrace geoTrace) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{

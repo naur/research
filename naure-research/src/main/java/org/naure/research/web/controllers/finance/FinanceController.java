@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping(value = "finance")
-public class FinanceController  extends ControllerBase {
+public class FinanceController extends ControllerBase {
 
     @RequestMapping
-    public String view(){
+    public String view() {
         return view("view");
     }
 
-    public FinanceController(){
+    public FinanceController() {
         viewPath = "finance";
     }
 }

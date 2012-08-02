@@ -5,7 +5,6 @@ import org.naure.repositories.models.learn.Eng;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,13 +34,5 @@ public class EngRepository extends Repository {
             return this.update(update);
         } else
             return workspace.add(eng);
-    }
-
-    public <T> List<Eng> get(T params) throws Exception {
-        return workspace.get(params, Eng.class);
-    }
-
-    public Eng get(int identifier) throws Exception {
-        return workspace.get(identifier, Eng.class);
     }
 }

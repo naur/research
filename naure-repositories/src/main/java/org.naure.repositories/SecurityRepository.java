@@ -1,13 +1,11 @@
 package org.naure.repositories;
 
 import org.naure.repositories.construction.Repository;
-import org.naure.repositories.models.Session;
 import org.naure.repositories.models.finance.Security;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,13 +36,5 @@ public class SecurityRepository extends Repository {
             security.setUpdated(security.getCreated());
             return workspace.add(security);
         }
-    }
-
-    public <T> List<Session> get(T params) throws Exception {
-        return workspace.get(params, Session.class);
-    }
-
-    public Session get(int identifier) throws Exception {
-        return workspace.get(identifier, Session.class);
     }
 }

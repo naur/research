@@ -12,6 +12,15 @@ import java.util.Map;
  */
 //期货市场
 public class Future extends Security {
+    public Future() {
+
+    }
+
+    public Future(String species, String contract) {
+        this.species = species;
+        this.contract = contract;
+    }
+
     public String getSpecies() {
         return species;
     }

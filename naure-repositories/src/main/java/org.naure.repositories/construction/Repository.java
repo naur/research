@@ -3,6 +3,7 @@ package org.naure.repositories.construction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,6 +17,14 @@ public abstract class Repository {
     @Autowired
     @Qualifier("mongoWorkspace")
     protected Workspace workspace;
+
+    public <T, U> List<U> get(T params, Class<U> resultClass) throws Exception {
+        return workspace.get(params, resultClass);
+    }
+
+    public <U> U get(int identifier, Class<U> resultClass) throws Exception {
+        return workspace.get(identifier, resultClass);
+    }
 
     public boolean update(Map params) throws Exception {
         return workspace.update(params);

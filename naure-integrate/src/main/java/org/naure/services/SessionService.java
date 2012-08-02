@@ -21,7 +21,7 @@ public class SessionService {
 
     public List<Session> get(Map params) throws Exception {
         params.put("application", systemProperties.applicationName);
-        return sessionRepository.get(params);
+        return sessionRepository.get(params, Session.class);
     }
 
     public void add(final Session session) {

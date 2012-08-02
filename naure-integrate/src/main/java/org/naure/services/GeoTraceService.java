@@ -19,11 +19,11 @@ import java.util.Map;
 public class GeoTraceService {
 
     public GeoTrace get(int identifier) throws Exception {
-        return geoTraceRepository.get(identifier);
+        return geoTraceRepository.get(identifier, GeoTrace.class);
     }
 
     public List<GeoTrace> get(Map params) throws Exception {
-        return geoTraceRepository.get(params);
+        return geoTraceRepository.get(params, GeoTrace.class);
     }
 
     public boolean add(final GeoTrace geoTrace) throws Exception {

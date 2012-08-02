@@ -1,7 +1,6 @@
 package org.naure.services;
 
 import org.naure.repositories.SecurityRepository;
-import org.naure.repositories.models.Session;
 import org.naure.repositories.models.finance.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,8 @@ import java.util.Map;
 @Service
 public class SecurityService {
 
-    public List<Session> get(Map params) throws Exception {
-        return securityRepository.get(params);
+    public <T, U extends Security> List<U> get(Map params, Class<U> resultClass) throws Exception {
+        return securityRepository.get(params, resultClass);
     }
 
     public boolean add(final Security security) throws Exception {

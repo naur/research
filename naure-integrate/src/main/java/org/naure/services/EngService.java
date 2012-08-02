@@ -17,11 +17,11 @@ import java.util.*;
 @Service
 public class EngService {
     public List<Eng> get(Map params) throws Exception {
-        return engRepository.get(params);
+        return engRepository.get(params, Eng.class);
     }
 
     public Eng get(int identifier) throws Exception {
-        return engRepository.get(identifier);
+        return engRepository.get(identifier, Eng.class);
     }
 
     public boolean add(final Eng eng) throws Exception {
