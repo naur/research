@@ -110,9 +110,6 @@ public class MongoWorkspace implements Workspace {
                 }
         }
 
-
-        //mongoOps.updateMulti();
-        //mongoOps.
         mongoOps.updateMulti(query, update, params.get("class").toString());
         return true;
     }
