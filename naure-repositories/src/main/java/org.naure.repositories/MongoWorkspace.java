@@ -102,14 +102,17 @@ public class MongoWorkspace implements Workspace {
                     //文档参考：http://hi.baidu.com/farmerluo/item/15ba88579b8bbb9409be17bb
                     //todo 对 pushAll 支持有问题 【can't serialize class org.naure.common.location.GeoPosition】
                     if (subMap.get(key2) instanceof Object[])
-                        update.push(key2.toString(), ((Object[]) subMap.get(key2))[0]);
+                        update.addToSet(key2.toString(), ((Object[]) subMap.get(key2))[0]);
                     else if (subMap.get(key2) instanceof List)
-                        update.push(key2.toString(), ((List) subMap.get(key2)).get(0));
+                        update.addToSet(key2.toString(), ((List) subMap.get(key2)).get(0));
                     else
                         update.set(key2.toString(), subMap.get(key2));
                 }
         }
 
+
+        //mongoOps.updateMulti();
+        //mongoOps.
         mongoOps.updateMulti(query, update, params.get("class").toString());
         return true;
     }
