@@ -44,7 +44,7 @@ public class GeoTraceRepository extends Repository {
     public boolean update(final Map params) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("name", params.get("name"));
-            put("class", params.get("class"));
+            put("class", new GeoTrace().collectionName());
         }};
 
         if (!this.exists(query)) {

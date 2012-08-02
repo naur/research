@@ -15,7 +15,6 @@ import java.util.List;
 public class GeoTrace extends Entity {
     public GeoTrace() {
         name = "";
-        positions = new ArrayList<GeoPosition<GeoCoordinate>>();
     }
 
     public String getName() {
@@ -27,6 +26,8 @@ public class GeoTrace extends Entity {
     }
 
     public List<GeoPosition<GeoCoordinate>> getPositions() {
+        if (positions == null)
+            positions = new ArrayList<GeoPosition<GeoCoordinate>>();
         return positions;
     }
 

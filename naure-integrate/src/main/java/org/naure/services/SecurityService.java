@@ -6,8 +6,6 @@ import org.naure.repositories.models.finance.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +24,7 @@ public class SecurityService {
     }
 
     public boolean add(final Security security) throws Exception {
-        securityRepository.add(security);
+        return securityRepository.add(security);
     }
 
     @Autowired

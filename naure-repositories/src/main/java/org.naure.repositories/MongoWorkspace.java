@@ -124,10 +124,12 @@ public class MongoWorkspace implements Workspace {
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
         Map params = (Map) t;
+        String collectionName = params.get("class").toString();
+        params.remove("class");
         for (Object key : params.keySet()) {
             query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
         }
-        return mongoOperations.count(query, params.get("class").toString());
+        return mongoOperations.count(query, collectionName);
     }
 
     @Autowired
