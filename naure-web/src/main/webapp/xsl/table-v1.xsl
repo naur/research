@@ -6,23 +6,23 @@
             <thead>
                 <tr bgcolor="#9acd32">
                     <th></th>
-                    <xsl:apply-templates select="org.naure.common.entities.Information/data/*[1]/*"/>
+                    <xsl:apply-templates select="information/data/*[1]/*"/>
                 </tr>
             </thead>
             <tfoot></tfoot>
             <tbody>
-                <xsl:apply-templates select="org.naure.common.entities.Information/data/*"/>
+                <xsl:apply-templates select="information/data/*"/>
             </tbody>
         </table>
     </xsl:template>
 
-    <xsl:template match="org.naure.common.entities.Information/data/*[1]/*">
+    <xsl:template match="information/data/*[1]/*">
         <th>
             <xsl:value-of select="name()"/>
         </th>
     </xsl:template>
 
-    <xsl:template match="org.naure.common.entities.Information/data/*">
+    <xsl:template match="information/data/*">
         <tr>
             <xsl:if test="position() mod 2 = 0">
                 <xsl:attribute name="class">
