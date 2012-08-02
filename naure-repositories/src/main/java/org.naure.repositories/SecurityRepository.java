@@ -2,6 +2,7 @@ package org.naure.repositories;
 
 import org.naure.repositories.construction.Repository;
 import org.naure.repositories.models.Session;
+import org.naure.repositories.models.finance.Security;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
@@ -19,28 +20,22 @@ import java.util.Map;
 @Component
 public class SecurityRepository extends Repository {
 
-    public boolean add(final Session session) throws Exception {
-        if (null == session.getSessionId())
-            return workspace.add(session);
+    public boolean add(final Security security) throws Exception {
+        Map<String, Object> query = security.identifier();
 
-        Map<String, Object> query = new HashMap<String, Object>() {{
-            put("application", session.getApplication());
-            put("sessionId", session.getSessionId());
-        }};
-
-        if (this.get(query).size() > 0) {
+        if (this.exists(query)) {
             Map<String, Object> update = new HashMap<String, Object>();
             update.put("query", query);
-            update.put("update", new HashMap<String, Object>(){{
+            update.put("update", new HashMap<String, Object>() {{
                 put("updated", Calendar.getInstance().getTime());
-                put("logs", session.getLogs());
+                put("quotes", security.getQuotes());
             }});
-            update.put("class", session.collectionName());
+            update.put("class", security.collectionName());
             return update(update);
         } else {
-            session.setCreated(Calendar.getInstance().getTime());
-            session.setUpdated(session.getCreated());
-            return workspace.add(session);
+            security.setCreated(Calendar.getInstance().getTime());
+            security.setUpdated(security.getCreated());
+            return workspace.add(security);
         }
     }
 
@@ -50,9 +45,5 @@ public class SecurityRepository extends Repository {
 
     public Session get(int identifier) throws Exception {
         return workspace.get(identifier, Session.class);
-    }
-
-    public boolean update(Map params) throws Exception {
-        return workspace.update(params);
     }
 }

@@ -45,7 +45,7 @@ public class MongoWorkspace implements Workspace {
         }
         query.skip(pageSize * (pageIndex - 1));
         query.limit(pageSize);
-        return mongoOperations.find(query, resultClass, ((Entity)resultClass.newInstance()).collectionName());
+        return mongoOperations.find(query, resultClass, ((Entity) resultClass.newInstance()).collectionName());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class MongoWorkspace implements Workspace {
     @Override
     public <T> boolean add(T t) throws Exception {
         MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
-        mongoOps.insert(t, ((Entity)t).collectionName());
+        mongoOps.insert(t, ((Entity) t).collectionName());
         return true;
     }
 
@@ -112,6 +112,22 @@ public class MongoWorkspace implements Workspace {
 
         mongoOps.updateMulti(query, update, params.get("class").toString());
         return true;
+    }
+
+    @Override
+    public <T> boolean exists(T t) throws Exception {
+        return !new Long(0).equals(this.count(t));
+    }
+
+    @Override
+    public <T> long count(T t) throws Exception {
+        MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
+        Query query = new Query();
+        Map params = (Map) t;
+        for (Object key : params.keySet()) {
+            query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+        }
+        return mongoOperations.count(query, params.get("class").toString());
     }
 
     @Autowired

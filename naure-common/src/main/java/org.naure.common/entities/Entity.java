@@ -39,7 +39,7 @@ public abstract class Entity {
     private Date updated; //updatedDate;
 
     public String collectionName() {
-        String classFullName = toString();
+        String classFullName = getClass().getName();
         return classFullName.substring(
                 classFullName.indexOf("models.") + 7
         ).toLowerCase();

@@ -1,10 +1,8 @@
 package org.naure.repositories.models;
 
 import org.naure.common.entities.Entity;
-import org.naure.common.entities.TraceEventType;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,7 +14,6 @@ import java.util.List;
  */
 public class Session extends Entity {
     public Session() {
-        this.logs = new ArrayList<SessionLog>();
     }
 
     public String getApplication() {
@@ -36,6 +33,8 @@ public class Session extends Entity {
     }
 
     public List<SessionLog> getLogs() {
+        if (this.logs == null)
+            this.logs = new ArrayList<SessionLog>();
         return logs;
     }
 

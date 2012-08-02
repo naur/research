@@ -27,4 +27,7 @@ public interface Workspace {
     <T> boolean update(T t) throws Exception;
 
     //<U, T> List<T> query(U params, Class<T> resultClass);
+
+    <T> boolean exists(T t) throws Exception;
+    <T> long count(T t) throws Exception;
 }

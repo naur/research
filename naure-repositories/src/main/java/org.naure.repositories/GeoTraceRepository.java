@@ -1,5 +1,7 @@
 package org.naure.repositories;
 
+import org.naure.common.location.GeoCoordinate;
+import org.naure.common.location.GeoPosition;
 import org.naure.common.location.GeoTrace;
 import org.naure.repositories.construction.Repository;
 import org.springframework.stereotype.Component;
@@ -26,7 +28,13 @@ public class GeoTraceRepository extends Repository {
         return workspace.get(params, GeoTrace.class);
     }
 
-    public boolean add(GeoTrace geoTrace) throws Exception {
+    public boolean add(final GeoTrace geoTrace) throws Exception {
+        Map<String, Object> query = new HashMap<String, Object>() {{
+            put("name", geoTrace.getName());
+        }};
+        if (this.exists(query)) {
+            throw new Exception(String.format("GeoTrace: 已经存在 name=%0$s, 的记录", geoTrace.getName()));
+        }
         geoTrace.setCreated(Calendar.getInstance().getTime());
         geoTrace.setUpdated(geoTrace.getCreated());
         return workspace.add(geoTrace);
@@ -36,6 +44,17 @@ public class GeoTraceRepository extends Repository {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("name", params.get("name"));
         }};
+
+        if (!this.exists(query)) {
+            //throw new Exception(String.format("GeoTrace: 不存在 name=%0$s, 的记录",  params.get("name")));
+            //当没有时进行 【增加】操作
+            GeoPosition<GeoCoordinate>[] positions = (GeoPosition<GeoCoordinate>[])params.get("position");
+            GeoTrace geoTrace = new GeoTrace();
+            geoTrace.setName(String.valueOf(params.get("name")));
+            geoTrace.getPositions().add(new GeoPosition<GeoCoordinate>(new GeoCoordinate(positions[0].getLocation().getLongitude(), positions[0].getLocation().getLatitude())));
+            return this.add(geoTrace);
+        }
+
         Map<String, Object> update = new HashMap<String, Object>();
         update.put("query", query);
         update.put("update", new HashMap<String, Object>() {{

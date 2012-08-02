@@ -1,5 +1,8 @@
 package org.naure.repositories.models.finance;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator
@@ -27,4 +30,12 @@ public class Future extends Security {
 
     private String species;     //品种
     private String contract;  //合约代码、交割月
+
+    @Override
+    public Map identifier() {
+        return new HashMap<String, Object>() {{
+            put("species", species);
+            put("contract", contract);
+        }};
+    }
 }

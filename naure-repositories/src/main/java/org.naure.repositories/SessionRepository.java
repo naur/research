@@ -26,9 +26,10 @@ public class SessionRepository extends Repository {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("application", session.getApplication());
             put("sessionId", session.getSessionId());
+            put("class", session.collectionName());
         }};
 
-        if (this.get(query).size() > 0) {
+        if (this.exists(query)) {
             Map<String, Object> update = new HashMap<String, Object>();
             update.put("query", query);
             update.put("update", new HashMap<String, Object>(){{
@@ -50,9 +51,5 @@ public class SessionRepository extends Repository {
 
     public Session get(int identifier) throws Exception {
         return workspace.get(identifier, Session.class);
-    }
-
-    public boolean update(Map params) throws Exception {
-        return workspace.update(params);
     }
 }

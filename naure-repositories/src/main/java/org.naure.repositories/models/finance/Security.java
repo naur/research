@@ -2,7 +2,9 @@ package org.naure.repositories.models.finance;
 
 import org.naure.common.entities.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,8 +13,14 @@ import java.util.List;
  * Time: 5:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Security extends Entity {
+public abstract class Security extends Entity {
+    public Security() {
+
+    }
+
     public List<Quote> getQuotes() {
+        if (quotes == null)
+            quotes = new ArrayList<Quote>();
         return quotes;
     }
 
@@ -21,4 +29,6 @@ public class Security extends Entity {
     }
 
     private List<Quote> quotes;
+
+    public abstract Map identifier();
 }

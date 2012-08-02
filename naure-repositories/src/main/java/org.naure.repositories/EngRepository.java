@@ -4,7 +4,9 @@ import org.naure.repositories.construction.Repository;
 import org.naure.repositories.models.learn.Eng;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,8 +17,23 @@ import java.util.List;
  */
 @Component
 public class EngRepository extends Repository {
-    public boolean add(Eng eng) throws Exception {
-        return workspace.add(eng);
+    public boolean add(final Eng eng) throws Exception {
+        Map<String, Object> query = new HashMap<String, Object>(){{
+            put("word", eng.getWord());
+        }};
+
+        if (this.exists(query)) {
+            Map<String, Object> update = new HashMap<String, Object>();
+            update.put("query", query);
+            update.put("update", new HashMap<String, Object>(){{
+                put("description", eng.getDescription());
+                put("updated", eng.getUpdated());
+                put("engKoo", eng.getEngKoo());
+            }});
+            update.put("class", Eng.class);
+            return this.update(update);
+        } else
+            return workspace.add(eng);
     }
 
     public <T> List<Eng> get(T params) throws Exception {
@@ -25,9 +42,5 @@ public class EngRepository extends Repository {
 
     public Eng get(int identifier) throws Exception {
         return workspace.get(identifier, Eng.class);
-    }
-
-    public <T> boolean update(T params) throws Exception {
-        return workspace.update(params);
     }
 }
