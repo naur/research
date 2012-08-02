@@ -20,6 +20,7 @@ public class EngRepository extends Repository {
     public boolean add(final Eng eng) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>(){{
             put("word", eng.getWord());
+            put("class", eng.collectionName());
         }};
 
         if (this.exists(query)) {

@@ -31,6 +31,7 @@ public class GeoTraceRepository extends Repository {
     public boolean add(final GeoTrace geoTrace) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("name", geoTrace.getName());
+            put("class", geoTrace.collectionName());
         }};
         if (this.exists(query)) {
             throw new Exception(String.format("GeoTrace: 已经存在 name=%0$s, 的记录", geoTrace.getName()));
@@ -43,6 +44,7 @@ public class GeoTraceRepository extends Repository {
     public boolean update(final Map params) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("name", params.get("name"));
+            put("class", params.get("class"));
         }};
 
         if (!this.exists(query)) {

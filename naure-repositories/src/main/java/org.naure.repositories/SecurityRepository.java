@@ -22,6 +22,7 @@ public class SecurityRepository extends Repository {
 
     public boolean add(final Security security) throws Exception {
         Map<String, Object> query = security.identifier();
+        query.put("class", security.collectionName());
 
         if (this.exists(query)) {
             Map<String, Object> update = new HashMap<String, Object>();
