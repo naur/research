@@ -1,6 +1,7 @@
 package org.naure.repositories;
 
 import org.naure.common.entities.Entity;
+import org.naure.common.pattern.Tree;
 import org.naure.repositories.config.MongoConfiguration;
 import org.naure.repositories.construction.Workspace;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,18 @@ public class MongoWorkspace implements Workspace {
                     pageIndex = 1;
                 continue;
             }
-            query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+            if (params.get(key) instanceof Tree) {
+                Tree tree = (Tree) params.get(key);
+                switch (tree.getType()) {
+                    case In:
+                        query.addCriteria(Criteria.where(key.toString()).in(tree.getLeft().getInfo(), tree.getRight().getInfo()));
+                        break;
+                    case Between:
+                        query.addCriteria(Criteria.where(key.toString()).gte(tree.getLeft().getInfo()).lte(tree.getRight().getInfo()));
+                        break;
+                }
+            } else
+                query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
         }
         query.skip(pageSize * (pageIndex - 1));
         query.limit(pageSize);

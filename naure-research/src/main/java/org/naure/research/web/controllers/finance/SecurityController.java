@@ -4,6 +4,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.pattern.Func;
+import org.naure.common.pattern.Tree;
+import org.naure.common.pattern.TreeType;
 import org.naure.repositories.models.finance.Future;
 import org.naure.repositories.models.finance.Quote;
 import org.naure.repositories.models.finance.Security;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,20 +33,24 @@ import java.util.Map;
 @RequestMapping(value = "finance/security")
 public class SecurityController extends ControllerBase {
 
-    @RequestMapping(value = "{classes}/{identifier}/{start}/{end}")
+    @RequestMapping("{classes}/{identifier}/date/{start}-{end}")
     public Information get(@PathVariable final String classes, @PathVariable final String identifier, @PathVariable final String start, @PathVariable final String end) {
         return handler(new Information<List<Security>>(), new Func<Information, Information>() {
             @Override
             public Information execute(Information information) throws Exception {
                 Information<List<Security>> info = (Information<List<Security>>) information;
+
                 String[] ids = identifier.split(",");
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, Object> params = new HashMap<String, Object>();
                 Class clazz = null;
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
                 switch (classes) {
                     case "future":
                         params.put("species", ids[0]);
                         params.put("contract", ids[1]);
-                        //params.put("quotes.date", start);
+                        params.put("quotes.date", new Tree(TreeType.Between,
+                                new Tree<Date>(formatter.parse(start)),
+                                new Tree<Date>(formatter.parse(end))));
                         clazz = Future.class;
                         break;
                 }
@@ -54,7 +62,7 @@ public class SecurityController extends ControllerBase {
         });
     }
 
-    @RequestMapping(value = "{classes}/{identifier}/{params}")
+    @RequestMapping("{classes}/{identifier}/{params}")
     public Information add(@PathVariable final String classes, @PathVariable final String identifier, @PathVariable final String params) {
         return handler(new Information<String>(), new Func<Information, Information>() {
             @Override
@@ -69,8 +77,9 @@ public class SecurityController extends ControllerBase {
                 }
                 String securityParams = String.format(
                         "{%0$s}",
-                        params.replaceAll("([\\w]+)=([\\w]+)", "\"$1\":\"$2\"")
+                        params.replaceAll("([\\w]+)=([\\w-]+)", "\"$1\":\"$2\"")
                 );
+                //Quote[].class
                 security.getQuotes().add(new ObjectMapper().readValue(securityParams, Quote.class));
 
                 info.setData(securityService.add(security) ? "Success" : "Error");
