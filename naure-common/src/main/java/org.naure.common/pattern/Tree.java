@@ -28,8 +28,8 @@ public class Tree<T> {
     public Tree(TreeType type, T info, Tree left, Tree right) {
         this.type = type;
         this.info = info;
-        this.right = left;
-        this.left = right;
+        this.left = left;
+        this.right = right;
     }
 
     public Tree getRight() {
