@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Script:
  *              贾睿之
  * Email:
@@ -10,7 +10,7 @@
  */
 
 var jslocalpath = '/Research/projects/naure/naure-web/src/main/webapp';
-jslocalpath = '';
+//jslocalpath = '';
 var jslocalpath1 = jslocalpath.replace('naure-web', 'naure-research');
 
 require.config({
