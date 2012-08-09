@@ -32,6 +32,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             },
 
             zoomAxis: function(zoom) {
+                if ('horizontal' == config.zoomAxis)
+                    zoom.Y = null;
+                if ('vertical' == config.zoomAxis)
+                    zoom.X = null;
                 return zoom
             },
 

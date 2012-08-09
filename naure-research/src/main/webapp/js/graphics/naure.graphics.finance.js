@@ -34,9 +34,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 };
             },
 
-            Gridline:function () {
-                Size: 0
-            },
+//            Gridline:function () {
+//                Size: 0
+//            },
 
             gridlineLabelX:function (num) {
                 var d = finance.parseCoordinate({X:num, Y:0}).X;
@@ -62,7 +62,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
             },
 
             zoomAxis:function (zoom) {
-                zoom.Y = null;
+                //zoomAxis: 'both',  //horizontal, vertical,
+                if ('horizontal' == config.zoomAxis)
+                    zoom.Y = null;
+                if ('vertical' == config.zoomAxis)
+                    zoom.X = null;
                 return zoom;
             },
 

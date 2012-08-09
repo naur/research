@@ -40,6 +40,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                     "majorStyle":"black",
                     "font":"8pt sans-serif" // "8pt monospace";    Serif Sans-Serif Monospace 字体
                 },
+                zoomAxis: 'both',  //horizontal, vertical,
                 quality:1,
                 zoomFactor:0.1,
                 "lineWidth":1,

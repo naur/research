@@ -13,17 +13,19 @@
 var naure, message, http, graphics, lines;
 
 var overlayNodes = {
-    StartDate:{
-        html:'<input id="start-date" type="text" />'
-    },
-    EndDate:{
-        html:'<input id="end-date" type="text" />'
-    },
     Input:{
         html:'<input id="overlay-input" type="text" />'
     },
-    CompositeOperation:{
-        html:'<select id=composite-operation>' +
+    Date:{
+        html:'<input id="start-date" style="width:60px;" type="text" />-<input id="end-date" style="width:60px;" type="text" />'
+    },
+    ZoomAxis:{
+        html:'<select id="zoom-axis" style="width:60px;">' +
+            '<option>both</option>' +
+            '<option>horizontal</option>' +
+            '<option>vertical</option>' +
+            '</select>' +
+            '<select id="composite-operation" style="width:80px;">' +
             '<option>source-over</option>' +
             '<option>source-in</option>' +
             '<option>source-out</option>' +
@@ -38,7 +40,23 @@ var overlayNodes = {
             '<option>copy</option>' +
             '</select>'
     },
-    'Equation':function () {
+//    CompositeOperation:{
+//        html:'<select id=composite-operation>' +
+//            '<option>source-over</option>' +
+//            '<option>source-in</option>' +
+//            '<option>source-out</option>' +
+//            '<option>source-atop</option>' +
+//            '<option>lighter</option>' +
+//            '<option>xor</option>' +
+//            '<option>destination-over</option>' +
+//            '<option>destination-in</option>' +
+//            '<option>destination-out</option>' +
+//            '<option>destination-atop</option>' +
+//            '<option>darker</option>' +
+//            '<option>copy</option>' +
+//            '</select>'
+//    },
+    Equation:function () {
         lines = [];
         lines.push({equation:'y=x^2', color:'red'});
         lines.push({equation:"\\frac{d}{dx}\\left(sin\\left(x\\right)+log\\left(x+1\\right)\\right)", color:'blue'});
@@ -48,21 +66,21 @@ var overlayNodes = {
             lines:lines
         });
     },
-    'Finance':function () {
+    Finance:function () {
         graphics.System(graphics.Finance);
         graphics.draw();
     },
-    'Reset':function () {
+    Reset:function () {
         graphics.reset();
     },
-    'Date':function () {
-        var tDate = new Date();
-        tDate.setTime(new Number($('#overlay-input').val()) * 3600000);
-        message.show({
-            content:tDate.toString() + ' ---- ' + new Date().toString()
-        });
-    },
-    'Sina':function () {
+//    'Date':function () {
+//        var tDate = new Date();
+//        tDate.setTime(new Number($('#overlay-input').val()) * 3600000);
+//        message.show({
+//            content:tDate.toString() + ' ---- ' + new Date().toString()
+//        });
+//    },
+    Sina:function () {
         //http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=19950802&end_date=20120723&type=xml
         $(this).attr('disabled', true);
         message.empty();
@@ -133,6 +151,9 @@ function initEvent() {
     $('#composite-operation').on('change', function () {
         graphics.config.CompositeOperation = $(this).val();
     });
+    $('#zoom-axis').on('change', function () {
+        graphics.config.zoomAxis = $(this).val();
+    });
 }
 
 /*-------------------- 事件 END ----------------------*/
@@ -152,7 +173,7 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http',
     message = NAURE.Message;
 
     $(function () {
-        $('body').message({overlay:'left-bottom', title:'', multiple: false});
+        $('body').message({overlay:'left-bottom', title:'', multiple:false});
         $('body').overlay({
             nodes:overlayNodes
         });
