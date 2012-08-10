@@ -40,22 +40,6 @@ var overlayNodes = {
             '<option>copy</option>' +
             '</select>'
     },
-//    CompositeOperation:{
-//        html:'<select id=composite-operation>' +
-//            '<option>source-over</option>' +
-//            '<option>source-in</option>' +
-//            '<option>source-out</option>' +
-//            '<option>source-atop</option>' +
-//            '<option>lighter</option>' +
-//            '<option>xor</option>' +
-//            '<option>destination-over</option>' +
-//            '<option>destination-in</option>' +
-//            '<option>destination-out</option>' +
-//            '<option>destination-atop</option>' +
-//            '<option>darker</option>' +
-//            '<option>copy</option>' +
-//            '</select>'
-//    },
     Equation:function () {
         lines = [];
         lines.push({equation:'y=x^2', color:'red'});
@@ -73,14 +57,8 @@ var overlayNodes = {
     Reset:function () {
         graphics.reset();
     },
-//    'Date':function () {
-//        var tDate = new Date();
-//        tDate.setTime(new Number($('#overlay-input').val()) * 3600000);
-//        message.show({
-//            content:tDate.toString() + ' ---- ' + new Date().toString()
-//        });
-//    },
     Sina:function () {
+        //http://www.google.com/ig/api?stock=600455
         //http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=19950802&end_date=20120723&type=xml
         $(this).attr('disabled', true);
         message.empty();

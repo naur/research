@@ -10,13 +10,13 @@
  */
 
 var jslocalpath = '/Research/projects/naure/naure-web/src/main/webapp';
-//jslocalpath = '';
+jslocalpath = '';
 var jslocalpath1 = jslocalpath.replace('naure-web', 'naure-research');
 
 require.config({
     //baseUrl: '',
     paths:{
-        jquery:jslocalpath + '/js/jquery-1.7.2.min',
+        jquery:jslocalpath + '/js/jquery-1.8.0.min',
         'jquery.strings':jslocalpath + '/js/jquery.strings',
         'ajaxslt':jslocalpath + '/js/ajaxslt',
 

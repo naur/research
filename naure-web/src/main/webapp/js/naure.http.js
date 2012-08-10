@@ -8,7 +8,7 @@
  *
  */
 
-define(['jquery', 'naure'], function($, NAURE) {
+define(['jquery', 'naure'], function ($, NAURE) {
     NAURE.HTTP.State = function (state) {
         switch (state) {
             case 0:
@@ -120,6 +120,11 @@ define(['jquery', 'naure'], function($, NAURE) {
         if (typeof(rootElement) == 'string') {
             var doc = new ActiveXObject("MSXML2.DOMDocument");
             doc.loadXML(rootElement);
+            if (doc.parseError && doc.parseError.errorCode != 0) {
+                delegate({content:doc.parseError.reason, color:'red', inline:false});
+                //delegate({content:doc.parseError.srcText, color:'red', inline:false});
+                return;
+            }
             rootElement = doc.documentElement;
         }
 

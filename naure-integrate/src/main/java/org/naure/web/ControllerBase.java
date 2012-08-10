@@ -3,6 +3,9 @@ package org.naure.web;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.pattern.Func;
+import org.naure.common.pattern.Sub;
+
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,11 +30,36 @@ public abstract class ControllerBase {
         return information;
     }
 
+    protected Information handler(Map params, Func<Map, Information> func) {
+        Information information = null;
+        try {
+            information = func.execute(params);
+        } catch (Exception ex) {
+            if (null == information)
+                information = new Information<String>();
+            information.setKeywords(ex.toString());
+            information.setLevel(InformationLevel.ERROR.value());
+        }
+        return information;
+    }
+
+    protected Information handler(Sub<Information> func) {
+        Information information = null;
+        try {
+            information = func.execute();
+        } catch (Exception ex) {
+            if (null == information)
+                information = new Information<String>();
+            information.setKeywords(ex.toString());
+            information.setLevel(InformationLevel.ERROR.value());
+        }
+        return information;
+    }
+
 //    @ExceptionHandler(Exception.class)
 //    public String handleException(Exception ex,HttpServletRequest request) {
 //        return ex.getMessage();
 //    }
-
 
 
 //    //读取    {Map<String, T> get()}
