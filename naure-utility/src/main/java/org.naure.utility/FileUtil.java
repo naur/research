@@ -1,7 +1,5 @@
 package org.naure.utility;
 
-import org.apache.commons.io.FileUtils;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -150,7 +148,7 @@ public class FileUtil {
         boolean isSuccessed = false;
         if(srcFile.exists() && srcFile.isFile()) {
             File destFile = new File(destFilePath);
-            FileUtils.copyFile(srcFile, destFile);
+            //FileUtils.copyFile(srcFile, destFile);
         }
         return isSuccessed;
     }

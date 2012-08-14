@@ -17,6 +17,23 @@ var uploadOpt = {
     }
 }
 
+
+
+
+//<script src="/js/uploadify/swfobject.js" type="text/javascript"></script>
+//<script src="/js/uploadify/jquery.uploadify.v2.1.4.js" type="text/javascript"></script>
+//
+//    <script src="/js/ajaxslt.js" type="text/javascript"></script>
+//    <script src="/js/naure.utility.js" type="text/javascript"></script>
+//    <script src="/js/naure.xsl.js" type="text/javascript"></script>
+//    <script src="/js/naure.message.js" type="text/javascript"></script>
+//
+//    <script src="/js/upload.js" type="text/javascript"></script>
+
+
+
+
+
 //----- 全局变量 END -----------------------------------------------
 
 //----- 事件 START -----------------------------------------------

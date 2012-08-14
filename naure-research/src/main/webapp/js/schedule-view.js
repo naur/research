@@ -12,6 +12,15 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var naure, message, overlay, http, overlayNodes;
+var uploadOpt = {
+    'script':'/upload.xml',
+    'scriptData':{
+        'fileName':'learning-schedule.txt'
+    },
+    'uploader':'/js/uploadify/uploadify.swf',
+    'cancelImg':'/js/uploadify/cancel.png',
+    'folder':'/learn/'
+}
 
 /*-------------------- 全局变量 END ------------------*/
 
@@ -42,41 +51,159 @@ overlayNodes = {
             path:$('#overlay-input-path').val()
         };
 
-        if (schedule.path.length > 0) {
-            message.show({content:'Add Schedule ' + JSON.stringify(schedule)});
-            http.xmlAcquire({
-                xmlUrl:'/learn/schedule/' + schedule.path + '/' +
-                    (schedule.number.length > 0 ? 'number=' + schedule.number : '') +
-                    (schedule.heading.length > 0 ? ',heading=' + encodeURIComponent(schedule.heading) : '') +
-                    (schedule.time.length > 0 ? ',time=' + schedule.time : '') +
-                    ".xml",
-                //xslUrl:'/xsl/table.xsl',
-                context:this,
-                error:function (error) {
-                    $(error.context).attr('disabled', false);
-                    message.show({content:'Error: ' + JSON.stringify($.toJSON(error)), color:'red'});
-                },
-                success:function (obj) {
-                    message.show({content:'Add Schedule success.'});
-                    $(obj.context).attr('disabled', false);
-                }
-            });
-        } else {
-            message.show({content:'Input is empty.'});
-            $(this).attr('disabled', false);
-        }
+        AddLearningSchedule(schedule, this);
     },
     Get:function () {
         renderLearningSchedule(this);
     }
 };
 
+function formatURI(schedule) {
+    var str = ( !isNaN(parseInt(schedule.number)) ? ',number=' + schedule.number : '') +
+        (!isNaN(parseInt(schedule.pages)) ? ',pages=' + schedule.pages : '') +
+        (!isNaN(parseInt(schedule.days)) ? ',days=' + schedule.days : '') +
+        (schedule.heading.length > 0 ? ',heading=' + encodeURIComponent(schedule.heading) : '') +
+        (schedule.time && schedule.time.length > 0 ? ',time=' + schedule.time : '');
+
+    return str.substr(1);
+}
+
+function uploadify() {
+    $('#fileupload').uploadify({
+        'uploader':uploadOpt.uploader,
+        'script':uploadOpt.script,
+        'scriptData':uploadOpt.scriptData,
+        fileDataName:'fileData', //设置一个名字，在服务器处理程序中根据该名字来取上传文件的数据。默认为Filedata
+        'cancelImg':uploadOpt.cancelImg,
+        'folder':uploadOpt.folder,
+        'removeCompleted':true,
+        'multi':true,
+        'auto':false, //选定文件后是否自动上传，默认false
+//        'fileExt':'*.xls;*.xlsx;*.csv',
+//        'fileDesc':'Excel Files (.xls, .xlsx, .csv)', //这个属性值必须设置fileExt属性后才有效，用来设置选择文件对话框中的提示文本，如设置fileDesc为“请选择rar doc pdf文件”
+        'onSelect':function (event, queueID, fileObj) { //选择上传文件时解发以下动作,   fileObj : 选择的文件对象，有name、size、creationDate、modificationDate、type 5个属性
+            $('article section:eq(1)').empty();
+            message.empty();
+            message.promptLine({content:"选择文件【" + fileObj.name + "】"});
+        },
+        'onSelectOnce':function (event, data) {  //在单文件或多文件上传时，选择文件时触发。
+//            message.promptLine({content:
+//                "fileCount: " + data.fileCount + "\t" +
+//                    "filesReplaced:" + data.filesReplaced + "\t" +
+//                    "filesSelected:" + data.filesSelected
+//            });
+        },
+        'onOpen':function (event, queueId, fileObj) {
+            $('#uploadfile').attr('disabled', true);
+            message.promptLine({content:"正在准备上传，请稍候... "});
+        },
+        'onProgress':function (event, queueId, fileObj, data) {
+            message.promptLine({content:"上传结束！ "});
+            $('#uploadfile').attr('disabled', false);
+        },
+        'onComment':function (event, queueID, fileObj, response, data) {  //上传成功后动作
+            message.promptLine({content:'onComment'});
+        },
+        'onCancel':function (event, queueId, fileObj, data) {
+            message.promptLine({content:"取消上传【" + fileObj.name + "】", color:'red'});
+        },
+        'onComplete':function (even, queueId, fileObj, response, data) {
+            message.promptLine({content:"上传文件【" + fileObj.name + "】完成！"});
+            http.xmlAcquire({
+                xml:response,
+                //xslUrl:uploadOpt.uploadvalidXsl,
+                error:function (ex) {
+                    message.promptLine({content:JSON.stringify(ex.content), color:'red'});
+                    $('#handle').css('display', 'none');
+                },
+                success:function (obj) {
+//                    var notificationIndex = 1;
+//                    $('#makeorder').hide();
+//                    var jsonArray = $.parseJSON(obj.output.replace('},]', '}]'));
+//                    if (jsonArray.length <= 0) {
+//                        message.promptLine({
+//                            content:'上传文件的过程中发生异常了，请稍候重试！',
+//                            color:'red'
+//                        });
+//                        return false;
+//                    }
+//                    if (jsonArray[0].fileName != undefined) {
+//                        $('#makeorder').attr('tag', jsonArray[0].fileName);
+//                    } else {
+//                        notificationIndex = 0;
+//                    }
+//
+//                    if ($('#makeorder').attr('tag') == null) {
+//                        message.promptLine({
+//                            content:'上传的文件有错误，请根据错误提示修改文件后再重新上传！',
+//                            color:'red'
+//                        });
+//                    } else {
+//                        if (jsonArray.length > 1) {
+//                            message.promptLine({
+//                                content:'上传的文件有错误，请修改文件后再重新上传！',
+//                                color:'red'
+//                            });
+//                        } else {
+//                            $('#makeorder').show();
+//                            $('#makeorder').attr('disabled', false);
+//                            $('#uploadfile').attr('disabled', false);
+//                        }
+//                    }
+//
+//                    //显示错误信息
+//                    for (i = notificationIndex; i < jsonArray.length; i++) {
+//                        message.promptLine({
+//                            content:jsonArray[i].cell + '：' + jsonArray[i].error,
+//                            color:'red'
+//                        });
+//                    }
+                    $('#handle').css('display', 'inline');
+                } });
+            $('#uploadfile').attr('disabled', false);
+        },
+        'onAllComplete':function (event, data) {
+            message.promptLine({content:data.filesUploaded + " files uploaded, " + data.errors + " errors."});
+            $('#uploadfile').attr('disabled', false);
+        },
+        'onError':function (event, queueId, fileObj, errorObj) {
+            message.promptLine({content:'错误：' + errorObj.info, color:'red'});
+            $('#uploadfile').attr('disabled', false);
+        }
+    });
+}
+
+function AddLearningSchedule(schedule, context) {
+    if (schedule.path.length > 0) {
+        if (context) message.show({content:'Add Schedule ' + JSON.stringify(schedule)});
+        http.xmlAcquire({
+            xmlUrl:'/learn/schedule/' + schedule.path + '/' + formatURI(schedule) + ".xml",
+            //xslUrl:'/xsl/table.xsl',
+            context:context,
+            error:function (error) {
+                if (error.context) $(error.context).attr('disabled', false);
+                message.show({content:JSON.stringify(schedule) + JSON.stringify($.toJSON(error)), color:'red'});
+            },
+            success:function (obj) {
+                if (context) message.show({content:'Add Schedule success.'});
+                if (obj.context) $(obj.context).attr('disabled', false);
+
+                message.show({content:JSON.stringify(schedule)});
+            }
+        });
+    } else {
+        if (context)  message.show({content:'Input is empty.'});
+        $(context).attr('disabled', false);
+    }
+}
+
 function renderLearningSchedule(elem) {
     $(elem).attr('disabled', true);
-    $('article section').empty();
+    $('article section:eq(1)').empty();
+    message.empty();
     message.show({content:'正在获取数据...'});
 
-    $('article section').NAURE_HTTP_xmlAcquire({
+    $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
         xmlUrl:'/learn/schedule.xml',
         //xslUrl:'/xsl/learning-schedule.xsl',
         xslUrl:'/xsl/table.xsl',
@@ -98,26 +225,66 @@ function renderLearningSchedule(elem) {
 /*-------------------- 事件 START --------------------*/
 
 function initEvent() {
+    $('#uploadfile').on('click', function () {
+        $('#fileupload').uploadifyUpload();
+    });
 
+    $('#handle').on('click', function () {
+        $('article section:eq(1)').empty();
+        message.empty();
+        message.show({content:'正在获取数据...'});
+        $(this).attr('disabled', true);
+
+        http.xmlAcquire({
+            xmlUrl:'/upload/learn/learning-schedule.txt',
+            context:this,
+            dataType:'text',
+            error:function (ex) {
+                $(ex.context).attr('disabled', false);
+            },
+            success:function (obj) {
+                $(obj.context).attr('disabled', false);
+
+                var text = obj.output.split(/[\r\n]+/i);
+                var schedule = null;
+                for (var i = 0; i < text.length; i++) {
+                    schedule = text[i].split('|');
+                    if (schedule && schedule.length > 1) {
+                        schedule = {
+                            pages:schedule[0],
+                            days:schedule[1],
+                            path:schedule[2],
+                            heading:schedule[3]
+                        };
+                        AddLearningSchedule(schedule)
+                    } else {
+                        message.show({content:JSON.stringify(schedule), color:'yellow'});
+                    }
+                }
+            }
+        });
+    });
 }
 
 /*-------------------- 事件 END ----------------------*/
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics', 'naure.xsl'], function ($, NAURE) {
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics', 'naure.xsl',
+    'swfobject', 'jquery.uploadify'], function ($, NAURE) {
     naure = NAURE;
     message = NAURE.Message;
     http = NAURE.HTTP;
 
     $(function () {
-        $('body').message({overlay:'left-top'});
+        $('article section:eq(2)').message();
         $('body').overlay({
             nodes:overlayNodes
         });
     });
 
     initEvent();
+    uploadify();
 });
 
 /*-------------------- 初始化 END --------------------*/

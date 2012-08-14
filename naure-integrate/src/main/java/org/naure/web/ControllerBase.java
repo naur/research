@@ -5,6 +5,7 @@ import org.naure.common.entities.InformationLevel;
 import org.naure.common.pattern.Func;
 import org.naure.common.pattern.Sub;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -56,6 +57,11 @@ public abstract class ControllerBase {
         return information;
     }
 
+    public void setApplicationPath(HttpServletRequest request) {
+        if (null == applicationPath)
+            this.applicationPath = request.getSession().getServletContext().getRealPath("/");
+
+    }
 //    @ExceptionHandler(Exception.class)
 //    public String handleException(Exception ex,HttpServletRequest request) {
 //        return ex.getMessage();
@@ -77,4 +83,5 @@ public abstract class ControllerBase {
 //    //<U, T> List<T> query(U params, Class<T> tClass);
 
     protected String viewPath = "";
+    protected String applicationPath;
 }

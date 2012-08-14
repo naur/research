@@ -3,24 +3,57 @@
 <head>
     <title> Learning Schedule </title>
 
-    <link href="/css/mathquill.css" rel="stylesheet" type="text/css"/>
     <link href="/css/naure.message.css" rel="stylesheet" type="text/css"/>
     <link href="/css/naure.overlay.css" rel="stylesheet" type="text/css"/>
     <link href="/css/defaulttablestyle.css" rel="stylesheet" type="text/css"/>
+
+    <link rel="stylesheet" type="text/css" href="/js/uploadify/uploadify.css"/>
 
     <script type="text/javascript" src="/js/require.js"></script>
     <script type="text/javascript" src="/js/require.config.js"></script>
     <script type="text/javascript" src="/js/schedule-view.js"></script>
 
     <style type="text/css">
-        article section {
+
+        article {
             padding: 8px;
         }
+
+        /*article section:first-child {*/
+            /*margin: 10px 0 10px 0;*/
+        /*}*/
+
+        article section:first-child input {
+            height: 200px;
+            display: inline;
+        }
+
+        article section:first-child a {
+            margin: 0px 30px 0px 0px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        article section:first-child a:link, a:visited {
+            text-decoration: none;
+        }
+
+        article section:first-child a:hover {
+            color: red;
+            text-decoration: none;
+        }
+
     </style>
 
 </head>
 <body>
 <article>
+    <section>
+        <input type="file" id="fileupload"/>
+        <a id="uploadfile">上传文件</a>
+        <a id="handle" style="display: none;">处理文件</a>
+    </section>
+    <section></section>
     <section></section>
 </article>
 

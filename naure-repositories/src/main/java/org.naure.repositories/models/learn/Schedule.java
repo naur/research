@@ -2,8 +2,6 @@ package org.naure.repositories.models.learn;
 
 import org.naure.common.entities.Entity;
 
-import java.util.Date;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator
@@ -29,11 +27,11 @@ public class Schedule extends Entity {
         this.heading = heading;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
@@ -45,8 +43,35 @@ public class Schedule extends Entity {
         this.path = path;
     }
 
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     private int number;
-    private String heading;
-    private Date time;
+    private int pages;
+    private int days;
+    private String time;    //格式： 2010-01-01 -> 2010-02-02
     private String path;
+    private String heading;
+    private String comment;
 }

@@ -20,6 +20,11 @@
 </div>
  */
 
+body {
+    font-size: 12px;
+    font-family: 'Microsoft YaHei';
+}
+
 .message {
     /*margin: 8px;*/
     position: relative;

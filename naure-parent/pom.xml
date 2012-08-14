@@ -33,6 +33,10 @@
         <!--3.0.5-->
         <!--<spring-oxm.version>1.5.10</spring-oxm.version>-->
 
+        <commons-fileupload.version>1.2.2</commons-fileupload.version>
+        <!--<commons-io.version>1.2</commons-io.version>-->
+        <commons-io.version>2.0.1</commons-io.version>
+
         <naure.log.file.path>/data/web/logs</naure.log.file.path>
 
     </properties>
@@ -90,7 +94,15 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.0.1</version>
+                <version>${commons-io.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons-fileupload.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <!-- Servlet -->
@@ -177,24 +189,24 @@
 
             <!--&lt;!&ndash;struts&ndash;&gt;-->
             <!--<dependency>-->
-                <!--<groupId>org.apache.struts</groupId>-->
-                <!--<artifactId>struts2-core</artifactId>-->
-                <!--<version>${struts.version}</version>-->
+            <!--<groupId>org.apache.struts</groupId>-->
+            <!--<artifactId>struts2-core</artifactId>-->
+            <!--<version>${struts.version}</version>-->
             <!--</dependency>-->
             <!--<dependency>-->
-                <!--<groupId>org.apache.struts</groupId>-->
-                <!--<artifactId>struts2-convention-plugin</artifactId>-->
-                <!--<version>${struts.version}</version>-->
+            <!--<groupId>org.apache.struts</groupId>-->
+            <!--<artifactId>struts2-convention-plugin</artifactId>-->
+            <!--<version>${struts.version}</version>-->
             <!--</dependency>-->
             <!--<dependency>-->
-                <!--<groupId>org.apache.struts</groupId>-->
-                <!--<artifactId>struts2-config-browser-plugin</artifactId>-->
-                <!--<version>${struts.version}</version>-->
+            <!--<groupId>org.apache.struts</groupId>-->
+            <!--<artifactId>struts2-config-browser-plugin</artifactId>-->
+            <!--<version>${struts.version}</version>-->
             <!--</dependency>-->
             <!--<dependency>-->
-                <!--<groupId>org.apache.struts</groupId>-->
-                <!--<artifactId>struts2-rest-plugin</artifactId>-->
-                <!--<version>${struts.version}</version>-->
+            <!--<groupId>org.apache.struts</groupId>-->
+            <!--<artifactId>struts2-rest-plugin</artifactId>-->
+            <!--<version>${struts.version}</version>-->
             <!--</dependency>-->
 
             <!--poi-->
@@ -464,10 +476,10 @@
         </resources>
 
         <!--<testResources>-->
-            <!--<testResource>-->
-                <!--<directory>src/test/resources</directory>-->
-                <!--<filtering>true</filtering>-->
-            <!--</testResource>-->
+        <!--<testResource>-->
+        <!--<directory>src/test/resources</directory>-->
+        <!--<filtering>true</filtering>-->
+        <!--</testResource>-->
         <!--</testResources>-->
     </build>
 
