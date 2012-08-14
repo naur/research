@@ -11,7 +11,7 @@
 
 /*-------------------- 全局变量 START ----------------*/
 
-var naure, message, overlay, http, overlayNodes;
+var naure, message, overlay, http, overlayNodes, messageElement, dataAreaElement, tableHead;
 var uploadOpt = {
     'script':'/upload.xml',
     'scriptData':{
@@ -20,7 +20,7 @@ var uploadOpt = {
     'uploader':'/js/uploadify/uploadify.swf',
     'cancelImg':'/js/uploadify/cancel.png',
     'folder':'/learn/'
-}
+};
 
 /*-------------------- 全局变量 END ------------------*/
 
@@ -45,10 +45,10 @@ overlayNodes = {
         message.empty();
 
         var schedule = {
-            number:$('#overlay-input-number').val(),
-            heading:$('#overlay-input-heading').val(),
-            time:$('#overlay-input-time').val(),
-            path:$('#overlay-input-path').val()
+            number:$('#overlay-input-number').val().trim(),
+            heading:$('#overlay-input-heading').val().trim(),
+            time:$('#overlay-input-time').val().trim(),
+            path:$('#overlay-input-path').val().trim()
         };
 
         AddLearningSchedule(schedule, this);
@@ -59,10 +59,11 @@ overlayNodes = {
 };
 
 function formatURI(schedule) {
-    var str = ( !isNaN(parseInt(schedule.number)) ? ',number=' + schedule.number : '') +
+    var str = (schedule.id && schedule.id.length > 0 ? ',id=' + schedule.id : '') +
+        ( !isNaN(parseInt(schedule.number)) ? ',number=' + schedule.number : '') +
         (!isNaN(parseInt(schedule.pages)) ? ',pages=' + schedule.pages : '') +
         (!isNaN(parseInt(schedule.days)) ? ',days=' + schedule.days : '') +
-        (schedule.heading.length > 0 ? ',heading=' + encodeURIComponent(schedule.heading) : '') +
+        (schedule.heading && schedule.heading.length > 0 ? ',heading=' + encodeURIComponent(schedule.heading) : '') +
         (schedule.time && schedule.time.length > 0 ? ',time=' + schedule.time : '');
 
     return str.substr(1);
@@ -82,7 +83,7 @@ function uploadify() {
 //        'fileExt':'*.xls;*.xlsx;*.csv',
 //        'fileDesc':'Excel Files (.xls, .xlsx, .csv)', //这个属性值必须设置fileExt属性后才有效，用来设置选择文件对话框中的提示文本，如设置fileDesc为“请选择rar doc pdf文件”
         'onSelect':function (event, queueID, fileObj) { //选择上传文件时解发以下动作,   fileObj : 选择的文件对象，有name、size、creationDate、modificationDate、type 5个属性
-            $('article section:eq(1)').empty();
+            dataAreaElement.empty();
             message.empty();
             message.promptLine({content:"选择文件【" + fileObj.name + "】"});
         },
@@ -174,39 +175,49 @@ function uploadify() {
 }
 
 function AddLearningSchedule(schedule, context) {
-    if (schedule.path.length > 0) {
-        if (context) message.show({content:'Add Schedule ' + JSON.stringify(schedule)});
-        http.xmlAcquire({
-            xmlUrl:'/learn/schedule/' + schedule.path + '/' + formatURI(schedule) + ".xml",
-            //xslUrl:'/xsl/table.xsl',
-            context:context,
-            error:function (error) {
-                if (error.context) $(error.context).attr('disabled', false);
-                message.show({content:JSON.stringify(schedule) + JSON.stringify($.toJSON(error)), color:'red'});
-            },
-            success:function (obj) {
-                if (context) message.show({content:'Add Schedule success.'});
-                if (obj.context) $(obj.context).attr('disabled', false);
+    var xmlUrl;
+    if (schedule.path && schedule.path.length > 0) {
+        xmlUrl = '/learn/schedule/' + schedule.path + '/' + formatURI(schedule) + ".xml";
+    }
 
-                message.show({content:JSON.stringify(schedule)});
-            }
-        });
-    } else {
+    if (schedule.id && schedule.id.length > 0) {
+        xmlUrl = '/learn/schedule/' + formatURI(schedule) + ".xml";
+    }
+
+    if (!xmlUrl) {
         if (context)  message.show({content:'Input is empty.'});
         $(context).attr('disabled', false);
+        return;
     }
+
+    if (context) message.show({content:'Add Schedule ' + JSON.stringify(schedule)});
+    http.xmlAcquire({
+        xmlUrl:xmlUrl,
+        //xslUrl:'/xsl/table.xsl',
+        context:context,
+        error:function (error) {
+            if (error.context) $(error.context).attr('disabled', false);
+            message.show({content:JSON.stringify(schedule) + JSON.stringify($.toJSON(error)), color:'red'});
+        },
+        success:function (obj) {
+            if (context) message.show({content:'Add Schedule success.'});
+            if (obj.context) $(obj.context).attr('disabled', false);
+
+            message.show({content:JSON.stringify(schedule)});
+        }
+    });
+
 }
 
 function renderLearningSchedule(elem) {
     $(elem).attr('disabled', true);
-    $('article section:eq(1)').empty();
+    dataAreaElement.empty();
     message.empty();
     message.show({content:'正在获取数据...'});
 
-    $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
+    dataAreaElement.NAURE_HTTP_xmlAcquire({
         xmlUrl:'/learn/schedule.xml',
-        //xslUrl:'/xsl/learning-schedule.xsl',
-        xslUrl:'/xsl/table.xsl',
+        xslUrl:'/xsl/learning-schedule.xsl',
         context:elem,
         error:function (ex) {
             message.show({content:'获取数据结束！'});
@@ -214,6 +225,11 @@ function renderLearningSchedule(elem) {
             $(ex.context).attr('disabled', false);
         },
         success:function (obj) {
+            tableHead = {};
+            $('table thead tr th').each(function (index, element) {
+                tableHead[index] = $(element).text();
+            });
+
             $(obj.context).attr('disabled', false);
             message.empty();
         }
@@ -230,7 +246,7 @@ function initEvent() {
     });
 
     $('#handle').on('click', function () {
-        $('article section:eq(1)').empty();
+        dataAreaElement.empty();
         message.empty();
         message.show({content:'正在获取数据...'});
         $(this).attr('disabled', true);
@@ -251,10 +267,10 @@ function initEvent() {
                     schedule = text[i].split('|');
                     if (schedule && schedule.length > 1) {
                         schedule = {
-                            pages:schedule[0],
-                            days:schedule[1],
-                            path:schedule[2],
-                            heading:schedule[3]
+                            pages:schedule[0].trim(),
+                            days:schedule[1].trim(),
+                            path:schedule[2].trim(),
+                            heading:schedule[3].trim()
                         };
                         AddLearningSchedule(schedule)
                     } else {
@@ -263,6 +279,25 @@ function initEvent() {
                 }
             }
         });
+    });
+
+    $('table tbody tr td').live('dblclick', function () {
+        if ($(this).find('input').size() > 0) {
+            $(this).html($(this).find('input').val().trim());
+
+            if ($(this).attr('tag') == $(this).html())
+                return;
+            else
+                $(this).attr('tag', $(this).html());
+
+            var tempSchedule = {};
+            tempSchedule[tableHead[$(this).index()]] = $(this).html().trim();
+            tempSchedule.id = $(this).parent().find('td:eq(1)').html().trim()
+            message.empty();
+            AddLearningSchedule(tempSchedule);
+        } else {
+            $(this).html('<input value="' + $(this).html() + '" />');
+        }
     });
 }
 
@@ -275,9 +310,11 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics', 'naure.x
     naure = NAURE;
     message = NAURE.Message;
     http = NAURE.HTTP;
+    messageElement = $('article section:eq(3)');
+    dataAreaElement = $('article section:eq(2)');
 
     $(function () {
-        $('article section:eq(2)').message();
+        messageElement.message();
         $('body').overlay({
             nodes:overlayNodes
         });

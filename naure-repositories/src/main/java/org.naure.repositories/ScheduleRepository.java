@@ -21,10 +21,14 @@ public class ScheduleRepository extends Repository {
     public boolean edit(final Schedule schedule) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("class", schedule.collectionName());
-            if (null != schedule.getHeading() || "" != schedule.getHeading())
-                put("heading", schedule.getHeading());
-            if (null != schedule.getPath() || "" != schedule.getPath())
-                put("path", schedule.getPath());
+            if (null != schedule.getId() || "" != schedule.getId())
+                put("id", schedule.getId());
+            else {
+                if (null != schedule.getHeading() || "" != schedule.getHeading())
+                    put("heading", schedule.getHeading());
+                if (null != schedule.getPath() || "" != schedule.getPath())
+                    put("path", schedule.getPath());
+            }
         }};
 
         if (this.exists(query)) {

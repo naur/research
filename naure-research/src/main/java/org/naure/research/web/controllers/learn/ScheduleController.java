@@ -48,8 +48,31 @@ public class ScheduleController extends ControllerBase {
         });
     }
 
+    @RequestMapping("{params}")
+    public Information edit(@PathVariable final String params) {
+        return handler(new Sub<Information>() {
+            @Override
+            public Information execute() throws Exception {
+                Information<String> information = new Information<String>();
+                if (params.isEmpty()) {
+                    information.setData("params is empty!");
+                    information.setLevel(InformationLevel.ERROR.value());
+                } else {
+                    String jsonParams = String.format(
+                            "{%0$s}",
+                            params.replaceAll("([^=^,]+)=([^=^,]+)", "\"$1\":\"$2\"")
+                    );
+                    Schedule schedule = new ObjectMapper().readValue(jsonParams, Schedule.class);
+                    information.setData(scheduleService.edit(schedule) ? "Success" : "Error");
+                    information.setLevel(InformationLevel.SUCCESS.value());
+                }
+                return information;
+            }
+        });
+    }
+
     @RequestMapping("{path}/{params}")
-    public Information edit(@PathVariable final String path, @PathVariable final String params) {
+    public Information add(@PathVariable final String path, @PathVariable final String params) {
         return handler(new Sub<Information>() {
             @Override
             public Information execute() throws Exception {

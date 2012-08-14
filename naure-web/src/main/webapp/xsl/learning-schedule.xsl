@@ -31,13 +31,13 @@
                     <xsl:text>tdeven</xsl:text>
                 </xsl:attribute>
             </xsl:if>
-            <td>
+            <td class="tdleft">
                 <xsl:value-of select="position()"/>
             </td>
 
             <!--一级子节点-->
             <xsl:for-each select="child::*">
-                <td>
+                <td class="tdleft">
                     <xsl:choose>
                         <xsl:when test="child::*">
                             <table class="subtable">
@@ -55,6 +55,9 @@
                             </table>
                         </xsl:when>
                         <xsl:otherwise>
+                            <xsl:attribute name="tag">
+                                <xsl:value-of select="."/>
+                            </xsl:attribute>
                             <xsl:value-of select="."/>
                         </xsl:otherwise>
                     </xsl:choose>
