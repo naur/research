@@ -17,8 +17,8 @@ var uploadOpt = {
     'scriptData':{
         'fileName':'learning-schedule.txt'
     },
-    'uploader':'/js/uploadify/uploadify.swf',
-    'cancelImg':'/js/uploadify/cancel.png',
+    'uploader':'/Research/projects/naure/naure-web/src/main/webapp/js/uploadify/uploadify.swf',
+    'cancelImg':'/Research/projects/naure/naure-web/src/main/webapp/js/uploadify/cancel.png',
     'folder':'/learn/'
 };
 
@@ -133,6 +133,12 @@ function uploadify() {
     });
 }
 
+function chart() {
+    $('.chart').each(function() {
+
+    });
+}
+
 function AddLearningSchedule(schedule, context) {
     var xmlUrl;
     if (schedule.path && schedule.path.length > 0) {
@@ -173,8 +179,8 @@ function renderLearningSchedule(elem) {
     message.show({content:'正在获取数据...'});
 
     dataAreaElement.NAURE_HTTP_xmlAcquire({
-        xmlUrl:'/learn/schedule.xml',
-        xslUrl:'/xsl/learning-schedule.xsl',
+        xmlUrl:'/Users/Administrator/Desktop/Temp/schedule.xml',
+        xslUrl:'/Research/projects/naure/naure-web/src/main/webapp/xsl/learning-schedule.xsl',
         context:elem,
         error:function (ex) {
             message.show({content:'获取数据结束！'});
@@ -243,18 +249,18 @@ function initEvent() {
         if ($(this).find('input').size() > 0) {
             $(this).html($(this).find('input').val().trim());
 
-            if ($(this).attr('tag') == $(this).html())
+            if ($(this).attr('tag') == $(this).text())
                 return;
             else
-                $(this).attr('tag', $(this).html());
+                $(this).attr('tag', $(this).text());
 
             var tempSchedule = {};
-            tempSchedule[tableHead[$(this).index()]] = $(this).html().trim();
-            tempSchedule.id = $(this).parent().find('td:eq(1)').html().trim()
+            tempSchedule[tableHead[$(this).index()]] = $(this).text().trim();
+            tempSchedule.id = $(this).parent().find('td:eq(7)').text().trim()
             message.empty();
             AddLearningSchedule(tempSchedule);
         } else {
-            $(this).html('<input value="' + $(this).html() + '" />');
+            $(this).html('<input value="' + $(this).text() + '" />');
         }
     });
 }

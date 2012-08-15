@@ -17,6 +17,7 @@
                     <th></th>
                     <xsl:apply-templates
                             select="information/data/*[1]/*[name()!='created' and name()!='updated' and name()!='id']"/>
+                    <th>表格</th>
                     <xsl:apply-templates
                             select="information/data/*[1]/*[name()='created' or name()='updated' or name()='id']"/>
                 </tr>
@@ -59,6 +60,9 @@
             <xsl:for-each select="child::*[name()!='created' and name()!='updated' and name()!='id']">
                 <xsl:call-template name="cell"/>
             </xsl:for-each>
+
+            <td class="chart"></td>
+
             <xsl:for-each select="child::*[name()='created' or name()='updated' or name()='id']">
                 <xsl:call-template name="cell"/>
             </xsl:for-each>
