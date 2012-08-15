@@ -51,6 +51,7 @@ var overlayNodes = {
         });
     },
     Finance:function () {
+        lines = [];
         graphics.System(graphics.Finance);
         graphics.draw();
     },
@@ -79,9 +80,10 @@ var overlayNodes = {
             success:function (obj) {
                 $(obj.context).attr('disabled', false);
                 message.show({content:'获取数据成功！'});
-                lines = [];
 
-                var y1, y2, price = ['l', 'c', 'h', 'o'];
+                var y1, y2;
+                //var price = ['v', 'l', 'c', 'h', 'o'];
+                var price = ['c', 'o'];
                 for (var key in price) {
                     if (!price.hasOwnProperty(key)) continue;
                     var equation = []
@@ -89,8 +91,7 @@ var overlayNodes = {
                         var content = $(this);
                         equation.push({
                             X:content.attr('d'),
-                            Y:content.attr('v'),
-                            Y1:parseFloat(content.attr(price[key]))
+                            Y:parseFloat(content.attr(price[key]))
                         });
                         if (!y1)
                             y1 = parseFloat(content.attr(price[key]));

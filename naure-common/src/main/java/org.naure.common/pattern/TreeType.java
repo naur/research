@@ -9,7 +9,7 @@ package org.naure.common.pattern;
  */
 public enum TreeType {
     //2,3,4,5,6,7  ln,neg,+,-,*,/
-    Add(4), In(101), Between(102);
+    Add(4), In(101), Between(102), Regex(201);
 
     private final int value;
 

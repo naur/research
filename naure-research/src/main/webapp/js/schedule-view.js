@@ -118,47 +118,6 @@ function uploadify() {
                     $('#handle').css('display', 'none');
                 },
                 success:function (obj) {
-//                    var notificationIndex = 1;
-//                    $('#makeorder').hide();
-//                    var jsonArray = $.parseJSON(obj.output.replace('},]', '}]'));
-//                    if (jsonArray.length <= 0) {
-//                        message.promptLine({
-//                            content:'上传文件的过程中发生异常了，请稍候重试！',
-//                            color:'red'
-//                        });
-//                        return false;
-//                    }
-//                    if (jsonArray[0].fileName != undefined) {
-//                        $('#makeorder').attr('tag', jsonArray[0].fileName);
-//                    } else {
-//                        notificationIndex = 0;
-//                    }
-//
-//                    if ($('#makeorder').attr('tag') == null) {
-//                        message.promptLine({
-//                            content:'上传的文件有错误，请根据错误提示修改文件后再重新上传！',
-//                            color:'red'
-//                        });
-//                    } else {
-//                        if (jsonArray.length > 1) {
-//                            message.promptLine({
-//                                content:'上传的文件有错误，请修改文件后再重新上传！',
-//                                color:'red'
-//                            });
-//                        } else {
-//                            $('#makeorder').show();
-//                            $('#makeorder').attr('disabled', false);
-//                            $('#uploadfile').attr('disabled', false);
-//                        }
-//                    }
-//
-//                    //显示错误信息
-//                    for (i = notificationIndex; i < jsonArray.length; i++) {
-//                        message.promptLine({
-//                            content:jsonArray[i].cell + '：' + jsonArray[i].error,
-//                            color:'red'
-//                        });
-//                    }
                     $('#handle').css('display', 'inline');
                 } });
             $('#uploadfile').attr('disabled', false);
@@ -178,9 +137,7 @@ function AddLearningSchedule(schedule, context) {
     var xmlUrl;
     if (schedule.path && schedule.path.length > 0) {
         xmlUrl = '/learn/schedule/' + schedule.path + '/' + formatURI(schedule) + ".xml";
-    }
-
-    if (schedule.id && schedule.id.length > 0) {
+    } else if (schedule.id && schedule.id.length > 0) {
         xmlUrl = '/learn/schedule/' + formatURI(schedule) + ".xml";
     }
 
@@ -269,8 +226,9 @@ function initEvent() {
                         schedule = {
                             pages:schedule[0].trim(),
                             days:schedule[1].trim(),
-                            path:schedule[2].trim(),
-                            heading:schedule[3].trim()
+                            time:schedule[2].trim(),
+                            path:schedule[3].trim(),
+                            heading:schedule[4].trim()
                         };
                         AddLearningSchedule(schedule)
                     } else {

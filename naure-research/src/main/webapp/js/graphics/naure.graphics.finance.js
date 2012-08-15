@@ -24,10 +24,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     plot:function (ctx, coordinate) {
                         if (equation.length <= 0) return;
                         ctx.beginPath();
-                        ctx.move(Date.parse(equation[0].X) / 86400000, equation[0].Y1);
+                        ctx.move(Date.parse(equation[0].X) / 86400000, equation[0].Y);
                         for (var key in equation) {
                             if (!equation.hasOwnProperty(key)) continue
-                            ctx.line(Date.parse(equation[key].X) / 86400000, equation[key].Y1);
+                            ctx.line(Date.parse(equation[key].X) / 86400000, equation[key].Y);
                         }
                         ctx.stroke();
                     }

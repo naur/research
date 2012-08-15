@@ -5,6 +5,8 @@ import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.pattern.Func;
 import org.naure.common.pattern.Sub;
+import org.naure.common.pattern.Tree;
+import org.naure.common.pattern.TreeType;
 import org.naure.repositories.models.finance.Quote;
 import org.naure.repositories.models.learn.Schedule;
 import org.naure.services.ScheduleService;
@@ -37,6 +39,8 @@ public class ScheduleController extends ControllerBase {
     @RequestMapping()
     public Information get() {
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put("path", new Tree<String>(TreeType.Regex, "^\\d+,"));
+        params.put("pageSize", 100);
         return handler(params, new Func<Map, Information>() {
             @Override
             public Information execute(Map params) throws Exception {

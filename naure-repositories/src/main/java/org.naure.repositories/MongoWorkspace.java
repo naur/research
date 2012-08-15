@@ -51,10 +51,14 @@ public class MongoWorkspace implements Workspace {
                     case Between:
                         query.addCriteria(Criteria.where(key.toString()).gte(tree.getLeft().getInfo()).lte(tree.getRight().getInfo()));
                         break;
+                    case Regex:
+                        query.addCriteria(Criteria.where(key.toString()).regex(String.valueOf(tree.getInfo())));
+                        break;
                 }
             } else
                 query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
         }
+
         query.skip(pageSize * (pageIndex - 1));
         query.limit(pageSize);
         return mongoOperations.find(query, resultClass, ((Entity) resultClass.newInstance()).collectionName());
