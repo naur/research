@@ -61,7 +61,9 @@
                 <xsl:call-template name="cell"/>
             </xsl:for-each>
 
-            <td class="chart"></td>
+            <td>
+                <canvas class="chart"></canvas>
+            </td>
 
             <xsl:for-each select="child::*[name()='created' or name()='updated' or name()='id']">
                 <xsl:call-template name="cell"/>

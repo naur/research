@@ -13,7 +13,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
     NAURE.Utility = (function () {
 
         var utility = {
-            clone: function (obj) {
+            clone:function (obj) {
                 var cloneObject = new Object();
                 for (var key in obj) {
                     cloneObject[key] = obj[key];
@@ -21,11 +21,11 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 return cloneObject;
             },
 
-            encodeHTML: function (data) {
+            encodeHTML:function (data) {
                 return data.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, '&');
             },
 
-            cookie: function (name, value, options) {
+            cookie:function (name, value, options) {
                 if (typeof value != 'undefined') { // name and value given, set cookie
                     options = options || {};
                     if (value === null) {
@@ -65,6 +65,25 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     }
                     return cookieValue;
                 }
+            },
+
+            days:function (startTime, engTime) {
+                if (!startTime || !engTime)
+                    return null;
+                if (typeof(startTime) == 'string')
+                    startTime = new Date(startTime);
+                if (typeof(engTime) == 'string')
+                    engTime = new Date(engTime);
+
+                var time1 = new Date(startTime.getTime());
+                var time2 = new Date(engTime.getTime());
+
+                var days = [];
+                do {
+                    days.push(new Date(time1.getTime()));
+                    time1.setDate(time1.getDate() + 1);
+                } while (time1.getTime() <= time2.getTime());
+                return days;
             }
         };
 

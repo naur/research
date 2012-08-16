@@ -11,14 +11,15 @@
 
 /*-------------------- 全局变量 START ----------------*/
 
-var naure, message, overlay, http, overlayNodes, messageElement, dataAreaElement, tableHead;
+var naure, message, overlay, http, overlayNodes, messageElement, dataAreaElement, tableHead, gantt;
+var startTime, endTime;
 var uploadOpt = {
     'script':'/upload.xml',
     'scriptData':{
         'fileName':'learning-schedule.txt'
     },
-    'uploader':'/Research/projects/naure/naure-web/src/main/webapp/js/uploadify/uploadify.swf',
-    'cancelImg':'/Research/projects/naure/naure-web/src/main/webapp/js/uploadify/cancel.png',
+    'uploader':'/js/uploadify/uploadify.swf',
+    'cancelImg':'/js/uploadify/cancel.png',
     'folder':'/learn/'
 };
 
@@ -133,9 +134,34 @@ function uploadify() {
     });
 }
 
-function chart() {
-    $('.chart').each(function() {
+function renderChart() {
+    var regex = /([\d]{4}-[\d]{2}-[\d]{2})[^\d]+([\d]{4}-[\d]{2}-[\d]{2})/;
 
+    $('.chart').each(function () {
+        var match = $(this).parent().parent().find('td:eq(4)').text().trim().match(regex);
+        if (match) {
+            if (!startTime || startTime.getTime() > new Date(match[1]).getTime())
+                startTime = new Date(match[1]);
+            if (!endTime || endTime.getTime() < new Date(match[2]).getTime())
+                endTime = new Date(match[2]);
+        }
+    });
+
+    $('.chart').each(function () {
+        var match = $(this).parent().parent().find('td:eq(4)').text().trim().match(regex);
+        if (match) {
+            gantt.block({
+                container:this,
+                coordinate:{X1:startTime, X2:endTime,
+                    Y1:new Date(match[1]),
+                    Y2:new Date(match[2])}
+            });
+        } else {
+            gantt.block({
+                container:this,
+                coordinate:{X1:startTime, X2:endTime, Y1:null, Y2:null}
+            });
+        }
     });
 }
 
@@ -179,8 +205,8 @@ function renderLearningSchedule(elem) {
     message.show({content:'正在获取数据...'});
 
     dataAreaElement.NAURE_HTTP_xmlAcquire({
-        xmlUrl:'/Users/Administrator/Desktop/Temp/schedule.xml',
-        xslUrl:'/Research/projects/naure/naure-web/src/main/webapp/xsl/learning-schedule.xsl',
+        xmlUrl:'/learn/schedule.xml',
+        xslUrl:'/xsl/learning-schedule.xsl',
         context:elem,
         error:function (ex) {
             message.show({content:'获取数据结束！'});
@@ -195,6 +221,8 @@ function renderLearningSchedule(elem) {
 
             $(obj.context).attr('disabled', false);
             message.empty();
+
+            renderChart();
         }
     });
 }
@@ -256,7 +284,7 @@ function initEvent() {
 
             var tempSchedule = {};
             tempSchedule[tableHead[$(this).index()]] = $(this).text().trim();
-            tempSchedule.id = $(this).parent().find('td:eq(7)').text().trim()
+            tempSchedule.id = $(this).parent().find('td:eq(8)').text().trim()
             message.empty();
             AddLearningSchedule(tempSchedule);
         } else {
@@ -269,13 +297,16 @@ function initEvent() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics', 'naure.xsl',
-    'swfobject', 'jquery.uploadify'], function ($, NAURE) {
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics',
+    'naure.xsl', 'naure.chart.gantt',
+    'swfobject',
+    'jquery.uploadify'], function ($, NAURE) {
     naure = NAURE;
     message = NAURE.Message;
     http = NAURE.HTTP;
     messageElement = $('article section:eq(3)');
     dataAreaElement = $('article section:eq(2)');
+    gantt = NAURE.Chart.Gantt;
 
     $(function () {
         messageElement.message();

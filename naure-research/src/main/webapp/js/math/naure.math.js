@@ -290,7 +290,8 @@ function djkb(ia, lvl, x) {
 }
 
 
-define(['jquery', 'naure', 'math'], function ($, NAURE) {
+//todo 'math.js' 与 ajaxsl.js 有冲突
+define(['jquery', 'naure'], function ($, NAURE) {
 
     NAURE.Math = (function () {
         var math = {
