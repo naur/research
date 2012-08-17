@@ -48,8 +48,8 @@ define(['jquery', 'naure.message', 'naure.math', 'naure.utility'], function ($, 
 
                 opt.ctx.strokeStyle = '#b3d8ea'
                 opt.ctx.fillStyle = "green";
-                var days = utility.days(opt.coordinate.X1, opt.coordinate.X2);
-                var days1 = utility.days(opt.coordinate.Y1, opt.coordinate.Y2);
+                var days = utility.getDays(opt.coordinate.X1, opt.coordinate.X2);
+                var days1 = utility.getDays(opt.coordinate.Y1, opt.coordinate.Y2);
 
                 var unit = opt.width / days.length;
                 var newTime = new Date().getTime();;

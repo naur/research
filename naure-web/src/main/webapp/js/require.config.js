@@ -10,7 +10,7 @@
  */
 
 var jslocalpath = '/Research/projects/naure/naure-web/src/main/webapp';
-jslocalpath = '';
+//jslocalpath = '';
 var jslocalpath1 = jslocalpath.replace('naure-web', 'naure-research');
 
 require.config({
@@ -51,10 +51,13 @@ require.config({
         'arbor-renderer':jslocalpath1 + '/js/arbor-renderer',
 
         'naure.math':jslocalpath1 + '/js/math/naure.math',
-        'naure.math.matrixes':jslocalpath1 + '/js/math/naure.math.matrixes',
-        'naure.math.sets':jslocalpath1 + '/js/math/naure.math.sets',
-        'naure.math.sets.tree':jslocalpath1 + '/js/math/naure.math.sets.tree',
-        'naure.math.sets.tree.augmenting':jslocalpath1 + '/js/math/naure.math.sets.tree.augmenting',
+        'naure.math.matrixes':jslocalpath1 + '/js/math/matrixes/naure.math.matrixes',
+        'naure.math.sets':jslocalpath1 + '/js/math/sets/naure.math.sets',
+        'naure.math.sets.tree':jslocalpath1 + '/js/math/sets/naure.math.sets.tree',
+        'naure.math.sets.tree.augmenting':jslocalpath1 + '/js/math/sets/naure.math.sets.tree.augmenting',
+
+        'naure.math.stats':jslocalpath1 + '/js/math/stats/naure.math.stats',
+        'naure.math.stats.finance':jslocalpath1 + '/js/math/stats/naure.math.stats.finance',
 
         'naure.chart.gantt':jslocalpath1 + '/js/chart/naure.chart.gantt',
 

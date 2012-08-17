@@ -123,19 +123,21 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 } else {
 
                     gridlines.alreadyDrawnPoints;
-                    var prev = location.pop();
-                    if (prev) {
-                        ui.ctx.clearRect(prev.X, 0, 1, layout.height);
-                        ui.ctx.clearRect(0, prev.Y, layout.width, 1);
-                        graphics.draw();
-                    }
-                    ui.ctx.save();
-                    //ui.ctx.globalCompositeOperation = config.CompositeOperation;
-                    ui.ctx.fillStyle = "red";
-                    ui.ctx.fillRect(x, 0, 1, layout.height);
-                    ui.ctx.fillRect(0, y, layout.width, 1);
-                    ui.ctx.restore();
-                    location.push({X:x, Y:y});
+
+
+//                    var prev = location.pop();
+//                    if (prev) {
+//                        ui.ctx.clearRect(prev.X, 0, 1, layout.height);
+//                        ui.ctx.clearRect(0, prev.Y, layout.width, 1);
+//                        graphics.draw();
+//                    }
+//                    ui.ctx.save();
+//                    //ui.ctx.globalCompositeOperation = config.CompositeOperation;
+//                    ui.ctx.fillStyle = "red";
+//                    ui.ctx.fillRect(x, 0, 1, layout.height);
+//                    ui.ctx.fillRect(0, y, layout.width, 1);
+//                    ui.ctx.restore();
+//                    location.push({X:x, Y:y});
                 }
             },
 

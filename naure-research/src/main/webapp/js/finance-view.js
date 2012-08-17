@@ -10,7 +10,7 @@
  */
 
 /*-------------------- 全局变量 START ----------------*/
-var naure, message, http, graphics, lines;
+var naure, message, http, graphics, lines, finance;
 
 var overlayNodes = {
     Input:{
@@ -116,6 +116,10 @@ var overlayNodes = {
                 });
             }
         });
+    },
+
+    MA: function() {
+        finance.MovingAverage();
     }
 };
 
@@ -139,7 +143,7 @@ function initEvent() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.http',
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.http', 'naure.math.stats.finance',
     'naure.graphics.ui',
     'naure.graphics.layout',
     'naure.graphics.gridlines',
@@ -150,6 +154,7 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http',
     http = NAURE.HTTP;
     graphics = NAURE.Graphics;
     message = NAURE.Message;
+    finance = NAURE.Math.Stats.Finance;
 
     $(function () {
         $('body').message({overlay:'left-bottom', title:'', multiple:false});
@@ -158,6 +163,7 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http',
         });
 
         message.position('left-top');
+        graphics.config.gridlines.show = false;
         $('article section canvas').NAURE_Graphics({system:graphics.Finance});
 
         initEvent();

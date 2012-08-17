@@ -67,7 +67,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 }
             },
 
-            days:function (startTime, engTime) {
+            getDays:function (startTime, engTime) {
                 if (!startTime || !engTime)
                     return null;
                 if (typeof(startTime) == 'string')

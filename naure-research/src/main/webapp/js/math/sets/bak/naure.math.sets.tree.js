@@ -271,7 +271,7 @@ BinomialHeap = {
 
 /**
  * Optimal binary search trees
-* */
+ * */
 function OptimalBinartTree() {
 
 }

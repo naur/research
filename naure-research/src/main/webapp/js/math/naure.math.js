@@ -8,7 +8,8 @@
  * Description:
  *
  */
-
+//初始化 NIL;
+var NIL = null;
 var MinMilli = 1000 * 60
 var HrMilli = MinMilli * 60
 var DyMilli = HrMilli * 24
