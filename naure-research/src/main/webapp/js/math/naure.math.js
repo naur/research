@@ -14,6 +14,19 @@ var MinMilli = 1000 * 60
 var HrMilli = MinMilli * 60
 var DyMilli = HrMilli * 24
 
+var c = 299792458;
+var G = 6.67300e-11;
+var m_e = 5.9742e24;
+var m_m = 7.36e22;
+var m_s = 1.98892e30;
+var R_E = 6378100;
+var r_e = 6378100;
+var h = 6.626068e-34;
+var log2pi = 1.8378770664093453;
+
+var phi = (1 + Math.sqrt(5)) / 2;
+var epsilon_0 = 8.85418782e-12;
+
 //Basic math functions -> window (global)
 var e = Math.E;
 var pi = Math.PI;
@@ -292,7 +305,7 @@ function djkb(ia, lvl, x) {
 
 
 //todo 'math.js' 与 ajaxsl.js 有冲突
-define(['jquery', 'naure'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math.symbol'], function ($, NAURE) {
 
     NAURE.Math = (function () {
         var math = {

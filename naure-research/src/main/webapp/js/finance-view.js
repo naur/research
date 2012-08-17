@@ -10,7 +10,7 @@
  */
 
 /*-------------------- 全局变量 START ----------------*/
-var naure, message, http, graphics, lines, finance;
+var naure, overlay, message, http, graphics, lines, finance;
 
 var overlayNodes = {
     Input:{
@@ -46,14 +46,12 @@ var overlayNodes = {
         lines.push({equation:"\\frac{d}{dx}\\left(sin\\left(x\\right)+log\\left(x+1\\right)\\right)", color:'blue'});
         //lines.push({equation : 'r<\sin \left(4\theta \right)', color : 'red'});
         graphics.System(graphics.Equation);
-        graphics.draw({
-            lines:lines
-        });
+        graphics.draw({lines:lines});
     },
     Finance:function () {
         lines = [];
         graphics.System(graphics.Finance);
-        graphics.draw();
+        graphics.draw({lines:lines});
     },
     Reset:function () {
         graphics.reset();
@@ -103,6 +101,7 @@ var overlayNodes = {
                         else if (parseFloat(content.attr(price[key])) > y2)
                             y2 = parseFloat(content.attr(price[key]));
                     });
+                    if (!lines) lines = []
                     lines.push({equation:equation, color:'#' + random().toString(16).substring(2, 5)});
                 }
 
@@ -118,7 +117,7 @@ var overlayNodes = {
         });
     },
 
-    MA: function() {
+    MA:function () {
         finance.MovingAverage();
     }
 };
@@ -137,6 +136,13 @@ function initEvent() {
     $('#zoom-axis').on('change', function () {
         graphics.config.zoomAxis = $(this).val();
     });
+    $('#overlay-input').on('keydown', function (event) {
+        var ev = document.all ? window.event : event;
+        if (ev.keyCode == 13) {
+            var button = overlay.find('Sina');
+            if (button) button.click();
+        }
+    });
 }
 
 /*-------------------- 事件 END ----------------------*/
@@ -151,6 +157,7 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http', 'naure.math.s
     'naure.graphics.finance',
     'naure.analytics'], function ($, NAURE) {
     naure = NAURE;
+    overlay = NAURE.UI.Overlay;
     http = NAURE.HTTP;
     graphics = NAURE.Graphics;
     message = NAURE.Message;
@@ -163,7 +170,7 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http', 'naure.math.s
         });
 
         message.position('left-top');
-        graphics.config.gridlines.show = false;
+        //graphics.config.gridlines.show = false;
         $('article section canvas').NAURE_Graphics({system:graphics.Finance});
 
         initEvent();

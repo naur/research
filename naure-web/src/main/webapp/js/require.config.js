@@ -10,7 +10,7 @@
  */
 
 var jslocalpath = '/Research/projects/naure/naure-web/src/main/webapp';
-//jslocalpath = '';
+jslocalpath = '';
 var jslocalpath1 = jslocalpath.replace('naure-web', 'naure-research');
 
 require.config({
@@ -51,6 +51,7 @@ require.config({
         'arbor-renderer':jslocalpath1 + '/js/arbor-renderer',
 
         'naure.math':jslocalpath1 + '/js/math/naure.math',
+        'naure.math.symbol':jslocalpath1 + '/js/math/naure.math.symbol',
         'naure.math.matrixes':jslocalpath1 + '/js/math/matrixes/naure.math.matrixes',
         'naure.math.sets':jslocalpath1 + '/js/math/sets/naure.math.sets',
         'naure.math.sets.tree':jslocalpath1 + '/js/math/sets/naure.math.sets.tree',

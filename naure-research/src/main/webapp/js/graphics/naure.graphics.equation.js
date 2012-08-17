@@ -11,7 +11,7 @@
 
 
 
-define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math', 'math'], function ($, NAURE) {
 
     NAURE.Graphics.Equation = (function () {
 
@@ -31,7 +31,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 return point;
             },
 
-            zoomAxis: function(zoom) {
+            zoomAxis:function (zoom) {
                 if ('horizontal' == config.zoomAxis)
                     zoom.Y = null;
                 if ('vertical' == config.zoomAxis)
