@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <!--<xsl:param name="header">-->
-    <!--<xsl:for-each select="information/data/*[1]/*">-->
-    <!--<value>-->
-    <!--<xsl:text>|</xsl:text>-->
-    <!--<xsl:value-of select="name()"/>-->
-    <!--</value>-->
-    <!--</xsl:for-each>-->
+    <!--<xsl:param name="exclude">-->
+        <!--&lt;!&ndash;name()!='created' and name()!='updated' and name()!='id' and name()!='sessionId'&ndash;&gt;-->
+        <!---id-created-updated-sessionId -->
     <!--</xsl:param>-->
 
     <xsl:template match="/">
@@ -16,9 +12,9 @@
                 <tr>
                     <th></th>
                     <xsl:apply-templates
-                            select="information/data/*[1]/*[name()!='created' and name()!='updated' and name()!='id']"/>
+                            select="information/data/*[1]/*[name()!='created' and name()!='updated' and name()!='id' and name()!='sessionId']"/>
                     <xsl:apply-templates
-                            select="information/data/*[1]/*[name()='created' or name()='updated' or name()='id']"/>
+                            select="information/data/*[1]/*[name()='created' or name()='updated' or name()='id' or name()!='sessionId']"/>
                 </tr>
             </thead>
             <tfoot></tfoot>
@@ -33,12 +29,12 @@
     </xsl:template>
 
     <!--表头-->
-    <xsl:template match="information/data/*[1]/*[name()!='created' and name()!='updated' and name()!='id']">
+    <xsl:template match="information/data/*[1]/*[name()!='created' and name()!='updated' and name()!='id' and name()!='sessionId']">
         <th>
             <xsl:value-of select="name()"/>
         </th>
     </xsl:template>
-    <xsl:template match="information/data/*[1]/*[name()='created' or name()='updated' or name()='id']">
+    <xsl:template match="information/data/*[1]/*[name()='created' or name()='updated' or name()='id' or name()!='sessionId']">
         <th>
             <xsl:value-of select="name()"/>
         </th>
