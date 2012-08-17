@@ -18,8 +18,8 @@ define(['jquery', 'naure', 'naure.math.stats'], function ($, NAURE) {
         var finance = {
             //移动平均, 又称「移动平均线」简称均线,  MA
             MovingAverage:function () {
-                var node1 = new tree.node({key: 1});
-                var node2 = new tree.node({key: 2});
+                var node1 = new tree.node({key:1});
+                var node2 = new tree.node({key:2});
             },
             //简单移动平均,  SMA
             //             p1 + p2 + p3 + ... + pn                                      p1      pn+1
@@ -36,8 +36,16 @@ define(['jquery', 'naure', 'naure.math.stats'], function ($, NAURE) {
 
                 for (var index in p) {
                     if (!p.hasOwnProperty(index)) continue;
+                }
 
-
+                var node;
+                for (var i = 1; i < n; i++) {
+                    if (node)
+                        node = new tree.node({type:4, info:'+',
+                            left:new tree.node(),
+                            right:new tree.node()
+                        }); else
+                    node.right = new tree.node();
                 }
 
                 return result;
