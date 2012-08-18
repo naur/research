@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <!--<xsl:param name="header">-->
-    <!--<xsl:for-each select="information/data/*[1]/*">-->
-    <!--<value>-->
-    <!--<xsl:text>|</xsl:text>-->
-    <!--<xsl:value-of select="name()"/>-->
-    <!--</value>-->
-    <!--</xsl:for-each>-->
-    <!--</xsl:param>-->
+    <xsl:param name="exclude">
+        -id-created-updated-
+    </xsl:param>
 
     <xsl:template match="/">
         <table>
             <thead>
                 <tr>
                     <th></th>
-                    <xsl:apply-templates
-                            select="information/data/*[1]/*[name()!='created' and name()!='updated' and name()!='id']"/>
-                    <th>表格</th>
-                    <xsl:apply-templates
-                            select="information/data/*[1]/*[name()='created' or name()='updated' or name()='id']"/>
+                    <xsl:for-each select="information/data/*[1]/*[not(contains($exclude, concat(name(), '-')))]">
+                        <xsl:call-template name="header"/>
+                    </xsl:for-each>
+                    <xsl:for-each select="information/data/*[1]/*[contains($exclude, concat(name(), '-'))]">
+                        <xsl:call-template name="header"/>
+                    </xsl:for-each>
                 </tr>
             </thead>
             <tfoot></tfoot>
@@ -34,12 +30,7 @@
     </xsl:template>
 
     <!--表头-->
-    <xsl:template match="information/data/*[1]/*[name()!='created' and name()!='updated' and name()!='id']">
-        <th>
-            <xsl:value-of select="name()"/>
-        </th>
-    </xsl:template>
-    <xsl:template match="information/data/*[1]/*[name()='created' or name()='updated' or name()='id']">
+    <xsl:template name="header">
         <th>
             <xsl:value-of select="name()"/>
         </th>
@@ -57,7 +48,7 @@
                 <xsl:value-of select="position()"/>
             </td>
             <!--一级子节点-->
-            <xsl:for-each select="child::*[name()!='created' and name()!='updated' and name()!='id']">
+            <xsl:for-each select="child::*[not(contains($exclude, concat(name(), '-')))]">
                 <xsl:call-template name="cell"/>
             </xsl:for-each>
 
@@ -65,7 +56,7 @@
                 <canvas class="chart"></canvas>
             </td>
 
-            <xsl:for-each select="child::*[name()='created' or name()='updated' or name()='id']">
+            <xsl:for-each select="child::*[contains($exclude, concat(name(), '-'))]">
                 <xsl:call-template name="cell"/>
             </xsl:for-each>
         </tr>

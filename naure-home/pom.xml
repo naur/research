@@ -34,6 +34,10 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <overlays>
@@ -41,7 +45,7 @@
                             <groupId>org.naure</groupId>
                             <artifactId>naure-web</artifactId>
                             <!--<excludes>-->
-                                <!--<exclude>WEB-INF/classes/images/sampleimage-dependency.jpg</exclude>-->
+                            <!--<exclude>WEB-INF/classes/images/sampleimage-dependency.jpg</exclude>-->
                             <!--</excludes>-->
                         </overlay>
                     </overlays>
