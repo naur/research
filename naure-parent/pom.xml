@@ -12,6 +12,10 @@
 
     <properties>
         <javaSourceLevel>1.7</javaSourceLevel>
+        <maven-plugins.version>3.0.4</maven-plugins.version>
+        <maven-compiler-plugin.varsion>2.5.1</maven-compiler-plugin.varsion>
+        <maven-war-plugin.version>2.2</maven-war-plugin.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jboss.domain>default</jboss.domain>
         <naure.version>1.0</naure.version>
@@ -30,9 +34,6 @@
         <spring-release-mongodb.version>1.0.1.RELEASE</spring-release-mongodb.version>
         <spring-data-commons-core.version>1.2.1.RELEASE</spring-data-commons-core.version>
         <commons-lang3.version>3.1</commons-lang3.version>
-        <maven-plugins.version>3.0.4</maven-plugins.version>
-        <maven-compiler-plugin.varsion>2.3.2</maven-compiler-plugin.varsion>
-        <maven-war-plugin.version>2.2</maven-war-plugin.version>
         <!--3.0.5-->
         <!--<spring-oxm.version>1.5.10</spring-oxm.version>-->
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
