@@ -20,7 +20,8 @@ var uploadOpt = {
     },
     'uploader':'/js/uploadify/uploadify.swf',
     'cancelImg':'/js/uploadify/cancel.png',
-    'folder':'/learn/'
+    'folder':'/learn/',
+    uploadDisplay: false
 };
 
 /*-------------------- 全局变量 END ------------------*/
@@ -56,6 +57,16 @@ overlayNodes = {
     },
     Get:function () {
         renderLearningSchedule(this);
+    },
+    Upload: function() {
+        if (uploadOpt.uploadDisplay) {
+            $('article section:eq(0)').css('display', 'none');
+            $('article section:eq(1)').css('display', 'none');
+        } else {
+            $('article section:eq(0)').css('display', 'block');
+            $('article section:eq(1)').css('display', 'block');
+        }
+        uploadOpt.uploadDisplay = !uploadOpt.uploadDisplay;
     }
 };
 

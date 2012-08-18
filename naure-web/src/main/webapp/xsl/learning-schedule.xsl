@@ -13,6 +13,7 @@
                     <xsl:for-each select="information/data/*[1]/*[not(contains($exclude, concat(name(), '-')))]">
                         <xsl:call-template name="header"/>
                     </xsl:for-each>
+                    <th>图表</th>
                     <xsl:for-each select="information/data/*[1]/*[contains($exclude, concat(name(), '-'))]">
                         <xsl:call-template name="header"/>
                     </xsl:for-each>
@@ -64,7 +65,7 @@
 
     <!--一级子节点-->
     <xsl:template name="cell">
-        <td>
+        <td class="tdleft">
             <xsl:choose>
                 <xsl:when test="child::*">
                     <table class="subtable">
