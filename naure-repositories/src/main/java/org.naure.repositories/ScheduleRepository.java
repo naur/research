@@ -37,6 +37,10 @@ public class ScheduleRepository extends Repository {
             update.put("update", new HashMap<String, Object>() {{
                 if (0 != schedule.getNumber())
                     put("number", schedule.getNumber());
+                if (0 != schedule.getDays())
+                    put("days", schedule.getDays());
+                if (0 != schedule.getPages())
+                    put("pages", schedule.getPages());
                 if (null != schedule.getTime())
                     put("time", schedule.getTime());
                 if (null != schedule.getHeading() && !schedule.getHeading().isEmpty())
