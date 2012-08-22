@@ -46,8 +46,7 @@ public class ScheduleController extends ControllerBase {
                 if (params.isEmpty())
                     map.put("path", new Tree<String>(TreeType.Regex, "^\\d+,"));
                 else {
-                    String tempParms = params.replace(",", "|");
-                    map.put("path", new Tree<String>(TreeType.Regex, "^[" + tempParms + "]+,"));
+                    map.put("path", new Tree<String>(TreeType.Regex, "^[" + params.replace(",", "|") + "]+,"));
                 }
                 map.put("pageSize", 100);
 
