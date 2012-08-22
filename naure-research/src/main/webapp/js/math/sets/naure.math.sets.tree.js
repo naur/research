@@ -27,6 +27,16 @@ define(['jquery', 'naure.math.sets'], function ($, NAURE) {
                 this.type = options.type;       //2,3,4,5,6,7  ln,neg,+,-,*,/
                 this.tag = options.tag;
                 this.info = options.info;
+            },
+            traversal: {
+                //先根序
+                Preorder: function(options) {
+
+                },
+                //中根序
+                Inorder: function() {},
+                //后根序
+                Postorder: function() {}
             }
         };
 

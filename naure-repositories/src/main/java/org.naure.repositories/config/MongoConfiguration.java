@@ -1,6 +1,5 @@
 package org.naure.repositories.config;
 
-import com.mongodb.Mongo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,7 @@ public class MongoConfiguration {
     @Bean
     public MongoDbFactory mongoDbFactory() throws Exception {
         UserCredentials userCredentials = new UserCredentials(username, password);
-        return new SimpleMongoDbFactory(new Mongo(), dbname, userCredentials);
+        return new SimpleMongoDbFactory(mongo().getObject(), dbname, userCredentials);
     }
 
     @Bean

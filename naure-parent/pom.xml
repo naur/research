@@ -13,7 +13,8 @@
     <properties>
         <javaSourceLevel>1.7</javaSourceLevel>
         <maven-plugins.version>3.0.4</maven-plugins.version>
-        <maven-compiler-plugin.varsion>2.5.1</maven-compiler-plugin.varsion>
+        <org.codehaus.plexus.version>1.9</org.codehaus.plexus.version>
+        <maven-compiler-plugin.varsion>2.5</maven-compiler-plugin.varsion>
         <maven-war-plugin.version>2.2</maven-war-plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -472,6 +473,18 @@
     <build>
         <pluginManagement>
             <plugins>
+
+                <plugin>
+                    <groupId>org.codehaus.plexus</groupId>
+                    <artifactId>plexus-compiler-manager</artifactId>
+                    <version>${org.codehaus.plexus.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.plexus</groupId>
+                    <artifactId>plexus-compiler-javac</artifactId>
+                    <version>${org.codehaus.plexus.version}</version>
+                </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -488,6 +501,22 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <!--<plugin>-->
+            <!--<groupId>org.codehaus.plexus</groupId>-->
+            <!--<artifactId>plexus-compiler-manager</artifactId>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+            <!--<groupId>org.codehaus.plexus</groupId>-->
+            <!--<artifactId>plexus-compiler-javac</artifactId>-->
+            <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+
         <resources>
             <resource>
                 <!--<directory>${javaSourceDirectory}</directory>-->

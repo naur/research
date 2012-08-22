@@ -55,9 +55,6 @@ overlayNodes = {
 
         AddLearningSchedule(schedule, this);
     },
-    Get:function () {
-        renderLearningSchedule(this);
-    },
     Upload: function() {
         if (uploadOpt.uploadDisplay) {
             $('article section:eq(0)').css('display', 'none');
@@ -67,6 +64,9 @@ overlayNodes = {
             $('article section:eq(1)').css('display', 'block');
         }
         uploadOpt.uploadDisplay = !uploadOpt.uploadDisplay;
+    },
+    Get:function () {
+        renderLearningSchedule(this);
     }
 };
 
@@ -179,9 +179,9 @@ function renderChart() {
 function AddLearningSchedule(schedule, context) {
     var xmlUrl;
     if (schedule.path && schedule.path.length > 0) {
-        xmlUrl = '/learn/schedule/' + schedule.path + '/' + formatURI(schedule) + ".xml";
+        xmlUrl = '/learn/schedule/edit/' + schedule.path + '/' + formatURI(schedule) + ".xml";
     } else if (schedule.id && schedule.id.length > 0) {
-        xmlUrl = '/learn/schedule/' + formatURI(schedule) + ".xml";
+        xmlUrl = '/learn/schedule/edit/' + formatURI(schedule) + ".xml";
     }
 
     if (!xmlUrl) {
@@ -216,7 +216,7 @@ function renderLearningSchedule(elem) {
     message.show({content:'正在获取数据...'});
 
     dataAreaElement.NAURE_HTTP_xmlAcquire({
-        xmlUrl:'/learn/schedule.xml',
+        xmlUrl:'/learn/schedule/1,2.xml',
         xslUrl:'/xsl/learning-schedule.xsl',
         context:elem,
         error:function (ex) {

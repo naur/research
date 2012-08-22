@@ -31,28 +31,34 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "learn/schedule", method = {RequestMethod.GET, RequestMethod.POST})
 public class ScheduleController extends ControllerBase {
-    @RequestMapping("view")
+    @RequestMapping("")
     public String view() {
         return view("schedule-view");
     }
 
-    @RequestMapping()
-    public Information get() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("path", new Tree<String>(TreeType.Regex, "^\\d+,"));
-        params.put("pageSize", 100);
-        return handler(params, new Func<Map, Information>() {
+    @RequestMapping("{params}")
+    public Information get(@PathVariable final String params) {
+        return handler(new Sub<Information>() {
             @Override
-            public Information execute(Map params) throws Exception {
+            public Information execute() throws Exception {
                 Information<List<Schedule>> info = new Information<List<Schedule>>();
-                info.setData(scheduleService.get(params));
+                Map<String, Object> map = new HashMap<String, Object>();
+                if (params.isEmpty())
+                    map.put("path", new Tree<String>(TreeType.Regex, "^\\d+,"));
+                else {
+                    String tempParms = params.replace(",", "|");
+                    map.put("path", new Tree<String>(TreeType.Regex, "^[" + tempParms + "]+,"));
+                }
+                map.put("pageSize", 100);
+
+                info.setData(scheduleService.get(map));
                 info.setLevel(InformationLevel.SUCCESS.value());
                 return info;
             }
         });
     }
 
-    @RequestMapping("{params}")
+    @RequestMapping("edit/{params}")
     public Information edit(@PathVariable final String params) {
         return handler(new Sub<Information>() {
             @Override
@@ -75,7 +81,7 @@ public class ScheduleController extends ControllerBase {
         });
     }
 
-    @RequestMapping("{path}/{params}")
+    @RequestMapping("edit/{path}/{params}")
     public Information add(@PathVariable final String path, @PathVariable final String params) {
         return handler(new Sub<Information>() {
             @Override
