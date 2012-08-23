@@ -17,39 +17,40 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
 
         var layout, graphics, system, gridlines, config, location = [];
 
-        var ui = {
-            container:null,
-            graph:null,
-            ctx:null,
-            isLiveGraphEvent:false,
-            clear:function () {
-                this.ctx.clearRect(0, 0, this.graph.width(), this.graph.height())
+        var ui = function () {
+            this.ctx = null;
+
+            //var container = null;
+            var graph = null;
+            var isLiveGraphEvent = false;
+            var mousebutton = 0;
+            //calccache:new Object;
+            this.clear = function () {
+                this.ctx.clearRect(0, 0, graph.width(), graph.height())
 //                this.ctx.lineCap = "butt";
 //                this.ctx.font = config.font;
 //                this.ctx.strokeStyle = this.ctx.fillStyle = "rgb(255,255,255)";
-//                this.ctx.fillRect(0, 0, this.graph.width(), this.graph.height());
-            },
-            mousebutton:0,
-            calccache:new Object,
+//                this.ctx.fillRect(0, 0, graph.width(), graph.height());
+            };
 
-            arrange:function () {
+            this.arrange = function () {
 
-            },
+            };
 
-            measure:function () {
+            this.measure = function () {
 
-            },
+            };
 
-            reset:function () {
+            this.reset = function () {
                 layout.reset();
                 graphics.draw();
-            },
+            };
 
-            setSystem: function(sys) {
+            this.setSystem = function (sys) {
                 system = sys;
-            },
+            };
 
-            draw:function (options) {
+            this.draw = function (options) {
                 var opt = $.extend({
                     lines:[]
                 }, options);
@@ -61,25 +62,25 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                     if (!opt.lines.hasOwnProperty(key)) break
                     this.drawLine(opt.lines[key]);
                 }
-            },
+            };
 
-            drawLine:function (options) {
+            this.drawLine = function (options) {
                 var opt = $.extend({}, config, options);
                 this.ctx.strokeStyle = opt.color;
                 new system.Graph(opt.equation, true, opt.color).plot(this.ctx, layout.coordinate);
-            },
+            };
 
-            resize:function () {
+            this.resize = function () {
                 //layout refresh
                 layout.refresh({
-                    width:ui.graph.width(),
-                    height:ui.graph.height(),
-                    offset:ui.graph.offset()
+                    width:graph.width(),
+                    height:graph.height(),
+                    offset:graph.offset()
                 });
 
                 //Resize the elements
-                this.graph.attr('width', layout.width);
-                this.graph.attr('height', layout.height);
+                graph.attr('width', layout.width);
+                graph.attr('height', layout.height);
                 this.ctx.height = layout.height;
                 this.ctx.width = layout.width;
 
@@ -88,40 +89,40 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 config.gridlines.maxgridlines.Y = 0.015 * layout.height;
 
                 this.liveGraphEvent();
-            },
+            };
 
-            mouseWheel:function (event) {
+            this.mouseWheel = function (event) {
                 if (event.wheelDelta > 0) {
                     this.zoom(config.zoomFactor, event);
                 }
                 else {
                     this.zoom(-config.zoomFactor, event);
                 }
-            },
+            };
 
-            mouseDown:function (event) {
+            this.mouseDown = function (event) {
                 document.body.style.cursor = "hand";
-                if (ui.mousebutton == 0) {
+                if (mousebutton == 0) {
                     layout.refresh({pixel:{X:event.pageX, Y:event.pageY}, drag:'START'});
                 }
-                ui.mousebutton = 1;
-            },
+                mousebutton = 1;
+            };
 
-            mouseUp:function (event) {
+            this.mouseUp = function (event) {
                 document.body.style.cursor = "auto";
-                ui.mousebutton = 0;
+                mousebutton = 0;
                 layout.refresh({drag:'RENEW'});
-            },
+            };
 
-            checkMove:function (x, y) {
+            this.checkMove = function (x, y) {
                 layout.refresh({
-                    offset:ui.graph.offset(),
+                    offset:graph.offset(),
                     pixel:{X:x, Y:y}
                 });
 
                 if (!layout.isDragMove()) return
 
-                if (this.mousebutton == 1) {
+                if (mousebutton == 1) {
                     layout.refresh({drag:'CONTINUE'});
                     graphics.draw();
                 } else {
@@ -131,93 +132,94 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
 
 //                    var prev = location.pop();
 //                    if (prev) {
-//                        ui.ctx.clearRect(prev.X, 0, 1, layout.height);
-//                        ui.ctx.clearRect(0, prev.Y, layout.width, 1);
+//                        this.ctx.clearRect(prev.X, 0, 1, layout.height);
+//                        this.ctx.clearRect(0, prev.Y, layout.width, 1);
 //                        graphics.draw();
 //                    }
-//                    ui.ctx.save();
-//                    //ui.ctx.globalCompositeOperation = config.CompositeOperation;
-//                    ui.ctx.fillStyle = "red";
-//                    ui.ctx.fillRect(x, 0, 1, layout.height);
-//                    ui.ctx.fillRect(0, y, layout.width, 1);
-//                    ui.ctx.restore();
+//                    this.ctx.save();
+//                    //this.ctx.globalCompositeOperation = config.CompositeOperation;
+//                    this.ctx.fillStyle = "red";
+//                    this.ctx.fillRect(x, 0, 1, layout.height);
+//                    this.ctx.fillRect(0, y, layout.width, 1);
+//                    this.ctx.restore();
 //                    location.push({X:x, Y:y});
                 }
-            },
+            };
 
-            zoom:function (scale, event) {
+            this.zoom = function (scale, event) {
                 if (event)
                     layout.refresh({zoom:{X:event.pageX, Y:event.pageY, Scale:scale}});
                 else
                     layout.refresh({zoom:{X:null, Y:null, Scale:scale}});
 
                 graphics.draw();
-            },
+            };
 
-            gridlines:function (options) {
+            this.gridlines = function (options) {
                 var opt = $.extend(options);
                 gridlines.draw(opt);
-            },
+            };
 
-            liveGraphEvent:function () {
-                if (this.isLiveGraphEvent) return;
+            this.liveGraphEvent = function () {
+                if (isLiveGraphEvent) return;
+
+                var self = this;
 
                 //初始化 ctx 方法
-                ui.ctx.move = function (x, y) {
+                this.ctx.move = function (x, y) {
                     var transPixel = layout.toPixel(x, y); //new layout.Point(x, y).transform();
                     if (!transPixel) return;
-                    return ui.ctx.moveTo(transPixel.X, transPixel.Y);
+                    return self.ctx.moveTo(transPixel.X, transPixel.Y);
                 };
 
-                ui.ctx.line = function (x, y) {
+                this.ctx.line = function (x, y) {
                     var transPixel = layout.toPixel(x, y); //new layout.Point(x, y).transform();
                     if (!transPixel) return;
-                    return ui.ctx.lineTo(transPixel.X, transPixel.Y);
+                    return self.ctx.lineTo(transPixel.X, transPixel.Y);
                 };
 
-//                ui.ctx.arc = function (x, y, radius, startAngle, endAngle, anticlockwise) {
+//                this.ctx.arc = function (x, y, radius, startAngle, endAngle, anticlockwise) {
 //                    var transPoint = new ui.layout.Point(x, y).transform();
 //                    if (!transPoint) return;
 //                    return ctx.arc(transPoint.X, transPoint.Y, radius, startAngle, endAngle, anticlockwise);
 //                };
 //
-//                ui.ctx.fillText = function(text,x,y,maxWidth) {
+//                this.ctx.fillText = function(text,x,y,maxWidth) {
 //                    var transPoint = new ui.layout.Point(x, y).transform();
 //                    if (!transPoint) return;
 //                    ctx.fillText(text,transPoint.X,transPoint.Y,maxWidth);
 //                };
-//                ui.ctx.strokeText = function(text,x,y,maxWidth) {
+//                this.ctx.strokeText = function(text,x,y,maxWidth) {
 //                    var transPoint = new ui.layout.Point(x, y).transform();
 //                    if (!transPoint) return;
 //                    ctx.strokeText(text,transPoint.X,transPoint.Y,maxWidth);
 //                };
 
                 //初始化事件
-                var self = this;
-                this.graph.on('mousemove', this.graph, function (event) {
+                graph.on('mousemove', graph, function (event) {
                     self.checkMove(event.pageX, event.pageY);
                 });
-                this.graph.on('mousewheel', this.graph, function (event) {
+                graph.on('mousewheel', graph, function (event) {
                     self.mouseWheel(event.originalEvent);
                     return false;
                 });
-                this.graph.on('mousedown', this.graph, function (event) {
+                graph.on('mousedown', graph, function (event) {
                     self.mouseDown(event);
                 });
-                this.graph.on('mouseup', this.graph, function (event) {
+                graph.on('mouseup', graph, function (event) {
                     self.mouseUp(event);
                 });
-                this.graph.on('mouseleave', this.graph, function (event) {
+                graph.on('mouseleave', graph, function (event) {
                     self.mouseUp(event);
                 });
 
-                this.isLiveGraphEvent = true;
-            },
+                isLiveGraphEvent = true;
+            };
 
-            init:function (options) {
-                ui.graph = $(options.container);
-                if (!ui.graph[0].getContext) return;
-                ui.ctx = $(ui.graph)[0].getContext("2d");
+            this.init = function (options) {
+                graph = $(options.container);
+                if (!graph[0].getContext) return;
+                this.ctx = $(graph)[0].getContext("2d");
 
                 config = options.config;
                 graphics = options.graphics;
@@ -226,7 +228,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 gridlines = options.gridlines;
                 //ui.resize(options.coordinate);
                 return ui;
-            }
+            };
         };
 
         return ui;
