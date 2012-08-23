@@ -17,50 +17,50 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
     var system;
 
     NAURE.Graphics.Layout = (function () {
-        var layout = {
+
+        var layout = function () {
             //全局变量
-            width:0,
-            height:0,
-            scale:{X:1, Y:1},
-            offset:{left:0, top:0},
+            this.width = 0;
+            this.height = 0;
+            this.scale = {X:1, Y:1};
+            this.offset = {left:0, top:0};
 
-            scope:{X:0, Y:0},
-            coordinate:{X1:-5, Y1:-5, X2:5, Y2:5},
+            this.scope = {X:0, Y:0};
+            this.coordinate = {X1:-5, Y1:-5, X2:5, Y2:5};
 
-            point:{X:0, Y:0},
-            pixel:{X:0, Y:0},
-            n:{x:10, y:10},
+            this.point = {X:0, Y:0};
+            this.pixel = {X:0, Y:0};
+            this.n = {x:10, y:10};
 
             //局部变量
-            matrix:[],
-            matrixInvertible:[],
-            startDrag:{X:0, Y:0},
-            prevDrag:{X:0, Y:0},
-            defaultCoordinate:{X1:0, Y1:0, X2:0, Y2:0},
-            startCoordinate:{X1:0, Y1:0, X2:0, Y2:0},
+            matrix = [];
+            matrixInvertible = [];
+            startDrag = {X:0, Y:0};
+            prevDrag = {X:0, Y:0};
+            defaultCoordinate = {X1:0, Y1:0, X2:0, Y2:0};
+            startCoordinate = {X1:0, Y1:0, X2:0, Y2:0};
 
-            isEqualsCoordinate:function (coordinate1, coordinate2) {
+            this.isEqualsCoordinate = function (coordinate1, coordinate2) {
 
-            },
+            };
 
-            isEqualsPoint:function (point1, point2) {
+            this.isEqualsPoint = function (point1, point2) {
                 return point1.X == point2.X && point1.Y == point1.Y
-            },
-            isDragMove:function () {
-                return !this.isEqualsPoint(this.pixel, this.prevDrag);
-            },
+            };
+            this.isDragMove = function () {
+                return !this.isEqualsPoint(this.pixel, prevDrag);
+            };
 
-            absRange:function () {
+            this.absRange = function () {
                 return {X:Math.abs(this.scope.X),
                     Y:Math.abs(this.scope.Y)}
-            },
+            };
 
-
-            refresh:function (options) {
+            this.refresh = function (options) {
                 var opt = $.extend({}, options);
 
                 if (opt.offset) this.offset = {X:opt.offset.left, Y:opt.offset.top};
-                if (opt.prevDrag) this.prevDrag = opt.prevDrag;
+                if (opt.prevDrag) prevDrag = opt.prevDrag;
 
                 //窗口大小改变时
                 this.refreshSize(opt);
@@ -75,16 +75,16 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 this.refreshCoordinate(opt);
 
                 var curPoint = system.parseCoordinate(
-                    layout.toPoint(this.pixel.X, this.pixel.Y)
+                    this.toPoint(this.pixel.X, this.pixel.Y)
                 );
                 //curPoint.X = curPoint.X.format('yyyy-MM-dd HH:mm:ss');
                 message.show({content:JSON.stringify({
                     point:curPoint,
-                    coordinate:layout.coordinate
+                    coordinate:this.coordinate
                 }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
-            },
+            };
 
-            refreshSize:function (opt) {
+            this.refreshSize = function (opt) {
                 if (!opt.width || !opt.height)  return;
 
                 var oldheight = this.height;
@@ -118,10 +118,11 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 if (this.coordinate.X1 == this.coordinate.X2 || this.coordinate.Y1 == this.coordinate.Y2)
                     throw 'coordinate init error! ';
 
-                this.startCoordinate = utility.clone(this.coordinate);
-                this.defaultCoordinate = utility.clone(this.coordinate);
-            },
-            refreshZoom:function (opt) {
+                startCoordinate = utility.clone(this.coordinate);
+                defaultCoordinate = utility.clone(this.coordinate);
+            };
+
+            this.refreshZoom = function (opt) {
                 if (opt.zoom) {
                     opt.zoom = system.zoomAxis(opt.zoom);
                     if (opt.zoom.X) {
@@ -140,50 +141,51 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                         this.coordinate.X2 -= this.scope.X * opt.zoom.Scale;
                         this.coordinate.Y2 -= this.scope.Y * opt.zoom.Scale;
                     }
-                    this.startCoordinate = utility.clone(this.coordinate);
+                    startCoordinate = utility.clone(this.coordinate);
                 }
-            },
-            refreshDrag:function (opt) {
+            };
+
+            this.refreshDrag = function (opt) {
                 if (opt.pixel) {
                     if (!this.isEqualsPoint(this.pixel, opt.pixel))
-                        this.prevDrag = utility.clone(this.pixel);
+                        prevDrag = utility.clone(this.pixel);
                     this.pixel.X = opt.pixel.X - this.offset.X;
                     this.pixel.Y = opt.pixel.Y - this.offset.Y;
                 }
 
                 if (opt.drag == 'START') {
-                    this.startDrag.X = opt.pixel.X - this.offset.X;
-                    this.startDrag.Y = opt.pixel.Y - this.offset.Y;
+                    startDrag.X = opt.pixel.X - this.offset.X;
+                    startDrag.Y = opt.pixel.Y - this.offset.Y;
                     //todo
-                    this.startCoordinate = utility.clone(this.coordinate);
+                    startCoordinate = utility.clone(this.coordinate);
                 }
 
                 //todo
                 if (opt.drag == 'CONTINUE') {
                     //find the scale of the graph (units per pixel)
                     //this.scale = this.currScale();
-                    //dump(scale.x + " " + scale.y + " -- " + this.startCoordinate.x1 + " " + this.startCoordinate.y1);
-                    //dump(this.startCoordinate.x1 + " " +(y - this.startDrag.y) / scale.y);
-                    this.coordinate.X1 = this.startCoordinate.X1 - ((this.pixel.X - this.startDrag.X) / this.scale.X);
-                    this.coordinate.X2 = this.startCoordinate.X2 - ((this.pixel.X - this.startDrag.X) / this.scale.X);
-                    this.coordinate.Y1 = this.startCoordinate.Y1 + ((this.pixel.Y - this.startDrag.Y) / this.scale.Y);
-                    this.coordinate.Y2 = this.startCoordinate.Y2 + ((this.pixel.Y - this.startDrag.Y) / this.scale.Y);
+                    //dump(scale.x + " " + scale.y + " -- " + startCoordinate.x1 + " " + startCoordinate.y1);
+                    //dump(startCoordinate.x1 + " " +(y - startDrag.y) / scale.y);
+                    this.coordinate.X1 = startCoordinate.X1 - ((this.pixel.X - startDrag.X) / this.scale.X);
+                    this.coordinate.X2 = startCoordinate.X2 - ((this.pixel.X - startDrag.X) / this.scale.X);
+                    this.coordinate.Y1 = startCoordinate.Y1 + ((this.pixel.Y - startDrag.Y) / this.scale.Y);
+                    this.coordinate.Y2 = startCoordinate.Y2 + ((this.pixel.Y - startDrag.Y) / this.scale.Y);
                 }
                 if (opt.drag == 'RENEW') {
-                    this.startCoordinate = utility.clone(this.coordinate);
+                    startCoordinate = utility.clone(this.coordinate);
                 }
-            },
+            };
 
-            refreshCoordinate:function (opt) {
+            this.refreshCoordinate = function (opt) {
                 if (opt.coordinate) {
                     if (opt.coordinate.X1)
-                        layout.coordinate.X1 = opt.coordinate.X1;
+                        this.coordinate.X1 = opt.coordinate.X1;
                     if (opt.coordinate.X2)
-                        layout.coordinate.X2 = opt.coordinate.X2;
+                        this.coordinate.X2 = opt.coordinate.X2;
                     if (opt.coordinate.Y1)
-                        layout.coordinate.Y1 = opt.coordinate.Y1;
+                        this.coordinate.Y1 = opt.coordinate.Y1;
                     if (opt.coordinate.Y2)
-                        layout.coordinate.Y2 = opt.coordinate.Y2;
+                        this.coordinate.Y2 = opt.coordinate.Y2;
                 }
 
                 this.scope.X = this.coordinate.X2 - this.coordinate.X1;
@@ -192,12 +194,12 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                 this.scale.Y = this.height / this.scope.Y;
                 // x' =  Sx * x + 0 * y + width / 2
                 //y' = 0 * x - y * Sy + height / 2
-                this.matrix = [
+                matrix = [
                     [this.scale.X, 0, -this.coordinate.X1 * this.scale.X],
                     [0, this.scale.Y, -this.coordinate.Y2 * this.scale.Y],
                     [0, 0, 1]
                 ];
-                this.matrixInvertible = [
+                matrixInvertible = [
                     [1 / this.scale.X, 0, this.coordinate.X1],
                     [0, 1 / this.scale.Y, this.coordinate.Y2],
                     [0, 0, 1]
@@ -205,64 +207,68 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
 
                 this.coordinate.width = this.width;
                 this.coordinate.height = this.height;
-            },
+            };
 
-            reset:function () {
-                this.coordinate.X1 = this.defaultCoordinate.X1;
-                this.coordinate.Y1 = this.defaultCoordinate.Y1;
-                this.coordinate.X2 = this.defaultCoordinate.X2;
-                this.coordinate.Y2 = this.defaultCoordinate.Y2;
-                this.startCoordinate = utility.clone(this.coordinate);
+            this.reset = function () {
+                this.coordinate.X1 = defaultCoordinate.X1;
+                this.coordinate.Y1 = defaultCoordinate.Y1;
+                this.coordinate.X2 = defaultCoordinate.X2;
+                this.coordinate.Y2 = defaultCoordinate.Y2;
+                startCoordinate = utility.clone(this.coordinate);
                 this.scope.X = this.coordinate.X2 - this.coordinate.X1;
                 this.scope.Y = this.coordinate.Y2 - this.coordinate.Y1;
                 this.scale.X = this.width / this.scope.X;
                 this.scale.Y = this.height / this.scope.Y;
                 this.refreshCoordinate();
-            },
+            };
 
-            toPixel:function (x, y) {
+            this.toPixel = function (x, y) {
                 if (isNaN(x) || isNaN(y)) {
                     return null;
                 }
-                if (x > layout.coordinate.X2) {
-                    x = layout.coordinate.X2;
+                if (x > this.coordinate.X2) {
+                    x = this.coordinate.X2;
                     //return null;
                 }
-                if (x < layout.coordinate.X1) {
-                    x = layout.coordinate.X1;
+                if (x < this.coordinate.X1) {
+                    x = this.coordinate.X1;
                     //return null;
                 }
-//                if (point.Y > layout.coordinate.Y2) {
-//                    //point.Y = layout.coordinate.Y2;
+//                if (point.Y > this.coordinate.Y2) {
+//                    //point.Y = this.coordinate.Y2;
 //                    //return null;
 //                }
-//                if (point.Y < layout.coordinate.Y1) {
-//                    //point.Y = layout.coordinate.Y1;
+//                if (point.Y < this.coordinate.Y1) {
+//                    //point.Y = this.coordinate.Y1;
 //                    //return null;
 //                }
-                var result = matrixes.Transform2D(layout.matrix, [x, y]);
+                var result = matrixes.Transform2D(matrix, [x, y]);
                 return {X:result[0][0], Y:-result[1][0]};
-            },
-            toPixelX:function (x) {
-                return x * layout.matrix[0][0] + layout.matrix[0][2];
-            },
-            toPixelY:function (y) {
-                return -(y * layout.scale.Y - layout.coordinate.Y2 * layout.scale.Y);
-            },
+            };
 
-            toPoint:function (x, y) {
+            this.toPixelX = function (x) {
+                return x * matrix[0][0] + matrix[0][2];
+            };
+
+            this.toPixelY = function (y) {
+                return -(y * this.scale.Y - this.coordinate.Y2 * this.scale.Y);
+            };
+
+            this.toPoint = function (x, y) {
                 if (isNaN(x) || isNaN(y)) {
                     return null;
                 }
-                var result = matrixes.Transform2D(layout.matrixInvertible, [x, -y]);
+                var result = matrixes.Transform2D(matrixInvertible, [x, -y]);
                 return {X:result[0][0], Y:result[1][0]};
-            },
-            toPointX:function (x, y) {
-            },
-            toPointY:function (x, y) {
-            },
+            };
 
-            init:function (options) {
+            this.toPointX = function (x, y) {
+            };
+
+            this.toPointY = function (x, y) {
+            };
+
+            this.init = function (options) {
                 //todo
                 //graphics = options.graphics;
                 system = options.system;

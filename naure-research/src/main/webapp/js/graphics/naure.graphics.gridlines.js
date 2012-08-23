@@ -16,11 +16,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
 
         var config, layout, system, scale, ctx, coordinate, scope, gridsize = {}, location = [];
 
-        var gridlines = {
+        var gridlines = function () {
 
-            alreadyDrawnPoints:null,
+            this.alreadyDrawnPoints = null;
 
-            draw:function (options) {
+            this.draw = function (options) {
                 if (!ctx) {
                     return;
                 }
@@ -48,10 +48,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 this.alreadyDrawnPoints = [];
                 this.horizontal(roundingCoordinate);
                 this.vertical(roundingCoordinate);
-            },
+            };
 
             //水平线
-            horizontal:function (roundingCoordinate) {
+            this.horizontal = function (roundingCoordinate) {
                 // 1/ 4 线 [Y 轴 ]
                 ctx.strokeStyle = config.minorStyle;
                 ctx.lineWidth = 0.1;
@@ -110,10 +110,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                         ctx.fillText(system.gridlineLabelY(y), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
                     }
                 }
-            },
+            };
 
             //垂直线
-            vertical:function (roundingCoordinate) {
+            this.vertical = function (roundingCoordinate) {
                 // 1/ 4 线 [X 轴 ]
                 ctx.strokeStyle = config.minorStyle;
                 ctx.lineWidth = 0.1;
@@ -172,9 +172,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                         ctx.fillText(system.gridlineLabelX(x), labelPixel.X + labelPixelOffset.X, labelPixel.Y + labelPixelOffset.Y);
                     }
                 }
-            },
+            };
 
-            init:function (options) {
+            this.init = function (options) {
                 config = options.config;
                 layout = options.layout;
                 system = options.system
@@ -183,12 +183,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 coordinate = layout.coordinate;
                 scope = layout.scope;
                 return gridlines;
-            }
+            };
         };
 
         return gridlines;
     })();
 
     return NAURE;
-})
-;
+});

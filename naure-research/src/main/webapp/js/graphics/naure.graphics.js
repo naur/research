@@ -23,9 +23,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
 
     NAURE.Graphics = (function () {
 
-        var naure = NAURE;
         var message = NAURE.Message;
-        var ui, gridlines, layout, system, defaultSystem;
+        var ui, defaultSystem, gridlines, layout, system;
 
         var graphics = {
             ui:null,
@@ -110,21 +109,22 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                     system:system
                 });
                 //Step 3: resize
+                ui.setSystem(system);
                 ui.resize();
             },
 
             init:function (options) {
                 defaultSystem = NAURE.Graphics.Equation; //default
                 ui = NAURE.Graphics.UI;
-                gridlines = NAURE.Graphics.Gridlines;
+                gridlines = new NAURE.Graphics.Gridlines();
                 //Step 1: Layout 初始化
-                layout = NAURE.Graphics.Layout;
+                layout = new NAURE.Graphics.Layout();
                 //Step 2: UI 初始化
                 ui.init($.extend({
                     config:graphics.config,
                     layout:layout,
                     graphics:graphics,
-                    system:system,
+                    system:defaultSystem,
                     gridlines:gridlines
                 }, options));
                 //Step 3:  System 初始化

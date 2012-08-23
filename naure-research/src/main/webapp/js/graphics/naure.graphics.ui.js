@@ -45,6 +45,10 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 graphics.draw();
             },
 
+            setSystem: function(sys) {
+                system = sys;
+            },
+
             draw:function (options) {
                 var opt = $.extend({
                     lines:[]
