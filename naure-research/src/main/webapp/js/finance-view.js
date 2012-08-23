@@ -47,12 +47,12 @@ var overlayNodes = {
         lines.push({equation:'y=x^2', color:'red'});
         lines.push({equation:"\\frac{d}{dx}\\left(sin\\left(x\\right)+log\\left(x+1\\right)\\right)", color:'blue'});
         //lines.push({equation : 'r<\sin \left(4\theta \right)', color : 'red'});
-        graphics.System(graphics.Equation);
+        graphics.System(new graphics.Equation());
         graphics.draw({lines:lines});
     },
     Finance:function () {
         lines = [];
-        graphics.System(graphics.Finance);
+        graphics.System(new graphics.Finance());
         graphics.draw({lines:lines});
     },
     Reset:function () {
@@ -173,7 +173,7 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http', 'naure.math.s
 
         message.position('left-top');
         //graphics.config.gridlines.show = false;
-        $(canvas1).NAURE_Graphics({system:graphics.Finance});
+        $(canvas1).NAURE_Graphics({system: new graphics.Finance()});
         //$(canvas2).NAURE_Graphics({system:graphics.Finance});
 
         initEvent();

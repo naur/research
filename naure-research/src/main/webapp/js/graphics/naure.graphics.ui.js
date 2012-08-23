@@ -15,11 +15,11 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
 
     NAURE.Graphics.UI = (function () {
 
-        var layout, graphics, system, gridlines, config, location = [];
-
         var ui = function () {
-            this.ctx = null;
 
+            var layout, graphics, system, gridlines, config, location = [];
+
+            this.ctx = null;
             //var container = null;
             var graph = null;
             var isLiveGraphEvent = false;

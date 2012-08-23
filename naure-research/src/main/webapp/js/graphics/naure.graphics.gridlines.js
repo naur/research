@@ -14,9 +14,9 @@
 define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'], function ($, NAURE) {
     NAURE.Graphics.Gridlines = (function () {
 
-        var config, layout, system, scale, ctx, coordinate, scope, gridsize = {}, location = [];
-
         var gridlines = function () {
+
+            var config, layout, system, scale, ctx, coordinate, scope, gridsize = {}, location = [];
 
             this.alreadyDrawnPoints = null;
 

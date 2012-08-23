@@ -14,11 +14,13 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
     var matrixes = NAURE.Math.Matrixes;
     var message = NAURE.Message;
     var utility = NAURE.Utility;
-    var system;
 
     NAURE.Graphics.Layout = (function () {
 
         var layout = function () {
+
+            var system;
+
             //全局变量
             this.width = 0;
             this.height = 0;
@@ -33,12 +35,12 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             this.n = {x:10, y:10};
 
             //局部变量
-            matrix = [];
-            matrixInvertible = [];
-            startDrag = {X:0, Y:0};
-            prevDrag = {X:0, Y:0};
-            defaultCoordinate = {X1:0, Y1:0, X2:0, Y2:0};
-            startCoordinate = {X1:0, Y1:0, X2:0, Y2:0};
+            var matrix = [];
+            var matrixInvertible = [];
+            var startDrag = {X:0, Y:0};
+            var prevDrag = {X:0, Y:0};
+            var defaultCoordinate = {X1:0, Y1:0, X2:0, Y2:0};
+            var startCoordinate = {X1:0, Y1:0, X2:0, Y2:0};
 
             this.isEqualsCoordinate = function (coordinate1, coordinate2) {
 

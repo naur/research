@@ -14,11 +14,11 @@
 define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'], function ($, NAURE) {
     NAURE.Graphics.Finance = (function () {
 
-        var config, layout, scale, ctx, coordinate, type;
+        var finance = function () {
 
-        var finance = {
+            var config, layout, scale, ctx, coordinate, type;
 
-            Graph:function (n, disabled, color) {
+            this.Graph = function (n, disabled, color) {
                 var equation = n;
                 return {
                     plot:function (ctx, coordinate) {
@@ -32,14 +32,14 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                         ctx.stroke();
                     }
                 };
-            },
+            };
 
 //            Gridline:function () {
 //                Size: 0
-//            },
+//            };
 
-            gridlineLabelX:function (num) {
-                var d = finance.parseCoordinate({X:num, Y:0}).X;
+            this.gridlineLabelX = function (num) {
+                var d = this.parseCoordinate({X:num, Y:0}).X;
                 if (type == 'year')
                     return d.format('yyyy-MM-dd');
                 if (type == 'month')
@@ -48,29 +48,29 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                     return d.format('hh:mm:ss');
                 if (type == 'day')
                     return d.format('yy-MM-dd HH:mm');
-            },
+            };
 
-            gridlineLabelY:function (num) {
+            this.gridlineLabelY = function (num) {
                 return num.toFixed(3).replace(/\.?0+$/, "")
-            },
+            };
 
-            parseCoordinate:function (point) {
+            this.parseCoordinate = function (point) {
                 return {
                     X:new Date(point.X * 86400000 + new Date().getTimezoneOffset() * MinMilli),
                     Y:point.Y
                 };
-            },
+            };
 
-            zoomAxis:function (zoom) {
+            this.zoomAxis = function (zoom) {
                 //zoomAxis: 'both',  //horizontal, vertical,
                 if ('horizontal' == config.zoomAxis)
                     zoom.Y = null;
                 if ('vertical' == config.zoomAxis)
                     zoom.X = null;
                 return zoom;
-            },
+            };
 
-            init:function (options) {
+            this.init = function (options) {
                 config = options.config;
                 layout = options.layout;
                 ctx = options.ctx;
