@@ -11,6 +11,8 @@
 
 /*-------------------- 全局变量 START ----------------*/
 var naure, overlay, message, http, graphics, lines, finance;
+var canvas1 = 'article section canvas:eq(0)',
+    canvas2 = 'article section canvas:eq(1)';
 
 var overlayNodes = {
     Input:{
@@ -171,7 +173,8 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http', 'naure.math.s
 
         message.position('left-top');
         //graphics.config.gridlines.show = false;
-        $('article section canvas').NAURE_Graphics({system:graphics.Finance});
+        $(canvas1).NAURE_Graphics({system:graphics.Finance});
+        //$(canvas2).NAURE_Graphics({system:graphics.Finance});
 
         initEvent();
     });

@@ -20,9 +20,12 @@ String.prototype.capitalize = function () {
 };
 
 define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
+
     NAURE.Graphics = (function () {
 
+        var naure = NAURE;
         var message = NAURE.Message;
+        var ui, gridlines, layout, system, defaultSystem;
 
         var graphics = {
             ui:null,
@@ -40,7 +43,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                     "majorStyle":"black",
                     "font":"8pt sans-serif" // "8pt monospace";    Serif Sans-Serif Monospace 字体
                 },
-                zoomAxis: 'both',  //horizontal, vertical,
+                zoomAxis:'both', //horizontal, vertical,
                 quality:1,
                 zoomFactor:0.1,
                 "lineWidth":1,
@@ -52,15 +55,15 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                 var opt = $.extend({}, options)
 
                 if (opt.coordinate) {
-                    graphics.layout.refresh({coordinate:opt.coordinate});
+                    layout.refresh({coordinate:opt.coordinate});
                 }
 
-                this.ui.clear();
+                ui.clear();
 
                 var gridlinesPerf, drawPerf;
                 if (this.config.gridlines.show) {
                     start = new Date();
-                    this.ui.gridlines(options);
+                    ui.gridlines(options);
                     end = new Date();
                     gridlinesPerf = end.getTime() - start.getTime();
                 }
@@ -69,7 +72,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                     this.lines = opt.lines;
 
                 start = new Date();
-                this.ui.draw({lines:this.lines});
+                ui.draw({lines:this.lines});
                 end = new Date();
                 drawPerf = end.getTime() - start.getTime();
 
@@ -80,46 +83,49 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
             },
 
             reset:function () {
-                this.ui.reset();
+                ui.reset();
             },
 
             System:function (sys) {
                 //Step 1: System 初始化
                 if (!sys)
-                    graphics.system = NAURE.Graphics.Equation; //default
+                    system = defaultSystem
                 else
-                    graphics.system = sys;
+                    system = sys;
 
-                graphics.system.init({
+                system.init({
                     config:graphics.config,
-                    layout:graphics.layout,
-                    ctx:graphics.ui.ctx
+                    layout:layout,
+                    ctx:ui.ctx
                 });
-                graphics.layout.init({
-                    system:graphics.system
+                layout.init({
+                    graphics:graphics,
+                    system:system
                 });
                 //Step 2: Gridlines 初始化
-                graphics.gridlines.init({
+                gridlines.init({
                     config:graphics.config.gridlines,
-                    layout:graphics.layout,
-                    ctx:graphics.ui.ctx,
-                    system:graphics.system
+                    layout:layout,
+                    ctx:ui.ctx,
+                    system:system
                 });
                 //Step 3: resize
-                graphics.ui.resize();
+                ui.resize();
             },
 
             init:function (options) {
-                graphics.ui = NAURE.Graphics.UI;
-                graphics.gridlines = NAURE.Graphics.Gridlines;
+                defaultSystem = NAURE.Graphics.Equation; //default
+                ui = NAURE.Graphics.UI;
+                gridlines = NAURE.Graphics.Gridlines;
                 //Step 1: Layout 初始化
-                graphics.layout = NAURE.Graphics.Layout;
+                layout = NAURE.Graphics.Layout;
                 //Step 2: UI 初始化
-                graphics.ui.init($.extend({
+                ui.init($.extend({
                     config:graphics.config,
-                    layout:graphics.layout,
+                    layout:layout,
                     graphics:graphics,
-                    gridlines:graphics.gridlines
+                    system:system,
+                    gridlines:gridlines
                 }, options));
                 //Step 3:  System 初始化
                 this.System(options.system);

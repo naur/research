@@ -15,7 +15,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
 
     NAURE.Graphics.UI = (function () {
 
-        var layout, graphics, gridlines, config, location = [];
+        var layout, graphics, system, gridlines, config, location = [];
 
         var ui = {
             container:null,
@@ -62,7 +62,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
             drawLine:function (options) {
                 var opt = $.extend({}, config, options);
                 this.ctx.strokeStyle = opt.color;
-                new graphics.system.Graph(opt.equation, true, opt.color).plot(this.ctx, layout.coordinate);
+                new system.Graph(opt.equation, true, opt.color).plot(this.ctx, layout.coordinate);
             },
 
             resize:function () {
@@ -211,16 +211,16 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
             },
 
             init:function (options) {
-                var opt = $.extend({}, options);
-                ui.graph = $(opt.container);
+                ui.graph = $(options.container);
                 if (!ui.graph[0].getContext) return;
                 ui.ctx = $(ui.graph)[0].getContext("2d");
 
-                config = opt.config;
-                graphics = opt.graphics;
-                layout = opt.layout;
-                gridlines = opt.gridlines;
-                //ui.resize(opt.coordinate);
+                config = options.config;
+                graphics = options.graphics;
+                layout = options.layout;
+                system = options.system;
+                gridlines = options.gridlines;
+                //ui.resize(options.coordinate);
                 return ui;
             }
         };

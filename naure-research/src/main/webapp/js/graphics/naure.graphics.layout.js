@@ -14,7 +14,6 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
     var matrixes = NAURE.Math.Matrixes;
     var message = NAURE.Message;
     var utility = NAURE.Utility;
-    var graphics = NAURE.Graphics;
     var system;
 
     NAURE.Graphics.Layout = (function () {
@@ -178,13 +177,13 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             refreshCoordinate:function (opt) {
                 if (opt.coordinate) {
                     if (opt.coordinate.X1)
-                        graphics.layout.coordinate.X1 = opt.coordinate.X1;
+                        layout.coordinate.X1 = opt.coordinate.X1;
                     if (opt.coordinate.X2)
-                        graphics.layout.coordinate.X2 = opt.coordinate.X2;
+                        layout.coordinate.X2 = opt.coordinate.X2;
                     if (opt.coordinate.Y1)
-                        graphics.layout.coordinate.Y1 = opt.coordinate.Y1;
+                        layout.coordinate.Y1 = opt.coordinate.Y1;
                     if (opt.coordinate.Y2)
-                        graphics.layout.coordinate.Y2 = opt.coordinate.Y2;
+                        layout.coordinate.Y2 = opt.coordinate.Y2;
                 }
 
                 this.scope.X = this.coordinate.X2 - this.coordinate.X1;
@@ -263,7 +262,9 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
             toPointY:function (x, y) {
             },
 
-            init: function(options) {
+            init:function (options) {
+                //todo
+                //graphics = options.graphics;
                 system = options.system;
                 return layout;
             }
