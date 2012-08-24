@@ -70,8 +70,8 @@ var overlayNodes = {
         var symbol = $('#overlay-input').val().length > 0 ? $('#overlay-input').val() : 'sz000010';
 
         //http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=20120101&end_date=20120701&type=xml
-        http.Request({
-            uri:'http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=' + symbol + '&begin_date=' + startDate.format('yyyyMMdd') + '&end_date=' + endDate.format('yyyyMMdd') + '&type=xml',
+        http.xmlAcquire({
+            xmlUrl:'http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=' + symbol + '&begin_date=' + startDate.format('yyyyMMdd') + '&end_date=' + endDate.format('yyyyMMdd') + '&type=xml',
             context:this,
             error:function (ex) {
                 message.show({content:'获取数据错误，请稍后重试！', color:'red'});
@@ -206,7 +206,7 @@ function initEvent() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.http', 'naure.math.stats.finance',
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.xsl', 'naure.math.stats.finance',
     'naure.graphics.ui',
     'naure.graphics.layout',
     'naure.graphics.gridlines',
@@ -220,6 +220,8 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http', 'naure.math.s
     finance = NAURE.Math.Stats.Finance;
     systemFinance = new NAURE.Graphics.Finance();
     systemEquation = new NAURE.Graphics.Equation();
+
+    $.support.cors = true;
 
     $(function () {
         $('body').message({overlay:'left-bottom', title:'', multiple:false});
