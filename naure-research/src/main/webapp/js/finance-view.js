@@ -10,7 +10,7 @@
  */
 
 /*-------------------- 全局变量 START ----------------*/
-var naure, overlay, message, http, graphics1, graphics2, lines, finance, systemFinance, systemEquation;
+var naure, overlay, message, http, graphics1, graphics2, lines, volumes, finance, systemFinance, systemEquation;
 var canvas1 = 'article section canvas:eq(0)',
     canvas2 = 'article section canvas:eq(1)';
 
@@ -81,31 +81,68 @@ var overlayNodes = {
                 $(obj.context).attr('disabled', false);
                 message.show({content:'获取数据成功！'});
 
-                var y1, y2;
+                var y1, y2, volumeMax, volumeMin;
                 //var price = ['v', 'l', 'c', 'h', 'o'];
-                var price = ['c', 'o'];
-                for (var key in price) {
-                    if (!price.hasOwnProperty(key)) continue;
-                    var equation = []
-                    $(obj.output).find('content').each(function (index, data) {
-                        var content = $(this);
-                        equation.push({
-                            X:content.attr('d'),
-                            Y:parseFloat(content.attr(price[key]))
-                        });
-                        if (!y1)
-                            y1 = parseFloat(content.attr(price[key]));
-                        else if (parseFloat(content.attr(price[key])) < y1)
-                            y1 = parseFloat(content.attr(price[key]));
+//                var price = ['v', 'c', 'o'];
+//                for (var key in price) {
+//                    if (!price.hasOwnProperty(key)) continue;
+//                    //var equation = [], volumes = [];
+//                    $(obj.output).find('content').each(function (index, data) {
+//                        var content = $(this);
+//                        equation.push({
+//                            X:content.attr('d'),
+//                            Y:parseFloat(content.attr(price[key]))
+//                        });
+//                        volumes.push({
+//                            X:content.attr('d'),
+//                            Y:parseFloat(content.attr(price[key]))
+//                        });
+//                        if (!y1)
+//                            y1 = parseFloat(content.attr(price[key]));
+//                        else if (parseFloat(content.attr(price[key])) < y1)
+//                            y1 = parseFloat(content.attr(price[key]));
+//
+//                        if (!y2)
+//                            y2 = parseFloat(content.attr(price[key]));
+//                        else if (parseFloat(content.attr(price[key])) > y2)
+//                            y2 = parseFloat(content.attr(price[key]));
+//                    });
+//                }
 
-                        if (!y2)
-                            y2 = parseFloat(content.attr(price[key]));
-                        else if (parseFloat(content.attr(price[key])) > y2)
-                            y2 = parseFloat(content.attr(price[key]));
+                var equationOpen = [], equationClose = [], equationVolumes = [];
+                $(obj.output).find('content').each(function (index, data) {
+                    var content = $(this);
+                    var o = parseFloat(content.attr('o'));
+                    var c = parseFloat(content.attr('c'));
+                    var v = parseFloat(content.attr('v'));
+                    equationOpen.push({
+                        X:content.attr('d'),
+                        Y:o
                     });
-                    if (!lines) lines = []
-                    lines.push({equation:equation, color:'#' + random().toString(16).substring(2, 5)});
-                }
+                    equationClose.push({
+                        X:content.attr('d'),
+                        Y:c
+                    });
+                    equationVolumes.push({
+                        X:content.attr('d'),
+                        Y:v
+                    });
+                    if (!y1) y1 = getMin(o, c);
+                    if (!y2) y2 = getMax(o, c);
+                    if (!volumeMax) volumeMax = v;
+                    if (!volumeMin) volumeMin = v;
+
+                    y1 = getMin(getMin(o, c), y1);
+                    y2 = getMax(getMax(o, c), y2);
+                    volumeMax = getMax(v, volumeMax);
+                    volumeMin = getMin(v, volumeMin);
+                });
+
+                if (!lines) lines = [];
+                if (!volumes) volumes = []
+                lines.push({equation:equationOpen, color:'#' + random().toString(16).substring(2, 5)});
+                lines.push({equation:equationClose, color:'#' + random().toString(16).substring(2, 5)});
+                volumes.push({equation:equationVolumes, color:'#' + random().toString(16).substring(2, 5)});
 
                 graphics1.draw({
                     coordinate:{
@@ -114,6 +151,14 @@ var overlayNodes = {
                         Y1:y1, Y2:y2
                     },
                     lines:lines
+                });
+                graphics2.draw({
+                    coordinate:{
+                        X1:floor(startDate.getTime() / 86400000),
+                        X2:ceil(endDate.getTime() / 86400000),
+                        Y1:volumeMin, Y2:volumeMax
+                    },
+                    lines:volumes
                 });
             }
         });
@@ -127,6 +172,16 @@ var overlayNodes = {
 /*-------------------- 全局变量 END ------------------*/
 
 /*-------------------- 函数 START --------------------*/
+
+function getMin(n1, n2) {
+    if (n1 > n2) return n2;
+    else return n1;
+}
+function getMax(n1, n2) {
+    if (n1 < n2) return n2;
+    else return n1;
+}
+
 /*-------------------- 函数 END ----------------------*/
 
 /*-------------------- 事件 START --------------------*/
