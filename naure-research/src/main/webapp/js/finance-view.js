@@ -10,7 +10,7 @@
  */
 
 /*-------------------- 全局变量 START ----------------*/
-var naure, overlay, message, http, graphics, lines, finance;
+var naure, overlay, message, http, graphics1, graphics2, lines, finance, systemFinance, systemEquation;
 var canvas1 = 'article section canvas:eq(0)',
     canvas2 = 'article section canvas:eq(1)';
 
@@ -47,16 +47,16 @@ var overlayNodes = {
         lines.push({equation:'y=x^2', color:'red'});
         lines.push({equation:"\\frac{d}{dx}\\left(sin\\left(x\\right)+log\\left(x+1\\right)\\right)", color:'blue'});
         //lines.push({equation : 'r<\sin \left(4\theta \right)', color : 'red'});
-        graphics.System(new graphics.Equation());
-        graphics.draw({lines:lines});
+        graphics1.System(systemEquation);
+        graphics1.draw({lines:lines});
     },
     Finance:function () {
         lines = [];
-        graphics.System(new graphics.Finance());
-        graphics.draw({lines:lines});
+        graphics1.System(systemFinance);
+        graphics1.draw({lines:lines});
     },
     Reset:function () {
-        graphics.reset();
+        graphics1.reset();
     },
     Sina:function () {
         //http://www.google.com/ig/api?stock=600455
@@ -107,7 +107,7 @@ var overlayNodes = {
                     lines.push({equation:equation, color:'#' + random().toString(16).substring(2, 5)});
                 }
 
-                graphics.draw({
+                graphics1.draw({
                     coordinate:{
                         X1:floor(startDate.getTime() / 86400000),
                         X2:ceil(endDate.getTime() / 86400000),
@@ -133,10 +133,10 @@ var overlayNodes = {
 
 function initEvent() {
     $('#composite-operation').on('change', function () {
-        graphics.config.CompositeOperation = $(this).val();
+        graphics1.config.CompositeOperation = $(this).val();
     });
     $('#zoom-axis').on('change', function () {
-        graphics.config.zoomAxis = $(this).val();
+        graphics1.config.zoomAxis = $(this).val();
     });
     $('#overlay-input').on('keydown', function (event) {
         var ev = document.all ? window.event : event;
@@ -161,9 +161,10 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http', 'naure.math.s
     naure = NAURE;
     overlay = NAURE.UI.Overlay;
     http = NAURE.HTTP;
-    graphics = NAURE.Graphics;
     message = NAURE.Message;
     finance = NAURE.Math.Stats.Finance;
+    systemFinance = new NAURE.Graphics.Finance();
+    systemEquation = new NAURE.Graphics.Equation();
 
     $(function () {
         $('body').message({overlay:'left-bottom', title:'', multiple:false});
@@ -173,8 +174,8 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.http', 'naure.math.s
 
         message.position('left-top');
         //graphics.config.gridlines.show = false;
-        $(canvas1).NAURE_Graphics({system: new graphics.Finance()});
-        //$(canvas2).NAURE_Graphics({system:graphics.Finance});
+        graphics1 = $(canvas1).NAURE_Graphics({system:systemFinance});
+        graphics2 = $(canvas2).NAURE_Graphics({system:new NAURE.Graphics.Finance()});
 
         initEvent();
     });

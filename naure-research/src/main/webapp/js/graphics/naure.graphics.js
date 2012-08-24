@@ -24,14 +24,12 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
     NAURE.Graphics = (function () {
 
         var message = NAURE.Message;
-        var ui, defaultSystem, gridlines, layout, system;
 
-        var graphics = {
-            ui:null,
-            system:null,
-            layout:null,
-            lines:[],
-            config:{
+        var graphics = function () {
+            var ui, defaultSystem, gridlines, layout, system;
+            var lines = [];
+
+            this.config = {
                 gridlines:{
                     show:true,
                     maxgridlines:{X:13, Y:13},
@@ -48,9 +46,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                 "lineWidth":1,
                 "pt":true,
                 "font":"8pt sans-serif"
-            },
+            };
 
-            draw:function (options) {
+            this.draw = function (options) {
                 var opt = $.extend({}, options)
 
                 if (opt.coordinate) {
@@ -79,13 +77,13 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
 //                    gridlinesPerf:gridlinesPerf,
 //                    drawPerf:drawPerf
 //                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
-            },
+            };
 
-            reset:function () {
+            this.reset = function () {
                 ui.reset();
-            },
+            };
 
-            System:function (sys) {
+            this.System = function (sys) {
                 //Step 1: System 初始化
                 if (!sys)
                     system = defaultSystem
@@ -93,17 +91,17 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                     system = sys;
 
                 system.init({
-                    config:graphics.config,
+                    config:this.config,
                     layout:layout,
                     ctx:ui.ctx
                 });
                 layout.init({
-                    graphics:graphics,
+                    graphics:this,
                     system:system
                 });
                 //Step 2: Gridlines 初始化
                 gridlines.init({
-                    config:graphics.config.gridlines,
+                    config:this.config.gridlines,
                     layout:layout,
                     ctx:ui.ctx,
                     system:system
@@ -111,9 +109,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                 //Step 3: resize
                 ui.setSystem(system);
                 ui.resize();
-            },
+            };
 
-            init:function (options) {
+            this.init = function (options) {
                 defaultSystem = new NAURE.Graphics.Equation(); //default
                 ui = new NAURE.Graphics.UI();
                 gridlines = new NAURE.Graphics.Gridlines();
@@ -121,9 +119,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                 layout = new NAURE.Graphics.Layout();
                 //Step 2: UI 初始化
                 ui.init($.extend({
-                    config:graphics.config,
+                    config:this.config,
                     layout:layout,
-                    graphics:graphics,
+                    graphics:this,
                     system:defaultSystem,
                     gridlines:gridlines
                 }, options));
@@ -131,7 +129,9 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
                 this.System(options.system);
                 //Step 4: Draw
                 this.draw();
-            }
+
+                return this;
+            };
         };
 
         return graphics;
@@ -142,8 +142,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
         if (!options)
             options = {};
         options.container = this;
-        NAURE.Graphics.init(options);
-        return this;
+        return new NAURE.Graphics().init(options);
     };
 
     return NAURE;
