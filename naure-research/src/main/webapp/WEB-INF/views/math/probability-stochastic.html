@@ -1,0 +1,134 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <link href="/Research/projects/research/naure-web/src/main/webapp/css/mathquill.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/Research/projects/research/naure-web/src/main/webapp/css/naure.overlay.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/Research/projects/research/naure-web/src/main/webapp/css/naure.message.css" rel="stylesheet"
+          type="text/css"/>
+
+
+    <style type="text/css">
+
+        figure:last-child {
+            margin: 20px;
+        }
+
+        figure figcaption {
+            margin: 10px;
+        }
+
+        article section {
+            width: 100%;
+            text-align: left;
+            padding: 10px;
+        }
+
+        article section:first-child {
+            width: 20%;
+            position: absolute;
+            float: left;
+            left: 0;
+        }
+
+        article section:last-child {
+            width: 80%;
+            position: absolute;
+            float: right;
+            right: 0;
+            text-align: center;
+        }
+
+        canvas {
+            top: 0px;
+            left: 0px;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
+    </style>
+
+    <script type="text/javascript" src="/Research/projects/research/naure-web/src/main/webapp/js/require.js"></script>
+    <script type="text/javascript"
+            src="/Research/projects/research/naure-web/src/main/webapp/js/require.config.js"></script>
+
+    <script type="text/javascript">
+        var message, stochastic, keyPrefixGaussian = 'gd', keyPrefixUniform = 'ud';
+        require(['jquery', 'naure.message', 'naure.math.probability.stochastic'], function ($, NAURE) {
+            message = NAURE.Message;
+            stochastic = NAURE.Math.Probability.Stochastic;
+
+            $('article section:eq(1)').message();
+
+            $('#handle').on('click', function () {
+                $(this).attr('disabled', true);
+                //localStorage.clear();
+                stochastic.GaussianDistribution({distributions:['a', 'b', 'c', 'd'], n:10, success:function (obj) {
+                    //localStorage.setItem(keyPrefixGaussian + obj.index, obj.x1);
+                    message.show({content:JSON.stringify(obj)});
+                }});
+
+                stochastic.UniformDistribution({distributions:['a', 'b', 'c', 'd'], n:10, success:function (obj) {
+                    //localStorage.setItem(keyPrefixGaussian + obj.index, obj.x1);
+                    message.show({content:JSON.stringify(obj)});
+                }});
+
+                $(this).attr('disabled', false);
+            });
+
+            $('#clear').on('click', function () {
+                message.empty();
+            });
+        });
+    </script>
+</head>
+<body>
+
+<article>
+    <section>
+        <figure>
+            <figcaption>field1: <input type="text" id="field1"/></figcaption>
+            <figcaption>field2: <input type="text" id="field2"/></figcaption>
+            <figcaption>field3: <input type="text" id="field3"/></figcaption>
+            <figcaption>field4: <input type="text" id="field4"/></figcaption>
+        </figure>
+
+        <figure>
+            <input type="button" value="生成随机数" id="handle"/>
+            <input type="button" value="Clear" id="clear"/>
+        </figure>
+    </section>
+    <section>
+        <canvas>
+            Fallback content, in case the browser does not support Canvas.
+        </canvas>
+    </section>
+</article>
+
+
+<!--<OrderType>0</OrderType>-->
+<!--<OrderID>170130146</OrderID>-->
+<!--<Is211>0</Is211>-->
+<!--<IdShipMentType>70</IdShipMentType>-->
+<!--<SendPay>00000000000000000000000000010000000000000000000000</SendPay>-->
+<!--<DateSubMit>2012-8-17 16:29:00</DateSubMit>-->
+<!--<IsJdShip>True</IsJdShip>-->
+<!--<DeliveryCenterID>5</DeliveryCenterID>-->
+<!--<StoreID>1</StoreID>-->
+<!--<DistributionType>1</DistributionType>-->
+<!--<IdPickSite>0</IdPickSite>-->
+<!--<ActualTransferTime>2012-08-17T16:29:09</ActualTransferTime>-->
+<!--<Guid>3969a70a-3f61-4540-b4b4-845c8e1a9a4b</Guid>-->
+<!--<Address>-->
+<!--<Province>7</Province>-->
+<!--<County>4337</County>-->
+<!--<City>412</City>-->
+<!--</Address>-->
+
+</body>
+</html>

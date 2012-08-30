@@ -109,39 +109,40 @@ var overlayNodes = {
 //                    });
 //                }
 
-                var equationOpen = [], equationClose = [], equationVolumes = [];
+                //todo
+                var equationPrice = [], equationClose = [], equationVolumes = [];
                 $(obj.output).find('content').each(function (index, data) {
                     var content = $(this);
                     var o = parseFloat(content.attr('o'));
                     var c = parseFloat(content.attr('c'));
                     var v = parseFloat(content.attr('v'));
-                    equationOpen.push({
+                    equationPrice.push({
                         X:content.attr('d'),
-                        Y:o
-                    });
-                    equationClose.push({
-                        X:content.attr('d'),
-                        Y:c
+                        //Y:o,
+                        O:o,
+                        C:c
                     });
                     equationVolumes.push({
                         X:content.attr('d'),
-                        Y:v
+                        O:o,
+                        C:c,
+                        //Y:v
+                        V:v
                     });
-                    if (!y1) y1 = getMin(o, c);
-                    if (!y2) y2 = getMax(o, c);
+                    if (!y1) y1 = min(o, c);
+                    if (!y2) y2 = max(o, c);
                     if (!volumeMax) volumeMax = v;
                     if (!volumeMin) volumeMin = v;
 
-                    y1 = getMin(getMin(o, c), y1);
-                    y2 = getMax(getMax(o, c), y2);
-                    volumeMax = getMax(v, volumeMax);
-                    volumeMin = getMin(v, volumeMin);
+                    y1 = min(min(o, c), y1);
+                    y2 = max(max(o, c), y2);
+                    volumeMax = max(v, volumeMax);
+                    volumeMin = min(v, volumeMin);
                 });
 
                 if (!lines) lines = [];
                 if (!volumes) volumes = []
-                lines.push({equation:equationOpen, color:'#' + random().toString(16).substring(2, 5)});
-                lines.push({equation:equationClose, color:'#' + random().toString(16).substring(2, 5)});
+                lines.push({equation:equationPrice, color:'#' + random().toString(16).substring(2, 5)});
                 volumes.push({equation:equationVolumes, color:'#' + random().toString(16).substring(2, 5)});
 
                 graphics1.draw({
@@ -172,15 +173,6 @@ var overlayNodes = {
 /*-------------------- 全局变量 END ------------------*/
 
 /*-------------------- 函数 START --------------------*/
-
-function getMin(n1, n2) {
-    if (n1 > n2) return n2;
-    else return n1;
-}
-function getMax(n1, n2) {
-    if (n1 < n2) return n2;
-    else return n1;
-}
 
 /*-------------------- 函数 END ----------------------*/
 

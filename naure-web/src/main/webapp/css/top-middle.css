@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    /*text-align: center;*/
+}
+
+html {
+    width: 100%
+}
+
+body {
+    width: 100%;
+    margin: 0px;
+    padding: 0px
+}
+
+article {
+    width: 100%;
+    margin: 0px;
+    padding: 0px
+}
+
+article section {
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+article section:first-child {
+    left: 0;
+}
+
+article section:last-child {
+    right: 0;
+}
