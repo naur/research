@@ -21,24 +21,27 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                     max:1,
                     n:1,
                     fractionDigits:20, //小数点后的数字位数。其值必须在 0 – 20 之间，包括 0 和 20。
+                    data:null,
                     success:null,
-                    distributions:null
+                    distributions:null,
+                    distributionsLinked:null
                 }, options)
 
-                var distributionsLinked = null, u;
+                var u;
 
-                if (opt.distributions) {
-                    distributionsLinked = stochastic.ProbabilityLinked({distributions:opt.distributions});
-                }
+                if (opt.distributions)
+                    opt.distributionsLinked = stochastic.ProbabilityLinked({distributions:opt.distributions});
+
 
                 for (var i = 0; i < opt.n; i++) {
                     u = random() * (opt.max - opt.min) + opt.min;
                     var x = typeof u === 'undefined' ? floor(u) : new Number(u.toFixed(opt.fractionDigits));
-                    if (opt.distributions)
-                        x = stochastic.ProbabilitySampling(x, distributionsLinked);
+                    if (opt.distributionsLinked)
+                        x = stochastic.ProbabilitySampling(x, opt.distributionsLinked);
 
                     opt.success({
                         index:i,
+                        data:opt.data,
                         x:x
                     });
                 }
@@ -48,13 +51,14 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
             GaussianDistribution:function (options) {
                 var opt = $.extend({
                     n:1,
+                    success:null,
                     distributions:null,
-                    success:null
+                    distributionsLinked:null
                 }, options)
-                var u1 = 0, u2 = 0, s = 0, r = 0, distributionsLinked = null;
-                if (opt.distributions) {
-                    distributionsLinked = stochastic.ProbabilityLinked({min:-3, max:3, distributions:opt.distributions});
-                }
+                var u1 = 0, u2 = 0, s = 0, r = 0;
+                if (opt.distributions)
+                    opt.distributionsLinked = stochastic.ProbabilityLinked({min:-3, max:3, distributions:opt.distributions});
+
 
                 for (var i = 0; i < opt.n; i++) {
                     s = 0;
@@ -68,9 +72,9 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                     var x1 = r * u1;
                     var x2 = r * u2;
 
-                    if (opt.distributions) {
-                        x1 = stochastic.ProbabilitySampling(x1, distributionsLinked);
-                        x2 = stochastic.ProbabilitySampling(x2, distributionsLinked);
+                    if (opt.distributionsLinked) {
+                        x1 = stochastic.ProbabilitySampling(x1, opt.distributionsLinked);
+                        x2 = stochastic.ProbabilitySampling(x2, opt.distributionsLinked);
                     }
 
                     opt.success({

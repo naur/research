@@ -39,28 +39,40 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 this.request = opt.request;
                 this.async = opt.async;
 
-                var exec = function (opt) {
-                    try {
-                        var result = opt.handle(opt.request);
-                        if (typeof(result) != 'undefined' && !result)
-                            return;
-                        if (opt.success)
-                            opt.success();
-                    } catch (ex) {
-                        if (opt.error)
-                            opt.error({error:ex});
-                    }
-                    if (opt.successor)
-                        opt.successor.process();
-                };
+//                var exec = function (opt) {
+//                    try {
+//                        var result = opt.handle(opt.request);
+//                        if (typeof(result) != 'undefined' && !result)
+//                            return;
+//                        if (opt.success)
+//                            opt.success();
+//                    } catch (ex) {
+//                        if (opt.error)
+//                            opt.error({error:ex});
+//                    }
+//                    if (opt.successor)
+//                        opt.successor.process();
+//                };
 
                 this.process = function () {
                     if (this.handle) {
-                        if (this.async) {
-                            asyncHandler(exec, 100, opt)
-                        } else {
-                            exec(opt);
+                        try {
+                            if (this.async) {
+                                setTimeout(opt.handle, 100)
+                            } else {
+                                var result = opt.handle(opt.request);
+                                if (typeof(result) != 'undefined' && !result)
+                                    return;
+                            }
+                            if (opt.success)
+                                opt.success();
+                        } catch (ex) {
+                            if (opt.error)
+                                opt.error({error:ex});
                         }
+
+                        if (opt.successor)
+                            opt.successor.process();
                     }
                 }
             }

@@ -10,7 +10,8 @@
  */
 /*-------------------- 全局变量 START ----------------*/
 
-var message, messageQueues, chainHandler, complete = true, stochastic, keyPrefixGaussian = 'gd', keyPrefixUniform = 'ud', graphics, system, n = 10000, m = 0, buffer, fieldsInfo;
+var message, messageQueues, chainHandler, complete = true, stochastic,
+    keyPrefixGaussian = 'gd', keyPrefixUniform = 'ud', graphics, system, n = 1000, buffer, fieldsInfo;
 //var localStorage = [];
 
 /*-------------------- 全局变量 END ------------------*/
@@ -34,7 +35,6 @@ function initStatus(status) {
         message.empty();
         messageQueues = [];
         buffer = {};
-        m = 0;
         //localStorage.clear();
     }
     complete = !status;
@@ -43,17 +43,20 @@ function initStatus(status) {
 function initFieldInfo() {
     fieldsInfo = {};
     $('.fields').each(function (index) {
-        var type;
+        var type, distributionsLinked;
         if ($('input[name=radio' + $(this).attr('id') + ']:radio:checked').val() == keyPrefixGaussian) {
+            distributionsLinked = stochastic.ProbabilityLinked({min:-3, max:3, distributions:$(this).val().split(/[-,;-]{1}/)});
             type = keyPrefixGaussian;
         } else {
+            distributionsLinked = stochastic.ProbabilityLinked({distributions:$(this).val().split(/[-,;-]{1}/)});
             type = keyPrefixUniform;
         }
 
-        fieldsInfo['field' + index] = {
+        fieldsInfo[index] = {
             key:'field' + index,
             name:$(this).attr('tag'),
             values:$(this).val().split(/[-,;-]{1}/),
+            linked:distributionsLinked,
             type:type
         };
     });
@@ -63,62 +66,103 @@ function storageKey(field, n) {
     return field.key + (field.type == keyPrefixUniform ? keyPrefixUniform : keyPrefixGaussian) + n;
 }
 
+var currentField, currentIndex = 0, currentNum = 0
 //生成随机数
 function makeProbabilitySampling() {
-    for (var index in fieldsInfo) {
-        if (fieldsInfo[index].type == keyPrefixUniform) {
-            makeUniformDistribution(fieldsInfo[index]);
-        } else {
-            makeGaussianDistribution(fieldsInfo[index]);
-        }
+//    for (var index in fieldsInfo) {
+//        if (fieldsInfo[index].type == keyPrefixUniform) {
+//            makeUniformDistribution(fieldsInfo[index], 0);
+//        } else {
+//            makeGaussianDistribution(fieldsInfo[index], 0);
+//        }
+//    }
+    currentField = fieldsInfo[currentIndex];
+    currentNum = 0;
+    if (!currentField) {
+        setTimeout('makeJQSample()', 2);
+        return
+    }
+    if (currentField.type == keyPrefixUniform) {
+        message.show({content:'开始生成 ' + currentField.name + ' 均匀分布随机数', color:'blue'});
+        message.show({content:'<span id="msg' + currentField.key + '"></span>', color:'blue'});
+        makeUniformDistribution();
+    } else {
+        message.show({content:'开始生成 ' + currentField.name + ' 正态分布随机数', color:'blue'});
+        message.show({content:'<span id="msg' + currentField.key + '"></span>', color:'blue'});
+        makeGaussianDistribution();
     }
 }
-
 //生成均匀分布随机数
-function makeUniformDistribution(field) {
-    messageQueues.push({content:'开始生成 ' + field.name + ' 均匀分布随机数', color:'blue'});
-    stochastic.UniformDistribution({n:n, distributions:field.values, success:function (obj) {
+function makeUniformDistribution() {
+    stochastic.UniformDistribution({distributionsLinked:currentField.linked, success:function (obj) {
         //localStorage.setItem(keyPrefixGaussian + obj.index, obj.x1);
-        buffer[storageKey(field, obj.index)] = obj.x;
+        buffer[storageKey(currentField, currentNum)] = obj.x;
+        if ($('#msg' + currentField.key).length > 0)
+            $('#msg' + currentField.key).html(n + ' -- ' + currentNum + ' -- ' + JSON.stringify(obj));
     }});
-}
 
+    if (currentNum < n) {
+        currentNum++;
+        setTimeout('makeUniformDistribution()', 2);
+    } else {
+        currentIndex++;
+        setTimeout('makeProbabilitySampling()', 2);
+    }
+}
 //生成正态分布随机数
-function makeGaussianDistribution(field) {
-    messageQueues.push({content:'开始生成 ' + field.name + ' 正态分布随机数', color:'blue'});
-    stochastic.GaussianDistribution({n:n, distributions:field.values, success:function (obj) {
+function makeGaussianDistribution() {
+    stochastic.GaussianDistribution({distributionsLinked:currentField.linked, success:function (obj) {
         //localStorage.push(keyPrefixGaussian + obj.index, obj.x1);
-        buffer[storageKey(field, obj.index)] = obj.x1;
+        buffer[storageKey(currentField, currentNum)] = obj.x1;
     }});
+
+    if (currentNum < n) {
+        currentNum++;
+        setTimeout('makeUniformDistribution()', 2);
+    } else {
+        currentIndex++;
+        setTimeout('makeProbabilitySampling()', 2);
+    }
 }
 
 //生成 JQ 测试数据
 function makeJQSample() {
-    messageQueues.push({content:'开始生成 JQ 测试数据', color:'blue'});
-    messageQueues.push({content:'<span id="msg"></span>', color:'blue'});
-    for (var i = 0; i < n; i++) {
-        var jqSample = {}
-        for (var index in fieldsInfo) {
-            jqSample[index] = buffer[storageKey(fieldsInfo[index], i)];
-        }
-        messageQueues.push({content:JSON.stringify(jqSample)});
+    if (currentNum == 0) {
+        message.show({content:'开始生成 JQ 测试数据', color:'blue'});
+        message.show({content:'<span id="msgSample"></span>', color:'blue'});
+    }
+
+    var jqSample = {}
+    for (var index in fieldsInfo) {
+        jqSample[index] = buffer[storageKey(fieldsInfo[index], i)];
+    }
+    if ($('#msgSample').length > 0) {
+        $('#msgSample').html(n + ' -- ' + currentNum + ' -- ' + JSON.stringify(jqSample));
+    } else
+        message.show({content:JSON.stringify(jqSample)});
+
+    if (currentNum < n) {
+        currentNum++;
+        setTimeout('makeJQSample()', 2);
+    } else {
+        initStatus(false);
     }
 }
 
 //显示 message
 function showMessage() {
-    var msg = messageQueues.shift();
-    if (msg) {
-        if ($('#msg').length > 0) {
-            $('#msg').html(messageQueues.length + ' -- ' + m + ' -- ' + msg.content);
-        } else
-            message.show(msg);
-        m++;
-    }
-    if (!complete || (complete && msg))
-        setTimeout("showMessage()", 10);
-    else
-        initStatus(false);
+//    var msg = messageQueues.shift();
+//    if (msg) {
+//        if ($('#msg').length > 0) {
+//            $('#msg').html(messageQueues.length + ' -- ' + m + ' -- ' + msg.content);
+//        } else
+//            message.show(msg);
+//        m++;
+//    }
+//    if (!complete || (complete && msg))
+//        setTimeout("showMessage()", 10);
+//    else
+//        initStatus(false);
 }
 
 //分布图
@@ -147,7 +191,8 @@ function makeGraphics() {
 function initEvent() {
 
     $('#handle').on('click', function () {
-        setTimeout('chainHandler.process()', 100);
+        chainHandler.process()
+        //setTimeout('chainHandler.process()', 100);
 //        initFieldInfo();
 //        //生成随机数
 //        setTimeout("makeProbabilitySampling()", 1000);
@@ -180,10 +225,10 @@ require(['jquery', 'naure.pattern', 'naure.message', 'naure.math.probability.sto
             successor:new chain({handle:initFieldInfo,
                 successor:new chain({handle:showMessage, async:true,
                     successor:new chain({handle:makeProbabilitySampling,
-                        successor:new chain({handle:makeJQSample,
-                            successor:new chain({handle:function () {
-                                complete = true;
-                            }})})})})})})
+                        //successor:new chain({handle:makeJQSample,
+                        successor:new chain({handle:function () {
+                            complete = true;
+                        }})})})})})
     });
 
     //    setTimeout(function () {
