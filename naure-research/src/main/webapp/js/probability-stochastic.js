@@ -10,7 +10,7 @@
  */
 /*-------------------- 全局变量 START ----------------*/
 
-var message, messageQueues, chainHandler, complete = true, stochastic, keyPrefixGaussian = 'gd', keyPrefixUniform = 'ud', graphics, system, n = 1000, buffer, fieldsInfo;
+var message, messageQueues, chainHandler, complete = true, stochastic, keyPrefixGaussian = 'gd', keyPrefixUniform = 'ud', graphics, system, n = 10000, buffer, fieldsInfo;
 //var localStorage = [];
 
 /*-------------------- 全局变量 END ------------------*/
@@ -172,7 +172,7 @@ require(['jquery', 'naure.pattern', 'naure.message', 'naure.math.probability.sto
         successor:new chain({handle:validData,
             successor:new chain({handle:initFieldInfo,
                 successor:new chain({handle:showMessage,
-                    successor:new chain({handle:makeProbabilitySampling,
+                    successor:new chain({handle:makeProbabilitySampling, async:true,
                         successor:new chain({handle:makeJQSample})})})})})
     });
 
