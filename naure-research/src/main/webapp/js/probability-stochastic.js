@@ -176,7 +176,6 @@ require(['jquery', 'naure.pattern', 'naure.message', 'naure.math.probability.sto
                         successor:new chain({handle:makeJQSample})})})})})
     });
 
-
     //    setTimeout(function () {
 //        setTimeout(arguments.callee, 2000);
 //    }, 2000);
