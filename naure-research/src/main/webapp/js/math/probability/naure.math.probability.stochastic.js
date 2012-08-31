@@ -13,6 +13,37 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
 
     NAURE.Math.Probability.Stochastic = (function () {
         var stochastic = {
+            //平均分布
+            // 默认：产生的伪随机数介于 0 和 1 之间（含 0，不含 1），
+            UniformDistribution:function (options) {
+                var opt = $.extend({
+                    min:0,
+                    max:1,
+                    n:1,
+                    fractionDigits:20, //小数点后的数字位数。其值必须在 0 – 20 之间，包括 0 和 20。
+                    success:null,
+                    distributions:null
+                }, options)
+
+                var distributionsLinked = null, u;
+
+                if (opt.distributions) {
+                    distributionsLinked = stochastic.ProbabilityLinked({distributions:opt.distributions});
+                }
+
+                for (var i = 0; i < opt.n; i++) {
+                    u = random() * (opt.max - opt.min) + opt.min;
+                    var x = typeof u === 'undefined' ? floor(u) : new Number(u.toFixed(opt.fractionDigits));
+                    if (opt.distributions)
+                        x = stochastic.ProbabilitySampling(x, distributionsLinked);
+
+                    opt.success({
+                        index:i,
+                        x:x
+                    });
+                }
+            },
+
             //高斯分布  N (0, 1)
             GaussianDistribution:function (options) {
                 var opt = $.extend({
@@ -50,37 +81,6 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                 }
             },
 
-            //平均分布
-            // 默认：产生的伪随机数介于 0 和 1 之间（含 0，不含 1），
-            UniformDistribution:function (options) {
-                var opt = $.extend({
-                    min:0,
-                    max:1,
-                    n:1,
-                    fractionDigits:20, //小数点后的数字位数。其值必须在 0 – 20 之间，包括 0 和 20。
-                    success:null,
-                    distributions:null
-                }, options)
-
-                var distributionsLinked = null, u;
-
-                if (opt.distributions) {
-                    distributionsLinked = stochastic.ProbabilityLinked({distributions:opt.distributions});
-                }
-
-                for (var i = 0; i < opt.n; i++) {
-                    u = random() * (opt.max - opt.min) + opt.min;
-                    var x = typeof u === 'undefined' ? floor(u) : new Number(u.toFixed(opt.fractionDigits));
-                    if (opt.distributions)
-                        x = stochastic.ProbabilitySampling((x - opt.min) / (opt.max - opt.min), distributionsLinked);
-
-                    opt.success({
-                        index:i,
-                        x:x
-                    });
-                }
-            },
-
             ProbabilityLinked:function (options) {
                 var opt = $.extend({
                     min:0,
@@ -100,7 +100,12 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                 return sentinel.next;
             },
 
-            ProbabilitySampling:function (x, linked) {
+            ProbabilitySampling:function (x, linked, min, max) {
+                if (!min || !max) {
+                    min = 0;
+                    max = 1;
+                }
+                x = (x - min) / (max - min);    //默认按照均匀分布的概率计算
                 if (!linked) return x;
                 if (x <= linked.key)
                     return linked.info;

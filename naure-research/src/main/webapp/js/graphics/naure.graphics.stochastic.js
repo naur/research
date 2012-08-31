@@ -11,13 +11,13 @@
 
 
 
-define(['jquery', 'naure', 'naure.graphics.math', 'math',
+define(['jquery', 'naure', 'naure.math',
     'naure.graphics.ui',
     'naure.graphics.layout'], function ($, NAURE) {
 
-    NAURE.Graphics.Equation = (function () {
+    NAURE.Graphics.Stochastic = (function () {
 
-        var equation = function () {
+        var stochastic = function () {
 
             var config, layout, scale, ctx, coordinate;
             var self = this;
@@ -64,43 +64,19 @@ define(['jquery', 'naure', 'naure.graphics.math', 'math',
 
             //expression
             this.Graph = function (n, disabled, color) {
-                var latex = n;
-                var auto = 0;
-                if (n) {
-                    auto = true;
-                } else {
-                    //Sample function
-                    latex = self.random.func();
-                }
-                var t = {};
-                var c = NAURE.Graphics.Math.compile(latex);
-
-                //Copy properties (we will extend the object)
-                //TODO: why don't we just use t=c? lol
-                for (i in c) {
-                    if (c.hasOwnProperty(i)) {
-                        t[i] = c[i];
+                var equation = n;
+                return {
+                    plot:function (ctx, coordinate) {
+                        if (equation.length <= 0) return;
+                        ctx.beginPath();
+                        ctx.move(Date.parse(equation[0].X) / 86400000, equation[0].Y);
+                        for (var key in equation) {
+                            if (!equation.hasOwnProperty(key)) continue
+                            ctx.line(Date.parse(equation[key].X) / 86400000, equation[key].Y);
+                        }
+                        ctx.stroke();
                     }
-                }
-                //For debugging purposes. I think.
-                t.equation = latex;
-                //Graph id: random
-                t.gid = self.random.hash();
-                t.disabled = disabled;
-                t.color = color ? color : self.random.color();
-
-                if (t.color == undefined) {
-                    //We ran out of colours!
-                    t.color = "#000";
-                }
-
-                if (auto) {
-                    t.auto = true;
-                }
-
-                //Create html <li> node.
-                //t.node = app.ui.add(t);
-                return t;
+                };
             };
 
             this.init = function (options) {
@@ -113,11 +89,11 @@ define(['jquery', 'naure', 'naure.graphics.math', 'math',
                 coordinate.X2 = 5;
                 coordinate.Y1 = -5
                 coordinate.Y2 = 5;
-                return equation;
+                return stochastic;
             };
         };
 
-        return equation;
+        return stochastic;
     })();
 
     return NAURE;

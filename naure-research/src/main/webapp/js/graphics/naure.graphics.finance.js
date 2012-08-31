@@ -11,7 +11,10 @@
 
 
 
-define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math',
+    'naure.graphics.ui',
+    'naure.graphics.layout'], function ($, NAURE) {
+
     NAURE.Graphics.Finance = (function () {
 
         var finance = function () {

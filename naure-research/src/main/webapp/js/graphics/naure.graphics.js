@@ -112,7 +112,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.message'], function ($, NAURE) {
             };
 
             this.init = function (options) {
-                defaultSystem = new NAURE.Graphics.Equation(); //default
+                if (NAURE.Graphics.Equation)
+                    defaultSystem = new NAURE.Graphics.Equation(); //default
                 ui = new NAURE.Graphics.UI();
                 gridlines = new NAURE.Graphics.Gridlines();
                 //Step 1: Layout 初始化

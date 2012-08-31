@@ -73,6 +73,7 @@ require.config({
         'naure.graphics.layout':jslocalpath1 + '/js/graphics/naure.graphics.layout',
         'naure.graphics.equation':jslocalpath1 + '/js/graphics/naure.graphics.equation',
         'naure.graphics.finance':jslocalpath1 + '/js/graphics/naure.graphics.finance',
+        'naure.graphics.stochastic':jslocalpath1 + '/js/graphics/naure.graphics.stochastic',
 
         'math':jslocalpath1 + '/js/math/math',
         'math.matrix':jslocalpath + '/js/math/math.matrix'

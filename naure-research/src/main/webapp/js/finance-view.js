@@ -199,12 +199,9 @@ function initEvent() {
 /*-------------------- 初始化 START ------------------*/
 
 require(['jquery', 'naure.message', 'naure.overlay', 'naure.xsl', 'naure.math.stats.finance',
-    'naure.graphics.ui',
-    'naure.graphics.layout',
-    'naure.graphics.gridlines',
+//    'naure.graphics.ui',
     'naure.graphics.equation',
-    'naure.graphics.finance',
-    'naure.analytics'], function ($, NAURE) {
+    'naure.graphics.finance'], function ($, NAURE) {
     naure = NAURE;
     overlay = NAURE.UI.Overlay;
     http = NAURE.HTTP;
