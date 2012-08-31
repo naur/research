@@ -10,7 +10,7 @@
  */
 /*-------------------- 全局变量 START ----------------*/
 
-var message, messageQueues, chainHandler, complete = true, stochastic, keyPrefixGaussian = 'gd', keyPrefixUniform = 'ud', graphics, system, n = 10000, buffer, fieldsInfo;
+var message, messageQueues, chainHandler, complete = true, stochastic, keyPrefixGaussian = 'gd', keyPrefixUniform = 'ud', graphics, system, n = 10000, m = 0, buffer, fieldsInfo;
 //var localStorage = [];
 
 /*-------------------- 全局变量 END ------------------*/
@@ -21,19 +21,20 @@ function validData() {
     for (var i = 1; i <= 10; i++) {
         if ($('#field' + i).val().length <= 0) {
             message.show({content:$('#field' + i).attr('tag') + ' 为空', color:'red'});
-            initDOMStatus(false);
+            initStatus(false);
             return false;
         }
     }
     return true;
 }
 
-function initDOMStatus(status) {
+function initStatus(status) {
     $('#handle').attr('disabled', status);
     if (status) {
         message.empty();
         messageQueues = [];
         buffer = {};
+        m = 0;
         //localStorage.clear();
     }
     complete = !status;
@@ -94,6 +95,7 @@ function makeGaussianDistribution(field) {
 //生成 JQ 测试数据
 function makeJQSample() {
     messageQueues.push({content:'开始生成 JQ 测试数据', color:'blue'});
+    messageQueues.push({content:'<span id="msg"></span>', color:'blue'});
     for (var i = 0; i < n; i++) {
         var jqSample = {}
         for (var index in fieldsInfo) {
@@ -101,17 +103,22 @@ function makeJQSample() {
         }
         messageQueues.push({content:JSON.stringify(jqSample)});
     }
-
-    initDOMStatus(false);
 }
 
 //显示 message
 function showMessage() {
     var msg = messageQueues.shift();
-    if (msg)
-        message.show(msg);
-    if (!complete || (complete || msg))
+    if (msg) {
+        if ($('#msg').length > 0) {
+            $('#msg').html(messageQueues.length + ' -- ' + m + ' -- ' + msg.content);
+        } else
+            message.show(msg);
+        m++;
+    }
+    if (!complete || (complete && msg))
         setTimeout("showMessage()", 10);
+    else
+        initStatus(false);
 }
 
 //分布图
@@ -140,7 +147,7 @@ function makeGraphics() {
 function initEvent() {
 
     $('#handle').on('click', function () {
-        chainHandler.process();
+        setTimeout('chainHandler.process()', 100);
 //        initFieldInfo();
 //        //生成随机数
 //        setTimeout("makeProbabilitySampling()", 1000);
@@ -154,7 +161,7 @@ function initEvent() {
     });
 
     $('#submit').on('click', function () {
-        initDOMStatus(false);
+        initStatus(false);
     });
 }
 
@@ -168,12 +175,15 @@ require(['jquery', 'naure.pattern', 'naure.message', 'naure.math.probability.sto
     system = new NAURE.Graphics.Stochastic();
     var chain = NAURE.Pattern.chainHandler;
 
-    chainHandler = new chain({handle:initDOMStatus, request:true,
+    chainHandler = new chain({handle:initStatus, request:true,
         successor:new chain({handle:validData,
             successor:new chain({handle:initFieldInfo,
-                successor:new chain({handle:showMessage,
-                    successor:new chain({handle:makeProbabilitySampling, async:true,
-                        successor:new chain({handle:makeJQSample})})})})})
+                successor:new chain({handle:showMessage, async:true,
+                    successor:new chain({handle:makeProbabilitySampling,
+                        successor:new chain({handle:makeJQSample,
+                            successor:new chain({handle:function () {
+                                complete = true;
+                            }})})})})})})
     });
 
     //    setTimeout(function () {
