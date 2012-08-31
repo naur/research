@@ -19,5 +19,6 @@ define(['oop'], {
     Utility:{},
     Location:{},
     Math:{},
-    Chart:{}
+    Chart:{},
+    Pattern:{}
 });

@@ -28,6 +28,7 @@ require.config({
         'jquery.uploadify':jslocalpath + '/js/uploadify/jquery.uploadify.v2.1.4',
 
         'naure':jslocalpath + '/js/naure',
+        'naure.pattern':jslocalpath + '/js/naure.pattern',
         'naure.utility':jslocalpath + '/js/naure.utility',
         'naure.analytics':jslocalpath + '/js/naure.analytics',
         'naure.ui.templet':jslocalpath + '/js/naure.ui.templet',
