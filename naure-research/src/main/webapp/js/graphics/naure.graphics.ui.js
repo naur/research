@@ -178,12 +178,23 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                     return self.ctx.lineTo(transPixel.X, transPixel.Y);
                 };
 
-//                this.ctx.arc = function (x, y, radius, startAngle, endAngle, anticlockwise) {
-//                    var transPoint = new ui.layout.Point(x, y).transform();
-//                    if (!transPoint) return;
-//                    return ctx.arc(transPoint.X, transPoint.Y, radius, startAngle, endAngle, anticlockwise);
-//                };
-//
+                this.ctx.ellipse = function (x, y, radius, startAngle, endAngle, anticlockwise) {
+                    var transPoint = new layout.toPixel(x, y);
+                    if (!transPoint) return;
+                    if (!radius) radius = 1;
+                    if (!startAngle) startAngle = 0;
+                    if (!endAngle) endAngle = 2 * pi;
+                    if (!anticlockwise) anticlockwise = true;
+                    return ctx.arc(transPoint.X, transPoint.Y, radius, startAngle, endAngle, anticlockwise);
+                };
+
+                this.ctx.rectangle = function (x, y, radius, startAngle, endAngle, anticlockwise) {
+                    //todo
+                    var transPoint = new ui.layout.Point(x, y).transform();
+                    if (!transPoint) return;
+                    return ctx.rect(transPoint.X, transPoint.Y, radius, startAngle, endAngle, anticlockwise);
+                };
+
 //                this.ctx.fillText = function(text,x,y,maxWidth) {
 //                    var transPoint = new ui.layout.Point(x, y).transform();
 //                    if (!transPoint) return;
@@ -212,6 +223,18 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 graph.on('mouseleave', graph, function (event) {
                     self.mouseUp(event);
                 });
+//                graph.on('resize', graph, function (event) {
+//                    //self.mouseUp(event);
+//                    self.resize();
+//                });
+//                $(window).resize(function() {
+//                    self.resize();
+////                    if($("#sidewrapper").is(":visible"))
+////                        $("#graph_wrapper").width($("#wrapper").width() - $("#sidewrapper").width());
+////                    else
+////                        $("#graph_wrapper").width($("#wrapper").width());
+////                    self.resizeGraph($("#graph_wrapper").width(), $("#graph_wrapper").height());
+//                });
 
                 isLiveGraphEvent = true;
             };

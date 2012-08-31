@@ -80,10 +80,10 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
                     this.toPoint(this.pixel.X, this.pixel.Y)
                 );
                 //curPoint.X = curPoint.X.format('yyyy-MM-dd HH:mm:ss');
-                message.show({content:JSON.stringify({
-                    point:curPoint,
-                    coordinate:this.coordinate
-                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
+//                message.show({content:JSON.stringify({
+//                    point:curPoint,
+//                    coordinate:this.coordinate
+//                }).replace(/"(\w+)":/gi, '<span style="color:red;">$1:</span>')});
             };
 
             this.refreshSize = function (opt) {

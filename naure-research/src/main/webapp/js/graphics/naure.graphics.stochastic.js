@@ -42,26 +42,6 @@ define(['jquery', 'naure', 'naure.math',
                 return zoom
             };
 
-            this.random = {
-                index:0,
-                funcs:"y=x^2@y^2=1-x^2@y<2e^{-x}@\\theta=r@2x+3@\\frac{d}{dx}\\left(\\frac{1}{x}\\right)@r<\\sin\\left(4\\theta\\right)@\\int x.dx@\\frac{d}{dx}\\left(sin\\left(x\\right)\\right)@\\lambda=3@e^{-\\lambda\\cdot x}@\\left|x^2-4\\right|+2@\\frac1x@x^{-2}@x!@\\ln x@\\sum_{n=1}^{\\infinity}\\frac{x^n}{n}@\\sin x@\\tan\\left(x\\right)@\\left(x-2\\right)^2@\\Gamma\\left(x\\right)@\\sqrt x".split("@"),
-                func:function () {
-                    return this.funcs[(this.index++) % this.funcs.length];
-                },
-                colors:"#000,#f08,#8f0,#80f,#880,#088,#808,#0ff,#f80,#f0f,#0a0,#f00,#07c".split(","),
-                color:function () {
-                    return this.colors[(this.index++) % this.colors.length];
-                },
-                hash:function () {
-                    var s = "";
-                    for (var i = 0; i < 20; i++) {
-                        s += (10 + ~~(Math.random() * 23)).toString(36)
-                        //s+=(~~(Math.random()*16)).toString(16);
-                    }
-                    return s;
-                }
-            };
-
             //expression
             this.Graph = function (n, disabled, color) {
                 var equation = n;
@@ -69,11 +49,12 @@ define(['jquery', 'naure', 'naure.math',
                     plot:function (ctx, coordinate) {
                         if (equation.length <= 0) return;
                         ctx.beginPath();
-                        ctx.move(Date.parse(equation[0].X) / 86400000, equation[0].Y);
+                        ctx.move(equation[0].X, equation[0].Y);
                         for (var key in equation) {
                             if (!equation.hasOwnProperty(key)) continue
-                            ctx.line(Date.parse(equation[key].X) / 86400000, equation[key].Y);
+                            ctx.ellipse(equation[key].X, equation[key].Y);
                         }
+                        ctx.closePath();
                         ctx.stroke();
                     }
                 };

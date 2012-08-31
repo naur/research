@@ -20,30 +20,25 @@
             /*width: 100px;*/
         }
 
+        article {
+            /*width : 600px;*/
+        }
+
         article section {
             width: 100%;
             text-align: left;
             padding: 10px;
+            position: absolute;
         }
 
         article section:first-child {
             width: 34%;
-            position: absolute;
             float: left;
             left: 0;
         }
 
         article section:last-child {
             width: 64%;
-            position: absolute;
-            float: right;
-            right: 0;
-            text-align: center;
-        }
-
-        article section:last-child {
-            width: 64%;
-            position: absolute;
             float: right;
             right: 0;
             text-align: center;
@@ -51,15 +46,14 @@
 
         article section:last-child fieldset:first-child {
             height: 200px;
+            padding: 0;
         }
 
         canvas {
             top: 0px;
             left: 0px;
-            overflow: hidden;
             width: 100%;
             height: 100%;
-            position: absolute;
         }
 
         fieldset {
@@ -69,6 +63,10 @@
         fieldset:last-child {
             padding: 8px;
         }
+
+            /*fieldset:eq(3) {*/
+            /*height: 200px;*/
+            /*}*/
 
         figcaption {
             width: 120px;
@@ -82,98 +80,8 @@
     </style>
 
     <script type="text/javascript" src="/Research/projects/research/naure-web/src/main/webapp/js/require.js"></script>
-    <script type="text/javascript"
-            src="/Research/projects/research/naure-web/src/main/webapp/js/require.config.js"></script>
-
-    <script type="text/javascript">
-        var message, stochastic, keyPrefixGaussian = 'gd', keyPrefixUniform = 'ud', graphics, system, n = 10, buffer, fieldsInfo;
-        //var localStorage = [];
-        //'naure.graphics.stochastic',
-        require(['jquery', 'naure.message', 'naure.math.probability.stochastic', 'naure.graphics.ui', 'naure.graphics.stochastic'], function ($, NAURE) {
-            message = NAURE.Message;
-            stochastic = NAURE.Math.Probability.Stochastic;
-            system = new NAURE.Graphics.Stochastic();
-            //system = new NAURE.Graphics.Equation();
-
-
-            function initFieldInfo() {
-                fieldsInfo = {};
-                $('.fields').each(function (index) {
-                    var distributionsLinked, type;
-                    if ($('input[name=radio' + $(this).attr('id') + ']:radio:checked').val() == keyPrefixGaussian) {
-                        distributionsLinked = stochastic.ProbabilityLinked({min:-3, max:3, distributions:$(this).val().split(/[-,;-]{1}/)});
-                        type = keyPrefixGaussian;
-                    } else {
-                        distributionsLinked = stochastic.ProbabilityLinked({distributions:$(this).val().split(/[-,;-]{1}/)});
-                        type = keyPrefixUniform;
-                    }
-
-                    fieldsInfo['field' + index] = {
-                        linked:distributionsLinked,
-                        type:type
-                    };
-                });
-            }
-
-            $('#handle').on('click', function () {
-                $(this).attr('disabled', true);
-                //localStorage.clear();
-                for (var i = 1; i <= 10; i++) {
-                    if ($('#field' + i).val().length <= 0) {
-                        message.show({content:'字段' + $(this).attr('id') + '为空', color:'red'});
-                        return;
-                    }
-                }
-                initFieldInfo();
-                buffer = {};
-                //生成均匀分布随机数
-                message.show({content:'开始生成 ' + $(this).attr('id') + ' 均匀分布随机数', color:'blue'});
-                stochastic.UniformDistribution({n:n, success:function (obj) {
-                    //localStorage.setItem(keyPrefixGaussian + obj.index, obj.x1);
-                    buffer[keyPrefixGaussian + obj.index] = obj.x;
-                    message.show({content:JSON.stringify(obj)});
-                }});
-                //生成正态分布随机数
-                message.show({content:'开始生成 ' + $(this).attr('id') + ' 正态分布随机数', color:'blue'});
-                stochastic.GaussianDistribution({n:n, success:function (obj) {
-                    //localStorage.push(keyPrefixGaussian + obj.index, obj.x1);
-                    buffer[keyPrefixUniform + obj.index] = obj.x1;
-                    message.show({content:JSON.stringify(obj)});
-                }});
-                //生成 JQ 测试数据
-                message.show({content:'开始生成测试数据', color:'blue'});
-                for (var i = 0; i < n; i++) {
-                    var jqSample = {}
-                    for (var index in fieldsInfo) {
-                        var x;
-                        if (fieldsInfo[index].type == keyPrefixUniform) {
-                            x = buffer[keyPrefixGaussian + i];
-                        } else {
-                            x = buffer[keyPrefixUniform + i];
-                        }
-
-                        jqSample[index] = stochastic.ProbabilitySampling(x, fieldsInfo[index].linked);
-                    }
-                    message.show({content:JSON.stringify(jqSample)});
-                }
-
-                $(this).attr('disabled', false);
-            });
-
-            $('#clear').on('click', function () {
-                message.empty();
-            });
-
-
-            $(function () {
-                $('article section:eq(1) fieldset:eq(1)').message();
-                $('.fields').each(function () {
-                    $(this).val('a,b,c,d,e');
-                });
-                //graphics = $('article section fieldset canvas').NAURE_Graphics({system:system});
-            });
-        });
-    </script>
+    <script type="text/javascript" src="/Research/projects/research/naure-web/src/main/webapp/js/require.config.js"></script>
+    <script type="text/javascript" src="/Research/projects/research/naure-research/src/main/webapp/js/probability-stochastic.js"></script>
 </head>
 <body>
 
@@ -182,52 +90,52 @@
         <fieldset>
             <figure>
                 <figcaption> 订单类型:</figcaption>
-                <input type="text" class="fields" id="field1"/>
+                <input type="text" class="fields" id="field1" tag="OrderType" />
                 <input type="radio" name="radiofield1" value="ud" title="均匀分布" checked/>
                 <input type="radio" name="radiofield1" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>配送方式:</figcaption>
-                <input type="text" class="fields" id="field2"/>
+                <input type="text" class="fields" id="field2" tag="IdShipMentType" />
                 <input type="radio" name="radiofield2" value="ud" title="均匀分布" checked/>
                 <input type="radio" name="radiofield2" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>DeliveryCenterID:</figcaption>
-                <input type="text" class="fields" id="field3"/>
+                <input type="text" class="fields" id="field3" tag="DeliveryCenterID" />
                 <input type="radio" name="radiofield3" value="ud" title="均匀分布" checked/>
                 <input type="radio" name="radiofield3" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>StoreID:</figcaption>
-                <input type="text" class="fields" id="field4"/>
+                <input type="text" class="fields" id="field4" tag="StoreID" />
                 <input type="radio" name="radiofield4" value="ud" title="均匀分布" checked/>
                 <input type="radio" name="radiofield4" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>sendpay:</figcaption>
-                <input type="text" class="fields" id="field5"/>
+                <input type="text" class="fields" id="field5" tag="sendpay" />
                 <input type="radio" name="radiofield5" value="ud" title="均匀分布" checked/>
                 <input type="radio" name="radiofield5" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>自提站点:</figcaption>
-                <input type="text" class="fields" id="field6"/>
+                <input type="text" class="fields" id="field6" tag="IdPickSite" />
                 <input type="radio" name="radiofield6" value="ud" title="均匀分布" checked/>
                 <input type="radio" name="radiofield6" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>ActualTransferTime:</figcaption>
-                <input type="text" class="fields" id="field7"/>
+                <input type="text" class="fields" id="field7" tag="ActualTransferTime" />
                 <input type="radio" name="radiofield7" value="ud" title="均匀分布" checked/>
                 <input type="radio" name="radiofield7" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>Province:</figcaption>
-                <input type="text" class="fields" id="field8"/>
+                <input type="text" class="fields" id="field8" tag="Province" />
                 <input type="radio" name="radiofield8" value="ud" title="均匀分布" checked/>
                 <input type="radio" name="radiofield8" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>County:</figcaption>
-                <input type="text" class="fields" id="field9"/>
+                <input type="text" class="fields" id="field9" tag="County" />
                 <input type="radio" name="radiofield9" value="ud" title="均匀分布" checked/>
                 <input type="radio" name="radiofield9" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>City:</figcaption>
-                <input type="text" class="fields" id="field10"/>
+                <input type="text" class="fields" id="field10" tag="City" />
                 <input type="radio" name="radiofield10" value="ud" title="均匀分布" checked/>
                 <input type="radio" name="radiofield10" value="gd" title="正态分布"/></figure>
         </fieldset>
