@@ -10,9 +10,7 @@
  */
 /*-------------------- 全局变量 START ----------------*/
 
-var message, messageQueues, chainHandler, complete = true, stochastic,
-    keyPrefixGaussian = 'gd', keyPrefixUniform = 'ud', graphics, system, n = 1000, buffer, fieldsInfo;
-//var localStorage = [];
+var message, chainHandler, stochastic, keyPrefixGaussian = 'gd', keyPrefixUniform = 'ud', graphics, system, n = 1000, buffer, fieldsInfo;
 
 /*-------------------- 全局变量 END ------------------*/
 
@@ -33,11 +31,9 @@ function initStatus(status) {
     $('#handle').attr('disabled', status);
     if (status) {
         message.empty();
-        messageQueues = [];
         buffer = {};
         //localStorage.clear();
     }
-    complete = !status;
 }
 
 function initFieldInfo() {
@@ -69,13 +65,6 @@ function storageKey(field, n) {
 var currentField, currentIndex = 0, currentNum = 0
 //生成随机数
 function makeProbabilitySampling() {
-//    for (var index in fieldsInfo) {
-//        if (fieldsInfo[index].type == keyPrefixUniform) {
-//            makeUniformDistribution(fieldsInfo[index], 0);
-//        } else {
-//            makeGaussianDistribution(fieldsInfo[index], 0);
-//        }
-//    }
     currentField = fieldsInfo[currentIndex];
     currentNum = 0;
     if (!currentField) {
@@ -149,22 +138,6 @@ function makeJQSample() {
     }
 }
 
-//显示 message
-function showMessage() {
-//    var msg = messageQueues.shift();
-//    if (msg) {
-//        if ($('#msg').length > 0) {
-//            $('#msg').html(messageQueues.length + ' -- ' + m + ' -- ' + msg.content);
-//        } else
-//            message.show(msg);
-//        m++;
-//    }
-//    if (!complete || (complete && msg))
-//        setTimeout("showMessage()", 10);
-//    else
-//        initStatus(false);
-}
-
 //分布图
 function makeGraphics() {
 //        var point = [];
@@ -192,12 +165,6 @@ function initEvent() {
 
     $('#handle').on('click', function () {
         chainHandler.process()
-        //setTimeout('chainHandler.process()', 100);
-//        initFieldInfo();
-//        //生成随机数
-//        setTimeout("makeProbabilitySampling()", 1000);
-//        //makeProbabilitySampling();
-//        showMessage();
     });
 
     $('#clear').on('click', function () {
@@ -224,16 +191,8 @@ require(['jquery', 'naure.pattern', 'naure.message', 'naure.math.probability.sto
         successor:new chain({handle:validData,
             successor:new chain({handle:initFieldInfo,
                 successor:new chain({handle:showMessage, async:true,
-                    successor:new chain({handle:makeProbabilitySampling,
-                        //successor:new chain({handle:makeJQSample,
-                        successor:new chain({handle:function () {
-                            complete = true;
-                        }})})})})})
+                    successor:new chain({handle:makeProbabilitySampling})})})})
     });
-
-    //    setTimeout(function () {
-//        setTimeout(arguments.callee, 2000);
-//    }, 2000);
 
     initEvent();
 
