@@ -95,54 +95,78 @@
         <fieldset>
             <figure>
                 <figcaption> 订单类型:</figcaption>
-                <input type="text" class="fields" id="field1" tag="OrderType" />
-                <input type="radio" name="radiofield1" value="ud" title="均匀分布" checked/>
-                <input type="radio" name="radiofield1" value="gd" title="正态分布"/></figure>
+                <input type="text" class="fields" id="orderType" readonly="readonly"/>
+                <input type="radio" name="radio-orderType" value="ud" title="均匀分布" checked/>
+                <input type="radio" name="radio-orderType" value="gd" title="正态分布"/></figure>
+            <!--<figure>-->
+            <!--<figcaption> 订单 ID:</figcaption>-->
+            <!--<input type="text" class="fields" id="orderId" readonly="readonly"/>-->
+            <!--<input type="radio" name="radio-orderId" value="ud" title="均匀分布" checked/>-->
+            <!--<input type="radio" name="radio-orderId" value="gd" title="正态分布"/></figure>-->
             <figure>
                 <figcaption>配送方式:</figcaption>
-                <input type="text" class="fields" id="field2" tag="IdShipMentType" />
-                <input type="radio" name="radiofield2" value="ud" title="均匀分布" checked/>
-                <input type="radio" name="radiofield2" value="gd" title="正态分布"/></figure>
+                <input type="text" class="fields" id="idShipMentType" readonly="readonly"/>
+                <input type="radio" name="radio-idShipMentType" value="ud" title="均匀分布" checked/>
+                <input type="radio" name="radio-idShipMentType" value="gd" title="正态分布"/></figure>
             <figure>
-                <figcaption>DeliveryCenterID:</figcaption>
-                <input type="text" class="fields" id="field3" tag="DeliveryCenterID" />
-                <input type="radio" name="radiofield3" value="ud" title="均匀分布" checked/>
-                <input type="radio" name="radiofield3" value="gd" title="正态分布"/></figure>
+                <figcaption>自提类型:</figcaption>
+                <input type="text" class="fields" id="sendPay" readonly="readonly"/>
+                <input type="radio" name="radio-sendPay" value="ud" title="均匀分布" checked/>
+                <input type="radio" name="radio-sendPay" value="gd" title="正态分布"/></figure>
             <figure>
-                <figcaption>StoreID:</figcaption>
-                <input type="text" class="fields" id="field4" tag="StoreID" />
-                <input type="radio" name="radiofield4" value="ud" title="均匀分布" checked/>
-                <input type="radio" name="radiofield4" value="gd" title="正态分布"/></figure>
+                <figcaption>是否京配:</figcaption>
+                <input type="text" class="fields" id="isJdShip" readonly="readonly"/>
+                <input type="radio" name="radio-isJdShip" value="ud" title="均匀分布" checked/>
+                <input type="radio" name="radio-isJdShip" value="gd" title="正态分布"/></figure>
+            <!--DeliveryCenterID + StoreID-->
+            <figure>
+                <figcaption>Storehouse:</figcaption>
+                <input type="text" class="fields" id="storehouse" readonly="readonly"/>
+                <input type="radio" name="radio-storehouse" value="ud" title="均匀分布" checked/>
+                <input type="radio" name="radio-storehouse" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>sendpay:</figcaption>
-                <input type="text" class="fields" id="field5" tag="sendpay" />
-                <input type="radio" name="radiofield5" value="ud" title="均匀分布" checked/>
-                <input type="radio" name="radiofield5" value="gd" title="正态分布"/></figure>
+                <input type="text" class="fields" id="distributionType" readonly="readonly"/>
+                <input type="radio" name="radio-distributionType" value="ud" title="均匀分布" checked/>
+                <input type="radio" name="radio-distributionType" value="gd" title="正态分布"/></figure>
             <figure>
                 <figcaption>自提站点:</figcaption>
-                <input type="text" class="fields" id="field6" tag="IdPickSite" />
-                <input type="radio" name="radiofield6" value="ud" title="均匀分布" checked/>
-                <input type="radio" name="radiofield6" value="gd" title="正态分布"/></figure>
+                <input type="text" class="fields" id="idPickSite" readonly="readonly" disabled="true" />
+                <input type="radio" name="radio-idPickSite" value="ud" title="均匀分布" checked/>
+                <input type="radio" name="radio-idPickSite" value="gd" title="正态分布"/></figure>
             <figure>
-                <figcaption>ActualTransferTime:</figcaption>
-                <input type="text" class="fields" id="field7" tag="ActualTransferTime" />
-                <input type="radio" name="radiofield7" value="ud" title="均匀分布" checked/>
-                <input type="radio" name="radiofield7" value="gd" title="正态分布"/></figure>
+                <figcaption>Area:</figcaption>
+                <input type="text" class="fields" id="area" readonly="readonly" disabled="true" />
+                <input type="radio" name="radio-area" value="ud" title="均匀分布" checked/>
+                <input type="radio" name="radio-area" value="gd" title="正态分布"/></figure>
+            <!--<figure>-->
+            <!--<figcaption>ActualTransferTime:</figcaption>-->
+            <!--<input type="text" class="fields" id="field7" tag="ActualTransferTime" />-->
+            <!--<input type="radio" name="radiofield7" value="ud" title="均匀分布" checked/>-->
+            <!--<input type="radio" name="radiofield7" value="gd" title="正态分布"/></figure>-->
+            <!--<figure>-->
+            <!--<figcaption>Province:</figcaption>-->
+            <!--<input type="text" class="fields" id="field8" tag="Province" />-->
+            <!--<input type="radio" name="radiofield8" value="ud" title="均匀分布" checked/>-->
+            <!--<input type="radio" name="radiofield8" value="gd" title="正态分布"/></figure>-->
+            <!--<figure>-->
+            <!--<figcaption>County:</figcaption>-->
+            <!--<input type="text" class="fields" id="field9" tag="County" />-->
+            <!--<input type="radio" name="radiofield9" value="ud" title="均匀分布" checked/>-->
+            <!--<input type="radio" name="radiofield9" value="gd" title="正态分布"/></figure>-->
+            <!--<figure>-->
+            <!--<figcaption>City:</figcaption>-->
+            <!--<input type="text" class="fields" id="field10" tag="City" />-->
+            <!--<input type="radio" name="radiofield10" value="ud" title="均匀分布" checked/>-->
+            <!--<input type="radio" name="radiofield10" value="gd" title="正态分布"/></figure>-->
+
             <figure>
-                <figcaption>Province:</figcaption>
-                <input type="text" class="fields" id="field8" tag="Province" />
-                <input type="radio" name="radiofield8" value="ud" title="均匀分布" checked/>
-                <input type="radio" name="radiofield8" value="gd" title="正态分布"/></figure>
+                <figcaption>Remark:</figcaption>
+                <input type="text" id="remark" /></figure>
             <figure>
-                <figcaption>County:</figcaption>
-                <input type="text" class="fields" id="field9" tag="County" />
-                <input type="radio" name="radiofield9" value="ud" title="均匀分布" checked/>
-                <input type="radio" name="radiofield9" value="gd" title="正态分布"/></figure>
-            <figure>
-                <figcaption>City:</figcaption>
-                <input type="text" class="fields" id="field10" tag="City" />
-                <input type="radio" name="radiofield10" value="ud" title="均匀分布" checked/>
-                <input type="radio" name="radiofield10" value="gd" title="正态分布"/></figure>
+                <figcaption>随机数:</figcaption>
+                <input type="text" id="sampling-size" /></figure>
+
         </fieldset>
 
         <fieldset>
@@ -160,6 +184,7 @@
         <fieldset></fieldset>
     </section>
 </article>
+
 
 
 <!--<OrderType>0</OrderType>-->

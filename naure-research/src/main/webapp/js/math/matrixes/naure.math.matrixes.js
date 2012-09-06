@@ -16,6 +16,49 @@ define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
     NAURE.Math.Matrixes = (function () {
         var matrixes = {
 
+            matrix:function (dimension1, dimension2) {
+                var scope = {
+                    X:dimension1.X2 - dimension1.X1,
+                    Y:dimension1.Y2 - dimension1.Y1
+                };
+                var scale = {
+                    X:(dimension2.X2 - dimension2.X1) / scope.X,
+                    Y:(dimension2.Y2 - dimension2.Y1) / scope.Y
+                };
+                return [
+                    [scale.X, 0, -dimension1.X1 * scale.X],
+                    [0, scale.Y, -dimension1.Y2 * scale.Y],
+                    [0, 0, 1]
+                ];
+            },
+
+            matrixInvertible:function (dimension1, dimension2) {
+                var scope = {
+                    X:dimension1.X2 - dimension1.X1,
+                    Y:dimension1.Y2 - dimension1.Y1
+                };
+                var scale = {
+                    X:(dimension2.X2 - dimension2.X1) / scope.X,
+                    Y:(dimension2.Y2 - dimension2.Y1) / scope.Y
+                };
+                return [
+                    [1 / scale.X, 0, dimension1.X1],
+                    [0, 1 / scale.Y, dimension1.Y2],
+                    [0, 0, 1]
+                ];
+            },
+
+            transform:function (matrix, coordinate) {
+                if (!isNaN(coordinate.X)) {
+                    return coordinate.X * matrix[0][0] + matrix[0][2];
+                }
+                if (!isNaN(coordinate.Y)) {
+                    return -(coordinate.Y * matrix[1][1] + matrix[1][2]);
+                }
+                var result = matrixes.Transform2D(matrix, [coordinate.X, coordinate.Y]);
+                return {X:result[0][0], Y:-result[1][0]};
+            },
+
             //2D 转换
             Transform2D:function (matrix1, matrix2) {
                 matrix2[2] = 1;

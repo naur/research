@@ -12,6 +12,9 @@
 define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
 
     NAURE.Math.Probability.Stochastic = (function () {
+
+        var matrixes = JD.Math.Matrixes;
+
         var stochastic = {
             //平均分布
             // 默认：产生的伪随机数介于 0 和 1 之间（含 0，不含 1），
@@ -24,20 +27,21 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                     data:null,
                     success:null,
                     distributions:null,
-                    distributionsLinked:null
+                    distributionsLinked:null  //备用参数
                 }, options)
 
                 var u;
 
-                if (opt.distributions)
-                    opt.distributionsLinked = stochastic.ProbabilityLinked({distributions:opt.distributions});
-
+                if (opt.distributions) {
+                    opt.max = opt.distributions.length - 1;
+                    opt.fractionDigits = 0;
+                }
 
                 for (var i = 0; i < opt.n; i++) {
                     u = random() * (opt.max - opt.min) + opt.min;
-                    var x = typeof u === 'undefined' ? floor(u) : new Number(u.toFixed(opt.fractionDigits));
-                    if (opt.distributionsLinked)
-                        x = stochastic.ProbabilitySampling(x, opt.distributionsLinked);
+                    var x = (typeof(u) === 'undefined' ? floor(u) : new Number(u.toFixed(opt.fractionDigits)));
+                    if (opt.distributions)
+                        x = opt.distributions[x]
 
                     opt.success({
                         index:i,
@@ -53,12 +57,15 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                     n:1,
                     success:null,
                     distributions:null,
-                    distributionsLinked:null
+                    distributionsLinked:null,
+                    matrix:null
                 }, options)
-                var u1 = 0, u2 = 0, s = 0, r = 0;
-                if (opt.distributions)
-                    opt.distributionsLinked = stochastic.ProbabilityLinked({min:-3, max:3, distributions:opt.distributions});
+                var u1 = 0, u2 = 0, s = 0, r = 0, t1, t2;
 
+                if (opt.distributions && !opt.matrix) {
+                    //opt.distributionsLinked = stochastic.ProbabilityLinked({min:-3, max:3, distributions:opt.distributions});
+                    opt.matrix = matrixes.matrix({X1:-3, X2:3}, {X1:0, X2:opt.distributions.length - 1});
+                }
 
                 for (var i = 0; i < opt.n; i++) {
                     s = 0;
@@ -72,9 +79,16 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                     var x1 = r * u1;
                     var x2 = r * u2;
 
-                    if (opt.distributionsLinked) {
-                        x1 = stochastic.ProbabilitySampling(x1, opt.distributionsLinked);
-                        x2 = stochastic.ProbabilitySampling(x2, opt.distributionsLinked);
+                    if (opt.distributions) {
+                        t1 = matrixes.transform(opt.matrix, {X:x1});
+                        t2 = matrixes.transform(opt.matrix, {X:x2});
+                        x1 = opt.distributions[(typeof(t1) === 'undefined' ? floor(t1) : new Number(t1.toFixed(0)))];
+                        x2 = opt.distributions[(typeof(t2) === 'undefined' ? floor(t2) : new Number(t2.toFixed(0)))];
+//                        x1 = stochastic.ProbabilitySampling(x1, opt.distributionsLinked);
+//                        x2 = stochastic.ProbabilitySampling(x2, opt.distributionsLinked);
+                        if (typeof(x1) == 'undefined') {
+                            var a = 1;
+                        }
                     }
 
                     opt.success({
@@ -109,7 +123,9 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                     min = 0;
                     max = 1;
                 }
-                x = (x - min) / (max - min);    //默认按照均匀分布的概率计算
+                //对于数组，直接返回值。
+                if (Object.prototype.toString.apply(linked) === '[object Array]') return linked[x];
+                x = (x - min) / (max - min);    //默认按照均匀分布的概率抽样
                 if (!linked) return x;
                 if (x <= linked.key)
                     return linked.info;
