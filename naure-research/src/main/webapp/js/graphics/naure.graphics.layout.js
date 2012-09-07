@@ -254,7 +254,8 @@ define(['jquery', 'naure', 'naure.math.matrixes', 'naure.graphics', 'naure.messa
 
             this.toPixelY = function (y) {
                 //return -(y * this.scale.Y - this.coordinate.Y2 * this.scale.Y);
-                return -(y * matrix[1][1] - matrix[1][2]);
+                //todo 计算要验证
+                return -(y * matrix[1][1] + matrix[1][2]);
             };
 
             this.toPoint = function (x, y) {

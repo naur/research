@@ -179,13 +179,13 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.gridl
                 };
 
                 this.ctx.ellipse = function (x, y, radius, startAngle, endAngle, anticlockwise) {
-                    var transPoint = new layout.toPixel(x, y);
+                    var transPoint = layout.toPixel(x, y);
                     if (!transPoint) return;
                     if (!radius) radius = 1;
                     if (!startAngle) startAngle = 0;
                     if (!endAngle) endAngle = 2 * pi;
                     if (!anticlockwise) anticlockwise = true;
-                    return ctx.arc(transPoint.X, transPoint.Y, radius, startAngle, endAngle, anticlockwise);
+                    return self.ctx.arc(transPoint.X, transPoint.Y, radius, startAngle, endAngle, anticlockwise);
                 };
 
                 this.ctx.rectangle = function (x, y, radius, startAngle, endAngle, anticlockwise) {

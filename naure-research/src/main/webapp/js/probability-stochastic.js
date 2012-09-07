@@ -240,22 +240,42 @@ function submitSampling() {
 }
 
 //分布图
-function makeGraphics() {
-//        var point = [];
-//        for (var key in buffer) {
-//            if (key.indexOf(keyPrefixGaussian) >= 0)
-//                point.push({X:buffer[key], Y:0.01});
-//        }
-//        graphics.draw({
-//            coordinate:{
-//                X1:-4,
-//                X2:4,
-//                Y1:0, Y2:1
-//            },
-//            lines:[
-//                {equation:point, color:'red'}
-//            ]
-//        });
+function makeGraphics(field) {
+    var temp = {};
+    for (var i = 0; i < field.distributions.length; i++) {
+        temp[field.distributions[i]] = {
+            x:i,
+            val:0
+        };
+    }
+    for (var j = 0; j < n; j++) {
+        temp[buffer[storageKey(field, j)]].val++;
+    }
+    var point = [];
+    for (var key in temp) {
+        point.push({X:temp[key].x, Y:temp[key].val});
+    }
+
+
+    var y1, y2;
+    for (var i = 0; i < point.length; i++) {
+        if (!y1) y1 = point[i].Y;
+        if (!y2) y2 = point[i].Y;
+        y1 = min(y1, point[i].Y);
+        y2 = max(y2, point[i].Y);
+    }
+
+    graphics.draw({
+        coordinate:{
+            X1:0,
+            X2:field.distributions.length + 1,
+            Y1:y1,
+            Y2:y2
+        },
+        lines:[
+            {equation:point, color:'red'}
+        ]
+    });
 }
 
 /*-------------------- 函数 END ----------------------*/
@@ -279,19 +299,23 @@ function initEvent() {
         initStatus(false);
         submitSampling();
     });
+
+    $('#graph').on('click', function () {
+        makeGraphics(findField($('#select-graph').val()));
+    });
 }
 
 /*-------------------- 事件 END ----------------------*/
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.pattern', 'naure.message', 'naure.xsl', 'naure.math.matrixes', 'naure.math.probability.stochastic', 'naure.graphics.ui', 'naure.graphics.stochastic'], function ($, NAURE) {
-    message = NAURE.Message;
-    matrixes = NAURE.Math.Matrixes;
-    stochastic = NAURE.Math.Probability.Stochastic;
-    system = new NAURE.Graphics.Stochastic();
-    http = NAURE.HTTP;
-    var chain = NAURE.Pattern.chainHandler;
+require(['jquery', 'jd.pattern', 'jd.message', 'jd.xsl', 'jd.math.matrixes', 'jd.math.probability.stochastic', 'jd.graphics.ui', 'jd.graphics.stochastic'], function ($, JD) {
+    message = JD.Message;
+    matrixes = JD.Math.Matrixes;
+    stochastic = JD.Math.Probability.Stochastic;
+    system = new JD.Graphics.Stochastic();
+    http = JD.HTTP;
+    var chain = JD.Pattern.chainHandler;
 
     chainHandler = new chain({handle:initStatus, request:true,
         successor:new chain({handle:validData,
@@ -303,7 +327,7 @@ require(['jquery', 'naure.pattern', 'naure.message', 'naure.xsl', 'naure.math.ma
         $('article section:eq(1) fieldset:eq(1)').message();
         initEvent();
         initFieldsValues();
-        graphics = $('article section fieldset canvas').NAURE_Graphics({system:system});
+        graphics = $('article section fieldset canvas').JD_Graphics({system:system});
     });
 });
 
