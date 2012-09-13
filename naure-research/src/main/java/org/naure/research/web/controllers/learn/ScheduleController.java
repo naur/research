@@ -34,7 +34,7 @@ public class ScheduleController extends ControllerBase {
         return view("schedule-view");
     }
 
-    @RequestMapping("{params}")
+    @RequestMapping("delete/{params}")
     public Information delete(@PathVariable final String params) {
         return handler(new Sub<Information>() {
             @Override

@@ -10,7 +10,7 @@
  */
 
 var jslocalpath = '/Research/projects/research/naure-web/src/main/webapp';
-//jslocalpath = '';
+jslocalpath = '';
 var jslocalpath1 = jslocalpath.replace('naure-web', 'naure-research');
 
 require.config({
