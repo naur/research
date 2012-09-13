@@ -91,7 +91,32 @@ public class MongoWorkspace implements Workspace {
 
     @Override
     public <T> boolean delete(T t) throws Exception {
-        throw new Exception("Not implemented");
+        MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
+        Query query = new Query();
+        Map params = (Map) t;
+        for (Object key : params.keySet()) {
+            if ("class".equals(key)) {
+                continue;
+            }
+            if (params.get(key) instanceof Tree) {
+                Tree tree = (Tree) params.get(key);
+                switch (tree.getType()) {
+                    case In:
+                        query.addCriteria(Criteria.where(key.toString()).in(tree.getLeft().getInfo(), tree.getRight().getInfo()));
+                        break;
+                    case Between:
+                        query.addCriteria(Criteria.where(key.toString()).gte(tree.getLeft().getInfo()).lte(tree.getRight().getInfo()));
+                        break;
+                    case Regex:
+                        query.addCriteria(Criteria.where(key.toString()).regex(String.valueOf(tree.getInfo())));
+                        break;
+                }
+            } else
+                query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+        }
+
+        mongoOperations.remove(query, params.get("class").toString());
+        return true;
     }
 
     @Override

@@ -3,11 +3,9 @@ package org.naure.research.web.controllers.learn;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
-import org.naure.common.pattern.Func;
-import org.naure.common.pattern.Sub;
 import org.naure.common.pattern.Tree;
 import org.naure.common.pattern.TreeType;
-import org.naure.repositories.models.finance.Quote;
+import org.naure.common.pattern.exception.Sub;
 import org.naure.repositories.models.learn.Schedule;
 import org.naure.services.ScheduleService;
 import org.naure.web.ControllerBase;
@@ -34,6 +32,26 @@ public class ScheduleController extends ControllerBase {
     @RequestMapping("")
     public String view() {
         return view("schedule-view");
+    }
+
+    @RequestMapping("{params}")
+    public Information delete(@PathVariable final String params) {
+        return handler(new Sub<Information>() {
+            @Override
+            public Information execute() throws Exception {
+                Information<Boolean> info = new Information<Boolean>();
+                Map<String, Object> map = new HashMap<String, Object>();
+                if (params.isEmpty())
+                    map.put("path", new Tree<String>(TreeType.Regex, "^\\d+,"));
+                else {
+                    map.put("path", new Tree<String>(TreeType.Regex, "^[" + params.replace(",", "|") + "]+,"));
+                }
+
+                info.setData(scheduleService.delete(map));
+                info.setLevel(InformationLevel.SUCCESS.value());
+                return info;
+            }
+        });
     }
 
     @RequestMapping("{params}")

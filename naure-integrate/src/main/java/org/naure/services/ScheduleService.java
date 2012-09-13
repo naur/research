@@ -25,6 +25,11 @@ public class ScheduleService {
         return scheduleRepository.edit(schedule);
     }
 
+    public boolean delete(Map params) throws Exception {
+        params.put("class", new Schedule().collectionName());
+        return scheduleRepository.delete(params);
+    }
+
     @Autowired
     private ScheduleRepository scheduleRepository;
 }

@@ -2,7 +2,7 @@ package org.naure.research.web.controllers.map;
 
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
-import org.naure.common.pattern.Func;
+import org.naure.common.pattern.exception.*;
 import org.naure.common.location.GeoCoordinate;
 import org.naure.common.location.GeoPosition;
 import org.naure.common.location.GeoTrace;

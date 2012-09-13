@@ -2,7 +2,7 @@ package org.naure.web.controllers;
 
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
-import org.naure.common.pattern.Func;
+import org.naure.common.pattern.exception.*;
 import org.naure.web.ControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

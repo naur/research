@@ -2,8 +2,7 @@ package org.naure.web;
 
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
-import org.naure.common.pattern.Func;
-import org.naure.common.pattern.Sub;
+import org.naure.common.pattern.exception.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

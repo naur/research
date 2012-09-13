@@ -30,6 +30,14 @@ public abstract class Repository {
         return workspace.update(params);
     }
 
+    public <T, U> List<U> delete(T params, Class<U> resultClass) throws Exception {
+        return workspace.get(params, resultClass);
+    }
+
+    public <T> boolean delete(T params) throws Exception {
+        return workspace.delete(params);
+    }
+
     public <T> boolean exists(T params) throws Exception {
         return workspace.exists(params);
     }

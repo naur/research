@@ -1,4 +1,4 @@
-package org.naure.common.pattern;
+package org.naure.common.pattern.exception;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,5 +8,5 @@ package org.naure.common.pattern;
  * To change this template use File | Settings | File Templates.
  */
 public interface Sub<TResult> {
-    public TResult execute();
+    public TResult execute() throws Exception;
 }
