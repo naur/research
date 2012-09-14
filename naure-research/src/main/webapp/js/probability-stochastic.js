@@ -18,9 +18,10 @@ var currentFie = 0, currentIndex = 0, currentNum = 0
 /*-------------------- 函数 START --------------------*/
 
 function validData() {
-    for (var i = 1; i <= 10; i++) {
-        if ($('#field' + i).val().length <= 0) {
-            message.show({content:$('#field' + i).attr('tag') + ' 为空', color:'red'});
+    //for (var i = 1; i <= 10; i++) {
+    for (var key in fieldsInfo) {
+        if ($('#' + fieldsInfo[key].key).val().length <= 0) {
+            message.show({content:$('#' + fieldsInfo[key].key).attr('id') + ' 为空', color:'red'});
             initStatus(false);
             return false;
         }
@@ -28,11 +29,12 @@ function validData() {
     return true;
 }
 
-function findField(key) {
-    for (var index in fieldsInfo) {
-        if (!fieldsInfo.hasOwnProperty(index)) continue;
-        if (key == fieldsInfo[index].key)
-            return fieldsInfo[index];
+function findField(key, list) {
+    if (!list) list = fieldsInfo;
+    for (var index in list) {
+        if (!list.hasOwnProperty(index)) continue;
+        if (key == list[index].key)
+            return list[index];
     }
     return null;
 }
@@ -47,8 +49,14 @@ function initFieldsValues() {
         {key:'distributionType', values:'0,1,2,3,4,5,6'},
         {key:'idPickSite', script:'/acquire/site.action', xsl:'/xsl/stringdata.xsl'},
         {key:'area', script:'/acquire/area.action', xsl:'/xsl/stringdata.xsl'},
-        {key:'actualTransferTime', type:keyPrefixUniform, format:function (val) {
+        {key:'actualTransferTime', script:'/acquire/monitorTime.action', xsl:'/xsl/monitor-time.xsl', type:keyPrefixUniform, format:function (val) {
             return new Date(val).format('yyyy-MM-ddTHH:mm:ss');
+        }, func:function (opt, x) {
+            var tempX = stochastic.ProbabilitySampling(x, opt.distributions, opt.min, opt.max);
+            if (tempX == "00:00") {
+                return x;
+            } else
+                return tempX;
         }}
     ];
 
@@ -140,7 +148,7 @@ function makeProbabilitySampling() {
 
 //生成均匀分布随机数
 function makeUniformDistribution() {
-    stochastic.UniformDistribution({distributions:currentFie.distributions,
+    stochastic.UniformDistribution({distributions:currentFie.distributions, distributionsFunc:currentFie.func,
         min:currentFie.min ? currentFie.min : 0,
         max:currentFie.max ? currentFie.max : 1,
         fractionDigits:0,
@@ -241,21 +249,21 @@ function submitSampling() {
 
 //分布图
 function makeGraphics(field) {
-    var temp = {};
+    var temp = [];
     for (var i = 0; i < field.distributions.length; i++) {
-        temp[field.distributions[i]] = {
+        temp[i] = {
+            key:field.distributions[i],
             x:i,
             val:0
         };
     }
     for (var j = 0; j < n; j++) {
-        temp[buffer[storageKey(field, j)]].val++;
+        findField(buffer[storageKey(field, j)], temp).val++;
     }
     var point = [];
     for (var key in temp) {
         point.push({X:temp[key].x, Y:temp[key].val});
     }
-
 
     var y1, y2;
     for (var i = 0; i < point.length; i++) {

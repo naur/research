@@ -13,7 +13,7 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
 
     NAURE.Math.Probability.Stochastic = (function () {
 
-        var matrixes = JD.Math.Matrixes;
+        var matrixes = NAURE.Math.Matrixes;
 
         var stochastic = {
             //平均分布
@@ -27,12 +27,13 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                     data:null,
                     success:null,
                     distributions:null,
+                    distributionsFunc:null,
                     distributionsLinked:null  //备用参数
                 }, options)
 
                 var u;
 
-                if (opt.distributions) {
+                if (opt.min == 0 && opt.max == 1 && opt.distributions) {
                     opt.max = opt.distributions.length - 1;
                     opt.fractionDigits = 0;
                 }
@@ -40,8 +41,12 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                 for (var i = 0; i < opt.n; i++) {
                     u = random() * (opt.max - opt.min) + opt.min;
                     var x = (typeof(u) === 'undefined' ? floor(u) : new Number(u.toFixed(opt.fractionDigits)));
-                    if (opt.distributions)
-                        x = opt.distributions[x]
+                    if (opt.distributions) {
+                        if (opt.distributionsFunc)
+                            x = opt.distributionsFunc(opt, x);
+                        else
+                            x = opt.distributions[x];
+                    }
 
                     opt.success({
                         index:i,
@@ -123,9 +128,12 @@ define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
                     min = 0;
                     max = 1;
                 }
-                //对于数组，直接返回值。
-                if (Object.prototype.toString.apply(linked) === '[object Array]') return linked[x];
                 x = (x - min) / (max - min);    //默认按照均匀分布的概率抽样
+                //对于数组，直接返回值。
+                if (Object.prototype.toString.apply(linked) === '[object Array]') {
+                    x = (linked.length * x).toFixed(0);
+                    return linked[x];
+                }
                 if (!linked) return x;
                 if (x <= linked.key)
                     return linked.info;
