@@ -7,13 +7,13 @@ package org.naure.common.pattern;
  * Time: 3:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public enum TreeType {
+public enum Type {
     //2,3,4,5,6,7  ln,neg,+,-,*,/
     Add(4), In(101), Between(102), Regex(201);
 
     private final int value;
 
-    TreeType(int value) {
+    Type(int value) {
         this.value = value;
     }
 

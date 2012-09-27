@@ -13,7 +13,7 @@ public class Tree<T> {
         this(null, info, null, null);
     }
 
-    public Tree(TreeType type, T info) {
+    public Tree(Type type, T info) {
         this(type, info, null, null);
     }
 
@@ -21,11 +21,11 @@ public class Tree<T> {
         this(null, null, left, right);
     }
 
-    public Tree(TreeType type, Tree left, Tree right) {
+    public Tree(Type type, Tree left, Tree right) {
         this(type, null, left, right);
     }
 
-    public Tree(TreeType type, T info, Tree left, Tree right) {
+    public Tree(Type type, T info, Tree left, Tree right) {
         this.type = type;
         this.info = info;
         this.left = left;
@@ -48,11 +48,11 @@ public class Tree<T> {
         this.left = left;
     }
 
-    public TreeType getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(TreeType type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -70,6 +70,6 @@ public class Tree<T> {
     //0: 常数
     //1: 变量
     //>= 2 : 操作符 [2,3,4,5,6,7  ln,neg,+,-,*,/]
-    private TreeType type;
+    private Type type;
     private T info;
 }
