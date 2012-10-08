@@ -11,6 +11,7 @@
 
 define(['oop'], {
     Analytics:{},
+    Validate:{},
     Message:{},
     UI:{},
     HTTP:{},
