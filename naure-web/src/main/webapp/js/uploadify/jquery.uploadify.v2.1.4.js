@@ -148,7 +148,7 @@ if(jQuery)(
 						if (settings.checkScript) { 
 							jQuery(this).uploadifyUpload(null, false);
 						} else {
-							jQuery(this).uploadifyUpload(null, true);
+							jQuery(this).uploadifyUpload(null, false);
 						}
 					}
 				});

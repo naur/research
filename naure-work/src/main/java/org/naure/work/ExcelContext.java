@@ -1,7 +1,7 @@
 package org.naure.work;
 
-import org.naure.common.pattern.Delegator;
-import org.naure.common.pattern.HandlerBase;
+import org.naure.common.patterns.Delegator;
+import org.naure.common.patterns.HandlerBase;
 import org.naure.common.entities.Notification;
 import org.naure.common.entities.OffsetInfo;
 import org.naure.utility.excel.ExcelDocument;

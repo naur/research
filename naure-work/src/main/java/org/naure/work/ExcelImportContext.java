@@ -1,7 +1,7 @@
 package org.naure.work;
 
 
-import org.naure.common.pattern.HandlerBase;
+import org.naure.common.patterns.HandlerBase;
 import org.naure.utility.excel.ExcelDocument;
 import org.naure.utility.excel.ExcelRow;
 import org.naure.utility.excel.ExcelSheet;

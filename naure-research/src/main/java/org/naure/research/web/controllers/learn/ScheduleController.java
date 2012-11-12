@@ -3,9 +3,9 @@ package org.naure.research.web.controllers.learn;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
-import org.naure.common.pattern.Tree;
-import org.naure.common.pattern.TreeType;
-import org.naure.common.pattern.exception.Sub;
+import org.naure.common.patterns.Tree;
+//import org.naure.common.patterns.TreeType;
+import org.naure.common.patterns.exception.Sub;
 import org.naure.repositories.models.learn.Schedule;
 import org.naure.services.ScheduleService;
 import org.naure.web.ControllerBase;
@@ -41,11 +41,11 @@ public class ScheduleController extends ControllerBase {
             public Information execute() throws Exception {
                 Information<Boolean> info = new Information<Boolean>();
                 Map<String, Object> map = new HashMap<String, Object>();
-                if (params.isEmpty())
-                    map.put("path", new Tree<String>(TreeType.Regex, "^\\d+,"));
-                else {
-                    map.put("path", new Tree<String>(TreeType.Regex, "^[" + params.replace(",", "|") + "]+,"));
-                }
+//                if (params.isEmpty())
+//                    map.put("path", new Tree<String>(TreeType.Regex, "^\\d+,"));
+//                else {
+//                    map.put("path", new Tree<String>(TreeType.Regex, "^[" + params.replace(",", "|") + "]+,"));
+//                }
 
                 info.setData(scheduleService.delete(map));
                 info.setLevel(InformationLevel.SUCCESS.value());
@@ -61,11 +61,11 @@ public class ScheduleController extends ControllerBase {
             public Information execute() throws Exception {
                 Information<List<Schedule>> info = new Information<List<Schedule>>();
                 Map<String, Object> map = new HashMap<String, Object>();
-                if (params.isEmpty())
-                    map.put("path", new Tree<String>(TreeType.Regex, "^\\d+,"));
-                else {
-                    map.put("path", new Tree<String>(TreeType.Regex, "^[" + params.replace(",", "|") + "]+,"));
-                }
+//                if (params.isEmpty())
+//                    map.put("path", new Tree<String>(TreeType.Regex, "^\\d+,"));
+//                else {
+//                    map.put("path", new Tree<String>(TreeType.Regex, "^[" + params.replace(",", "|") + "]+,"));
+//                }
                 map.put("pageSize", 100);
 
                 info.setData(scheduleService.get(map));

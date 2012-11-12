@@ -1,7 +1,7 @@
 package org.naure.common.math.probability;
 
 
-import org.naure.common.pattern.Func;
+import org.naure.common.patterns.Func;
 
 import java.util.List;
 

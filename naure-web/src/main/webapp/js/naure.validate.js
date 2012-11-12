@@ -34,11 +34,22 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     min:$.validator.format("请输入一个最小为 {0} 的值！")
                 });
             },
+            isMobile:function (value, element) {
+                var reg = /^(1[3458]{1}\d{9})$/;
+                return this.optional(element) || (reg.test(value));
+            },
+            isHome:function (value, element) {
+                var reg = /^0\d{2,3}-?\d{7,9}$/;
+                return this.optional(element) || (reg.test(value));
+            },
             isTel:function (value, element) {
-                var length = value.length;
                 var mobile = /^(1[3458]{1}\d{9})$/;
-                var tel = /^0\d{2,3}-?\d{7,9}$/;
-                return this.optional(element) || (tel.test(value) || mobile.test(value));
+                var home = /^0\d{2,3}-?\d{7,9}$/;
+                return this.optional(element) || (home.test(value) || mobile.test(value));
+            },
+            isMultiTel:function (value, element) {
+                var multiTelReg = /^((0\d{2,3}-?\d{7,9})|(1[3458]{1}\d{9}))(,\s*((0\d{2,3}-?\d{7,9})|(1[3458]{1}\d{9})))*$/;
+                return this.optional(element) || (multiTelReg.test(value));
             },
             init:function () {
                 validate.messages_cn();

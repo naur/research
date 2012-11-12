@@ -3,9 +3,9 @@ package org.naure.research.web.controllers.finance;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
-import org.naure.common.pattern.exception.*;
-import org.naure.common.pattern.Tree;
-import org.naure.common.pattern.TreeType;
+import org.naure.common.patterns.exception.*;
+import org.naure.common.patterns.Tree;
+import org.naure.common.patterns.Type;
 import org.naure.repositories.models.finance.Future;
 import org.naure.repositories.models.finance.Quote;
 import org.naure.repositories.models.finance.Security;
@@ -48,7 +48,7 @@ public class SecurityController extends ControllerBase {
                     case "future":
                         params.put("species", ids[0]);
                         params.put("contract", ids[1]);
-                        params.put("quotes.date", new Tree(TreeType.Between,
+                        params.put("quotes.date", new Tree(Type.Between,
                                 new Tree<Date>(formatter.parse(start)),
                                 new Tree<Date>(formatter.parse(end))));
                         clazz = Future.class;

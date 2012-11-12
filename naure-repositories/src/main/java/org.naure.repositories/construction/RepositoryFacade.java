@@ -1,7 +1,7 @@
 package org.naure.repositories.construction;
 
-import org.naure.common.pattern.FacadeBase;
-import org.naure.common.pattern.IFacadeBase;
+import org.naure.common.patterns.FacadeBase;
+import org.naure.common.patterns.IFacadeBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 

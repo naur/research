@@ -1,10 +1,9 @@
 package org.naure.web.controllers;
 
-
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.entities.TraceEventType;
-import org.naure.common.pattern.exception.*;
+import org.naure.common.patterns.exception.*;
 import org.naure.repositories.models.Session;
 import org.naure.repositories.models.SessionLog;
 import org.naure.services.SessionService;

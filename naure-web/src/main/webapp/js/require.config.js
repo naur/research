@@ -10,7 +10,7 @@
  */
 
 var jslocalpath = '/Research/projects/research/naure-web/src/main/webapp';
-jslocalpath = '';
+//jslocalpath = '';
 var jslocalpath1 = jslocalpath.replace('naure-web', 'naure-research');
 
 require.config({
@@ -18,6 +18,7 @@ require.config({
     paths:{
         jquery:jslocalpath + '/js/jquery-1.8.0.min',
         'jquery.strings':jslocalpath + '/js/jquery.strings',
+        'jquery.validate':jslocalpath + '/js/jquery.validate',
         'ajaxslt':jslocalpath + '/js/ajaxslt',
 
         'jStat':jslocalpath + '/js/math/jstat-1.0.0',
@@ -28,6 +29,7 @@ require.config({
         'jquery.uploadify':jslocalpath + '/js/uploadify/jquery.uploadify.v2.1.4',
 
         'naure':jslocalpath + '/js/naure',
+        'naure.validate':jslocalpath + '/js/naure.validate',
         'naure.pattern':jslocalpath + '/js/naure.pattern',
         'naure.utility':jslocalpath + '/js/naure.utility',
         'naure.analytics':jslocalpath + '/js/naure.analytics',

@@ -1,7 +1,7 @@
 package org.naure.repositories;
 
 import org.naure.common.entities.Entity;
-import org.naure.common.pattern.Tree;
+import org.naure.common.patterns.Tree;
 import org.naure.repositories.config.MongoConfiguration;
 import org.naure.repositories.construction.Workspace;
 import org.springframework.beans.factory.annotation.Autowired;
