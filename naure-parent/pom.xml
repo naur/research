@@ -10,13 +10,6 @@
     <version>1.0</version>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>../naure-common</module>
-        <module>../naure-utility</module>
-        <module>../naure-repositories</module>
-        <module>../naure-integrate</module>
-    </modules>
-
     <properties>
         <javaSourceLevel>1.7</javaSourceLevel>
         <maven-plugins.version>3.0.4</maven-plugins.version>
@@ -25,6 +18,8 @@
         <maven-war-plugin.version>2.2</maven-war-plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+
         <jboss.domain>default</jboss.domain>
         <naure.version>1.0</naure.version>
         <org.springframework.version>3.1.1.RELEASE</org.springframework.version>
@@ -541,6 +536,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -560,21 +556,12 @@
             </resource>
         </resources>
 
-        <!--<testResources>-->
-        <!--<testResource>-->
-        <!--<directory>src/test/resources</directory>-->
-        <!--<filtering>true</filtering>-->
-        <!--</testResource>-->
-        <!--</testResources>-->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
-
-    <profiles>
-        <profile>
-            <id>publish</id>
-            <properties>
-                <naure.log.file.path>/data/web/logs</naure.log.file.path>
-            </properties>
-        </profile>
-    </profiles>
 
 </project>

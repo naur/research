@@ -1,6 +1,7 @@
 package org.naure.test;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -24,6 +25,7 @@ import java.util.List;
 //        "classpath*:/applicationContext.xml"
 //})
 public class UnitTestBase extends AbstractJUnit4SpringContextTests {
+    @Ignore
     @Test
     public void runtimeTest() {
         System.out.println("-------------运行-runtimeTest----------------");

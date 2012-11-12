@@ -3,6 +3,7 @@ package org.naure.test;
 import org.agilewiki.jactor.*;
 import org.agilewiki.jactor.lpc.JLPCActor;
 import org.agilewiki.jactor.lpc.Request;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.Parameterized;
 import org.naure.test.test1.Hello;
@@ -34,6 +35,7 @@ public class JLPCActorTest extends UnitTestBase {
         });
     }
 
+    @Ignore
     @Test
     public void test1() throws Exception {
         MailboxFactory mailboxFactory = JAMailboxFactory.newMailboxFactory(1);
@@ -44,6 +46,7 @@ public class JLPCActorTest extends UnitTestBase {
         mailboxFactory.close();
     }
 
+    @Ignore
     @Test
     public void test2() throws Exception {
         MailboxFactory factory = JAMailboxFactory.newMailboxFactory(10);

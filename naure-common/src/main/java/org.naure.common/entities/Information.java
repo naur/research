@@ -3,12 +3,13 @@ package org.naure.common.entities;
 import java.util.Date;
 
 /**
- * Created by IntelliJ IDEA.
+ * Created with IntelliJ IDEA.
  * User: Administrator
- * Date: 2/9/12
- * Time: 9:38 AM
+ * Date: 11/12/12
+ * Time: 11:30 AM
  * To change this template use File | Settings | File Templates.
  */
+
 //提供通用的关于【HTTP 响应】的数据模型 和 【Web Service 响应】的数据模型结构
 //@XStreamAlias("Information")
 //@XmlRootElement
