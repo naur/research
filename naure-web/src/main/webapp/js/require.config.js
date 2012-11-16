@@ -55,6 +55,7 @@ require.config({
 
         'naure.math':jslocalpath1 + '/js/math/naure.math',
         'naure.math.symbol':jslocalpath1 + '/js/math/naure.math.symbol',
+        'naure.math.structures':jslocalpath1 + '/js/math/naure.math.structures',
 
         'naure.math.probability':jslocalpath1 + '/js/math/probability/naure.math.probability',
         'naure.math.probability.stochastic':jslocalpath1 + '/js/math/probability/naure.math.probability.stochastic',
@@ -63,6 +64,8 @@ require.config({
         'naure.math.sets':jslocalpath1 + '/js/math/sets/naure.math.sets',
         'naure.math.sets.tree':jslocalpath1 + '/js/math/sets/naure.math.sets.tree',
         'naure.math.sets.tree.augmenting':jslocalpath1 + '/js/math/sets/naure.math.sets.tree.augmenting',
+        'naure.math.statistics':jslocalpath1 + '/js/math/statistics/naure.math.statistics',
+        'naure.math.statistics':jslocalpath1 + '/js/math/statistics/naure.math.stats',
 
         'naure.math.stats':jslocalpath1 + '/js/math/stats/naure.math.stats',
         'naure.math.stats.finance':jslocalpath1 + '/js/math/stats/naure.math.stats.finance',

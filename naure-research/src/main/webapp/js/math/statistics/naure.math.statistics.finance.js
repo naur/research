@@ -9,26 +9,28 @@
  *
  */
 
-define(['jquery', 'naure', 'naure.math.stats'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math.structures', 'naure.math.statistics'], function ($, NAURE) {
 
-    NAURE.Math.Stats.Finance = (function () {
+    NAURE.Math.Statistics.Finance = (function () {
 
         var tree = NAURE.Math.Sets.Tree;
+        var statistics = NAURE.Math.Statistics;
+        var structures = NAURE.Math.Structures;
 
         var finance = {
             //移动平均, 又称「移动平均线」简称均线,  MA
-            MovingAverage:function () {
-                var node1 = new tree.node({key:1});
-                var node2 = new tree.node({key:2});
+            MovingAverage: function () {
+                var node1 = new structures.node({key: 1});
+                var node2 = new structures.node({key: 2});
             },
             //简单移动平均,  SMA
             //             p1 + p2 + p3 + ... + pn                                      p1      pn+1
             // SMA = --------------------------        SMAt1 = SMAt0 - ---- +  ------
             //                       n                                                         n        n
-            SimpleMovingAverage:function (options) {
+            SimpleMovingAverage: function (options) {
                 var opt = $.extend({
-                    p:[],
-                    n:1
+                    p: [],
+                    n: 1
                 }, options);
 
                 var result = [];
@@ -41,25 +43,25 @@ define(['jquery', 'naure', 'naure.math.stats'], function ($, NAURE) {
                 var node;
                 for (var i = 1; i < n; i++) {
                     if (node)
-                        node = new tree.node({type:4, info:'+',
-                            left:new tree.node(),
-                            right:new tree.node()
+                        node = new tree.node({type: 4, info: '+',
+                            left: new tree.node(),
+                            right: new tree.node()
                         }); else
-                    node.right = new tree.node();
+                        node.right = new tree.node();
                 }
 
                 return result;
             },
             //加权移动平均  WMA
-            WeightedMovingAverage:function () {
+            WeightedMovingAverage: function () {
             },
             //指数移动平均  EMA 或 EWMA
-            ExponentialMovingAverage:function () {
+            ExponentialMovingAverage: function () {
 
             },
 
             //随机指标（Stochastic Oscillator，KD）
-            StochasticOscillator:function () {
+            StochasticOscillator: function () {
             },
 
             //未成熟随机值（Raw Stochastic Value，RSV）
@@ -69,7 +71,7 @@ define(['jquery', 'naure', 'naure.math.stats'], function ($, NAURE) {
             // 1. n: 是经过的交易期间（一般订为9日）
             // 2.Cn: 是第n日的收盘价
             // 3. Hn 和 Ln: 分别是过去日内的最高价和最低价，一般以9日为基准。
-            RawStochasticValue:function () {
+            RawStochasticValue: function () {
             }
         };
 

@@ -11,11 +11,11 @@
 
 define(['jquery', 'naure', 'naure.math.sets.tree'], function ($, NAURE) {
 
-    NAURE.Math.Stats = (function () {
-        var stats = {
+    NAURE.Math.Statistics = (function () {
+        var statistics = {
         };
 
-        return stats;
+        return statistics;
     })();
 
     return NAURE;
