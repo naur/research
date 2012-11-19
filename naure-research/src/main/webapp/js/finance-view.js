@@ -10,19 +10,33 @@
  */
 
 /*-------------------- 全局变量 START ----------------*/
-var naure, overlay, message, http, graphics1, graphics2, lines, volumes, finance, systemFinance, systemEquation;
-var canvas1 = 'article section canvas:eq(0)',
-    canvas2 = 'article section canvas:eq(1)';
+var global = {
+    naure: null, structures: null, overlay: null, message: null, http: null, graphics: [], lines: null, volumes: null, finance: null, systemFinance: null, systemEquation: null, exponents: [], coordinate: null
+};
 
-var overlayNodes = {
-    Input:{
-        html:'<input id="overlay-input" type="text" />'
+var dom = {
+    compositeOperation: '#composite-operation',
+    zoomAxis: '#zoom-axis',
+    overlayInput: '#overlay-input',
+    canvas: ['article section canvas:eq(0)', 'article section canvas:eq(1)'],
+    exponent: '#exponent'
+};
+
+global.nodes = {
+    '指标': {
+        html: '<select id="exponent" style="width:150px;">' +
+            '<option value="">无</option>' +
+            '<option value="AccumulationDistributionLine">Accumulation/Distribution Line</option>' +
+            '</select>'
     },
-    Date:{
-        html:'<input id="start-date" style="width:60px;" type="text" />-<input id="end-date" style="width:60px;" type="text" />'
+    Input: {
+        html: '<input id="overlay-input" type="text" />'
     },
-    ZoomAxis:{
-        html:'<select id="zoom-axis" style="width:60px;">' +
+    Date: {
+        html: '<input id="start-date" style="width:60px;" type="text" />-<input id="end-date" style="width:60px;" type="text" />'
+    },
+    ZoomAxis: {
+        html: '<select id="zoom-axis" style="width:60px;">' +
             '<option>both</option>' +
             '<option>horizontal</option>' +
             '<option>vertical</option>' +
@@ -42,93 +56,62 @@ var overlayNodes = {
             '<option>copy</option>' +
             '</select>'
     },
-    Equation:function () {
-        lines = [];
-        lines.push({equation:'y=x^2', color:'red'});
-        lines.push({equation:"\\frac{d}{dx}\\left(sin\\left(x\\right)+log\\left(x+1\\right)\\right)", color:'blue'});
-        //lines.push({equation : 'r<\sin \left(4\theta \right)', color : 'red'});
-        graphics1.System(systemEquation);
-        graphics1.draw({lines:lines});
+    Equation: function () {
+        global.lines = [];
+        global.lines.push({equation: 'y=x^2', color: 'red'});
+        global.lines.push({equation: "\\frac{d}{dx}\\left(sin\\left(x\\right)+log\\left(x+1\\right)\\right)", color: 'blue'});
+        //global.lines.push({equation : 'r<\sin \left(4\theta \right)', color : 'red'});
+        global.graphics[0].System(global.systemEquation);
+        global.graphics[0].draw({lines: global.lines});
     },
-    Finance:function () {
-        lines = [];
-        graphics1.System(systemFinance);
-        graphics1.draw({lines:lines});
+    Finance: function () {
+        global.lines = [];
+        global.graphics[0].System(global.systemFinance);
+        global.graphics[0].draw({lines: global.lines});
     },
-    Reset:function () {
-        graphics1.reset();
+    Reset: function () {
+        global.graphics[0].reset();
     },
-    Sina:function () {
+    Sina: function () {
         //http://www.google.com/ig/api?stock=600455
         //http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=19950802&end_date=20120723&type=xml
         $(this).attr('disabled', true);
-        message.empty();
-        message.show({content:'正在获取数据...'});
+        global.message.empty();
+        global.message.show({content: '正在获取数据...'});
 
         var startDate = $('#start-date').val().length > 0 ? new Date(Date.parse($('#start-date').val())) : new Date('2012-01-01');
         var endDate = $('#end-date').val().length > 0 ? Date.parse($('#end-date').val()) : new Date();
         var symbol = $('#overlay-input').val().length > 0 ? $('#overlay-input').val() : 'sz000010';
 
         //http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=20120101&end_date=20120701&type=xml
-        http.xmlAcquire({
-            xmlUrl:'http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=' + symbol + '&begin_date=' + startDate.format('yyyyMMdd') + '&end_date=' + endDate.format('yyyyMMdd') + '&type=xml',
-            context:this,
-            error:function (ex) {
-                message.show({content:'获取数据错误，请稍后重试！', color:'red'});
+        global.http.xmlAcquire({
+            xmlUrl: 'http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=' + symbol + '&begin_date=' + startDate.format('yyyyMMdd') + '&end_date=' + endDate.format('yyyyMMdd') + '&type=xml',
+            context: this,
+            error: function (ex) {
+                global.message.show({content: '获取数据错误，请稍后重试！', color: 'red'});
                 $(ex.context).attr('disabled', false);
             },
-            success:function (obj) {
+            success: function (obj) {
                 $(obj.context).attr('disabled', false);
-                message.show({content:'获取数据成功！'});
+                global.message.show({content: '获取数据成功！'});
 
+                global.exponents = []
                 var y1, y2, volumeMax, volumeMin;
-                //var price = ['v', 'l', 'c', 'h', 'o'];
-//                var price = ['v', 'c', 'o'];
-//                for (var key in price) {
-//                    if (!price.hasOwnProperty(key)) continue;
-//                    //var equation = [], volumes = [];
-//                    $(obj.output).find('content').each(function (index, data) {
-//                        var content = $(this);
-//                        equation.push({
-//                            X:content.attr('d'),
-//                            Y:parseFloat(content.attr(price[key]))
-//                        });
-//                        volumes.push({
-//                            X:content.attr('d'),
-//                            Y:parseFloat(content.attr(price[key]))
-//                        });
-//                        if (!y1)
-//                            y1 = parseFloat(content.attr(price[key]));
-//                        else if (parseFloat(content.attr(price[key])) < y1)
-//                            y1 = parseFloat(content.attr(price[key]));
-//
-//                        if (!y2)
-//                            y2 = parseFloat(content.attr(price[key]));
-//                        else if (parseFloat(content.attr(price[key])) > y2)
-//                            y2 = parseFloat(content.attr(price[key]));
-//                    });
-//                }
-
-                //todo
                 var equationPrice = [], equationClose = [], equationVolumes = [];
                 $(obj.output).find('content').each(function (index, data) {
                     var content = $(this);
+
                     var o = parseFloat(content.attr('o'));
+                    var h = parseFloat(content.attr('h'));
+                    var l = parseFloat(content.attr('l'));
                     var c = parseFloat(content.attr('c'));
                     var v = parseFloat(content.attr('v'));
-                    equationPrice.push({
-                        X:content.attr('d'),
-                        //Y:o,
-                        O:o,
-                        C:c
-                    });
-                    equationVolumes.push({
-                        X:content.attr('d'),
-                        O:o,
-                        C:c,
-                        //Y:v
-                        V:v
-                    });
+                    var d = content.attr('d');
+
+                    global.exponents.push(new global.finance.Quote(d, o, h, l, c, v));
+                    equationPrice.push({X: d, Y: o});
+                    equationVolumes.push({X: d, Y: v});
+
                     if (!y1) y1 = min(o, c);
                     if (!y2) y2 = max(o, c);
                     if (!volumeMax) volumeMax = v;
@@ -140,33 +123,38 @@ var overlayNodes = {
                     volumeMin = min(v, volumeMin);
                 });
 
-                if (!lines) lines = [];
-                if (!volumes) volumes = []
-                lines.push({equation:equationPrice, color:'#' + random().toString(16).substring(2, 5)});
-                volumes.push({equation:equationVolumes, color:'#' + random().toString(16).substring(2, 5)});
+                if (!global.lines) global.lines = [];
+                if (!global.volumes) global.volumes = []
+                global.lines.push({equation: equationPrice, color: '#' + random().toString(16).substring(2, 5)});
+                global.volumes.push({equation: equationVolumes, color: '#' + random().toString(16).substring(2, 5)});
 
-                graphics1.draw({
-                    coordinate:{
-                        X1:floor(startDate.getTime() / 86400000),
-                        X2:ceil(endDate.getTime() / 86400000),
-                        Y1:y1, Y2:y2
+                global.coordinate = {
+                    X1: floor(startDate.getTime() / 86400000),
+                    X2: ceil(endDate.getTime() / 86400000),
+                    Y1: volumeMin, Y2: volumeMax
+                };
+                global.graphics[0].draw({
+                    coordinate: {
+                        X1: floor(startDate.getTime() / 86400000),
+                        X2: ceil(endDate.getTime() / 86400000),
+                        Y1: y1, Y2: y2
                     },
-                    lines:lines
+                    lines: global.lines
                 });
-                graphics2.draw({
-                    coordinate:{
-                        X1:floor(startDate.getTime() / 86400000),
-                        X2:ceil(endDate.getTime() / 86400000),
-                        Y1:volumeMin, Y2:volumeMax
+                global.graphics[1].draw({
+                    coordinate: {
+                        X1: floor(startDate.getTime() / 86400000),
+                        X2: ceil(endDate.getTime() / 86400000),
+                        Y1: volumeMin, Y2: volumeMax
                     },
-                    lines:volumes
+                    lines: global.volumes
                 });
             }
         });
     },
 
-    MA:function () {
-        finance.MovingAverage();
+    MA: function () {
+        global.finance.MovingAverage();
     }
 };
 
@@ -179,17 +167,39 @@ var overlayNodes = {
 /*-------------------- 事件 START --------------------*/
 
 function initEvent() {
-    $('#composite-operation').on('change', function () {
-        graphics1.config.CompositeOperation = $(this).val();
+    $(dom.compositeOperation).on('change', function () {
+        global.graphics[0].config.CompositeOperation = $(this).val();
     });
-    $('#zoom-axis').on('change', function () {
-        graphics1.config.zoomAxis = $(this).val();
+    $(dom.zoomAxis).on('change', function () {
+        global.graphics[0].config.zoomAxis = $(this).val();
     });
-    $('#overlay-input').on('keydown', function (event) {
+    $(dom.overlayInput).on('keydown', function (event) {
         var ev = document.all ? window.event : event;
         if (ev.keyCode == 13) {
-            var button = overlay.find('Sina');
+            var button = global.overlay.find('Sina');
             if (button) button.click();
+        }
+    });
+    $(dom.exponent).live('change', function () {
+        if ($(dom.exponent).val()) {
+            var buffer = [];
+            var linked = new global.structures.Linked();
+            linked.prev = 0;
+            linked.next = 0;
+            global.finance.AccumulationDistributionLine({
+                quotes: global.exponents,
+                linked: linked,
+                result: function (obj) {
+                    buffer.push({X: obj.date, Y: obj.value});
+                }
+            });
+
+            global.graphics[1].draw({
+                coordinate: global.coordinate,
+                lines: [
+                    {equation: buffer, color: 'red'}
+                ]
+            });
         }
     });
 }
@@ -198,29 +208,30 @@ function initEvent() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.xsl', 'naure.math.stats.finance',
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.xsl', 'naure.math.statistics.finance',
     'naure.graphics.equation',
     'naure.graphics.finance'], function ($, NAURE) {
-    naure = NAURE;
-    overlay = NAURE.UI.Overlay;
-    http = NAURE.HTTP;
-    message = NAURE.Message;
-    finance = NAURE.Math.Stats.Finance;
-    systemFinance = new NAURE.Graphics.Finance();
-    systemEquation = new NAURE.Graphics.Equation();
+    global.naure = NAURE;
+    global.structures = NAURE.Math.Structures;
+    global.overlay = NAURE.UI.Overlay;
+    global.http = NAURE.HTTP;
+    global.message = NAURE.Message;
+    global.finance = NAURE.Math.Statistics.Finance;
+    global.systemFinance = new NAURE.Graphics.Finance();
+    global.systemEquation = new NAURE.Graphics.Equation();
 
     $.support.cors = true;
 
     $(function () {
-        $('body').message({overlay:'left-bottom', title:'', multiple:false});
+        $('body').message({overlay: 'left-bottom', title: '', multiple: false});
         $('body').overlay({
-            nodes:overlayNodes
+            nodes: global.nodes
         });
 
-        message.position('left-top');
+        global.message.position('left-top');
         //graphics.config.gridlines.show = false;
-        graphics1 = $(canvas1).NAURE_Graphics({system:systemFinance});
-        graphics2 = $(canvas2).NAURE_Graphics({system:new NAURE.Graphics.Finance()});
+        global.graphics[0] = $(dom.canvas[0]).NAURE_Graphics({system: global.systemFinance});
+        global.graphics[1] = $(dom.canvas[1]).NAURE_Graphics({system: new NAURE.Graphics.Finance()});
 
         initEvent();
     });

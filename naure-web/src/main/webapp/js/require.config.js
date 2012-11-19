@@ -65,10 +65,7 @@ require.config({
         'naure.math.sets.tree':jslocalpath1 + '/js/math/sets/naure.math.sets.tree',
         'naure.math.sets.tree.augmenting':jslocalpath1 + '/js/math/sets/naure.math.sets.tree.augmenting',
         'naure.math.statistics':jslocalpath1 + '/js/math/statistics/naure.math.statistics',
-        'naure.math.statistics':jslocalpath1 + '/js/math/statistics/naure.math.stats',
-
-        'naure.math.stats':jslocalpath1 + '/js/math/stats/naure.math.stats',
-        'naure.math.stats.finance':jslocalpath1 + '/js/math/stats/naure.math.stats.finance',
+        'naure.math.statistics.finance':jslocalpath1 + '/js/math/statistics/naure.math.statistics.finance',
 
         'naure.chart.gantt':jslocalpath1 + '/js/chart/naure.chart.gantt',
 

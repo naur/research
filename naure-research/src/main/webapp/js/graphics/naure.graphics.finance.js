@@ -24,7 +24,7 @@ define(['jquery', 'naure', 'naure.math',
             this.Graph = function (n, disabled, color) {
                 var equation = n;
                 return {
-                    plot:function (ctx, coordinate) {
+                    plot: function (ctx, coordinate) {
                         if (equation.length <= 0) return;
                         ctx.beginPath();
                         ctx.move(Date.parse(equation[0].X) / 86400000, equation[0].Y);
@@ -42,7 +42,7 @@ define(['jquery', 'naure', 'naure.math',
 //            };
 
             this.gridlineLabelX = function (num) {
-                var d = this.parseCoordinate({X:num, Y:0}).X;
+                var d = this.parseCoordinate({X: num, Y: 0}).X;
                 if (type == 'year')
                     return d.format('yyyy-MM-dd');
                 if (type == 'month')
@@ -59,8 +59,8 @@ define(['jquery', 'naure', 'naure.math',
 
             this.parseCoordinate = function (point) {
                 return {
-                    X:new Date(point.X * 86400000 + new Date().getTimezoneOffset() * MinMilli),
-                    Y:point.Y
+                    X: new Date(point.X * 86400000 + new Date().getTimezoneOffset() * MinMilli),
+                    Y: point.Y
                 };
             };
 
