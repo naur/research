@@ -112,10 +112,6 @@ define(['jquery', 'naure', 'naure.math.structures', 'naure.math.statistics'], fu
                 var c = quote.c;
                 var v = quote.v;
 
-                if ("2012-07-27" == quote.d) {
-                    var a = 1;
-                }
-
                 if (opt.result) {
                     if (0 != h - l)
                         opt.linked.prev += (((c - l) - (h - c)) / (h - l) * v);

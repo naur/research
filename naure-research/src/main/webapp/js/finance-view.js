@@ -19,7 +19,9 @@ var dom = {
     zoomAxis: '#zoom-axis',
     overlayInput: '#overlay-input',
     canvas: ['article section canvas:eq(0)', 'article section canvas:eq(1)'],
-    exponent: '#exponent'
+    exponent: '#exponent',
+    startDate: '#start-date',
+    endDate: '#end-date'
 };
 
 global.nodes = {
@@ -79,9 +81,9 @@ global.nodes = {
         global.message.empty();
         global.message.show({content: '正在获取数据...'});
 
-        var startDate = $('#start-date').val().length > 0 ? new Date(Date.parse($('#start-date').val())) : new Date('2012-01-01');
-        var endDate = $('#end-date').val().length > 0 ? Date.parse($('#end-date').val()) : new Date();
-        var symbol = $('#overlay-input').val().length > 0 ? $('#overlay-input').val() : 'sz000010';
+        var startDate = $(dom.startDate).val().length > 0 ? new Date(Date.parse($(dom.startDate).val().replace(/(\d{4})(\d{2})(\d{2})/g, '$3-$2-$1'))) : new Date('2012-01-01');
+        var endDate = $(dom.endDate).val().length > 0 ? Date.parse($(dom.endDate).val().replace(/(\d{4})(\d{2})(\d{2})/g, '$3-$2-$1')) : new Date();
+        var symbol = $(dom.overlayInput).val().length > 0 ? $(dom.overlayInput).val() : 'sz000010';
 
         //http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=20120101&end_date=20120701&type=xml
         global.http.xmlAcquire({
@@ -109,8 +111,8 @@ global.nodes = {
                     var d = content.attr('d');
 
                     global.exponents.push(new global.finance.Quote(d, o, h, l, c, v));
-                    equationPrice.push({X: d, Y: o});
-                    equationVolumes.push({X: d, Y: v});
+                    equationPrice.push({X: d, Y: {o: o, h: h, l: l, c: c}});
+                    equationVolumes.push({X: d, Y: {v: v}});
 
                     if (!y1) y1 = min(o, c);
                     if (!y2) y2 = max(o, c);
@@ -160,18 +162,18 @@ global.nodes = {
 
 /*-------------------- 全局变量 END ------------------*/
 
-/*-------------------- 函数 START --------------------*/
-
-/*-------------------- 函数 END ----------------------*/
-
 /*-------------------- 事件 START --------------------*/
 
 function initEvent() {
     $(dom.compositeOperation).on('change', function () {
-        global.graphics[0].config.CompositeOperation = $(this).val();
+        for (var i = 0; i < global.graphics.length; i++) {
+            global.graphics[i].config.CompositeOperation = $(this).val();
+        }
     });
     $(dom.zoomAxis).on('change', function () {
-        global.graphics[0].config.zoomAxis = $(this).val();
+        for (var i = 0; i < global.graphics.length; i++) {
+            global.graphics[i].config.zoomAxis = $(this).val();
+        }
     });
     $(dom.overlayInput).on('keydown', function (event) {
         var ev = document.all ? window.event : event;
@@ -190,7 +192,7 @@ function initEvent() {
                 quotes: global.exponents,
                 linked: linked,
                 result: function (obj) {
-                    buffer.push({X: obj.date, Y: obj.value});
+                    buffer.push({X: obj.date, Y: {v: obj.value}});
                 }
             });
 
@@ -234,6 +236,10 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.xsl', 'naure.math.st
         global.graphics[1] = $(dom.canvas[1]).NAURE_Graphics({system: new NAURE.Graphics.Finance()});
 
         initEvent();
+
+        //默认值
+        //$(dom.zoomAxis)[0].selectedIndex = 2;
+        $(dom.endDate).val(new Date().format('yyyyMMdd'))
     });
 });
 
