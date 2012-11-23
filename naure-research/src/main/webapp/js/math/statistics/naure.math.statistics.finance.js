@@ -96,7 +96,6 @@ define(['jquery', 'naure', 'naure.math.structures', 'naure.math.statistics'], fu
             RawStochasticValue: function () {
             },
 
-
             //Accumulation/Distribution Line  累积/派发线
             //     (收盘价 - 最低价) - (最高价 - 收盘价)
             //   --------------------------------------------- X 成交量
@@ -121,7 +120,22 @@ define(['jquery', 'naure', 'naure.math.structures', 'naure.math.statistics'], fu
                 opt.linked.next += 1;
                 if (opt.linked.next < opt.quotes.length)
                     arguments.callee(opt)
+            },
+
+            //Accumulation Swing Index 累积摆动指标
+            //
+            // = 前期累积摆动指标 + 摆动指标
+            //
+            AccoumulationSwingIndex: function () {
+            },
+
+            //Advance/Decline Line 上涨/下跌线
+            //
+            //
+            //
+            AdvanceDeclineLine: function () {
             }
+
         };
 
         return finance;

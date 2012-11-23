@@ -81,8 +81,8 @@ global.nodes = {
         global.message.empty();
         global.message.show({content: '正在获取数据...'});
 
-        var startDate = $(dom.startDate).val().length > 0 ? new Date(Date.parse($(dom.startDate).val().replace(/(\d{4})(\d{2})(\d{2})/g, '$3-$2-$1'))) : new Date('2012-01-01');
-        var endDate = $(dom.endDate).val().length > 0 ? Date.parse($(dom.endDate).val().replace(/(\d{4})(\d{2})(\d{2})/g, '$3-$2-$1')) : new Date();
+        var startDate = $(dom.startDate).val().length > 0 ? new Date(Date.parse($(dom.startDate).val().replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'))) : new Date('2012-01-01');
+        var endDate = $(dom.endDate).val().length > 0 ? new Date($(dom.endDate).val().replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3')) : new Date();
         var symbol = $(dom.overlayInput).val().length > 0 ? $(dom.overlayInput).val() : 'sz000010';
 
         //http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=20120101&end_date=20120701&type=xml
