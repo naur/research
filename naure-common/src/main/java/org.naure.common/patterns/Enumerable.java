@@ -51,10 +51,28 @@ public class Enumerable {
         return false;
     }
 
+    public static <T> boolean contains(List<T> list, Func<T, Boolean> comparator, T... value) {
+        for (T item : list) {
+            if (null != item && comparator.execute(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static <T> List<T> where(List<T> list, Comparator comparator, T... value) {
         List<T> temp = new ArrayList<T>();
         for (T item : list) {
             if (comparator.compare(item, value.length == 0 ? null : value[0]) >= 0)
+                temp.add(item);
+        }
+        return temp;
+    }
+
+    public static <T> List<T> where(List<T> list, Func<T, Boolean> comparator) {
+        List<T> temp = new ArrayList<T>();
+        for (T item : list) {
+            if (comparator.execute(item))
                 temp.add(item);
         }
         return temp;

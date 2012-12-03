@@ -87,7 +87,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 //垂直线坐标
                 ctx.lineWidth = config.lineWidth;
                 ctx.textAlign = "right";
-                ctx.fillStyle = 'green'
+                ctx.fillStyle = 'red'
                 ctx.textBaseline = "top";
                 var labelPixel = {}, labelPixelOffset = {X:-4, Y:4};
                 labelPixel.X = layout.toPixelX(0); //new layout.Point(0, 0).transformX();
@@ -150,7 +150,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.lineWidth = config.lineWidth;
                 ctx.textAlign = "left";
                 ctx.textBaseline = "top";
-                ctx.fillStyle = 'green'
+                ctx.fillStyle = 'red'
                 var labelPixel = {}, labelPixelOffset = {X:4, Y:4};
                 labelPixel.Y = layout.toPixelY(0); //layout.Point(0, 0).transformY();
                 if (labelPixel.Y <= 0) {

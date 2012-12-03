@@ -14,40 +14,41 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
 
     NAURE.HTTP.xmlAcquire = function (options) {
         var opt = $.extend({
-            type:'POST',
-            dataType:'xml',
+            type: 'POST',
+            dataType: 'xml',
 
-            xml:null,
-            xmlUrl:null,
-            xmlCache:false,
+            xml: null,
+            xmlUrl: null,
+            xmlCache: false,
 
-            xsl:null,
-            xslUrl:null,
-            xslCache:true,
+            xsl: null,
+            xslUrl: null,
+            xslCache: true,
 
-            optionData:null,
-            renderContainer:null,
-            pagingContainer:null,
+            optionData: null,
+            renderContainer: null,
+            pagingContainer: null,
 
-            context:null,
+            context: null,
+            domState: null,
 
-            count:0,
-            pageSize:0,
-            pageIndex:1,
+            count: 0,
+            pageSize: 0,
+            pageIndex: 1,
 
-            error:null,
-            success:null,
-            pagingHandler:null,
+            error: null,
+            success: null,
+            pagingHandler: null,
 
-            ver:0
+            ver: 0
         }, options);
 
 
         opt.ajaxError = function (jqXHR, textStatus, errorThrown) {
             opt.count = 0;
-            if (opt.error != null) {
-                opt.error({jqXHR:jqXHR, textStatus:textStatus, errorThrown:errorThrown, context:opt.context});
-            }
+            if (opt.error)
+                opt.error({jqXHR: jqXHR, textStatus: textStatus, errorThrown: errorThrown, context: opt.context});
+            if (opt.domState) opt.domState({disabled: false});
         };
         opt.ajaxSuccess = function (data, textStatus, jqXHR) {
             if (opt.pagingHandler) {
@@ -56,12 +57,12 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
 
             opt.xml = data;
             if (opt.xsl == null && opt.xslUrl == null) {
-                if (opt.renderContainer != null || opt.dataType == 'json') {
+                if (opt.renderContainer != null) { // || opt.dataType == 'json'
                     $(opt.renderContainer).html(utility.encodeHTML(opt.xml.xml));
                 }
-                if (opt.success != null) {
-                    opt.success({target:opt.renderContainer, output:opt.xml, context:opt.context});
-                }
+                if (opt.success)
+                    opt.success({target: opt.renderContainer, output: opt.xml, context: opt.context});
+                if (opt.domState) opt.domState({disabled: false});
                 return false;
             }
             opt.xsltHandler(opt);
@@ -69,33 +70,32 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
         opt.xsltHandler = function (opt) {
             if (opt.ver == 0) {
                 $.xslt({
-                        xml:opt.xml,
-                        xmlCache:opt.xmlCache,
-                        xslUrl:opt.xslUrl,
-                        xslCache:opt.xslCache,
-                        target:opt.renderContainer,
-                        error:opt.xsltError,
-                        context:opt.context,
-                        success:opt.xsltSuccess
+                        xml: opt.xml,
+                        xmlCache: opt.xmlCache,
+                        xslUrl: opt.xslUrl,
+                        xslCache: opt.xslCache,
+                        target: opt.renderContainer,
+                        error: opt.xsltError,
+                        context: opt.context,
+                        success: opt.xsltSuccess
                     }
                 );
             } else {
                 $.xsltv1({
-                        xml:opt.xml,
-                        xmlCache:opt.xmlCache,
-                        xslUrl:opt.xslUrl,
-                        xslCache:opt.xslCache,
-                        target:opt.renderContainer,
-                        error:opt.xsltError,
-                        success:opt.xsltSuccess
+                        xml: opt.xml,
+                        xmlCache: opt.xmlCache,
+                        xslUrl: opt.xslUrl,
+                        xslCache: opt.xslCache,
+                        target: opt.renderContainer,
+                        error: opt.xsltError,
+                        success: opt.xsltSuccess
                     }
                 );
             }
         };
         opt.xsltError = function (ex) {
-            if (opt.error != null) {
-                opt.error(ex);
-            }
+            if (opt.error) opt.error(ex);
+            if (opt.domState) opt.domState({disabled: false});
         };
         opt.xsltSuccess = function (obj) {
             if (opt.count == 0) {
@@ -105,10 +105,10 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
                 if (opt.pagingContainer) {
                     //分页
                     $(opt.pagingContainer).renderPaginator({
-                        pageSize:opt.pageSize,
-                        pageIndex:opt.pageIndex,
-                        count:opt.count,
-                        handler:function (selectedIndex) {
+                        pageSize: opt.pageSize,
+                        pageIndex: opt.pageIndex,
+                        count: opt.count,
+                        handler: function (selectedIndex) {
                             if (opt.pagingHandler != null) {
                                 opt.pagingHandler(selectedIndex);
                             }
@@ -120,6 +120,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
                 //output, opt.renderContainer
                 opt.success(obj);
             }
+            if (opt.domState) opt.domState({disabled: false});
         };
 
         //if (/^\s*</.test(opt.xmlUrl)) {
@@ -127,13 +128,13 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
             opt.ajaxSuccess(opt.xml);
         } else {
             $.ajax({
-                type:opt.type,
-                cache:opt.xmlCache,
-                url:opt.xmlUrl,
-                data:opt.optionData,
-                dataType:opt.dataType,
-                error:opt.ajaxError,
-                success:opt.ajaxSuccess
+                type: opt.type,
+                cache: opt.xmlCache,
+                url: opt.xmlUrl,
+                data: opt.optionData,
+                dataType: opt.dataType,
+                error: opt.ajaxError,
+                success: opt.ajaxSuccess
             });
         }
     };

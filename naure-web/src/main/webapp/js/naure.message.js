@@ -38,34 +38,37 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
         var isInit = false;
 
         var message = {
-            defaults:{
-                global:{
-                    multiple:true,
-                    transparent:false,
+            defaults: {
+                global: {
+                    multiple: true,
+                    transparent: false,
                     overlay: null //'left-top'
                 },
-                content:'',
-                type:'span',
-                level:0,
-                color:null,
-                element:null,
-                placement:'append', //append, prepend, after, before
-                title:'RUN',
-                comment:'FEEDBACK',
-                fade:null,
-                inline:false,
-                fadeDefaultColor:'green',
-                datehide:false,
-                overlay:null, //left-bottom
-                dateformat:'HH:mm:ss.fff'        //yyyy-MM-dd HH:mm:ss fff
+                content: '',
+                type: 'span',
+                color: null,
+                element: null,
+                placement: 'append', //append, prepend, after, before
+                title: 'RUN',
+                comment: 'FEEDBACK',
+                fade: null,
+
+                level: 0,
+                inline: false,
+                clear: false,
+
+                fadeDefaultColor: 'green',
+                datehide: false,
+                overlay: null, //left-bottom
+                dateformat: 'HH:mm:ss.fff'        //yyyy-MM-dd HH:mm:ss fff
             },
-            empty:function () {
+            empty: function () {
                 $('.message').hide();
                 $('.show').hide();
                 $('#prompt').empty();
                 $('#information').empty();
             },
-            prompt:function (options) {
+            prompt: function (options) {
                 if (!isInit) {
                     message.init(options);
                 }
@@ -81,7 +84,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 $('#information').empty();
                 NAURE.Message.renderHtml('#prompt', opt);
             },
-            promptLine:function (options) {
+            promptLine: function (options) {
                 if (!isInit) {
                     message.init(options);
                 }
@@ -90,14 +93,11 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 $('.message').show();
                 NAURE.Message.renderHtml('#prompt', opt);
             },
-            show:function (options) {
+            show: function (options) {
                 //初始化
-                if (!isInit) {
-                    message.init(options);
-                }
-                if (!options.content) {
-                    return;
-                }
+                if (!isInit) message.init(options);
+                if (!options.content) return;
+                if (options.clear) message.empty();
 
                 if (!options.level) {
                     this.prompt(options);
@@ -115,7 +115,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 $('.show').show();
                 NAURE.Message.renderHtml('#information', opt);
             },
-            showLine:function (options) {
+            showLine: function (options) {
                 if (!isInit) {
                     message.init(options);
                 }
@@ -129,7 +129,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 $('.show').show();
                 NAURE.Message.renderHtml('#information', opt);
             },
-            renderHtml:function (container, options) {
+            renderHtml: function (container, options) {
                 if (options.multiple)
                     message.defaults.global.multiple = options.multiple;
 
@@ -148,7 +148,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
 //                $('#information').appendLine(NAURE.Message.renderContent(opt));
 
             },
-            renderContent:function (options) {
+            renderContent: function (options) {
                 var opt = $.extend({}, message.defaults, options);
 
                 var dateStr;
@@ -166,7 +166,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                         (!opt.color ? '' : ' style="color:' + opt.color + ';"') + '>' + dateStr + opt.content + '</' + opt.type + '>';
                 }
             },
-            init:function (options) {
+            init: function (options) {
                 var opt = $.extend({}, message.defaults, options);
                 $.extend(message.defaults.global, options);
                 if (!opt.element) {
@@ -212,7 +212,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
 
                 isInit = true;
             },
-            position:function (str) {
+            position: function (str) {
                 //设置位置
                 if (message.defaults.global.overlay)
                     $('.message').removeClass('message-' + message.defaults.global.overlay);
@@ -222,7 +222,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
         };
 
         message.fade = function (options) {
-            var opt = $.extend({}, message.defaults, {placement:'before', fade:true}, options);
+            var opt = $.extend({}, message.defaults, {placement: 'before', fade: true}, options);
             if (!$('.message-fade p').length) {
                 this.init(opt);
             }

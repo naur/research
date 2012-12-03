@@ -31,6 +31,7 @@ define(['jquery', 'naure', 'naure.math',
                         for (var key in equation) {
                             if (!equation.hasOwnProperty(key)) continue
                             ctx.line(Date.parse(equation[key].X) / 86400000, equation[key].Y.v ? equation[key].Y.v : equation[key].Y.c);
+                            ctx.ellipse(Date.parse(equation[key].X) / 86400000, equation[key].Y.v ? equation[key].Y.v : equation[key].Y.c);
                         }
                         ctx.stroke();
                     }

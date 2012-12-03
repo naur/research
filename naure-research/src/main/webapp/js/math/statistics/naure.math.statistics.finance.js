@@ -17,7 +17,6 @@ define(['jquery', 'naure', 'naure.math.structures', 'naure.math.statistics'], fu
         var statistics = NAURE.Math.Statistics;
         var structures = NAURE.Math.Structures;
 
-
 //        //今开盘 最高价 最低价 收盘价 结算价
 //        private double open;
 //        private double high;
