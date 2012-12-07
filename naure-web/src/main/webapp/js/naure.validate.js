@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Script:
  *              贾睿之
  * Email:
@@ -51,9 +51,13 @@ define(['jquery', 'naure', 'jquery.validate'], function ($, NAURE) {
                 var multiTelReg = /^((0\d{2,3}-?\d{7,9})|(1[3458]{1}\d{9}))(,\s*((0\d{2,3}-?\d{7,9})|(1[3458]{1}\d{9})))*$/;
                 return this.optional(element) || (multiTelReg.test(value));
             },
+            isSelect: function (value, element) {
+                return this.optional(element) || (value != -1);
+            },
             init: function () {
                 validate.messages_cn();
                 $.validator.addMethod("isTel", validate.isTel, "请正确填写您的联系电话");
+                $.validator.addMethod("isSelect", validate.isSelect, "请选择一个选项");
                 return validate;
             }
         };

@@ -81,6 +81,28 @@ public abstract class ControllerBase {
 //
 //    //<U, T> List<T> query(U params, Class<T> tClass);
 
+
+    protected void responseEncoding() {
+        this.responseEncoding(null);
+    }
+
+    protected void responseEncoding(String contentType) {
+        HttpServletResponse response = ServletActionContext.getResponse();
+        try {
+            request.setCharacterEncoding("utf-8");
+        } catch (Exception ex) {
+        }
+        if (StringUtils.isNotEmpty(contentType))
+            response.setContentType(contentType + ";charset=utf-8");
+    }
+
+    protected String getMapValue(Map map, String key) {
+        String[] array = null;
+        if (map.containsKey(key) && (array = (String[]) map.get(key)) != null && array.length > 0)
+            return array[0];
+        return null;
+    }
+
     protected String viewPath = "";
     protected String applicationPath;
 }
