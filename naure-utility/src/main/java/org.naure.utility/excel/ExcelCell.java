@@ -31,7 +31,7 @@ public class ExcelCell {
             case Cell.CELL_TYPE_NUMERIC:     //数值型和日期型都是「CELL_TYPE_NUMERIC」
                 if (DateUtil.isCellDateFormatted(hssfCell)) {
                     /* 日期型 */
-                    ret = hssfCell.getDateCellValue().toLocaleString();
+                    ret = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(hssfCell.getDateCellValue());
                 } else {
                     ret = getNumericValue(hssfCell);
                 }
