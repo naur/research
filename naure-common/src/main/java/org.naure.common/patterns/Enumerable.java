@@ -79,8 +79,18 @@ public class Enumerable {
     }
 
     public static <T> T find(List<T> list, Comparator comparator, T... value) {
+        if (null == list || list.isEmpty()) return null;
+
         for (T item : list) {
             if (null != item && comparator.compare(item, value.length == 0 ? null : value[0]) >= 0)
+                return item;
+        }
+        return null;
+    }
+
+    public static <T> T find(List<T> list, Func<T, Boolean> comparator) {
+        for (T item : list) {
+            if (null != item && comparator.execute(item))
                 return item;
         }
         return null;
@@ -113,8 +123,19 @@ public class Enumerable {
     public static <T, U> List<U> select(List<T> list, Func<T, U> selector) {
         List<U> temp = new ArrayList<U>();
         if (null == list || list.isEmpty()) return temp;
+        U u = null;
         for (T t : list) {
-            if (null != t) temp.add(selector.execute(t));
+            if (null != t && null != (u = selector.execute(t))) temp.add(u);
+        }
+        return temp;
+    }
+
+    public static <T, U> List<U> selectMany(List<T> list, Func<T, List<U>> selector) {
+        List<U> temp = new ArrayList<U>();
+        List<U> result = null;
+        if (null == list || list.isEmpty()) return temp;
+        for (T t : list) {
+            if (null != t && null != (result = selector.execute(t))) temp.addAll(result);
         }
         return temp;
     }

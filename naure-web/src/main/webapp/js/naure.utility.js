@@ -12,8 +12,10 @@ define(['jquery', 'naure'], function ($, NAURE) {
 
     NAURE.Utility = (function () {
 
+        var originalClass;
+
         var utility = {
-            clone:function (obj) {
+            clone: function (obj) {
                 var cloneObject = new Object();
                 for (var key in obj) {
                     cloneObject[key] = obj[key];
@@ -21,11 +23,19 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 return cloneObject;
             },
 
-            encodeHTML:function (data) {
+            encodeHTML: function (data) {
                 return data.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, '&');
             },
 
-            cookie:function (name, value, options) {
+            parseNull: function (str1, str2) {
+                if (str1 == null || str1 == undefined) {
+                    return (str2 == null) ? '-' : str2;
+                } else {
+                    return str1;
+                }
+            },
+
+            cookie: function (name, value, options) {
                 if (typeof value != 'undefined') { // name and value given, set cookie
                     options = options || {};
                     if (value === null) {
@@ -67,7 +77,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 }
             },
 
-            getDays:function (startTime, engTime) {
+            getDays: function (startTime, engTime) {
                 if (!startTime || !engTime)
                     return null;
                 if (typeof(startTime) == 'string')
@@ -84,31 +94,77 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     time1.setDate(time1.getDate() + 1);
                 } while (time1.getTime() <= time2.getTime());
                 return days;
+            },
+
+            toJSON: function (obj, deep) {
+                var json = '{';
+                for (var key in obj) {
+                    if (typeof(obj[key]) == 'number' ||
+                        typeof(obj[key]) == 'string' ||
+                        typeof(obj[key]) == 'boolean' ||
+                        typeof(obj[key]) == 'array' ||
+                        typeof(obj[key]) == 'undefined' ||
+                        typeof(obj[key]) == 'date' ||
+                        null == obj[key]) {
+                        json += '"' + key + '":"' + obj[key] + '",';
+                    } else if (deep && typeof(obj[key]) == 'object') {
+                        json += '"' + key + '":[' + JSON.stringify($.toJSON(obj[key])) + '],';
+                    }
+                }
+                json = json.replace(/,?$/, '}');
+                //return JSON.parse('{"key":7,"color":"black"}');
+                return JSON.parse(json);
+            },
+
+            //todo 代码来源于 dict.bing.com.cn 未经过测试
+            escapeXML: function (s) {
+                return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
+            },
+
+            flatInformation: function (option) {
+                //level
+                var level = $(option.xml).find('result > level');
+                if (level && level.length > 0 && level.text() == 0) {
+                    option.flat({content: "完成！"});
+                } else {
+                    option.flat({content: "错误！", color: 'red'});
+                }
+                //keywords
+                $(option.xml).find('result > keywords').each(function (index, data) {
+                    if ($(this).text() && $(this).text().length > 0 && 'null' != $(this).text())
+                        option.flat({content: $(this).text()});
+                });
+
+                //data
+                $(option.xml).find('result > data > item').each(function (index, data) {
+                    if ($(this).find('level').text().length <= 0) {
+                        option.flat({content: $(this).text()});
+                        return;
+                    }
+
+                    if ($(this).find('level').text() == 0) {
+                        option.flat({content: $(this).find('keywords').text()});
+                    } else {
+                        option.flat({content: $(this).find('keywords').text(), color: 'red'});
+                    }
+                });
+            },
+
+            //----- TR 状态改变事件  -----------------------------------------------//
+            trMouseOverEvent: function () {
+                $(".raisefocus tr td").live("mouseover", function () {
+                    originalClass = this.parentNode.className;
+                    this.parentNode.className = 'tdon';
+                });
+                $(".raisefocus tr td").live("mouseout", function () {
+                    this.parentNode.className = originalClass;
+                });
             }
         };
 
         return utility;
     })();
 
-    $.toJSON = function (obj, deep) {
-        var json = '{';
-        for (var key in obj) {
-            if (typeof(obj[key]) == 'number' ||
-                typeof(obj[key]) == 'string' ||
-                typeof(obj[key]) == 'boolean' ||
-                typeof(obj[key]) == 'array' ||
-                typeof(obj[key]) == 'undefined' ||
-                typeof(obj[key]) == 'date' ||
-                null == obj[key]) {
-                json += '"' + key + '":"' + obj[key] + '",';
-            } else if (deep && typeof(obj[key]) == 'object') {
-                json += '"' + key + '":[' + JSON.stringify($.toJSON(obj[key])) + '],';
-            }
-        }
-        json = json.replace(/,?$/, '}');
-        //return JSON.parse('{"key":7,"color":"black"}');
-        return JSON.parse(json);
-    };
 //    $.sleep = function (sec) {
 //        var startTime = new Date().getTime();
 //        while ((new Date().getTime() - startTime) < sec) {
@@ -147,7 +203,6 @@ define(['jquery', 'naure'], function ($, NAURE) {
         return str;
     };
 
-
 //----- html 字符串过滤  -----------------------------------------------//
     (function ($) {
         $.fn.encHTML = function () {
@@ -184,59 +239,34 @@ define(['jquery', 'naure'], function ($, NAURE) {
 
     })(jQuery);
 
-//todo 代码来源于 dict.bing.com.cn 未经过测试
-    function escapeXML(s) {
-        return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
-    }
-
-    function parseNull(str1, str2) {
-        if (str1 == null || str1 == undefined) {
-            return (str2 == null) ? '-' : str2;
-        } else {
-            return str1;
-        }
-    }
 
 //----- 翻页控件  -------------------------------------------------------//
     (function ($) {
         $.fn.renderPaginator = function (options) {
             var parameters = $.extend({
-                pageSize:0,
-                pageIndex:0,
-                count:10,
-                handler:null
+                pageSize: 0,
+                pageIndex: 0,
+                count: 10,
+                handler: null
             }, options);
 
             $(this).smartpaginator({
-                totalrecords:parameters.count,
-                recordsperpage:parameters.pageSize,
-                initval:parameters.pageIndex,
-                next:'下一页',
-                prev:'上一页',
-                first:'首页',
-                last:'尾页',
-                go:'转到',
-                theme:'light',
-                onchange:function (newPageValue) {
+                totalrecords: parameters.count,
+                recordsperpage: parameters.pageSize,
+                initval: parameters.pageIndex,
+                next: '下一页',
+                prev: '上一页',
+                first: '首页',
+                last: '尾页',
+                go: '转到',
+                theme: 'light',
+                onchange: function (newPageValue) {
                     if (parameters.handler != null) {
                         parameters.handler(newPageValue);
                     }
                 }});
         };
     })(jQuery);
-
-//----- TR 状态改变事件  -----------------------------------------------//
-    var trOriginalClass;
-
-    function trMouseOverEvent() {
-        $(".raisefocus tr td").live("mouseover", function () {
-            trOriginalClass = this.parentNode.className;
-            this.parentNode.className = 'tdon';
-        });
-        $(".raisefocus tr td").live("mouseout", function () {
-            this.parentNode.className = trOriginalClass;
-        });
-    }
 
 //----- 数据、日期 格式化  -----------------------------------------------------//
     function dateFormat(num) {
@@ -297,13 +327,13 @@ define(['jquery', 'naure'], function ($, NAURE) {
         var o;
         if (utc) {
             o = {
-                "M":this.getUTCMonth() + 1, //month
-                "d":this.getUTCDate(), //day
-                "H":this.getUTCHours(), //hour
-                "m":this.getUTCMinutes(), //minute
-                "s":this.getUTCSeconds(), //second
-                "q":Math.floor((this.getUTCMonth() + 3) / 3), //quarter
-                "f":this.getUTCMilliseconds() //millisecond
+                "M": this.getUTCMonth() + 1, //month
+                "d": this.getUTCDate(), //day
+                "H": this.getUTCHours(), //hour
+                "m": this.getUTCMinutes(), //minute
+                "s": this.getUTCSeconds(), //second
+                "q": Math.floor((this.getUTCMonth() + 3) / 3), //quarter
+                "f": this.getUTCMilliseconds() //millisecond
             }
 
             if (/(y+)/.test(format)) {
@@ -311,13 +341,13 @@ define(['jquery', 'naure'], function ($, NAURE) {
             }
         } else {
             o = {
-                "M":this.getMonth() + 1, //month
-                "d":this.getDate(), //day
-                "H":this.getHours(), //hour
-                "m":this.getMinutes(), //minute
-                "s":this.getSeconds(), //second
-                "q":Math.floor((this.getMonth() + 3) / 3), //quarter
-                "f":this.getMilliseconds() //millisecond
+                "M": this.getMonth() + 1, //month
+                "d": this.getDate(), //day
+                "H": this.getHours(), //hour
+                "m": this.getMinutes(), //minute
+                "s": this.getSeconds(), //second
+                "q": Math.floor((this.getMonth() + 3) / 3), //quarter
+                "f": this.getMilliseconds() //millisecond
             }
 
             if (/(y+)/.test(format)) {
@@ -386,42 +416,42 @@ define(['jquery', 'naure'], function ($, NAURE) {
     (function ($) {
         $.flyoutTTJ = function (options) {
             var opt = $.extend({
-                target:null,
-                container:null
+                target: null,
+                container: null
             }, options);
 
             //"span.sp-hg"
             $(opt.target).TTJ({
-                title:"以回车分隔输入多个SKU",
-                imgTitleSrc:FJ.getRootPath() + "/resources/themes/360buy/images/vc/tableIconRework.png",
-                showHead:true, //是否显示头部
-                hoverDirect:"left",
-                shiftLeft:-280,
-                shiftTop:40,
-                speed:1,
-                showSpeed:200,
-                loadDelay:50,
-                loadSpeed:10,
-                zIndex:999999,
-                radius:!FJ.isIE ? 2 : 0,
+                title: "以回车分隔输入多个SKU",
+                imgTitleSrc: FJ.getRootPath() + "/resources/themes/360buy/images/vc/tableIconRework.png",
+                showHead: true, //是否显示头部
+                hoverDirect: "left",
+                shiftLeft: -280,
+                shiftTop: 40,
+                speed: 1,
+                showSpeed: 200,
+                loadDelay: 50,
+                loadSpeed: 10,
+                zIndex: 999999,
+                radius: !FJ.isIE ? 2 : 0,
                 //onlyFirstLoad: true,
-                widthF:280,
-                heightF:100,
-                borderWidth:2,
-                borderWidthB:1,
-                hasShadow:true,
-                colorParams:{
-                    bgColor:"#ddd",
-                    borderOut:"#ddd",
-                    borderBody:"#b3b3b3",
-                    bgColorHead:"#c7c7c7", //头部背景色
-                    bgColorHeadJ:"#c7c7c7", //头部背景渐变色(下)
-                    bgColorHeadJT:"#d5d5d5", //头部背景渐变色(上)
-                    bgColorHeadU:"#d5d5d5", //头部上半边背景色(非IE浏览器下显示)
-                    shadow:"#000",
-                    fontColorHead:"#197ED4"
+                widthF: 280,
+                heightF: 100,
+                borderWidth: 2,
+                borderWidthB: 1,
+                hasShadow: true,
+                colorParams: {
+                    bgColor: "#ddd",
+                    borderOut: "#ddd",
+                    borderBody: "#b3b3b3",
+                    bgColorHead: "#c7c7c7", //头部背景色
+                    bgColorHeadJ: "#c7c7c7", //头部背景渐变色(下)
+                    bgColorHeadJT: "#d5d5d5", //头部背景渐变色(上)
+                    bgColorHeadU: "#d5d5d5", //头部上半边背景色(非IE浏览器下显示)
+                    shadow: "#000",
+                    fontColorHead: "#197ED4"
                 },
-                fnHtml:function () {
+                fnHtml: function () {
                     var thiz = this;
                     //var spId = this.currentObj.attr("id");
                     //var pid = spId.substr(spId.lastIndexOf("_") + 1);
@@ -448,10 +478,10 @@ define(['jquery', 'naure'], function ($, NAURE) {
 
                     var oTa = $("<textarea></textarea>");
                     oTa.css({
-                        width:this.bodyIn.width() - 5,
-                        height:this.bodyIn.height() - 5,
-                        overflow:"auto",
-                        fontSize:16
+                        width: this.bodyIn.width() - 5,
+                        height: this.bodyIn.height() - 5,
+                        overflow: "auto",
+                        fontSize: 16
                     });
                     oTa.val(txt);
 
@@ -491,7 +521,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
 
                     return oTa;
                 },
-                evts:{
+                evts: {
 //            afterClose: function(e, p) {
 //                var spId = this.currentObj.attr("id");
 //                var pid = spId.substr(spId.lastIndexOf("_") + 1);
@@ -500,15 +530,15 @@ define(['jquery', 'naure'], function ($, NAURE) {
 //
 //                oTxt.blur();
 //            },
-                    aftershow:function (e, p) {
+                    aftershow: function (e, p) {
                         if (!FJ.isFF && !FJ.isIE8) {
                             this.divOut.css("opacity", 0.95);
                         }
                     },
-                    afterbodyload2:function () {
+                    afterbodyload2: function () {
 
                     },
-                    afterrender:function (e, p) {
+                    afterrender: function (e, p) {
                         this.bodyIn.css("overflow", "hidden");
                     }
                 }

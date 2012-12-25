@@ -53,6 +53,9 @@ public class ExcelSheet {
         }
     }
 
+    public String getName() {
+        return this.hssfSheet.getSheetName();
+    }
 
     public void createRow() {
         this.currentRow = new ExcelRow(this, this.hssfSheet.createRow(rowNum));

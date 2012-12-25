@@ -1,6 +1,5 @@
 package org.naure.utility.excel;
 
-import org.naure.utility.excel.strategy.IStrategyBase;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.util.Date;
@@ -107,7 +106,7 @@ public class ExcelRow {
         return temp;
     }
 
-    private IStrategyBase strategy;
+    private ExcelStrategy strategy;
     private Row hssfRow;
     private ExcelSheet sheet;
     public ExcelCell[] cells;

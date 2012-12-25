@@ -1,5 +1,7 @@
 package org.naure.utility.excel;
 
+import com.jd.common.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -7,8 +9,11 @@ import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.naure.utility.excel.strategy.IStrategyBase;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,10 +28,23 @@ public class ExcelDocument {
     public ExcelDocument() {
         this(new HSSFWorkbook(), null);
         //默认创建 一个名字为 sheet1 的 sheet.
-        this.sheets = new ExcelSheet[]{new ExcelSheet(this, this.workbook.createSheet("sheet1"))};
+        //this.sheets = new ExcelSheet[]{new ExcelSheet(this, this.workbook.createSheet("sheet1"))};
+    }
+
+    public ExcelDocument(Workbook workbook) {
+        this(workbook, null);
+    }
+
+    public ExcelDocument(Workbook workbook, ExcelStrategy strategy) {
+        this.workbook = workbook;
+        this.strategy = strategy;
     }
 
     public ExcelDocument(ExcelType excelType) {
+        this(excelType, "");
+    }
+
+    public ExcelDocument(ExcelType excelType, String defaultSheet) {
         this.excelType = excelType;
         if (this.excelType == ExcelType.Excel2003) {
             this.workbook = new HSSFWorkbook();
@@ -34,33 +52,73 @@ public class ExcelDocument {
             this.workbook = new XSSFWorkbook();
         }
         //默认创建 一个名字为 sheet1 的 sheet.
-        this.sheets = new ExcelSheet[]{new ExcelSheet(this, this.workbook.createSheet("sheet1"))};
+        if (StringUtils.isNotEmpty(defaultSheet))
+            //this.sheets = new ExcelSheet[]{};
+            this.cacheSheet(new ExcelSheet(this, this.workbook.createSheet(defaultSheet)));
     }
 
-    public ExcelDocument(Workbook workbook) {
-        this(workbook, null);
+    public ExcelDocument(ExcelType excelType, InputStream stream) throws IOException {
+        this.excelType = excelType;
+        if (this.excelType == ExcelType.Excel2003) {
+            this.workbook = new HSSFWorkbook(stream);
+        } else {
+            this.workbook = new XSSFWorkbook(stream);
+        }
     }
 
-    public ExcelDocument(Workbook workbook, IStrategyBase strategy) {
-        this.workbook = workbook;
-        this.strategy = strategy;
+    public ExcelSheet createSheet(String sheetName) {
+        return this.cacheSheet(new ExcelSheet(this, this.workbook.createSheet(sheetName)));
     }
 
     public ExcelSheet sheets(int index) {
-        if (sheets == null) {
-            sheets = new ExcelSheet[workbook.getNumberOfSheets()];
+        if (sheets == null) sheets = new ArrayList<ExcelSheet>();
+
+        if (sheets.get(index) == null) {
+            //缓存
+            if (null != workbook.getSheetAt(index)) {
+                return cacheSheet(new ExcelSheet(this, workbook.getSheetAt(index)));
+            }
         }
-        if (sheets[index] == null) {
-            sheets[index] = new ExcelSheet(this, workbook.getSheetAt(index));
-        }
-        return sheets[index];
+        return null;
     }
 
-    public IStrategyBase getStrategy() {
+    public ExcelSheet sheets(String name) {
+        if (sheets == null) sheets = new ArrayList<ExcelSheet>();
+
+        ExcelSheet sheet = null;
+        for (ExcelSheet item : sheets) {
+            if (name.equals(item.getName()))
+                sheet = item;
+        }
+
+        if (null == sheet && null != workbook.getSheet(name)) {
+            //缓存
+            return cacheSheet(new ExcelSheet(this, workbook.getSheet(name)));
+        }
+        return sheet;
+    }
+
+    //缓存
+    public ExcelSheet cacheSheet(ExcelSheet sheet) {
+        if (sheets == null) sheets = new ArrayList<ExcelSheet>();
+        if (sheet == null) return sheet;
+
+        for (int i = 0; i < sheets.size(); i++) {
+            if (null == sheets.get(i)) {
+                sheets.set(i, sheet);
+                return sheet;
+            }
+        }
+        //如果没有为空的
+        sheets.add(sheet);
+        return sheet;
+    }
+
+    public ExcelStrategy getStrategy() {
         return strategy;
     }
 
-    public void setStrategy(IStrategyBase strategy) {
+    public void setStrategy(ExcelStrategy strategy) {
         this.strategy = strategy;
     }
 
@@ -79,14 +137,13 @@ public class ExcelDocument {
     }
 
     public Comment getComment(String comment) {
-        //添加注释的方法在 Excel 2003 和 2007 不一样，待定......
+        //todo 添加注释的方法在 Excel 2003 和 2007 不一样，待定......
         //HSSFPatriarch patr = sheets[0].getHssfSheet().createDrawingPatriarch();
-        Drawing patr = sheets[0].getHssfSheet().createDrawingPatriarch();
-
+        Drawing patr = sheets.get(0).getHssfSheet().createDrawingPatriarch();
 
 
         //前四个参数是坐标点,后四个参数是编辑和显示批注时的大小.
-        HSSFComment comm = ((HSSFPatriarch)patr).createComment(new HSSFClientAnchor(0, 0, 0, 0, (short) 4, 2, (short) 6, 5));
+        HSSFComment comm = ((HSSFPatriarch) patr).createComment(new HSSFClientAnchor(0, 0, 0, 0, (short) 4, 2, (short) 6, 5));
         //Comment comm = patr.createCellComment(new HSSFClientAnchor(0, 0, 0, 0, (short) 4, 2, (short) 6, 5));
 
 
@@ -98,8 +155,8 @@ public class ExcelDocument {
 
 
     private CellStyle redCellStyle;
-    private ExcelSheet[] sheets;
+    private List<ExcelSheet> sheets;
     private Workbook workbook;
-    private IStrategyBase strategy;
+    private ExcelStrategy strategy;
     private ExcelType excelType;
 }

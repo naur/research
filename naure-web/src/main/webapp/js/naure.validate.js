@@ -54,10 +54,14 @@ define(['jquery', 'naure', 'jquery.validate'], function ($, NAURE) {
             isSelect: function (value, element) {
                 return this.optional(element) || (value != -1);
             },
+            isCron: function (value, element) {
+                return this.optional(element) || (/^([0-9][0-9]?|[-\*\/]) ([0-9][0-9]?|[-\*\/]) ([0-9][0-9]?|[-\*\/]) ([0-9][0-9]?|[-\*\/\?LW]) ([0-9][0-9]?|[-\*\/]) ([0-9][0-9]?|[-\*\/\?L#])$/.test(value));
+            },
             init: function () {
                 validate.messages_cn();
                 $.validator.addMethod("isTel", validate.isTel, "请正确填写您的联系电话");
                 $.validator.addMethod("isSelect", validate.isSelect, "请选择一个选项");
+                $.validator.addMethod("isCron", validate.isCron, "请正确填写 cron 表达式");
                 return validate;
             }
         };

@@ -1,6 +1,7 @@
 package org.naure.utility.excel;
 
-import org.naure.common.entities.Notification;
+import org.naure.common.entities.Information;
+import org.naure.common.entities.InformationLevel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +17,12 @@ public class ExcelTranslate<T> {
 
     public ExcelTranslate() {
         this.entities = new ArrayList<T>();
-        this.notifications = new ArrayList<Notification<TranslateInfo>>();
+        this.notifications = new ArrayList<Information<TranslateInfo>>();
     }
 
     public boolean isError() {
-        for (Notification item : this.notifications) {
-            if ("error".equals(item.getLevel())) {
+        for (Information item : this.notifications) {
+            if (InformationLevel.ERROR.value() == item.getLevel()) {
                 return true;
             }
         }
@@ -29,7 +30,7 @@ public class ExcelTranslate<T> {
         //return this.notification.size() > 0;
     }
 
-    public void addNotification(Notification<TranslateInfo> notification) {
+    public void addNotification(Information<TranslateInfo> notification) {
         this.notifications.add(notification);
     }
 
@@ -45,11 +46,16 @@ public class ExcelTranslate<T> {
         return entities;
     }
 
-    public List<Notification<TranslateInfo>> getNotifications() {
+    //默认返回第一个
+    public T getEntitie() {
+        return entities.isEmpty() ? null : entities.get(0);
+    }
+
+    public List<Information<TranslateInfo>> getNotifications() {
         return notifications;
     }
 
-    private List<Notification<TranslateInfo>> notifications;
+    private List<Information<TranslateInfo>> notifications;
     private List<T> entities;
 
     public int RowIndex;
