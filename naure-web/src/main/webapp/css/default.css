@@ -11,6 +11,37 @@ legend {
     color: #A22E00;
 }
 
+.stress_bold_16 {
+    font: italic bold 16px arial, sans-serif;
+    color: #A22E00;
+}
+
+.stress_bold_12 {
+    font: italic bold 12px arial, sans-serif;
+    color: #A22E00;
+}
+
+.stress_12 {
+    font: italic bold arial, sans-serif;
+    color: red;
+}
+
+.float-delete {
+    background: url(../images/float_delete.png) no-repeat;
+    width: 20px;
+    height: 21px;
+    display: inline-block;
+    opacity: 0.5;
+    margin: 0px 14px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.float-delete:hover {
+    opacity: 1.0;
+}
+
+
 /*
 table tbody
 */
