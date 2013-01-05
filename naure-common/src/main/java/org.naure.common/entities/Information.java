@@ -91,16 +91,18 @@ public class Information<T> { //implements Serializable
         List<String> keys = new ArrayList<String>();
         keys.add(this.keywords);
         if (this.getData() instanceof List) {
-            keys.addAll(Enumerable.select((List<Information>) this.getData(), new Func<Information, String>() {
+            keys.addAll(Enumerable.select((List) this.getData(), new Func<Object, String>() {
                 @Override
-                public String execute(Information information) {
-                    if (null != information) {
-                        if (level.length <= 0)
-                            return information.getKeywords();
-                        for (int ll : level) {
-                            if (ll == information.getLevel()) {
-                                return information.getKeywords();
-                            }
+                public String execute(Object information) {
+                    if (null == information || !(information instanceof Information)) {
+                        return null;
+                    }
+                    Information info = (Information) information;
+                    if (level.length <= 0)
+                        return info.getKeywords();
+                    for (int ll : level) {
+                        if (ll == info.getLevel()) {
+                            return info.getKeywords();
                         }
                     }
                     return null;
