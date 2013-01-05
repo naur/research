@@ -1,6 +1,11 @@
 package org.naure.common.entities;
 
+import org.naure.common.patterns.Enumerable;
+import org.naure.common.patterns.Func;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,6 +53,62 @@ public class Information<T> { //implements Serializable
         this.keywords = keywords;
         this.id = id;
         this.data = t;
+    }
+
+
+    /**
+     * hasError.
+     *
+     * @return
+     */
+    public boolean hasError() {
+        if (InformationLevel.ERROR.value() == this.getLevel()) {
+            return true;
+        }
+
+        if (this.getData() instanceof List) {
+            return Enumerable.contains((List<Information>) this.getData(), new Func<Information, Boolean>() {
+                @Override
+                public Boolean execute(Information information) {
+                    if (null == information) {
+                        return false;
+                    } else {
+                        return InformationLevel.ERROR.value() == information.getLevel();
+                    }
+                }
+            });
+        }
+
+        return false;
+    }
+
+    /**
+     * keywords.
+     *
+     * @return
+     */
+    public List<String> keywords(final int... level) {
+        List<String> keys = new ArrayList<String>();
+        keys.add(this.keywords);
+        if (this.getData() instanceof List) {
+            keys.addAll(Enumerable.select((List<Information>) this.getData(), new Func<Information, String>() {
+                @Override
+                public String execute(Information information) {
+                    if (null != information) {
+                        if (level.length <= 0)
+                            return information.getKeywords();
+                        for (int ll : level) {
+                            if (ll == information.getLevel()) {
+                                return information.getKeywords();
+                            }
+                        }
+                    }
+                    return null;
+                }
+            }));
+        }
+
+        return keys;
     }
 
     public String getName() {
