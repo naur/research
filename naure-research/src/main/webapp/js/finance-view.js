@@ -21,10 +21,15 @@ var dom = {
     canvas: ['article section canvas:eq(0)', 'article section canvas:eq(1)'],
     exponent: '#exponent',
     startDate: '#start-date',
-    endDate: '#end-date'
+    endDate: '#end-date',
+    layer: '.layer'
 };
 
 global.nodes = {
+    layer: {
+        html: '<input class="layer" title="layer 1" tag="0" type="checkbox" />Layer 1 ' +
+            '<input class="layer" title="layer 2"  tag="1" type="checkbox" /> Layer 2'
+    },
     '指标': {
         html: '<select id="exponent" style="width:150px;">' +
             '<option value="">无</option>' +
@@ -202,6 +207,13 @@ function initEvent() {
                     {equation: buffer, color: 'red'}
                 ]
             });
+        }
+    });
+    $(dom.layer).live('click', function () {
+        if ($(this)[0].checked) {
+            $(dom.canvas[$(this).attr('tag')]).parent().show();
+        } else {
+            $(dom.canvas[$(this).attr('tag')]).parent().hide();
         }
     });
 }

@@ -33,7 +33,7 @@ article section:first-child {
     position: absolute;
     float: left;
     /*background: silver;*/
-    opacity: 0.5;
+    /*opacity: 0.5;*/
     /*width: 70%;*/
     left: 0;
 }
@@ -42,7 +42,7 @@ article section:last-child {
     position: absolute;
     float: right;
     /*background: #E6E6E6;*/
-    opacity: 0.5;
+    /*opacity: 0.5;*/
     /*width: 30%;*/
     right: 0;
 }

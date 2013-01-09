@@ -1,7 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
 <title> Finance </title>
-<link href="/Research/projects/research/naure-web/src/main/webapp/css/left-right.css" rel="stylesheet" type="text/css"/>
 <link href="/Research/projects/research/naure-web/src/main/webapp/css/mathquill.css" rel="stylesheet" type="text/css"/>
 <link href="/Research/projects/research/naure-web/src/main/webapp/css/naure.overlay.css" rel="stylesheet"
       type="text/css"/>
@@ -16,18 +15,14 @@
 
     article section {
         display: block;
-    }
-
-    article section:first-child {
+        opacity: 0.5;
+        height: 100%;
         width: 100%;
-        height: 70%;
-    }
-
-    article section:last-child {
-        /*background: silver;*/
-        width: 100%;
-        height: 28%;
-        bottom: 0px;
+        margin: 0px;
+        padding: 0px;
+        text-align: center;
+        vertical-align: middle;
+        position: absolute;
     }
 
     canvas {
@@ -69,17 +64,19 @@
 <body>
 
 <article>
+
     <section>
         <canvas>
             Fallback content, in case the browser does not support Canvas.
         </canvas>
     </section>
-    <hr />
+
     <section>
         <canvas>
             Fallback content, in case the browser does not support Canvas.
         </canvas>
     </section>
+
 </article>
 
 </body>

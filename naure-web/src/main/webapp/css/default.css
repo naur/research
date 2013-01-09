@@ -1,14 +1,81 @@
 ﻿/*<tr style="background-color:expression_r((2%2==0)?"#ffffff":"#f4f4f4")">*/
 /*<td align="left" style="border:#B3D8EA 0px solid;">*/
 
+.layout-left {
+    width: 50%;
+    float: left;
+    left: 0;
+}
+
+.layout-right {
+    width: 50%;
+    float: right;
+    right: 0;
+    /*text-align: center;*/
+}
+
+.layout-top {
+}
+
+.layout-middle {
+}
+
+figure {
+    margin: 15px;
+    /*width: 100px;*/
+}
+
 textarea {
     font: italic bold 16px/20px arial, sans-serif;
     color: red;
 }
 
+.ul-left, .ul-left li, .ul-right, .ul-right li {
+    list-style: none; /* 将默认的列表符号去掉 */
+    padding: 0; /* 将默认的内边距去掉 */
+    margin: 0; /* 将默认的外边距去掉 */
+}
+
+.ul-left li a, .ul-right li a {
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    padding: 6px 36px;
+    white-space: nowrap;
+    background-color: #465c71;
+    border: 1px #4e667d solid;
+}
+
+.ul-left li a:hover, .ul-right li a:hover {
+    background-color: #bfcbd6;
+    color: #465c71;
+}
+
+.ul-left li a:active, .ul-right li a:active {
+    background-color: #465c71;
+    color: #cfdbe6;
+}
+
+.ul-left li {
+    float: left;
+}
+
+.ul-right li {
+    float: right;
+}
+
 legend {
     font: italic bold 16px arial, sans-serif;
     color: #A22E00;
+}
+
+input[type=text] {
+    height: 20px;
+    font-size: 16px;
+    width: 350px;
 }
 
 .stress_bold_16 {
@@ -40,7 +107,6 @@ legend {
 .float-delete:hover {
     opacity: 1.0;
 }
-
 
 /*
 table tbody
