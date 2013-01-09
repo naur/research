@@ -29,9 +29,18 @@
 define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, NAURE) {
 
     NAURE.UI.Overlay = (function () {
+        var dom = {
+            overlay: '.overlay',
+            overlaySection: '.overlay section:eq(0)',
+            overlayClean: '.overlay-clean',
+            overlayMinimize: '.overlay-minimize',
+            overlayPile: 'overlay-pile'
+        };
         var overlay = {
-            items:[],
-            find:function (key) {
+            items: [],
+            isMminimize: false,
+            onChanged: null,
+            find: function (key) {
                 for (var index in overlay.items) {
                     if (!overlay.items.hasOwnProperty(index)) break;
                     if (key == overlay.items[index].key)
@@ -39,20 +48,39 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 }
                 return null;
             },
-            init:function (options) {
+            minimize: function () {
+                overlay.isMminimize = true;
+                $(dom.overlay).addClass(dom.overlayPile)
+                $(dom.overlaySection).fadeOut(400);
+                if (overlay.onChanged)
+                    overlay.onChanged();
+            },
+            maximize: function () {
+                overlay.isMminimize = false;
+                $(dom.overlaySection).fadeIn(400);
+                $(dom.overlay).removeClass(dom.overlayPile)
+                if (overlay.onChanged)
+                    overlay.onChanged();
+            },
+            change: function () {
+                if (overlay.isMminimize)  overlay.maximize();
+                else overlay.minimize();
+            },
+
+            init: function (options) {
                 var opt = $.extend({
-                    target:null,
-                    nodes:null,
-                    renderContainer:'body',
-                    placement:"right-bottom", //left, right, center, top, center, bottom
-                    eventHandlers:null,
-                    layout:"panel-center", //left, right, center
-                    eventType:'click', //click, mouse,
-                    focus:'test', //'article section:last-child'
+                    target: null,
+                    nodes: null,
+                    renderContainer: 'body',
+                    placement: "right-bottom", //left, right, center, top, center, bottom
+                    eventHandlers: null,
+                    layout: "panel-center", //left, right, center
+                    eventType: 'click', //click, mouse,
+                    focus: 'test', //'article section:last-child'
                     //model: 'nav', //nav , text
-                    clear:null,
-                    minimize:null,
-                    html:'<figure>' +
+                    clear: null,
+                    onChanged: null,
+                    html: '<figure>' +
                         '   <figcaption class="panel-left {0}" style="background-color: {1};{6}">' +
                         //'       <input title="{1}" CHECKED="checked" type="{2}">' +
                         '       <input {2}></input>' +
@@ -66,7 +94,9 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                         '</figure>'
                 }, options);
 
-                opt.buttonsMinimize = false;
+                overlay.isMminimize = false;
+                overlay.onChanged = opt.onChanged;
+
                 opt.container =
                     '<nav class="overlay overlay-right-bottom">' +
                         '   <section></section>' +
@@ -79,7 +109,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                         '</nav>';
 
                 $(opt.renderContainer).append(opt.container);
-                $('.overlay section:eq(0)').empty();
+                $(dom.overlaySection).empty();
 
                 var isRichNode = false;
 
@@ -87,7 +117,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                     if (!opt.nodes.hasOwnProperty(key)) break;
                     if (typeof(opt.nodes[key]) != 'function' && opt.nodes[key].input) isRichNode = true;
                     else isRichNode = false;
-                    $('.overlay section:eq(0)').append($.format(opt.html,
+                    $(dom.overlaySection).append($.format(opt.html,
                         (opt.layout.indexOf('left') != -1 || isRichNode) ? '' : 'panel-left-hide',
                         isRichNode ? 'transparent' : '#07C',
                         isRichNode ? NAURE.JSON.toHtml(opt.nodes[key].input) : 'type=checkbox',
@@ -107,26 +137,17 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                     else
                         $(this).parent().prev().prev().children(':first-child').bind(opt.eventType, this, opt.nodes[$(this).attr('tag')].handler)
 
-                    overlay.items.push({key:$(this).attr('tag'), value:this});
+                    overlay.items.push({key: $(this).attr('tag'), value: this});
                 });
 
-                $('.overlay-clean').live('click', function () {
+                $(dom.overlayClean).live('click', function () {
                     NAURE.Message.empty();
                     if (opt.clean)
                         opt.clean();
                 });
 
-                $('.overlay-minimize').live('click', function () {
-                    opt.buttonsMinimize = !opt.buttonsMinimize;
-                    if (opt.buttonsMinimize) {
-                        $('.overlay').addClass('overlay-pile')
-                        $('.overlay section:eq(0)').fadeOut(400);
-                    } else {
-                        $('.overlay section:eq(0)').fadeIn(400);
-                        $('.overlay').removeClass('overlay-pile')
-                    }
-                    if (opt.minimize)
-                        opt.minimize();
+                $(dom.overlayMinimize).live('click', function () {
+                    overlay.change();
                 });
             }
         };

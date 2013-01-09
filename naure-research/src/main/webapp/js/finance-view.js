@@ -11,7 +11,8 @@
 
 /*-------------------- 全局变量 START ----------------*/
 var global = {
-    naure: null, structures: null, overlay: null, message: null, http: null, graphics: [], lines: null, volumes: null, finance: null, systemFinance: null, systemEquation: null, exponents: [], coordinate: null
+    naure: null, structures: null, overlay: null, message: null, http: null, graphics: [], lines: null, volumes: null, finance: null, systemFinance: null, systemEquation: null, exponents: [], coordinate: null,
+    accesskey: 'F2'
 };
 
 var dom = {
@@ -27,8 +28,8 @@ var dom = {
 
 global.nodes = {
     layer: {
-        html: '<input class="layer" title="layer 1" tag="0" type="checkbox" />Layer 1 ' +
-            '<input class="layer" title="layer 2"  tag="1" type="checkbox" /> Layer 2'
+        html: '<input class="layer" title="layer 1" tag="0" type="checkbox" checked="checked" />Layer 1 ' +
+            '<input class="layer" title="layer 2"  tag="1" type="checkbox" checked="checked" /> Layer 2'
     },
     '指标': {
         html: '<select id="exponent" style="width:150px;">' +
@@ -214,6 +215,11 @@ function initEvent() {
             $(dom.canvas[$(this).attr('tag')]).parent().show();
         } else {
             $(dom.canvas[$(this).attr('tag')]).parent().hide();
+        }
+    });
+    $('body').live('keyup', function (event) {
+        if (global.accesskey == event.key) {
+            global.overlay.change();
         }
     });
 }

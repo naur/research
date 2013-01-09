@@ -88,7 +88,7 @@ require.config({
 //        }
 //    },
     shim: {
-        'jquery-strings': ['jquery'],
+        'jquery.strings': ['jquery'],
         'jquery.uploadify': ['jquery']
     }
 });
