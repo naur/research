@@ -14,12 +14,6 @@
     /*text-align: center;*/
 }
 
-.layout-top {
-}
-
-.layout-middle {
-}
-
 figure {
     margin: 15px;
     /*width: 100px;*/
@@ -89,7 +83,7 @@ input[type=text] {
 }
 
 .stress_12 {
-    font: italic bold arial, sans-serif;
+    font: italic 12px arial, sans-serif;
     color: red;
 }
 
