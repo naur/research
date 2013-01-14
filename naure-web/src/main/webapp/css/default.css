@@ -20,8 +20,8 @@ figure {
 }
 
 textarea {
-    font: italic bold 16px/20px arial, sans-serif;
-    color: red;
+    font: italic 16px/20px arial, sans-serif;
+    color: #A22E00;
 }
 
 .ul-left, .ul-left li, .ul-right, .ul-right li {

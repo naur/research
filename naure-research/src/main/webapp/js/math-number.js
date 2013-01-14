@@ -16,6 +16,7 @@ var global = {
 };
 
 var dom = {
+    params: '#params',
     gcd: '#gcd',
     message: '.layout-right:first'
 };
@@ -30,6 +31,11 @@ var dom = {
 function initEvent() {
     $(dom.gcd).live('click', function () {
         global.message.show({content: "GCD", clear: true});
+
+        var opt = JSON.parse($(dom.params).val());
+        global.number.gcd_euclid(opt.a, opt.b, function (msg) {
+            global.message.show({content: JSON.stringify(msg)});
+        });
     });
 }
 
