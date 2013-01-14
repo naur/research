@@ -55,6 +55,7 @@ require.config({
         'arbor-renderer': jslocalpath1 + '/js/arbor-renderer',
 
         'naure.math': jslocalpath1 + '/js/math/naure.math',
+        'naure.math.number': jslocalpath1 + '/js/math/naure.math.number',
         'naure.math.symbol': jslocalpath1 + '/js/math/naure.math.symbol',
         'naure.math.structures': jslocalpath1 + '/js/math/naure.math.structures',
 
