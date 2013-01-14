@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DateUtil;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -15,17 +16,28 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class ExcelCell {
+    /**
+     * ExcelCell.
+     *
+     * @param row
+     * @param hssfCell
+     */
     public ExcelCell(ExcelRow row, Cell hssfCell) {
         this.row = row;
         this.hssfCell = hssfCell;
     }
 
-    //解析 Excel  值
+    /**
+     * 解析 Excel  值.
+     *
+     * @return
+     */
     public String value() {
         String ret = "";
 
-        if (hssfCell == null || "".equals(hssfCell.toString()))
+        if (hssfCell == null || "".equals(hssfCell.toString())) {
             return ret;
+        }
 
         switch (hssfCell.getCellType()) {
             case Cell.CELL_TYPE_NUMERIC:     //数值型和日期型都是「CELL_TYPE_NUMERIC」
@@ -51,23 +63,35 @@ public class ExcelCell {
                 break;
         }
 
-        if (ret == null)
+        if (ret == null) {
             ret = "";
+        }
 
         return ret.trim();
     }
 
-
+    /**
+     * getFormulaValue.
+     *
+     * @param cell
+     * @return
+     */
     private String getFormulaValue(Cell cell) {
         String ret;
-        try {
-            ret = getNumericValue(cell);
-        } catch (Exception ex) {
-            ret = cell.getStringCellValue();
-        }
+        //try {
+        ret = getNumericValue(cell);
+//        } catch (RuntimeException ex) {
+//            ret = cell.getStringCellValue();
+//        }
         return ret;
     }
 
+    /**
+     * getNumericValue
+     *
+     * @param cell
+     * @return
+     */
     private String getNumericValue(Cell cell) {
         String ret;
         //误删， 备用
@@ -97,16 +121,20 @@ public class ExcelCell {
     public void setCellValue(String data) {
         hssfCell.setCellValue(data);
     }
+
     public void setCellValue(double data) {
         hssfCell.setCellValue(data);
     }
+
     public void setCellValue(Date data) {
         hssfCell.setCellValue(data);
     }
+
     public void setCellValue(boolean data) {
         hssfCell.setCellValue(data);
     }
-    public void setCellFormula(String data){
+
+    public void setCellFormula(String data) {
         hssfCell.setCellFormula(data);
     }
 
@@ -120,12 +148,12 @@ public class ExcelCell {
         return hssfCell.getRowIndex();
     }
 
-    public int ColumnIndex() {
+    public int columnIndex() {
         return hssfCell.getColumnIndex();
     }
 
-    public String ColumnName() {
-        return ExcelHelper.getName(ColumnIndex());
+    public String columnName() {
+        return ExcelHelper.getName(columnIndex());
     }
 
     public CellStyle style() {
@@ -144,7 +172,13 @@ public class ExcelCell {
         return row;
     }
 
+    /**
+     * ExcelRow.
+     */
     private ExcelRow row;
+    /**
+     * hssfCell.
+     */
     private Cell hssfCell;
 }
 

@@ -1,5 +1,6 @@
 package org.naure.utility.excel;
 
+
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 
@@ -35,7 +36,9 @@ public class ExcelTranslate<T> {
     }
 
     public void addEntity(T t) {
-        this.entities.add(t);
+        if (null != t) {
+            this.entities.add(t);
+        }
     }
 
     public void addEntity(List<T> tList) {
@@ -55,8 +58,15 @@ public class ExcelTranslate<T> {
         return notifications;
     }
 
+    public int getRowIndex() {
+        return rowIndex;
+    }
+
+    public void setRowIndex(int rowIndex) {
+        this.rowIndex = rowIndex;
+    }
+
     private List<Information<TranslateInfo>> notifications;
     private List<T> entities;
-
-    public int RowIndex;
+    private int rowIndex;
 }

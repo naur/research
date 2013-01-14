@@ -36,8 +36,8 @@ public class ExcelSheet {
         CellStyle titleStyle = this.document.getWorkbook().createCellStyle();
         titleStyle.setFont(titlefont);
         titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        this.currentRow.currentCell.getHssfCell().setCellStyle(titleStyle);
-        this.currentRow.currentCell.getHssfCell().setCellValue(title);
+        this.currentRow.getCurrentCell().getHssfCell().setCellStyle(titleStyle);
+        this.currentRow.getCurrentCell().getHssfCell().setCellValue(title);
         hssfSheet.addMergedRegion(new CellRangeAddress(0, 0, 0, (num - 1)));
     }
 

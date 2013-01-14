@@ -1,9 +1,9 @@
 package org.naure.utility.excel;
 
 
-import org.naure.common.entities.*;
+import org.naure.common.entities.Information;
+import org.naure.common.entities.InformationLevel;
 import org.naure.common.patterns.Handler;
-
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,7 +32,7 @@ public abstract class ExcelImport<T> extends ExcelComponent<T> {
 
     protected boolean isEmpty(ExcelRow row, ExcelTranslate<T> translate, int col) {
         if (row.cells(col).value().isEmpty()) {
-            translate.addNotification(new Information<TranslateInfo>("translate", InformationLevel.ERROR.value(), new TranslateInfo(row.RowIndex() + 1, row.cells(col).ColumnName(), "值不能为空！")));
+            this.addNotification(new Information<TranslateInfo>("translate", InformationLevel.ERROR.value(), new TranslateInfo(row.rowIndex() + 1, row.cells(col).columnName(), "值不能为空！")));
             //row.cells(col).setStyle(row.cells(col).style());
             //row.cells(col).setComment("值不能为空！");
             return true;
@@ -43,8 +43,11 @@ public abstract class ExcelImport<T> extends ExcelComponent<T> {
     private void importExcel() throws Exception {
         //解析 Excel
         ExcelSheet sheet = currentSheet(); //todo document.sheets(0);
-        if (null == sheet)
-            throw new Exception("名称为 [" + sheetName + "] 的 Sheet 不存在！");
+        if (null == sheet) {
+            this.addNotification(new Information<TranslateInfo>("", InformationLevel.ERROR.value(), "名称为 [" + sheetName + "] 的 Sheet 不存在！"));
+            return;
+        }
+
         ExcelTranslate<T> translate;
         ExcelRow row;
 
@@ -58,7 +61,7 @@ public abstract class ExcelImport<T> extends ExcelComponent<T> {
             row = sheet.row(i);
 
             //已经到 Excel 的最后一行, 该歇息了 ！
-            if (row.IsNullOrEmpty() || row.getCells().length < this.columns) {
+            if (row.isNullOrEmpty() || row.getCells().length < this.columns) {
                 return;
             }
 
@@ -69,7 +72,7 @@ public abstract class ExcelImport<T> extends ExcelComponent<T> {
 
             if (translate.isError()) {
                 //转换有错误, 反馈错误信息！
-                notifications.addAll(translate.getNotifications());
+                this.addNotification(translate.getNotifications());
                 continue;
             }
 
@@ -79,7 +82,7 @@ public abstract class ExcelImport<T> extends ExcelComponent<T> {
             }
             if (translate.isError()) {
                 //验证数据有错误, 反馈错误信息！
-                notifications.addAll(translate.getNotifications());
+                this.addNotification(translate.getNotifications());
                 continue;
             }
 

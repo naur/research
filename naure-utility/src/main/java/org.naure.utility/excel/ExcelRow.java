@@ -49,12 +49,14 @@ public class ExcelRow {
     }
 
     private void initCells() {
-        if (hssfRow == null)
+        if (hssfRow == null) {
             return;
+        }
 
         //此处要确认新的 hssfRow 的 getLastCellNum() 值为多少。
-        if (-1 == this.hssfRow.getLastCellNum())
+        if (-1 == this.hssfRow.getLastCellNum()) {
             return;
+        }
 
         this.cells = new ExcelCell[this.hssfRow.getLastCellNum()];
         for (int i = 0; i < this.cells.length; i++) {
@@ -85,14 +87,14 @@ public class ExcelRow {
     }
 
     public ExcelCell[] getCells() {
-        return cells;
+        return cells.clone();
     }
 
-    public int RowIndex() {
+    public int rowIndex() {
         return hssfRow.getRowNum();
     }
 
-    public boolean IsNullOrEmpty() {
+    public boolean isNullOrEmpty() {
         if (cells == null || cells.length <= 0) {
             return true;
         }
@@ -100,8 +102,9 @@ public class ExcelRow {
         boolean temp = true;
         for (ExcelCell cell : cells) {
             temp = temp && "".equals(cell.value());
-            if (!temp)
+            if (!temp) {
                 return temp;
+            }
         }
         return temp;
     }
@@ -109,6 +112,6 @@ public class ExcelRow {
     private ExcelStrategy strategy;
     private Row hssfRow;
     private ExcelSheet sheet;
-    public ExcelCell[] cells;
-    public ExcelCell currentCell;
+    private ExcelCell[] cells;
+    private ExcelCell currentCell;
 }

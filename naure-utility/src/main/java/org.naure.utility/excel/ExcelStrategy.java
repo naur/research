@@ -19,7 +19,7 @@ public class ExcelStrategy<T> implements Strategy<ExcelRow> {
     public void setContext(ExcelRow row) {
         this.row = row;
         this.translate = new ExcelTranslate<T>();
-        this.translate.RowIndex = row.RowIndex() + 1;
+        this.translate.setRowIndex(this.row.rowIndex() + 1);
     }
 
     public ExcelTranslate getTranslate() {

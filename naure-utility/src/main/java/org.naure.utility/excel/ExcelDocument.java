@@ -1,6 +1,5 @@
 package org.naure.utility.excel;
 
-import com.jd.common.util.StringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -52,9 +51,10 @@ public class ExcelDocument {
             this.workbook = new XSSFWorkbook();
         }
         //默认创建 一个名字为 sheet1 的 sheet.
-        if (StringUtils.isNotEmpty(defaultSheet))
+        if (StringUtils.isNotEmpty(defaultSheet)) {
             //this.sheets = new ExcelSheet[]{};
             this.cacheSheet(new ExcelSheet(this, this.workbook.createSheet(defaultSheet)));
+        }
     }
 
     public ExcelDocument(ExcelType excelType, InputStream stream) throws IOException {
@@ -71,7 +71,9 @@ public class ExcelDocument {
     }
 
     public ExcelSheet sheets(int index) {
-        if (sheets == null) sheets = new ArrayList<ExcelSheet>();
+        if (sheets == null){
+        	sheets = new ArrayList<ExcelSheet>();
+        }
 
         if (sheets.get(index) == null) {
             //缓存
@@ -83,12 +85,15 @@ public class ExcelDocument {
     }
 
     public ExcelSheet sheets(String name) {
-        if (sheets == null) sheets = new ArrayList<ExcelSheet>();
+        if (sheets == null) {
+        	sheets = new ArrayList<ExcelSheet>();
+        }
 
         ExcelSheet sheet = null;
         for (ExcelSheet item : sheets) {
-            if (name.equals(item.getName()))
+            if (name.equals(item.getName())) {
                 sheet = item;
+            }
         }
 
         if (null == sheet && null != workbook.getSheet(name)) {
@@ -99,9 +104,13 @@ public class ExcelDocument {
     }
 
     //缓存
-    public ExcelSheet cacheSheet(ExcelSheet sheet) {
-        if (sheets == null) sheets = new ArrayList<ExcelSheet>();
-        if (sheet == null) return sheet;
+    public final ExcelSheet cacheSheet(ExcelSheet sheet) {
+        if (sheets == null) {
+        	sheets = new ArrayList<ExcelSheet>();
+        }
+        if (sheet == null) {
+        	return sheet;
+        }
 
         for (int i = 0; i < sheets.size(); i++) {
             if (null == sheets.get(i)) {

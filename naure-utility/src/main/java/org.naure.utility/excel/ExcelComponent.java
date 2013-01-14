@@ -1,10 +1,12 @@
 package org.naure.utility.excel;
 
+
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.entities.OffsetInfo;
 import org.naure.common.patterns.Delegator;
 import org.naure.common.patterns.Handler;
+import org.naure.common.patterns.Delegator;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,22 +26,44 @@ import java.util.Map;
  */
 public abstract class ExcelComponent<T> implements Delegator.Callback {
 
+    /**
+     * ExcelComponent
+     */
     public ExcelComponent() {
         this(null, null);
     }
 
+    /**
+     * ExcelComponent
+     * @param document
+     */
     public ExcelComponent(ExcelDocument document) {
         this(document, null);
     }
 
+    /**
+     * ExcelComponent
+     * @param validateHandler
+     */
     public ExcelComponent(Handler<ExcelTranslate<T>> validateHandler) {
         this(null, validateHandler);
     }
 
+    /**
+     * ExcelComponent
+     * @param document
+     * @param validateHandler
+     */
     public ExcelComponent(ExcelDocument document, Handler<ExcelTranslate<T>> validateHandler) {
         this(document, validateHandler, "sheet1");
     }
 
+    /**
+     * ExcelComponent
+     * @param document
+     * @param validateHandler
+     * @param sheetName
+     */
     public ExcelComponent(ExcelDocument document, Handler<ExcelTranslate<T>> validateHandler, String sheetName) {
         this.delegator = new Delegator(this);
         this.document = document;
@@ -71,7 +95,7 @@ public abstract class ExcelComponent<T> implements Delegator.Callback {
 //                            Integer.parseInt(matcher.group(2))));
 //        }
 
-        for (int i = 0; i < row.cells.length; i++) {
+        for (int i = 0; i < row.getCells().length; i++) {
             this.heads.put(String.valueOf(i), new OffsetInfo(i, row.cells(i).value()));
         }
     }
@@ -88,8 +112,9 @@ public abstract class ExcelComponent<T> implements Delegator.Callback {
     public ExcelSheet currentSheet(boolean... isCreate) {
         if (null == currentSheet) {
             currentSheet = document.sheets(sheetName);
-            if (null == currentSheet && isCreate.length > 0 && isCreate[0])
+            if (null == currentSheet && isCreate.length > 0 && isCreate[0]) {
                 currentSheet = document.createSheet(sheetName);
+            }
         }
         //return document.sheets(0);
         return currentSheet;
@@ -101,7 +126,9 @@ public abstract class ExcelComponent<T> implements Delegator.Callback {
             entities = new ArrayList<T>();
         }
         notifications = new ArrayList<Information<TranslateInfo>>();
-        if (null == heads) heads = new LinkedHashMap<String, OffsetInfo>();
+        if (null == heads) {
+        	heads = new LinkedHashMap<String, OffsetInfo>();
+        }
         setSheetName();
         setStartIndex();
         setTitle();
@@ -145,7 +172,9 @@ public abstract class ExcelComponent<T> implements Delegator.Callback {
     }
 
     public void addHead(String key, OffsetInfo value) {
-        if (null == heads) heads = new LinkedHashMap<String, OffsetInfo>();
+        if (null == heads) {
+        	heads = new LinkedHashMap<String, OffsetInfo>();
+        }
         heads.put(key, value);
     }
 
@@ -200,16 +229,17 @@ public abstract class ExcelComponent<T> implements Delegator.Callback {
         return sheetName;
     }
 
+    private Delegator delegator;
+    private boolean isInit = false;
+
     protected String title;
     protected Map<String, OffsetInfo> heads;
     protected ExcelDocument document;
     protected List<Information<TranslateInfo>> notifications;
     protected List<T> entities;
     protected Handler<ExcelTranslate<T>> validateHandler;
-    private Delegator delegator;
     protected int startIndex = 0;
     protected int columns;
-    private boolean isInit = false;
     protected String sheetName;
     protected ExcelSheet currentSheet;
 }

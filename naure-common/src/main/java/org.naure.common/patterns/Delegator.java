@@ -7,12 +7,24 @@ package org.naure.common.patterns;
  * Time: 10:38 AM
  * To change this template use File | Settings | File Templates.
  */
+
+/**
+ * Delegator.
+ */
 public class Delegator {
 
+    /**
+     *Delegator.
+     * @param callback 入参
+     */
     public Delegator(Callback callback) {
         this.callback = callback;
     }
 
+    /**
+     *execute.
+     * @throws Exception 异常
+     */
     public void execute() throws Exception {
         callback.begin();
         callback.execute();
@@ -21,11 +33,26 @@ public class Delegator {
 
     private final Callback callback;
 
-    public static interface Callback {
-        public void begin() throws Exception;
+    /**
+     * Callback
+     */
+    public interface Callback {
+        /**
+         * begin.
+         * @throws Exception 异常
+         */
+        void begin() throws Exception;
 
-        public void execute() throws Exception;
+        /**
+         * execute.
+         * @throws Exception 异常
+         */
+        void execute() throws Exception;
 
-        public void end() throws Exception;
+        /**
+         * end.
+         * @throws Exception 异常
+         */
+        void end() throws Exception;
     }
 }
