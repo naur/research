@@ -18,7 +18,7 @@ var global = {
 var dom = {
     params: '#params',
     gcd: '#gcd',
-    message: '.layout-right:first'
+    message: '.layout-left:first'
 };
 
 /*-------------------- 全局变量 END ------------------*/
@@ -33,9 +33,10 @@ function initEvent() {
         global.message.show({content: "GCD", clear: true});
 
         var opt = JSON.parse($(dom.params).val());
-        global.number.gcd_euclid(opt.a, opt.b, function (msg) {
+        var maxGCD = global.number.gcd_euclid(opt.a, opt.b, function (msg) {
             global.message.show({content: JSON.stringify(msg)});
         });
+        global.message.show({content: maxGCD, color: 'red'});
     });
 }
 
