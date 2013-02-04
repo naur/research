@@ -52,6 +52,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
 
             //水平线
             this.horizontal = function (roundingCoordinate) {
+                ctx.save();
+                ctx.globalAlpha = 0.5;
                 // 1/ 4 线 [Y 轴 ]
                 ctx.strokeStyle = config.minorStyle;
                 ctx.lineWidth = 0.1;
@@ -84,6 +86,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.line(roundingCoordinate.X2, 0);
                 ctx.stroke();
 
+                ctx.restore();
                 //垂直线坐标
                 ctx.lineWidth = config.lineWidth;
                 ctx.textAlign = "right";
@@ -114,6 +117,8 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
 
             //垂直线
             this.vertical = function (roundingCoordinate) {
+                ctx.save();
+                ctx.globalAlpha = 0.5;
                 // 1/ 4 线 [X 轴 ]
                 ctx.strokeStyle = config.minorStyle;
                 ctx.lineWidth = 0.1;
@@ -146,6 +151,7 @@ define(['jquery', 'naure', 'naure.math', 'naure.graphics', 'naure.graphics.math'
                 ctx.line(0, roundingCoordinate.Y2);
                 ctx.stroke();
 
+                ctx.restore();
                 //水平线坐标
                 ctx.lineWidth = config.lineWidth;
                 ctx.textAlign = "left";

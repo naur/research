@@ -17,7 +17,8 @@ var global = {
 
 var dom = {
     params: '#params',
-    gcd: '#gcd',
+    gcd: '#gcd-euclid',
+    gcd_extended: '#gcd-euclid-extended',
     message: '.layout-left:first'
 };
 
@@ -30,13 +31,23 @@ var dom = {
 
 function initEvent() {
     $(dom.gcd).live('click', function () {
-        global.message.show({content: "GCD", clear: true});
+        global.message.show({content: "GCD: Euclid's algorithm", clear: true});
 
-        var opt = JSON.parse($(dom.params).val());
+        var opt = $.parseJSON($(dom.params).val());
         var maxGCD = global.number.gcd_euclid(opt.a, opt.b, function (msg) {
             global.message.show({content: JSON.stringify(msg)});
         });
         global.message.show({content: maxGCD, color: 'red'});
+    });
+
+    $(dom.gcd_extended).live('click', function () {
+        global.message.show({content: "GCD: The extended form of Euclid's algorithm", clear: true});
+
+        var opt = $.parseJSON($(dom.params).val());
+        var maxGCD = global.number.gcd_euclid_extended(opt.a, opt.b, function (msg) {
+            global.message.show({content: JSON.stringify(msg)});
+        });
+        global.message.show({content: JSON.stringify(maxGCD), color: 'red'});
     });
 }
 

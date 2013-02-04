@@ -12,14 +12,19 @@
 /*-------------------- 全局变量 START ----------------*/
 var global = {
     naure: null, structures: null, overlay: null, message: null, http: null, graphics: [], lines: null, volumes: null, finance: null, systemFinance: null, systemEquation: null, exponents: [], coordinate: null,
-    accesskey: 'F2'
+    accesskey: 'F2',
+    color: ['#800000', '#0000A0'],
+    colorRandom: function () {
+        //#A22E00
+        return '#' + random().toString(16).substring(2, 5);
+    }
 };
 
 var dom = {
     compositeOperation: '#composite-operation',
     zoomAxis: '#zoom-axis',
     overlayInput: '#overlay-input',
-    canvas: ['article section canvas:eq(0)', 'article section canvas:eq(1)'],
+    canvas: ['article section canvas:eq(1)', 'article section canvas:eq(0)'],
     exponent: '#exponent',
     startDate: '#start-date',
     endDate: '#end-date',
@@ -47,7 +52,7 @@ global.nodes = {
         html: '<select id="zoom-axis" style="width:60px;">' +
             '<option>both</option>' +
             '<option>horizontal</option>' +
-            '<option>vertical</option>' +
+            '<option selected="selected">vertical</option>' +
             '</select>' +
             '<select id="composite-operation" style="width:80px;">' +
             '<option>source-over</option>' +
@@ -133,8 +138,8 @@ global.nodes = {
 
                 if (!global.lines) global.lines = [];
                 if (!global.volumes) global.volumes = []
-                global.lines.push({equation: equationPrice, color: '#' + random().toString(16).substring(2, 5)});
-                global.volumes.push({equation: equationVolumes, color: '#' + random().toString(16).substring(2, 5)});
+                global.lines.push({equation: equationPrice, color: global.color[0]});
+                global.volumes.push({equation: equationVolumes, color: global.color[1]});
 
                 global.coordinate = {
                     X1: floor(startDate.getTime() / 86400000),
@@ -205,7 +210,7 @@ function initEvent() {
             global.graphics[1].draw({
                 coordinate: global.coordinate,
                 lines: [
-                    {equation: buffer, color: 'red'}
+                    {equation: buffer, color: global.color[1]}
                 ]
             });
         }
@@ -255,8 +260,10 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.xsl', 'naure.math.st
 
         initEvent();
 
-        //默认值
-        //$(dom.zoomAxis)[0].selectedIndex = 2;
+        //当前值
+        for (var i = 0; i < global.graphics.length; i++) {
+            global.graphics[i].config.zoomAxis = $(dom.zoomAxis).val();
+        }
         $(dom.endDate).val(new Date().format('yyyyMMdd'))
     });
 });
