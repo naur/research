@@ -87,13 +87,14 @@ public abstract class ControllerBase {
     }
 
     protected void responseEncoding(String contentType) {
-        HttpServletResponse response = ServletActionContext.getResponse();
-        try {
-            request.setCharacterEncoding("utf-8");
-        } catch (Exception ex) {
-        }
-        if (StringUtils.isNotEmpty(contentType))
-            response.setContentType(contentType + ";charset=utf-8");
+        //todo
+//        HttpServletResponse response = ServletActionContext.getResponse();
+//        try {
+//            request.setCharacterEncoding("utf-8");
+//        } catch (Exception ex) {
+//        }
+//        if (StringUtils.isNotEmpty(contentType))
+//            response.setContentType(contentType + ";charset=utf-8");
     }
 
     protected String getMapValue(Map map, String key) {
