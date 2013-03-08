@@ -84,11 +84,6 @@
             <!--<artifactId>naure-research</artifactId>-->
             <!--<version>${naure.version}</version>-->
             <!--</dependency>-->
-            <!--<dependency>-->
-            <!--<groupId>org.naure</groupId>-->
-            <!--<artifactId>naure-work</artifactId>-->
-            <!--<version>${naure.version}</version>-->
-            <!--</dependency>-->
 
             <dependency>
                 <groupId>commons-codec</groupId>
