@@ -18,9 +18,7 @@
         <dependency>
             <groupId>org.naure</groupId>
             <artifactId>naure-integrate</artifactId>
-            <version>1.0</version>
             <type>war</type>
-            <scope>runtime</scope>
         </dependency>
 
     </dependencies>
