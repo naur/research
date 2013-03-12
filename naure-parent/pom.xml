@@ -67,15 +67,10 @@
                 <artifactId>naure-repositories</artifactId>
                 <version>${naure.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.naure</groupId>
-                <artifactId>naure-integrate</artifactId>
-                <version>${naure.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.naure</groupId>
-                <artifactId>naure-web</artifactId>
+                <artifactId>naure-integrate</artifactId>
                 <version>${naure.version}</version>
                 <type>war</type>
                 <!--<scope>runtime</scope>-->

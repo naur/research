@@ -29,7 +29,7 @@
         <profile>
             <id>home</id>
             <modules>
-                <module>naure-web</module>
+                <module>naure-integrate</module>
                 <module>naure-home</module>
             </modules>
         </profile>
@@ -37,7 +37,7 @@
         <profile>
             <id>research</id>
             <modules>
-                <module>naure-web</module>
+                <module>naure-integrate</module>
                 <module>naure-research</module>
             </modules>
         </profile>
