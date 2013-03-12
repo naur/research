@@ -2,11 +2,12 @@
 <html>
 <head>
     <title> Naure.org Research </title>
-    <link href="/Research/projects/research/naure-integrate/src/main/webapp/css/global.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" data="css"
+            src="/Research/projects/research/naure-integrate/src/main/webapp/js/load.js"></script>
 </head>
 <body>
 
-<div class="page">
+<div class="metrouicss page">
     <div class="page-header">
         <div class="page-header-content">
             <div class="nav-bar">
@@ -47,10 +48,11 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/Research/projects/research/naure-integrate/src/main/webapp/js/require.js"></script>
-<script type="text/javascript" src="/Research/projects/research/naure-integrate/src/main/webapp/js/require.config.js"></script>
+
+<script type="text/javascript" data="script"
+        src="/Research/projects/research/naure-integrate/src/main/webapp/js/load.js"></script>
 <script type="text/javascript">
-    require(['jquery', 'naure.analytics'], function () {
+    require(['jquery', 'naure.analytics'], function ($) {
     });
 </script>
 
