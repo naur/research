@@ -22,6 +22,8 @@ require.config({
         'jquery.validate': jslocalpath + '/js/jquery.validate',
         'ajaxslt': jslocalpath + '/js/ajaxslt',
 
+        'jquery.flip': jslocalpath + '/js/jquery.flip',
+
         'jStat': jslocalpath + '/js/math/jstat-1.0.0',
 
         'oop': jslocalpath + '/js/oop',

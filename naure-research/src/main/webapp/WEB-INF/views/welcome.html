@@ -2,14 +2,57 @@
 <html>
 <head>
     <title> Naure.org Research </title>
-    <script type="text/javascript" src="/js/require.js"></script>
-    <script type="text/javascript" src="/js/require.config.js"></script>
-    <script type="text/javascript">
-        require(['jquery', 'naure.analytics'], function () {
-        });
-    </script>
+    <link href="/Research/projects/research/naure-web/src/main/webapp/css/global.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    welcome !
+
+<div class="page">
+    <div class="page-header">
+        <div class="page-header-content">
+            <div class="nav-bar">
+                <div class="nav-bar-inner">
+                    <span class="element">Naure.org</span>
+                    <span class="divider"></span>
+
+                    <ul class="menu">
+                        <li data-role="dropdown">
+                            <a href="#">Math</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">probability stochastic</a></li>
+                            </ul>
+                        </li>
+                        <li data-role="dropdown">
+                            <a href="#">Algorithms</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Demo</a></li>
+                                <li><a href="#">Arbor</a></li>
+                                <li><a href="#">Heapsort</a></li>
+                                <li><a href="#">Analysis</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/finance/view">Finance</a></li>
+                        <li><a href="/html/view">HTML 5</a></li>
+                        <li><a href="/map/view">Map</a></li>
+                        <li><a href="/learn/view">Learn</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-region">
+        <div class="page-region-content">
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/Research/projects/research/naure-web/src/main/webapp/js/require.js"></script>
+<script type="text/javascript" src="/Research/projects/research/naure-web/src/main/webapp/js/require.config.js"></script>
+<script type="text/javascript">
+    require(['jquery', 'naure.analytics'], function () {
+    });
+</script>
+
 </body>
 </html>

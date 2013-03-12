@@ -116,6 +116,48 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 return JSON.parse(json);
             },
 
+            fieldTag: function (options) {
+                var opt = $.extend({markedClass: "tagged", standardText: false}, options);
+                $(this).focus(function () {
+                    if (!this.changed) {
+                        this.clear();
+                    }
+                }).blur(function () {
+                        if (!this.changed) {
+                            this.addTag();
+                        }
+                    }).keyup(function () {
+                        this.changed = ($(this).val() ? true : false);
+                    }).each(function () {
+                        this.title = $(this).attr("title");
+                        if ($(this).val() == $(this).attr("title")) {
+                            this.changed = false;
+                        }
+                        this.clear = function () {
+                            if (!this.changed) {
+                                $(this).val("").removeClass(opt.markedClass);
+                            }
+                        }
+                        this.addTag = function () {
+                            $(this).val(opt.standardText === false ? this.title : opt.standardText).addClass(opt.markedClass);
+                        }
+                        if (this.form) {
+                            this.form.tagFieldsToClear = this.form.tagFieldsToClear || [];
+                            this.form.tagFieldsToClear.push(this);
+                            if (this.form.tagFieldsAreCleared) {
+                                return true;
+                            }
+                            this.form.tagFieldsAreCleared = true;
+                            $(this.form).submit(function () {
+                                $(this.tagFieldsToClear).each(function () {
+                                    this.clear();
+                                });
+                            });
+                        }
+                    }).keyup().blur();
+                return $(this);
+            },
+
             //todo 代码来源于 dict.bing.com.cn 未经过测试
             escapeXML: function (s) {
                 return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
