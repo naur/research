@@ -78,7 +78,8 @@
                 <artifactId>naure-web</artifactId>
                 <version>${naure.version}</version>
                 <type>war</type>
-                <scope>runtime</scope>
+                <!--<scope>runtime</scope>-->
+                <scope>compile</scope>
             </dependency>
 
             <!--<dependency>-->
