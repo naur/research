@@ -11,7 +11,7 @@
 
 var jslocalpath = '/Research/projects/research/naure-integrate/src/main/webapp';
 //jslocalpath = '';
-var jslocalpath1 = jslocalpath.replace('naure-integrate', 'naure-research');
+var jsresearch = jslocalpath.replace('naure-integrate', 'naure-research');
 
 
 require.config({
@@ -21,6 +21,22 @@ require.config({
         'jquery.strings': jslocalpath + '/js/jquery.strings',
         'jquery.validate': jslocalpath + '/js/jquery.validate',
         'ajaxslt': jslocalpath + '/js/ajaxslt',
+
+        'moment': jslocalpath + '/js/moment',
+
+        'modern.accordion': jslocalpath + '/js/modern/accordion',
+        'modern.buttonset': jslocalpath + '/js/modern/buttonset',
+        'modern.calendar': jslocalpath + '/js/modern/calendar',
+        'modern.carousel': jslocalpath + '/js/modern/carousel',
+        'modern.dialog': jslocalpath + '/js/modern/dialog',
+        'modern.dropdown': jslocalpath + '/js/modern/dropdown',
+        'modern.input-control': jslocalpath + '/js/modern/input-control',
+        'modern.pagecontrol': jslocalpath + '/js/modern/pagecontrol',
+        'modern.rating': jslocalpath + '/js/modern/rating',
+        'modern.slider': jslocalpath + '/js/modern/slider',
+        'modern.start-menu': jslocalpath + '/js/modern/start-menu',
+        'modern.tile-drag': jslocalpath + '/js/modern/tile-drag',
+        'modern.tile-slider': jslocalpath + '/js/modern/tile-slider',
 
         'jquery.flip': jslocalpath + '/js/jquery.flip',
 
@@ -43,46 +59,46 @@ require.config({
         'naure.message': jslocalpath + '/js/naure.message',
         'naure.overlay': jslocalpath + '/js/naure.overlay',
 
-        'arbor-etc': jslocalpath1 + '/js/arbor/etc',
-        'arbor-kernel': jslocalpath1 + '/js/arbor/kernel',
-        'arbor-graphics-colors': jslocalpath1 + '/js/arbor/graphics/colors',
-        'arbor-graphics-primitives': jslocalpath1 + '/js/arbor/graphics/primitives',
-        'arbor-graphics-graphics': jslocalpath1 + '/js/arbor/graphics/graphics',
-        'arbor-physics-atoms': jslocalpath1 + '/js/arbor/physics/atoms',
-        'arbor-physics-system': jslocalpath1 + '/js/arbor/physics/system',
-        'arbor-physics-barnes-hut': jslocalpath1 + '/js/arbor/physics/barnes-hut',
-        'arbor-physics-physics': jslocalpath1 + '/js/arbor/physics/physics',
-        'arbor-dev': jslocalpath1 + '/js/arbor/dev',
-        'arbor-parseur': jslocalpath1 + '/js/arbor/parseur',
-        'arbor-renderer': jslocalpath1 + '/js/arbor-renderer',
+        'arbor-etc': jsresearch + '/js/arbor/etc',
+        'arbor-kernel': jsresearch + '/js/arbor/kernel',
+        'arbor-graphics-colors': jsresearch + '/js/arbor/graphics/colors',
+        'arbor-graphics-primitives': jsresearch + '/js/arbor/graphics/primitives',
+        'arbor-graphics-graphics': jsresearch + '/js/arbor/graphics/graphics',
+        'arbor-physics-atoms': jsresearch + '/js/arbor/physics/atoms',
+        'arbor-physics-system': jsresearch + '/js/arbor/physics/system',
+        'arbor-physics-barnes-hut': jsresearch + '/js/arbor/physics/barnes-hut',
+        'arbor-physics-physics': jsresearch + '/js/arbor/physics/physics',
+        'arbor-dev': jsresearch + '/js/arbor/dev',
+        'arbor-parseur': jsresearch + '/js/arbor/parseur',
+        'arbor-renderer': jsresearch + '/js/arbor-renderer',
 
-        'naure.math': jslocalpath1 + '/js/math/naure.math',
-        'naure.math.number': jslocalpath1 + '/js/math/naure.math.number',
-        'naure.math.symbol': jslocalpath1 + '/js/math/naure.math.symbol',
-        'naure.math.structures': jslocalpath1 + '/js/math/naure.math.structures',
+        'naure.math': jsresearch + '/js/math/naure.math',
+        'naure.math.number': jsresearch + '/js/math/naure.math.number',
+        'naure.math.symbol': jsresearch + '/js/math/naure.math.symbol',
+        'naure.math.structures': jsresearch + '/js/math/naure.math.structures',
 
-        'naure.math.probability': jslocalpath1 + '/js/math/probability/naure.math.probability',
-        'naure.math.probability.stochastic': jslocalpath1 + '/js/math/probability/naure.math.probability.stochastic',
+        'naure.math.probability': jsresearch + '/js/math/probability/naure.math.probability',
+        'naure.math.probability.stochastic': jsresearch + '/js/math/probability/naure.math.probability.stochastic',
 
-        'naure.math.matrixes': jslocalpath1 + '/js/math/matrixes/naure.math.matrixes',
-        'naure.math.sets': jslocalpath1 + '/js/math/sets/naure.math.sets',
-        'naure.math.sets.tree': jslocalpath1 + '/js/math/sets/naure.math.sets.tree',
-        'naure.math.sets.tree.augmenting': jslocalpath1 + '/js/math/sets/naure.math.sets.tree.augmenting',
-        'naure.math.statistics': jslocalpath1 + '/js/math/statistics/naure.math.statistics',
-        'naure.math.statistics.finance': jslocalpath1 + '/js/math/statistics/naure.math.statistics.finance',
+        'naure.math.matrixes': jsresearch + '/js/math/matrixes/naure.math.matrixes',
+        'naure.math.sets': jsresearch + '/js/math/sets/naure.math.sets',
+        'naure.math.sets.tree': jsresearch + '/js/math/sets/naure.math.sets.tree',
+        'naure.math.sets.tree.augmenting': jsresearch + '/js/math/sets/naure.math.sets.tree.augmenting',
+        'naure.math.statistics': jsresearch + '/js/math/statistics/naure.math.statistics',
+        'naure.math.statistics.finance': jsresearch + '/js/math/statistics/naure.math.statistics.finance',
 
-        'naure.chart.gantt': jslocalpath1 + '/js/chart/naure.chart.gantt',
+        'naure.chart.gantt': jsresearch + '/js/chart/naure.chart.gantt',
 
-        'naure.graphics': jslocalpath1 + '/js/graphics/naure.graphics',
-        'naure.graphics.math': jslocalpath1 + '/js/graphics/naure.graphics.math',
-        'naure.graphics.gridlines': jslocalpath1 + '/js/graphics/naure.graphics.gridlines',
-        'naure.graphics.ui': jslocalpath1 + '/js/graphics/naure.graphics.ui',
-        'naure.graphics.layout': jslocalpath1 + '/js/graphics/naure.graphics.layout',
-        'naure.graphics.equation': jslocalpath1 + '/js/graphics/naure.graphics.equation',
-        'naure.graphics.finance': jslocalpath1 + '/js/graphics/naure.graphics.finance',
-        'naure.graphics.stochastic': jslocalpath1 + '/js/graphics/naure.graphics.stochastic',
+        'naure.graphics': jsresearch + '/js/graphics/naure.graphics',
+        'naure.graphics.math': jsresearch + '/js/graphics/naure.graphics.math',
+        'naure.graphics.gridlines': jsresearch + '/js/graphics/naure.graphics.gridlines',
+        'naure.graphics.ui': jsresearch + '/js/graphics/naure.graphics.ui',
+        'naure.graphics.layout': jsresearch + '/js/graphics/naure.graphics.layout',
+        'naure.graphics.equation': jsresearch + '/js/graphics/naure.graphics.equation',
+        'naure.graphics.finance': jsresearch + '/js/graphics/naure.graphics.finance',
+        'naure.graphics.stochastic': jsresearch + '/js/graphics/naure.graphics.stochastic',
 
-        'math': jslocalpath1 + '/js/math/math',
+        'math': jsresearch + '/js/math/math',
         'math.matrix': jslocalpath + '/js/math/math.matrix'
     },
 //    config: {
@@ -92,6 +108,7 @@ require.config({
 //    },
     shim: {
         'jquery.strings': ['jquery'],
-        'jquery.uploadify': ['jquery']
+        'jquery.uploadify': ['jquery'],
+        'modern.calendar': ['moment']
     }
 });
