@@ -76,7 +76,18 @@
 <script type="text/javascript" data="script"
         src="/Research/projects/research/naure-integrate/src/main/webapp/js/load.js"></script>
 <script type="text/javascript">
-    require(['jquery', 'modern.dropdown', 'modern.calendar', 'naure.analytics'], function ($) {
+    require(['jquery', 'jquery.template', 'modern.dropdown', 'modern.calendar', 'naure.analytics'], function ($) {
+        $(function () {
+            var products = [
+                { name: "Product 1", price: 12.99},
+                { name: "Product 2", price: 9.99},
+                { name: "Product 3", price: 35.59}
+            ];
+
+            $("#template")
+                    .render(products)
+                    .appendTo("ul");
+        });
     });
 </script>
 

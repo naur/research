@@ -1,4 +1,5 @@
 var load = {
+    menusTemplate: "",
     css: {dom: "",
         hrefs: [
             "/Research/projects/research/naure-integrate/src/main/webapp/css/global.css",

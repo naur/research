@@ -17,10 +17,12 @@ var jsresearch = jslocalpath.replace('naure-integrate', 'naure-research');
 require.config({
     //baseUrl: '',
     paths: {
-        jquery: jslocalpath + '/js/jquery-1.8.0.min',
+        jquery: jslocalpath + '/js/jquery-1.9.1.min',
         'jquery.strings': jslocalpath + '/js/jquery.strings',
         'jquery.validate': jslocalpath + '/js/jquery.validate',
         'ajaxslt': jslocalpath + '/js/ajaxslt',
+
+        'jquery.template': jslocalpath + '/js/jsrender',
 
         'moment': jslocalpath + '/js/moment',
 
