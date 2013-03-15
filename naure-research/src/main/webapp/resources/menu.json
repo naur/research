@@ -1,0 +1,56 @@
+[
+    {
+        "name": "Math",
+        "type": "dropdown",
+        "uri": "#",
+        "nodes": [
+            {
+                "name": "probability stochastic",
+                "uri": "#"
+            }
+        ]
+    },
+    {
+        "name": "Algorithms",
+        "type": "dropdown",
+        "uri": "#",
+        "nodes": [
+            {
+                "name": "Demo",
+                "uri": "#"
+            },
+            {
+                "name": "Arbor",
+                "uri": "#"
+            },
+            {
+                "name": "Heapsort",
+                "uri": "#"
+            },
+            {
+                "name": "Analysis",
+                "uri": "#"
+            }
+        ]
+    },
+    {
+        "name": "Finance",
+        "uri": "/finance/view"
+    },
+    {
+        "name": "HTML 5",
+        "uri": "/html/view"
+    },
+    {
+        "name": "Map",
+        "uri": "/map/view"
+    },
+    {
+        "name": "Learn",
+        "uri": "/learn/view"
+    },
+    {
+        "name": "About",
+        "uri": "/about"
+    }
+]

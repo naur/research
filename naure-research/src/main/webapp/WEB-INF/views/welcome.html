@@ -4,72 +4,99 @@
     <title> Naure.org Research </title>
     <script type="text/javascript" data="css"
             src="/Research/projects/research/naure-integrate/src/main/webapp/js/load.js"></script>
+    <script id="menuTemplate" type="text/x-jsrender">
+        {{if type}}
+        <li data-role="{{:type}}">
+            <a href="{{:uri}}">{{:name}}</a>
+            <ul class="{{:type}}-menu">
+                {{for nodes tmpl='#menuTemplate'/}}
+            </ul>
+        </li>
+        {{else}}
+        <li><a href="{{:uri}}">{{:name}}</a></li>
+        {{/if}}
+    </script>
 </head>
-<body>
+<body class="metrouicss">
 
-<div class="metrouicss page">
+<div class="page">
+    <!--Menusdemo-->
+    <div class="nav-bar">
+        <div class="nav-bar-inner padding10">
+            <span class="element">Naure.org</span>
+            <span class="divider"></span>
+            <ul class="menu"></ul>
+        </div>
+    </div>
 
-    <div class="page-header">
-        <div class="page-header-content">
+    <div class="page">
+        <div class="page-header">
+            <div class="page-header-content">
+                <div class="card joker"></div>
+            </div>
+        </div>
 
-            <!--Menusdemo-->
-            <div class="nav-bar">
-                <div class="nav-bar-inner">
-                    <span class="element">Naure.org</span>
-                    <span class="divider"></span>
+        <div class="page-region">
+            <div class="page-region-content">
+                <div class="grid">
+                    <div class="row">
+                        <div class="span1"></div>
+                        <div class="span1"></div>
+                        <div class="span1"></div>
+                        <div class="span1"></div>
+                        <div class="span1"></div>
+                        <div class="span1"></div>
+                        <div class="span1"></div>
+                        <div class="span1"></div>
+                        <div class="span1"></div>
+                        <div class="span1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="span10">
+                            <div class="page snapped">
+                                { Left }
+                            </div>
+                            <div class="page fill">
+                                { Right }
+                            </div>
+                        </div>
+                    </div>
 
-                    <ul class="menu">
-                        <li data-role="dropdown">
-                            <a href="#">Math</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">probability stochastic</a></li>
-                            </ul>
-                        </li>
-                        <li data-role="dropdown">
-                            <a href="#">Algorithms</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Demo</a></li>
-                                <li><a href="#">Arbor</a></li>
-                                <li><a href="#">Heapsort</a></li>
-                                <li><a href="#">Analysis</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/finance/view">Finance</a></li>
-                        <li><a href="/html/view">HTML 5</a></li>
-                        <li><a href="/map/view">Map</a></li>
-                        <li><a href="/learn/view">Learn</a></li>
-                    </ul>
+                    <div class="row">
+                        <div class="span7"></div>
+                        <div class="span2">
+                            <div class="calendar" data-role="calendar" data-param-lang="en"></div>
+                        </div>
+                        <div class="span1">
+                            <!--personal information-->
+                            <div class="tile double bg-color-green">
+                                <div class="tile-content">
+                                    <img width="80" class="place-right"
+                                         src="/Research/projects/research/naure-integrate/src/main/webapp/images/me.jpg">
+                                    <h4 style="margin-bottom: 5px;">NAURE</h4>
+
+                                    <p>
+                                        #_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#
+                                    <h5>RT @Naure</h5>
+
+                                    <p></p>
+                                </div>
+                                <div class="brand">
+                                    <span class="name">naur@live.cn</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
         </div>
     </div>
 
-    <div class="page-region">
-        <div class="page-region-content">
+    <div class="app-bar">
 
-            <div class="tile double bg-color-green">
-                <div class="tile-content">
-                    <img width="80" class="place-right"
-                         src="/Research/projects/research/naure-integrate/src/main/webapp/images/me.jpg">
-                    <h4 style="margin-bottom: 5px;">NAURE</h4>
-
-                    <p>
-                        #_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#_#
-                    <h5>RT @Naure</h5>
-
-                    <p></p>
-                </div>
-                <div class="brand">
-                    <span class="name">naur@live.cn</span>
-                </div>
-            </div>
-
-            <div class="calendar" data-role="calendar" data-param-lang="en"></div>
-
-        </div>
     </div>
-
 </div>
 
 
@@ -78,18 +105,21 @@
 <script type="text/javascript">
     require(['jquery', 'jquery.template', 'modern.dropdown', 'modern.calendar', 'naure.analytics'], function ($) {
         $(function () {
-            var products = [
-                { name: "Product 1", price: 12.99},
-                { name: "Product 2", price: 9.99},
-                { name: "Product 3", price: 35.59}
-            ];
-
-            $("#template")
-                    .render(products)
-                    .appendTo("ul");
+            $.get("/Research/projects/research/naure-research/src/main/webapp/resources/menu.json", function (result) {
+                $(".menu").html(
+                        $("#menuTemplate").render($.parseJSON(result))
+                );
+                $('[data-role="dropdown"]').each(function () {
+                    $(this).Dropdown();
+                })
+                $('.pull-menu, .menu-pull').each(function () {
+                    $(this).PullDown();
+                })
+            });
         });
     });
 </script>
+
 
 </body>
 </html>
