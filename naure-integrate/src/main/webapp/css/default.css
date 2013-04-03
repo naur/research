@@ -5,6 +5,32 @@
     font: arial, Microsoft YaHei;
 }
 
+/*取消下划线 */
+a {
+    text-decoration: none;
+}
+
+/*Rollover文本链接*/
+a:hover {
+    color: red;
+}
+
+/*最大、最小宽度*/
+.layout-container {
+    width: 800px;
+    max-width: 90%;
+}
+
+/*突出边界 */
+.layout-border {
+    border-bottom: 2px solid #427AA8;
+}
+
+/*Word Break*/
+.layout-break-word {
+    word-wrap: break-word;
+}
+
 .layout-left {
     width: 50%;
     float: left;
