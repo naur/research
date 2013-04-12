@@ -222,30 +222,34 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
         };
 
         message.fade = function (options) {
-            var opt = $.extend({}, message.defaults, {placement: 'before', fade: true}, options);
-            if (!$('.message-fade p').length) {
+            var opt = $.extend({
+                fadeClass: 'message-fade',
+                fadeContainer: '.message-fade p'
+            }, message.defaults, {placement: 'before', fade: true}, options);
+
+            if (!$(opt.fadeContainer).length || opt.fadeClass != $(options.element).prev().attr('class')) {
                 this.init(opt);
             }
             if (!options.content) {
                 return;
             }
             if (opt.content) {
-                $('.message-fade p').html(opt.content);
+                $(opt.fadeContainer).html(opt.content);
             }
             if (opt.color) {
-                $('.message-fade p').css('background-color', opt.color);
+                $(opt.fadeContainer).css('background-color', opt.color);
             } else {
-                $('.message-fade p').css('background-color', opt.fadeDefaultColor);
+                $(opt.fadeContainer).css('background-color', opt.fadeDefaultColor);
             }
             if (/In/i.test(opt.fade)) {
-                $(".message-fade p").fadeIn(1000);
+                $(opt.fadeContainer).fadeIn(1000);
                 return;
             }
             if (/Out/i.test(opt.fade)) {
-                $(".message-fade p").fadeOut(4000);
+                $(opt.fadeContainer).fadeOut(1500);
                 return;
             }
-            $(".message-fade p").fadeIn(1000).fadeOut(4000);
+            $(opt.fadeContainer).fadeIn(1000).fadeOut(1500);
         };
 
         return message;
