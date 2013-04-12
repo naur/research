@@ -22,22 +22,32 @@ define(['jquery', 'naure'], function ($, NAURE) {
 
     NAURE.Pattern = (function () {
         var pattern = {
-            chainHandler:function (options) {
+            'break': 'break',
+            'continue': 'continue',
+            /**
+             * chainHandler
+             * @param options
+             */
+            chainHandler: function (options) {
                 var opt = $.extend({
-                    handle:null,
-                    successor:null,
-                    success:null,
-                    error:null,
-                    request:null,
-                    async:false
+                    handler: null,      //ajax请求类型，和页面处理逻辑
+                    successor: null,
+                    success: null,
+                    error: null,
+                    context: null,
+                    container: null,
+                    request: null,      //参数
+                    async: false
                 }, options);
 
-                this.handle = opt.handle;
+                this.handler = opt.handler;
                 this.successor = opt.successor;
-                this.success = opt.error;
-                this.error = opt.success;
+                this.success = opt.success;
+                this.error = opt.error;
                 this.request = opt.request;
                 this.async = opt.async;
+                this.context = opt.context;
+                this.container = opt.container;
 
 //                var exec = function (opt) {
 //                    try {
@@ -54,25 +64,55 @@ define(['jquery', 'naure'], function ($, NAURE) {
 //                        opt.successor.process();
 //                };
 
-                this.process = function () {
-                    if (this.handle) {
+                this.process = function (options) {
+                    var currOpt = $.extend({}, this, options);
+
+                    if (typeof(currOpt.request) == 'function')
+                        currOpt.request = currOpt.request(currOpt);
+                    switch (currOpt.request) {
+                        case pattern['break']:
+                            return;
+                        case pattern['continue']:
+                            if (currOpt.success) currOpt.success(options);
+                            if (currOpt.successor) currOpt.successor.process(options);
+                            return;
+                    }
+
+                    if (!currOpt.handler || (currOpt.handler && typeof(currOpt.handler) == 'function')) {
                         try {
-                            if (this.async) {
-                                setTimeout(opt.handle, 100)
+                            if (currOpt.async && currOpt.handler) {
+                                setTimeout(currOpt.handler, 100)
                             } else {
-                                var result = opt.handle(opt.request);
+                                var result = currOpt.handler ? currOpt.handler(currOpt.request) : currOpt.request;
                                 if (typeof(result) != 'undefined' && !result)
                                     return;
                             }
-                            if (opt.success)
-                                opt.success();
+
+                            if (currOpt.success)
+                                currOpt.success($.extend(options, {result: result}));
                         } catch (ex) {
-                            if (opt.error)
-                                opt.error({error:ex});
+                            if (currOpt.error)
+                                currOpt.error({error: ex});
                         }
 
-                        if (opt.successor)
-                            opt.successor.process();
+                        if (options) delete options.result;
+                        if (currOpt.successor)
+                            currOpt.successor.process(options);
+                    } else {
+                        dos.http.acquire({
+                            uri: currOpt.handler,
+                            data: currOpt.request,
+                            context: currOpt.context,
+                            error: this.error ? this.error : function (err) {
+//                            if (window.console && window.console.log)
+//                                window.console.log(JSON.stringify(err));
+                            },
+                            success: function (result) {
+                                if (currOpt.success) currOpt.success($.extend(options, {result: result}));
+                                if (options) delete options.result;
+                                if (currOpt.successor) currOpt.successor.process(options);
+                            }
+                        });
                     }
                 }
             }

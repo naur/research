@@ -15,6 +15,16 @@ define(['jquery', 'naure'], function ($, NAURE) {
         var originalClass;
 
         var utility = {
+            isArray: function (obj) {
+                if (obj) {
+                    if (obj.constructor === Array)
+                        return true;
+                    else
+                        return obj.length && obj.splice;
+                }
+                return false;
+            },
+
             clone: function (obj) {
                 var cloneObject = new Object();
                 for (var key in obj) {
@@ -157,6 +167,44 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     }).keyup().blur();
                 return $(this);
             },
+
+            /**
+             * 全选
+             * @param classAll
+             * @param classItem
+             */
+            checkSelect: function (classAll, classItem) {
+                $(classAll).live('click', function () {
+                    $(classItem).attr('checked', $(this).attr('checked'));
+                });
+                return function (status) {
+                    if (null == status) status = true;
+                    if (status) return $(classItem + ':checked');
+                    else return $(classItem + ':not(:checked)');
+                };
+            },
+
+            /**
+             * 字符串格式化
+             * @param str
+             * @param args
+             * @returns {*}
+             */
+            format: function (str, args) {
+                var args = (!args || typeof arguments[1] != 'object') ? this.argumentsToArray(arguments, 2) : args || [];
+                for (var index in args) {
+                    str = str.replace(new RegExp('\{[' + index + ']{1}\}'), args[index]);
+                }
+                return str;
+            },
+
+            argumentsToArray: function (args, shift) {
+                var o = [];
+                for (l = args.length, x = (shift || 0) - 1; x < l; x++) {
+                    o.push(args[x]);
+                }
+                return o;
+            }
 
             //todo 代码来源于 dict.bing.com.cn 未经过测试
             escapeXML: function (s) {

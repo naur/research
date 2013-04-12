@@ -1,0 +1,163 @@
+﻿<html>
+<head>
+    <title> Datepicker </title>
+    <link media="screen" rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"/>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <script type="text/javascript">
+        var global = {
+            file: 'calendar.txt',
+            fso: null,
+            ts: null,
+            calendar: {
+                selectedClass: 'calendar-selected',
+                holsClass: 'calendar-hols',
+                selected: {
+//                    '2013-04-04': {name: '不送货'},
+//                    '2013-04-05': {name: '送货'},
+//                    '2013-04-06': {name: '定点送货'},
+//                    '2013-04-10': {name: '自提'}
+                }
+            },
+            dom: {
+                calendarDatepicker: '#calendar-datepicker',
+                calendarDialog: '#calendar-dialog',
+                calendarDate: '#calendar-date',
+                calendarName: '#calendar-name',
+                calendarComment: '#calendar-comment',
+                calendarSave: '#calendar-save'
+            }
+        };
+
+        function initCalendarDialog(dateText) {
+            $(global.dom.calendarDate).text(dateText);
+            if (global.calendar.selected[dateText]) {
+                $(global.dom.calendarName).val(global.calendar.selected[dateText].name);
+                $(global.dom.calendarComment).val(global.calendar.selected[dateText].comment);
+            } else {
+                $(global.dom.calendarName).val('');
+                $(global.dom.calendarComment).val('');
+            }
+        }
+
+        function syncCalendar(isRead) {
+            if (!global.fso) global.fso = new ActiveXObject("Scripting.FileSystemObject");
+            if (isRead) {
+                var str, ts = global.fso.OpenTextFile(global.file, 1, true);
+                while (!ts.AtEndOfLine) {
+                    str = ts.ReadLine().split(/\s+/);
+                    if (global.calendar.selected[str[0]]) {
+                        global.calendar.selected[str[0]].name = str[1];
+                        global.calendar.selected[str[0]].comment = str[2];
+                    } else {
+                        global.calendar.selected[str[0]] = {
+                            name: str[1],
+                            comment: str[2]
+                        }
+                    }
+                }
+                ts.Close();
+            } else {
+                var str, ts = global.fso.OpenTextFile(global.file, 2, true);
+                for (var key in global.calendar.selected) {
+                    if (!global.calendar.selected.hasOwnProperty(key)) continue;
+                    ts.WriteLine(key + ' ' + global.calendar.selected[key].name + ' ' + global.calendar.selected[key].comment);
+                }
+                ts.Close();
+                alert('Success! ');
+            }
+        }
+
+        $(function () {
+            syncCalendar(true)
+            $(global.dom.calendarSave).on('click', function () {
+                syncCalendar(false);
+            });
+            $(global.dom.calendarDatepicker).datepicker({
+                dateFormat: "yy-mm-dd",
+                beforeShowDay: function (date) {
+                    //if ($.inArray($.datepicker.formatDate("yy-mm-dd", date), global.calendar.selected) != -1) {
+                    //alert(global.calendar.selected.hasOwnProperty($.datepicker.formatDate("yy-mm-dd", date)));
+                    //if (global.calendar.selected[$.datepicker.formatDate("yy-mm-dd", date)]) {
+                    if (global.calendar.selected.hasOwnProperty($.datepicker.formatDate("yy-mm-dd", date))) {
+                        return [true, global.calendar.selectedClass,
+                            global.calendar.selected[$.datepicker.formatDate("yy-mm-dd", date)].name + ' ' +
+                                    global.calendar.selected[$.datepicker.formatDate("yy-mm-dd", date)].comment
+                        ];
+                    }
+                    //星期六、日
+                    if (date.getDay() == 0 ||
+                            date.getDay() == 6) {
+                        return [true, global.calendar.holsClass, ''];
+                    }
+                    return [true, ''];
+                },
+                onChangeMothYear: function (year, month, ui) {
+                    alert(year + "-" + month);
+                },
+                onSelect: function (dateText, ui) {
+                    initCalendarDialog(dateText);
+                    $(global.dom.calendarDialog).dialog({
+                        title: '日历设置',
+                        modal: true,
+                        width: 300,
+                        height: 300,
+                        buttons: [
+                            {
+                                text: 'OK',
+                                click: function () {
+                                    //todo AJAX SUCCESS
+                                    global.calendar.selected[dateText] = {
+                                        name: $(global.dom.calendarName).val(),
+                                        comment: $(global.dom.calendarComment).val()
+                                    };
+                                    $(this).dialog('close');
+                                    $(global.dom.calendarDatepicker).datepicker("refresh");
+                                }
+                            },
+                            {
+                                text: 'Delete',
+                                click: function () {
+                                    //todo AJAX SUCCESS
+                                    //global.calendar.selected[dateText] = null;
+                                    delete global.calendar.selected[dateText];
+                                    $(this).dialog('close');
+                                    $(global.dom.calendarDatepicker).datepicker("refresh");
+                                }
+                            }
+                        ]
+                    });
+                }
+            });
+        });
+    </script>
+    <style type="text/css">
+        .calendar-hols, .calendar-selected {
+            font-style: italic;
+            font-weight: bolder;
+        }
+
+        .calendar-hols  .ui-state-default {
+            background: greenyellow;
+        }
+
+        .calendar-selected  .ui-state-default {
+            background: orange;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="calendar-datepicker"></div>
+<br/>
+<input id="calendar-save" type="button" value="Save"/>
+
+<div id="calendar-dialog" style="display: none;">
+    日期：<label id="calendar-date"></label><br/>
+    <input id="calendar-name" type="text"/><br/>
+    <textarea id="calendar-comment" type="text"/><br/>
+</div>
+
+</body>
+</html>
