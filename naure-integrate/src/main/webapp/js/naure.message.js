@@ -234,22 +234,22 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 return;
             }
             if (opt.content) {
-                $(opt.fadeContainer).html(opt.content);
+                $(options.element).prev().children('p').html(opt.content);
             }
             if (opt.color) {
-                $(opt.fadeContainer).css('background-color', opt.color);
+                $(options.element).prev().children('p').css('background-color', opt.color);
             } else {
-                $(opt.fadeContainer).css('background-color', opt.fadeDefaultColor);
+                $(options.element).prev().children('p').css('background-color', opt.fadeDefaultColor);
             }
             if (/In/i.test(opt.fade)) {
-                $(opt.fadeContainer).fadeIn(1000);
+                $(options.element).prev().children('p').fadeIn(1000);
                 return;
             }
             if (/Out/i.test(opt.fade)) {
-                $(opt.fadeContainer).fadeOut(1500);
+                $(options.element).prev().children('p').fadeOut(1500);
                 return;
             }
-            $(opt.fadeContainer).fadeIn(1000).fadeOut(1500);
+            $(options.element).prev().children('p').fadeIn(1000).fadeOut(1500);
         };
 
         return message;
