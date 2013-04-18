@@ -313,3 +313,41 @@ table .subtable {
     border: 0px;
     padding: 0px -2px 0px -2px;
 }
+
+/*分页*/
+.pagination, .pagination li {
+    list-style: none;
+    list-style-position: outside;
+}
+
+.pagination li {
+    float: right;
+}
+
+.pagination  li a {
+    display: inline-block;
+    padding: 0 8px;
+    margin-left: 5px;
+    height: 21px;
+    line-height: 21px;
+    border: 1px solid #cccccc;
+    cursor: pointer;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.pagination  li a.dots {
+    border: 0 none;
+}
+
+.pagination  li a:hover, a:active {
+    background: #daf1ff;
+}
+
+.pagination  li a.dots:hover {
+    background: #fff;
+}
+
+.pagination  li a.PageSelected {
+    background: #daf1ff;
+}
