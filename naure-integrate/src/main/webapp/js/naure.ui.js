@@ -67,7 +67,7 @@ define(['jquery', 'naure'], function($, NAURE) {
             if (opt.container) $(opt.container).html(str);
 
             //按钮事件
-            $(opt.container + ' a').die()).on('click', function () {
+            $(opt.container + ' a').die().on('click', function () {
                 var currIndex = $(this).text();
                 if (currIndex == opt.index || currIndex == '...') return false;
                 if (currIndex == opt.prev) currIndex = opt.index - 1;
