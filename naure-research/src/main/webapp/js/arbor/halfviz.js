@@ -715,8 +715,8 @@
     var that = {
       init:function(){
         
-        dom.find('.ctrl > a').live('click', that.menuClick)
-        _dialog.find('li>a').live('click', that.exampleClick)
+        dom.find('.ctrl > a').on('click', that.menuClick)
+        _dialog.find('li>a').on('click', that.exampleClick)
         // _dialog.bind('mouseleave', that.hideExamples)
         db.view('app/examples',{
           descending:false,

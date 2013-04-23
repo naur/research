@@ -202,7 +202,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                         break;
                 }
 
-                $('.message>.title').live('click', function () {
+                $('.message>.title').on('click', function () {
                     message.defaults.global.transparent = !message.defaults.global.transparent;
                     if (message.defaults.global.transparent) $('.message').addClass('message-transparent');
                     else $('.message').removeClass('message-transparent');

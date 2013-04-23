@@ -128,7 +128,7 @@ function HandlerElement(options) {
 //----- 事件 START -----------------------------------------------
 
 $(function () {
-    $("#query").live('click', function() {
+    $("#query").on('click', function() {
         if (!monthLimit($('#starttime').val(), $('#endtime').val())) {
             alert('请按月查询数据！');
             return;
@@ -142,13 +142,13 @@ $(function () {
                 });
     });
 
-    $('#organization').live('change', function() {
+    $('#organization').on('change', function() {
         initProvince();
     })
-    $('#province').live('change', function() {
+    $('#province').on('change', function() {
         initCity();
     })
-    $('.export').live('click', function () {
+    $('.export').on('click', function () {
         $('.export').attr('disabled', true);
         $.message.fade({content:'正在添加【' + exportName + '】导出任务，请稍候......', fade:'IN'});
         $.xmlAcquire({xmlUrl:'/task/attach.action',

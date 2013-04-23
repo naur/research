@@ -36,7 +36,7 @@ define(['jquery'], function($) {
         opt.init = function() {
             if (!$(opt.panes).length) {
                 $('body').append('<div class="' + opt.panes.replace('.', '') + '"><a></a><div></div></div>');
-                $(opt.panes_close).live('click', function() {
+                $(opt.panes_close).on('click', function() {
                     opt.hide();
                 });
             }
@@ -82,7 +82,7 @@ define(['jquery'], function($) {
 
             //return temp_id.replace(/,$/, '');
         };
-        $(opt.panes_input_button).live('click', function() {
+        $(opt.panes_input_button).on('click', function() {
             if ($(opt.panes_input_text).val() == '') {
                 return false;
             }
@@ -93,7 +93,7 @@ define(['jquery'], function($) {
             }
             $(opt.panes_input_text).val('');
         });
-        $(opt.panes_delete).live('click', function() {
+        $(opt.panes_delete).on('click', function() {
             $(this).parent().remove();
             opt.catchData();
         });
@@ -114,16 +114,16 @@ define(['jquery'], function($) {
         }
         switch (opt.eventType) {
             case 'click':
-                $(opt.target).live('click', function() {
+                $(opt.target).on('click', function() {
                     opt.placementTarget = this;
                     opt.show();
                 });
                 break;
             case 'mouse':
-                $(opt.panes).live('mouseout', function() {
+                $(opt.panes).on('mouseout', function() {
                     opt.hide();
                 });
-                $(opt.panes).live('mouseover', function() {
+                $(opt.panes).on('mouseover', function() {
                     opt.placementTarget = this;
                     opt.show();
                 });

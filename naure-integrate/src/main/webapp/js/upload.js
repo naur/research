@@ -143,7 +143,7 @@ function init() {
             }
         });
 
-        $('#makeorder').live('click', function () {
+        $('#makeorder').on('click', function () {
             $('#makeorder').attr('disabled', true);
             NAURE.Message.showLine({content:'正在处理文档，请稍候...... '});
 

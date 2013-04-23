@@ -63,7 +63,7 @@ $(function () {
     $('.information').message({title:'Heapsort: ', comment:'Run: '});
     $('.information').message({placement:'before', fade:true});
 
-    $('input[type="button"]').live('click', function () {
+    $('input[type="button"]').on('click', function () {
         var A = new Array(0, 4, 1, 3, 2, 16, 9, 10, 14, 8, 7);
         NAURE.Message.empty();
         NAURE.Message.prompt(A.toString());

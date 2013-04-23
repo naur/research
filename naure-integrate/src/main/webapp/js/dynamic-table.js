@@ -10,20 +10,20 @@ var domRowElement = '<tr>' +
     '</tr>';
 
 $(function () {
-    $('#row-add').live('click', function () {
+    $('#row-add').on('click', function () {
         $('#dataRender').append(domRowElement);
         updateRowIndex();
     });
-    $('.row-delete').live('click', function () {
+    $('.row-delete').on('click', function () {
         $(this).parent().parent().remove();
         updateRowIndex();
     });
-    $('.number-subtract').live('click', function () {
+    $('.number-subtract').on('click', function () {
         $(this).next().val(
             ($(this).next().val() ? parseInt($(this).next().val()) : 1) - 1
         );
     });
-    $('.number-add').live('click', function () {
+    $('.number-add').on('click', function () {
         $(this).prev().val(
             ($(this).prev().val() ? parseInt($(this).prev().val()) : 1) + 1
         );

@@ -284,7 +284,7 @@ function initEvent() {
         });
     });
 
-    $('table tbody tr td').live('dblclick', function () {
+    $('table tbody tr td').on('dblclick', function () {
         if ($(this).find('input').size() > 0) {
             $(this).html($(this).find('input').val().trim());
 

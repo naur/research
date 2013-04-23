@@ -51,7 +51,7 @@
 
         $(function () {
             $('body').message({placement:'append'});
-            $('#stop').live('click', function () {
+            $('#stop').on('click', function () {
                 $(this).attr('disabled', true);
                 if (null == isStart) {
                     GeoEnd();
@@ -70,7 +70,7 @@
             });
             GeoStart();
         });
-        $('#seconds').live('change', function () {
+        $('#seconds').on('change', function () {
             $('#stop').val('Restart');
             isStart = null;
         })

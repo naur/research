@@ -302,7 +302,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
             return this;
         }
         var str = /^\s*</;
-        if ($.browser.msie) { // IE 5+
+        if ($.browser && $.browser.msie) { // IE 5+
             $.fn.xsltv1 = function (options) {
                 var opt = $.extend({
                     xml:null,

@@ -30,7 +30,7 @@ var dom = {
 /*-------------------- 事件 START --------------------*/
 
 function initEvent() {
-    $(dom.gcd).live('click', function () {
+    $(dom.gcd).on('click', function () {
         global.message.show({content: "GCD: Euclid's algorithm", clear: true});
 
         var opt = $.parseJSON($(dom.params).val());
@@ -40,7 +40,7 @@ function initEvent() {
         global.message.show({content: maxGCD, color: 'red'});
     });
 
-    $(dom.gcd_extended).live('click', function () {
+    $(dom.gcd_extended).on('click', function () {
         global.message.show({content: "GCD: The extended form of Euclid's algorithm", clear: true});
 
         var opt = $.parseJSON($(dom.params).val());

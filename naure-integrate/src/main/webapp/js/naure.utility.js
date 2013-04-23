@@ -174,7 +174,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
              * @param classItem
              */
             checkSelect: function (classAll, classItem) {
-                $(classAll).live('click', function () {
+                $(classAll).on('click', function () {
                     $(classItem).attr('checked', $(this).attr('checked'));
                 });
                 return function (status) {
@@ -204,7 +204,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     o.push(args[x]);
                 }
                 return o;
-            }
+            },
 
             //todo 代码来源于 dict.bing.com.cn 未经过测试
             escapeXML: function (s) {
@@ -242,11 +242,11 @@ define(['jquery', 'naure'], function ($, NAURE) {
 
             //----- TR 状态改变事件  -----------------------------------------------//
             trMouseOverEvent: function () {
-                $(".raisefocus tr td").live("mouseover", function () {
+                $(".raisefocus tr td").on("mouseover", function () {
                     originalClass = this.parentNode.className;
                     this.parentNode.className = 'tdon';
                 });
-                $(".raisefocus tr td").live("mouseout", function () {
+                $(".raisefocus tr td").on("mouseout", function () {
                     this.parentNode.className = originalClass;
                 });
             }

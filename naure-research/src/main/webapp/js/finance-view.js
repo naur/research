@@ -193,7 +193,7 @@ function initEvent() {
             if (button) button.click();
         }
     });
-    $(dom.exponent).live('change', function () {
+    $(dom.exponent).on('change', function () {
         if ($(dom.exponent).val()) {
             var buffer = [];
             var linked = new global.structures.Linked();
@@ -215,14 +215,14 @@ function initEvent() {
             });
         }
     });
-    $(dom.layer).live('click', function () {
+    $(dom.layer).on('click', function () {
         if ($(this)[0].checked) {
             $(dom.canvas[$(this).attr('tag')]).parent().show();
         } else {
             $(dom.canvas[$(this).attr('tag')]).parent().hide();
         }
     });
-    $('body').live('keyup', function (event) {
+    $('body').on('keyup', function (event) {
         if (global.accesskey == event.key) {
             global.overlay.change();
         }

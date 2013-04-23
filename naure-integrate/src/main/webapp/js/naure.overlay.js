@@ -133,20 +133,20 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 overlay.items = [];
                 $('.overlay .node').each(function (index) {
                     if (typeof(opt.nodes[$(this).attr('tag')]) == 'function')
-                        $(this).live(opt.eventType, opt.nodes[this.innerText]);
+                        $(this).on(opt.eventType, opt.nodes[this.innerText]);
                     else
                         $(this).parent().prev().prev().children(':first-child').bind(opt.eventType, this, opt.nodes[$(this).attr('tag')].handler)
 
                     overlay.items.push({key: $(this).attr('tag'), value: this});
                 });
 
-                $(dom.overlayClean).live('click', function () {
+                $(dom.overlayClean).on('click', function () {
                     NAURE.Message.empty();
                     if (opt.clean)
                         opt.clean();
                 });
 
-                $(dom.overlayMinimize).live('click', function () {
+                $(dom.overlayMinimize).on('click', function () {
                     overlay.change();
                 });
             }
