@@ -216,7 +216,7 @@ function renderLearningSchedule(elem) {
     message.show({content:'正在获取数据...'});
 
     dataAreaElement.NAURE_HTTP_xmlAcquire({
-        xmlUrl:'/learn/schedule/1,2.xml',
+        xmlUrl:'/learn/schedule/1.xml',
         xslUrl:'/xsl/learning-schedule.xsl',
         context:elem,
         error:function (ex) {

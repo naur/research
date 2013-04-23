@@ -10,7 +10,7 @@
  */
 
 var jslocalpath = '/Research/projects/research/naure-integrate/src/main/webapp';
-//jslocalpath = '';
+jslocalpath = '';
 var jsresearch = jslocalpath.replace('naure-integrate', 'naure-research');
 
 
