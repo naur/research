@@ -73,7 +73,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                         case pattern['break']:
                             return;
                         case pattern['continue']:
-                            if (currOpt.success) currOpt.success(options);
+                            if (currOpt.success) currOpt.success(currOpt);
                             if (currOpt.successor) currOpt.successor.process(options);
                             return;
                     }
@@ -89,7 +89,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                             }
 
                             if (currOpt.success)
-                                currOpt.success($.extend(options, {result: result}));
+                                currOpt.success($.extend(currOpt, {result: result}));
                         } catch (ex) {
                             if (currOpt.error)
                                 currOpt.error({error: ex});
@@ -108,7 +108,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
 //                                window.console.log(JSON.stringify(err));
                             },
                             success: function (result) {
-                                if (currOpt.success) currOpt.success($.extend(options, {result: result}));
+                                if (currOpt.success) currOpt.success($.extend(currOpt, {result: result}));
                                 if (options) delete options.result;
                                 if (currOpt.successor) currOpt.successor.process(options);
                             }

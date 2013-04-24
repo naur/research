@@ -224,7 +224,18 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
         message.fade = function (options) {
             var opt = $.extend({
                 fadeClass: 'message-fade',
-                fadeContainer: '.message-fade p'
+                fadeContainer: '.message-fade p',
+                domHandle: function (status) {
+                    if (options.element) {
+                        if ('INPUT' == $(options.element).attr('tagName'))
+                            $(options.element).attr('disabled', !status ? false : true);
+                        else {
+                            if (!$(options.element).attr('fade'))
+                                $(options.element).attr('fade', $(options.element).css('display'));
+                            $(options.element).css('display', !status ? $(options.element).attr('fade') : 'none');
+                        }
+                    }
+                }
             }, message.defaults, {placement: 'before', fade: true}, options);
 
             if (!$(opt.fadeContainer).length || opt.fadeClass != $(options.element).prev().attr('class')) {
@@ -241,15 +252,17 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
             } else {
                 $(options.element).prev().children('p').css('background-color', opt.fadeDefaultColor);
             }
+
+            opt.domHandle(true);
             if (/In/i.test(opt.fade)) {
-                $(options.element).prev().children('p').fadeIn(1000);
+                $(options.element).prev().children('p').fadeIn(1000, opt.domHandle);
                 return;
             }
             if (/Out/i.test(opt.fade)) {
-                $(options.element).prev().children('p').fadeOut(1500);
+                $(options.element).prev().children('p').fadeOut(1500, opt.domHandle);
                 return;
             }
-            $(options.element).prev().children('p').fadeIn(1000).fadeOut(1500);
+            $(options.element).prev().children('p').fadeIn(1000).fadeOut(1500, opt.domHandle);
         };
 
         return message;
