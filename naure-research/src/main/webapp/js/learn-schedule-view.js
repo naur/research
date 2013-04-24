@@ -157,10 +157,20 @@ function renderChart() {
                 endTime = new Date(match[2]);
         }
     });
+    
+    var currDate = new Date();
+    startTime.setMonth(currDate.getMonth());
+    startTime.setDate(1);
+    endTime.setMonth(currDate.getMonth());
+    endTime.setDate(31);
 
     $('.chart').each(function () {
         var match = $(this).parent().parent().find('td:eq(4)').text().trim().match(regex);
-        if (match) {
+        if (match && 
+        	new Date(match[1]) >= startTime &&
+        	new Date(match[1]) <= endTime &&
+        	new Date(match[2]) >= startTime &&
+        	new Date(match[2]) <= endTime) {
             gantt.block({
                 container: this,
                 coordinate: {X1: startTime, X2: endTime,
