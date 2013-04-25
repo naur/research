@@ -164,6 +164,18 @@ function renderChart() {
     endTime.setMonth(currDate.getMonth());
     endTime.setDate(31);
 
+    window.console.log(startTime + " - " + endTime);
+
+    var astartTime = new Date();
+    astartTime.setDate(1);
+    var aendTime = new Date();
+    aendTime.setMonth(aendTime.getMonth() + 1);
+    aendTime.setDate(1);
+    aendTime = new Date(aendTime - 24 * 60 * 60 * 1000);
+
+    window.console.log(astartTime + " - " + aendTime);
+
+
     $('.chart').each(function () {
         var match = $(this).parent().parent().find('td:eq(4)').text().trim().match(regex);
         if (match && 
