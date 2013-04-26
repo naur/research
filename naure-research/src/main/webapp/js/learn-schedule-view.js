@@ -158,23 +158,12 @@ function renderChart() {
         }
     });
     
-    var currDate = new Date();
-    startTime.setMonth(currDate.getMonth());
+    startTime = new Date();
     startTime.setDate(1);
-    endTime.setMonth(currDate.getMonth());
-    endTime.setDate(31);
-
-    window.console.log(startTime + " - " + endTime);
-
-    var astartTime = new Date();
-    astartTime.setDate(1);
-    var aendTime = new Date();
-    aendTime.setMonth(aendTime.getMonth() + 1);
-    aendTime.setDate(1);
-    aendTime = new Date(aendTime - 24 * 60 * 60 * 1000);
-
-    window.console.log(astartTime + " - " + aendTime);
-
+    endTime = new Date();
+    endTime.setMonth(endTime.getMonth() + 1);
+    endTime.setDate(1);
+    endTime = new Date(endTime - 24 * 60 * 60 * 1000);
 
     $('.chart').each(function () {
         var match = $(this).parent().parent().find('td:eq(4)').text().trim().match(regex);

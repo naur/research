@@ -48,13 +48,13 @@ define(['jquery', 'naure.message', 'naure.math', 'naure.utility'], function ($, 
 
                 opt.ctx.strokeStyle = '#b3d8ea'
                 opt.ctx.fillStyle = "green";
-                var days = utility.getDays(opt.coordinate.X1, opt.coordinate.X2);
-                var days1 = utility.getDays(opt.coordinate.Y1, opt.coordinate.Y2);
+                var daysX = utility.getDays(opt.coordinate.X1, opt.coordinate.X2);
+                var daysY = utility.getDays(opt.coordinate.Y1, opt.coordinate.Y2);
 
-                var unit = opt.width / days.length;
+                var unit = opt.width / daysX.length;
                 var newTime = new Date().getTime();;
-                for (var index in days) {
-                    if (!days.hasOwnProperty(index)) continue;
+                for (var index in daysX) {
+                    if (!daysX.hasOwnProperty(index)) continue;
                     //竖线
                     if (index != 0) {
                         opt.ctx.beginPath();
@@ -63,20 +63,23 @@ define(['jquery', 'naure.message', 'naure.math', 'naure.utility'], function ($, 
                         opt.ctx.stroke();
                     }
                     //文字
-                    if (!days1)
-                        opt.ctx.fillText(days[index].getDate(), round(index * unit + unit / 2) + 0.5, 0);
+                    if (!daysY)
+                        opt.ctx.fillText(daysX[index].getDate(), round(index * unit + unit / 2) + 0.5, 0);
 
-                    if (days1 && days1.length > 0 && days[index].getTime() == days1[0].getTime()) {
+                    if (daysY && daysY.length > 0 && 
+                    	daysX[index].getFullYear() == daysY[0].getFullYear() &&
+                    	daysX[index].getMonth() == daysY[0].getMonth() &&
+                    	daysX[index].getDate() == daysY[0].getDate()) {
                         opt.ctx.save();
-                        if (newTime > days[index].getTime())
+                        if (newTime > daysX[index].getTime())
                             opt.ctx.fillStyle = 'green';
                         else
                             opt.ctx.fillStyle = 'red';
                         opt.ctx.fillRect(round(index * unit) + 0.5, 0, unit, opt.height);
                         opt.ctx.fillStyle = '#A22E00';
-                        opt.ctx.fillText(days[index].getDate(), round(index * unit + unit / 2) + 0.5, 0);
+                        opt.ctx.fillText(daysX[index].getDate(), round(index * unit + unit / 2) + 0.5, 0);
                         opt.ctx.restore();
-                        days1.shift();
+                        daysY.shift();
                     }
                 }
             }
