@@ -13,6 +13,7 @@
 
 var naure, message, overlay, http, overlayNodes, messageElement, dataAreaElement, tableHead, gantt;
 var startTime, endTime;
+var ONEDAY = 24 * 60 * 60 * 1000;
 var uploadOpt = {
     'script': '/upload.xml',
     'scriptData': {
@@ -157,21 +158,21 @@ function renderChart() {
                 endTime = new Date(match[2]);
         }
     });
-    
+
     startTime = new Date();
     startTime.setDate(1);
     endTime = new Date();
     endTime.setMonth(endTime.getMonth() + 1);
     endTime.setDate(1);
-    endTime = new Date(endTime - 24 * 60 * 60 * 1000);
+    endTime = new Date(endTime - ONEDAY);
 
     $('.chart').each(function () {
         var match = $(this).parent().parent().find('td:eq(4)').text().trim().match(regex);
-        if (match && 
-        	new Date(match[1]) >= startTime &&
-        	new Date(match[1]) <= endTime &&
-        	new Date(match[2]) >= startTime &&
-        	new Date(match[2]) <= endTime) {
+        if (match &&
+            new Date(match[1]) >= startTime &&
+            new Date(match[1]) <= endTime &&
+            new Date(match[2]) >= startTime &&
+            new Date(match[2]) <= endTime) {
             gantt.block({
                 container: this,
                 coordinate: {X1: startTime, X2: endTime,
@@ -277,6 +278,8 @@ function initEvent() {
 
                 var text = obj.output.split(/[\r\n]+/i);
                 var schedule = null;
+                var prevTime = null;
+                var time = null;
                 for (var i = 0; i < text.length; i++) {
                     schedule = text[i].split('|');
                     if (schedule && schedule.length > 1) {
@@ -287,6 +290,17 @@ function initEvent() {
                             path: schedule[3].trim(),
                             heading: schedule[4].trim()
                         };
+
+                        //todo
+                        if (!isNaN(parseInt(schedule.time))) {
+                            prevTime = new Date(schedule[2].trim()) - ONEDAY;
+                        }
+                        if (prevTime) {
+                            time = new Date(prevTime + ONEDAY).format('yyyy-MM-dd');
+                            time += (time + " -> " + new Date(prevTime + parseInt(schedule.days) * ONEDAY).format('yyyy-MM-dd'));
+                            schedule.time = time;
+                        }
+
                         AddLearningSchedule(schedule)
                     } else {
                         message.show({content: JSON.stringify(schedule), color: 'yellow'});
