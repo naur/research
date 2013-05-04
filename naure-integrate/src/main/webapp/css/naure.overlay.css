@@ -94,6 +94,7 @@ body {
 /*}*/
 
 .overlay section figure {
+    margin: 0;
     border-bottom: 1px solid #444;
     vertical-align: center;
     /*min-height: 20px;*/
@@ -187,6 +188,13 @@ body {
 
 .overlay .delete:hover {
     opacity: 1.0;
+}
+
+
+.overlay input[type=text] {
+    height: auto;
+    font-size: inherit;
+    width: auto;
 }
 
 .overlay input[type=button] {

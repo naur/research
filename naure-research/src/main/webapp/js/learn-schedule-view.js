@@ -278,8 +278,7 @@ function initEvent() {
 
                 var text = obj.output.split(/[\r\n]+/i);
                 var schedule = null;
-                var prevTime = null;
-                var time = null;
+                var timeStart = null, timeEnd = null;
                 for (var i = 0; i < text.length; i++) {
                     schedule = text[i].split('|');
                     if (schedule && schedule.length > 1) {
@@ -293,12 +292,12 @@ function initEvent() {
 
                         //todo
                         if (!isNaN(parseInt(schedule.time))) {
-                            prevTime = new Date(schedule[2].trim()) - ONEDAY;
+                            timeStart = new Date(schedule.time);
                         }
-                        if (prevTime) {
-                            time = new Date(prevTime + ONEDAY).format('yyyy-MM-dd');
-                            time += (time + " -> " + new Date(prevTime + parseInt(schedule.days) * ONEDAY).format('yyyy-MM-dd'));
-                            schedule.time = time;
+                        if (timeStart && !isNaN(parseInt(schedule.days))) {
+                            timeEnd = new Date(timeStart.getTime() + (parseInt(schedule.days) - 1) * ONEDAY)
+                            schedule.time = timeStart.format('yyyy-MM-dd') + " -> " + timeEnd.format('yyyy-MM-dd');
+                            timeStart = new Date(timeEnd.getTime() + ONEDAY);
                         }
 
                         AddLearningSchedule(schedule)
@@ -310,7 +309,7 @@ function initEvent() {
         });
     });
 
-    $('table tbody tr td').on('dblclick', function () {
+    $(document).on('dblclick', 'table tbody tr td', function () {
         if ($(this).find('input').size() > 0) {
             $(this).html($(this).find('input').val().trim());
 

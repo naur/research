@@ -45,7 +45,7 @@ a:hover {
 }
 
 figure, .figure {
-    margin: 15px;
+    /*margin: 15px;*/
     /*width: 100px;*/
 }
 
@@ -219,6 +219,10 @@ table tbody .tdodd {
 
 table tbody .tdeven {
     background-color: #f1f9fc;
+}
+
+table thead tr .cellHide {
+    display: none;
 }
 
 table tbody tr .cellHide {
