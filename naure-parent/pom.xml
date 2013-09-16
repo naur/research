@@ -73,8 +73,6 @@
                 <artifactId>naure-integrate</artifactId>
                 <version>${naure.version}</version>
                 <type>war</type>
-                <!--<scope>runtime</scope>-->
-                <scope>compile</scope>
             </dependency>
 
             <!--<dependency>-->

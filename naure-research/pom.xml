@@ -19,7 +19,7 @@
             <groupId>org.naure</groupId>
             <artifactId>naure-integrate</artifactId>
             <type>war</type>
-            <scope>compile</scope>
+            <!--<scope>runtime</scope>-->
         </dependency>
 
 
