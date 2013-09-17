@@ -26,7 +26,8 @@
             <groupId>org.naure</groupId>
             <artifactId>naure-integrate</artifactId>
             <classifier>classes</classifier>
-            <!--<scope>runtime</scope>-->
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
