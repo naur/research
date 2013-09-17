@@ -72,6 +72,13 @@
                 <groupId>org.naure</groupId>
                 <artifactId>naure-integrate</artifactId>
                 <version>${naure.version}</version>
+                <classifier>classes</classifier>
+            </dependency>
+
+            <dependency>
+                <groupId>org.naure</groupId>
+                <artifactId>naure-integrate</artifactId>
+                <version>${naure.version}</version>
                 <type>war</type>
             </dependency>
 

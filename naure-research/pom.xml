@@ -22,6 +22,12 @@
             <!--<scope>runtime</scope>-->
         </dependency>
 
+        <dependency>
+            <groupId>org.naure</groupId>
+            <artifactId>naure-integrate</artifactId>
+            <classifier>classes</classifier>
+            <!--<scope>runtime</scope>-->
+        </dependency>
 
         <dependency>
             <groupId>org.naure</groupId>
@@ -112,14 +118,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <overlays>
-                        <overlay>
-                            <groupId>org.naure</groupId>
-                            <artifactId>naure-integrate</artifactId>
-                        </overlay>
-                    </overlays>
-                </configuration>
+                <!--<configuration>-->
+                    <!--<overlays>-->
+                        <!--<overlay>-->
+                            <!--<groupId>org.naure</groupId>-->
+                            <!--<artifactId>naure-integrate</artifactId>-->
+                        <!--</overlay>-->
+                    <!--</overlays>-->
+                <!--</configuration>-->
             </plugin>
         </plugins>
     </build>
