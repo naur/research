@@ -2,14 +2,14 @@ var load = {
     menuTemplate: "",
     css: {dom: "",
         hrefs: [
-            "/Research/projects/research/naure-integrate/src/main/webapp/css/global.css",
-            "/Research/projects/research/naure-integrate/src/main/webapp/css/modern.css"
+            "/css/global.css",
+            "/css/modern.css"
         ]
     },
     script: {
         srcs: [
-            "/Research/projects/research/naure-integrate/src/main/webapp/js/require.js",
-            "/Research/projects/research/naure-integrate/src/main/webapp/js/require.config.js"
+            "/js/require.js",
+            "/js/require.config.js"
         ]
     }
 };

@@ -3,7 +3,7 @@
 <head>
     <title> Naure.org Research </title>
     <script type="text/javascript" data="css"
-            src="/Research/projects/research/naure-integrate/src/main/webapp/js/load.js"></script>
+            src="/js/load.js"></script>
     <script id="menuTemplate" type="text/x-jsrender">
         {{if type}}
         <li data-role="{{:type}}">
@@ -72,7 +72,7 @@
                             <div class="tile double bg-color-green">
                                 <div class="tile-content">
                                     <img width="80" class="place-right"
-                                         src="/Research/projects/research/naure-integrate/src/main/webapp/images/me.jpg">
+                                         src="/images/me.jpg">
                                     <h4 style="margin-bottom: 5px;">NAURE</h4>
 
                                     <p>
@@ -101,11 +101,11 @@
 
 
 <script type="text/javascript" data="script"
-        src="/Research/projects/research/naure-integrate/src/main/webapp/js/load.js"></script>
+        src="/js/load.js"></script>
 <script type="text/javascript">
     require(['jquery', 'jquery.template', 'modern.dropdown', 'modern.calendar', 'naure.analytics'], function ($) {
         $(function () {
-            $.get("/Research/projects/research/naure-research/src/main/webapp/resources/menu.json", function (result) {
+            $.get("/resources/menu.json", function (result) {
                 $(".menu").html(
                         $("#menuTemplate").render($.parseJSON(result))
                 );
