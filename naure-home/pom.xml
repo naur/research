@@ -19,6 +19,15 @@
             <groupId>org.naure</groupId>
             <artifactId>naure-integrate</artifactId>
             <type>war</type>
+            <!--<scope>runtime</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.naure</groupId>
+            <artifactId>naure-integrate</artifactId>
+            <classifier>classes</classifier>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
@@ -28,17 +37,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <overlays>
-                        <overlay>
-                            <groupId>org.naure</groupId>
-                            <artifactId>naure-integrate</artifactId>
-                            <!--<excludes>-->
-                            <!--<exclude>WEB-INF/classes/images/sampleimage-dependency.jpg</exclude>-->
-                            <!--</excludes>-->
-                        </overlay>
-                    </overlays>
-                </configuration>
+                <!--<configuration>-->
+                    <!--<overlays>-->
+                        <!--<overlay>-->
+                            <!--<groupId>org.naure</groupId>-->
+                            <!--<artifactId>naure-integrate</artifactId>-->
+                            <!--&lt;!&ndash;<excludes>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<exclude>WEB-INF/classes/images/sampleimage-dependency.jpg</exclude>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</excludes>&ndash;&gt;-->
+                        <!--</overlay>-->
+                    <!--</overlays>-->
+                <!--</configuration>-->
             </plugin>
         </plugins>
     </build>
