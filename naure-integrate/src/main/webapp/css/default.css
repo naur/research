@@ -3,7 +3,8 @@
 /*text-shadow: 0px 1px 0px #d1d1d1;*/
 
 * {
-    font: arial, Microsoft YaHei;
+    /*font: arial, Microsoft YaHei;*/
+    font-family: Arial, Helvetica, Sans-Serif;
 }
 
 /*取消下划线 */
