@@ -64,11 +64,6 @@
     <!--一级子节点-->
     <xsl:template name="cell">
         <td>
-            <!--跨行-->
-            <!--<xsl:attribute name="rowspan">-->
-                <!--&lt;!&ndash;<xsl:text>tdeven</xsl:text>&ndash;&gt;-->
-                <!--<xsl:value-of select="count(.)" disable-output-escaping="yes"/>-->
-            <!--</xsl:attribute>-->
             <xsl:choose>
                 <xsl:when test="child::*">
                     <table class="subtable">
