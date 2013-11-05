@@ -20,7 +20,7 @@ var overlayNodes = {
         message.empty();
         message.show({content:'正在获取数据...'});
 
-        $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
+        $('article section:eq(1)').NAURE_HTTP_Acquire({
             xmlUrl:'/learn/eng/get.xml',
             xslUrl:'/xsl/table.xsl',
             context:this,
@@ -48,7 +48,7 @@ var overlayNodes = {
         var word = $('#overlay-input').val();
         if (word.length > 0) {
             message.show({content:'Add Eng ' + word + '...'});
-            $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
+            $('article section:eq(1)').NAURE_HTTP_Acquire({
                 xmlUrl:'/learn/eng/' + word + "/add.xml",
                 xslUrl:'/xsl/table.xsl',
                 context:this,

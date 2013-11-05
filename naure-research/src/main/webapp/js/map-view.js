@@ -121,7 +121,7 @@ var overlayNodes = {
                 return;
             }
 
-            NAURE.HTTP.xmlAcquire({
+            NAURE.HTTP.acquire({
                 xmlUrl:'/map/path/' + traceId + '.xml',
                 context:this,
                 success:function (obj) {

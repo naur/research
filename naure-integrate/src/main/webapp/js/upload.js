@@ -80,7 +80,7 @@ function init() {
             },
             'onComplete':function (even, queueId, fileObj, response, data) {
                 NAURE.Message.promptLine({content:"上传文件【" + fileObj.name + "】完成！"});
-                NAURE.HTTP.xmlAcquire({ xml:response, xslUrl:uploadOpt.uploadvalidXsl,
+                NAURE.HTTP.Acquire({ xml:response, xslUrl:uploadOpt.uploadvalidXsl,
                     error:function (ex) {
                         NAURE.Message.promptLine({content:JSON.stringify(ex.content), color:'red'});
                     },
@@ -147,7 +147,7 @@ function init() {
             $('#makeorder').attr('disabled', true);
             NAURE.Message.showLine({content:'正在处理文档，请稍候...... '});
 
-            NAURE.HTTP.xmlAcquire({
+            NAURE.HTTP.Acquire({
                 xmlUrl:uploadOpt.handler(),
                 //xslUrl: uploadOpt.makevalidXsl,
                 optionData:{

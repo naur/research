@@ -97,7 +97,7 @@ global.nodes = {
         var symbol = $(dom.overlayInput).val().length > 0 ? $(dom.overlayInput).val() : 'sz000010';
 
         //http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=20120101&end_date=20120701&type=xml
-        global.http.xmlAcquire({
+        global.http.acquire({
             xmlUrl: 'http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=' + symbol + '&begin_date=' + startDate.format('yyyyMMdd') + '&end_date=' + endDate.format('yyyyMMdd') + '&type=xml',
             context: this,
             error: function (ex) {
@@ -246,6 +246,9 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.xsl', 'naure.math.st
     global.systemEquation = new NAURE.Graphics.Equation();
 
     $.support.cors = true;
+    $.ajaxSetup({
+        crossDomain: true
+    });
 
     $(function () {
         $('body').message({overlay: 'left-bottom', title: '', multiple: false});

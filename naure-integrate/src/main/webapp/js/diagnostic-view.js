@@ -18,7 +18,7 @@ var overlayNodes = {
         $('article section:eq(1)').empty();
         message.show({content:'正在获取数据...'});
 
-        $('article section:eq(1)').NAURE_HTTP_xmlAcquire({
+        $('article section:eq(1)').NAURE_HTTP_Acquire({
             xmlUrl:'/diagnostic/session.xml',
             xslUrl:'/xsl/table.xsl',
             context:this,
