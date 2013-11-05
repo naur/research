@@ -18,9 +18,11 @@ asyncHandler = function (callback, timeout, param) {
 }
 
 
-define(['jquery', 'naure'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.xsl'], function ($, NAURE) {
 
     NAURE.Pattern = (function () {
+        var http = YHD.HTTP;
+
         var pattern = {
             'break': 'break',
             'continue': 'continue',
@@ -99,7 +101,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                         if (currOpt.successor)
                             currOpt.successor.process(options);
                     } else {
-                        dos.http.acquire({
+                        http.acquire({
                             uri: currOpt.handler,
                             data: currOpt.request,
                             context: currOpt.context,
