@@ -108,7 +108,7 @@
                     <!-- 把class打包jar作为附件：文件在WEB-INF\classes-->
                     <attachClasses>true</attachClasses>
                     <!-- 把class打包jar :  文件在WEB-INF\lib -->
-                    <archiveClasses>true</archiveClasses>
+                    <!--<archiveClasses>true</archiveClasses>-->
                 </configuration>
             </plugin>
         </plugins>
