@@ -12,7 +12,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
 
     var utility = NAURE.Utility;
 
-    NAURE.HTTP.xmlAcquire = function (options) {
+    NAURE.HTTP.acquire = function (options) {
         var opt = $.extend({
             type: 'POST',
             dataType: 'xml',
@@ -138,9 +138,9 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
             });
         }
     };
-    $.fn.NAURE_HTTP_xmlAcquire = function (options) {
+    $.fn.NAURE_HTTP_Acquire = function (options) {
         options.renderContainer = this;
-        NAURE.HTTP.xmlAcquire(options);
+        NAURE.HTTP.acquire(options);
         return this;
     }
 
@@ -522,7 +522,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
                 error:null,
                 success:null
             }, options);
-            $(opt.container).NAURE_HTTP_xmlAcquire({
+            $(opt.container).NAURE_HTTP_Acquire({
                 xml:opt.xml,
                 xmlUrl:opt.xmlUrl,
                 xmlCache:opt.xmlCache,

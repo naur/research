@@ -24,7 +24,7 @@ function renderOption(options) {
     var id = parameters.context == null ? '' : $(parameters.context).val();
     var level = parameters.container == null ? '' : $(parameters.container)[0].id
     $(parameters.container).html('');
-    $(parameters.container).xmlAcquire({
+    $(parameters.container).acquire({
                 xmlUrl: '../regionalism/get.action',
                 xslUrl: '../resources/xsl/score/regionalism.xsl',
                 optionData: {
@@ -89,7 +89,7 @@ function HandlerElement(options) {
     $('#smart-paginator').html("");
     $.message.empty();
     $.message.show({content:'正在获取数据，请稍候......'});
-    $('#dataRender').xmlAcquire({
+    $('#dataRender').acquire({
                 xmlUrl: parameters.url,
                 xslUrl: parameters.xsl,
                 optionData: jsonData(parameters.pageIndex),
@@ -151,7 +151,7 @@ $(function () {
     $('.export').on('click', function () {
         $('.export').attr('disabled', true);
         $.message.fade({content:'正在添加【' + exportName + '】导出任务，请稍候......', fade:'IN'});
-        $.xmlAcquire({xmlUrl:'/task/attach.action',
+        $.acquire({xmlUrl:'/task/attach.action',
             optionData:$.extend({
                 "where.taskName":'导出' + exportName + '',
                 "where.taskCallback":'intelExportStrategy'

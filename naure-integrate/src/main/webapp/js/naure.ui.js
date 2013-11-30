@@ -95,7 +95,7 @@ define(['jquery', 'naure'], function($, NAURE) {
             success:null
         }, options);
 
-        NAURE.HTTP.xmlAcquire({
+        NAURE.HTTP.acquire({
             xmlUrl: '/xml/templet/' + opt.name + '.xml',
             xmlCache:true,
             //xslUrl: '/xsl/body.xsl',

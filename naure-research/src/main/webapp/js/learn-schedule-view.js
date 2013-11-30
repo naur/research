@@ -123,7 +123,7 @@ function uploadify() {
         },
         'onComplete': function (even, queueId, fileObj, response, data) {
             message.promptLine({content: "上传文件【" + fileObj.name + "】完成！"});
-            http.xmlAcquire({
+            http.acquire({
                 xml: response,
                 //xslUrl:uploadOpt.uploadvalidXsl,
                 error: function (ex) {
@@ -203,7 +203,7 @@ function AddLearningSchedule(schedule, context) {
     }
 
     if (context) message.show({content: 'Add Schedule ' + JSON.stringify(schedule)});
-    http.xmlAcquire({
+    http.acquire({
         xmlUrl: xmlUrl,
         //xslUrl:'/xsl/table.xsl',
         context: context,
@@ -228,7 +228,7 @@ function renderLearningSchedule(elem) {
     message.show({content: '正在获取数据...'});
 
     //todo url:  /learn/schedule/1,2,3.xml
-    dataAreaElement.NAURE_HTTP_xmlAcquire({
+    dataAreaElement.NAURE_HTTP_Acquire({
         xmlUrl: '/learn/schedule/' + (location.search ? location.search.substr(1) : 1) + '.xml',
         xslUrl: '/xsl/learning-schedule.xsl',
         context: elem,
@@ -266,7 +266,7 @@ function initEvent() {
         message.show({content: '正在获取数据...'});
         $(this).attr('disabled', true);
 
-        http.xmlAcquire({
+        http.acquire({
             xmlUrl: '/upload/learn/learning-schedule.txt',
             context: this,
             dataType: 'text',

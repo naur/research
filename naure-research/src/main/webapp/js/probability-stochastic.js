@@ -65,7 +65,7 @@ function initFieldsValues() {
         if (fieldTemp && fieldTemp.values)
             $(this).val(fieldTemp.values);
         else if (fieldTemp && fieldTemp.script)
-            http.xmlAcquire({
+            http.acquire({
                 xmlUrl:fieldTemp.script,
                 xslUrl:fieldTemp.xsl,
                 context:this,
@@ -229,7 +229,7 @@ function submitSampling() {
             tempData['params.' + key] = tempSampling[key];
         }
         tempData['params.remark'] = $("#remark").val();
-        http.xmlAcquire({
+        http.acquire({
             xmlUrl:'/sampling/jqAdd.action',
             optionData:tempData,
             context:this,
