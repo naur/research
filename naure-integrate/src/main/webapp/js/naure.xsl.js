@@ -26,7 +26,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
             xslCache: true,
 
             optionData: null,
-            renderContainer: null,
+            container: null,
             pagingContainer: null,
 
             context: null,
@@ -57,11 +57,11 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
 
             opt.xml = data;
             if (opt.xsl == null && opt.xslUrl == null) {
-                if (opt.renderContainer != null) { // || opt.dataType == 'json'
-                    $(opt.renderContainer).html(utility.encodeHTML(opt.xml.xml));
+                if (opt.container != null) { // || opt.dataType == 'json'
+                    $(opt.container).html(utility.encodeHTML(opt.xml.xml));
                 }
                 if (opt.success)
-                    opt.success({target: opt.renderContainer, output: opt.xml, context: opt.context});
+                    opt.success({target: opt.container, output: opt.xml, context: opt.context});
                 if (opt.domState) opt.domState({disabled: false});
                 return false;
             }
@@ -74,7 +74,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
                         xmlCache: opt.xmlCache,
                         xslUrl: opt.xslUrl,
                         xslCache: opt.xslCache,
-                        target: opt.renderContainer,
+                        target: opt.container,
                         error: opt.xsltError,
                         context: opt.context,
                         success: opt.xsltSuccess
@@ -86,7 +86,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
                         xmlCache: opt.xmlCache,
                         xslUrl: opt.xslUrl,
                         xslCache: opt.xslCache,
-                        target: opt.renderContainer,
+                        target: opt.container,
                         error: opt.xsltError,
                         success: opt.xsltSuccess
                     }
@@ -117,7 +117,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
                 }
             }
             if (opt.success != null) {
-                //output, opt.renderContainer
+                //output, opt.container
                 opt.success(obj);
             }
             if (opt.domState) opt.domState({disabled: false});
@@ -139,7 +139,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
         }
     };
     $.fn.NAURE_HTTP_Acquire = function (options) {
-        options.renderContainer = this;
+        options.container = this;
         NAURE.HTTP.acquire(options);
         return this;
     }

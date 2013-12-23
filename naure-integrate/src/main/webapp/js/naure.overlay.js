@@ -71,7 +71,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 var opt = $.extend({
                     target: null,
                     nodes: null,
-                    renderContainer: 'body',
+                    container: 'body',
                     placement: "right-bottom", //left, right, center, top, center, bottom
                     eventHandlers: null,
                     layout: "panel-center", //left, right, center
@@ -108,7 +108,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                         '   </section>' +
                         '</nav>';
 
-                $(opt.renderContainer).append(opt.container);
+                $(opt.container).append(opt.container);
                 $(dom.overlaySection).empty();
 
                 var isRichNode = false;
@@ -156,7 +156,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
     })();
 
     $.fn.overlay = function (options) {
-        options.renderContainer = this;
+        options.container = this;
         NAURE.UI.Overlay.init(options);
         return this;
     };
