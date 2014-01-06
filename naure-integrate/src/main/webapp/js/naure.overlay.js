@@ -97,7 +97,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 overlay.isMminimize = false;
                 overlay.onChanged = opt.onChanged;
 
-                opt.html =
+                opt.navHtml =
                     '<nav class="overlay overlay-right-bottom">' +
                         '   <section></section>' +
                         '   <section class="buttons">' +
@@ -108,7 +108,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                         '   </section>' +
                         '</nav>';
 
-                $(opt.container).append(opt.html);
+                $(opt.container).append(opt.navHtml);
                 $(dom.overlaySection).empty();
 
                 var isRichNode = false;

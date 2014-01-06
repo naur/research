@@ -45,7 +45,7 @@
         <jactor.version>4.2.0</jactor.version>
         <jedis.version>2.0.0</jedis.version>
         <zookeeper.version>3.4.5</zookeeper.version>
-        <naure.log.file.path>/data/web/logs</naure.log.file.path>
+        <naure.log.file.path>/var/web/logs</naure.log.file.path>
     </properties>
 
     <dependencyManagement>
