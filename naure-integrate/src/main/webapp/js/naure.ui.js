@@ -61,6 +61,7 @@ define(['jquery', 'naure'], function($, NAURE) {
 
             this.init = function () {
                 $(opt.container).after('<ul class="' + opt.dom.prompt.replace('.', '') + '"></ul>');
+                opt.dom.prompt = $(opt.container).next(opt.dom.prompt);
                 $(opt.dom.prompt).css("top", $(opt.container).position().top + $(opt.container).outerHeight() + 1);
                 $(opt.dom.prompt).css("left", $(opt.container).position().left);
                 if (opt.height) $(opt.dom.prompt).css("max-height", opt.height);
@@ -92,15 +93,15 @@ define(['jquery', 'naure'], function($, NAURE) {
                 }
 
                 //事件
-                $(opt.dom.promptNode).off().on('mouseover', function () {
+                $(opt.container + ' + ' + opt.dom.promptNode).off().on('mouseover', function () {
                     opt.isActive = true;
                     $(opt.dom.promptNode).removeClass(opt.dom.selectClass);
                     $(this).addClass(opt.dom.selectClass);
                 });
-                $(opt.dom.promptNode).on('mouseout', function () {
+                $(opt.container + ' + ' + opt.dom.promptNode).on('mouseout', function () {
                     opt.isActive = false;
                 });
-                $(opt.dom.promptNode).on('click', function () {
+                $(opt.container + ' + ' + opt.dom.promptNode).on('click', function () {
                     self.hide();
                     if (opt.onSelect)
                         opt.onSelect($(this));
@@ -301,6 +302,31 @@ define(['jquery', 'naure'], function($, NAURE) {
         return actionPanel;
     })();
 
+    YHD.UI.speedEdit = (function () {
+        var speedEdit = function (options) {
+            var opt = $.extend({
+                container: null,
+                before: null,
+                after: null
+            }, options);
+
+            $(document).on('dblclick', 'table tbody tr td', function () {
+                if ($(this).find('input').size() > 0) {
+                    $(this).html($(this).find('input').val().trim());
+
+                    if ($(this).attr('tag') == $(this).text())
+                        return;
+                    else
+                        $(this).attr('tag', $(this).text());
+                } else {
+                    $(this).html('<input value="' + $(this).text() + '" />');
+                }
+            });
+        };
+
+        return speedEdit;
+    })();
+    
     /**
      * 翻页控件
      */
