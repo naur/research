@@ -36,6 +36,7 @@
         <jackson.version>1.9.3</jackson.version>
         <spring-release-mongodb.version>1.0.1.RELEASE</spring-release-mongodb.version>
         <spring-data-commons-core.version>1.2.1.RELEASE</spring-data-commons-core.version>
+        <commons-lang.version>2.6</commons-lang.version>
         <commons-lang3.version>3.1</commons-lang3.version>
         <!--3.0.5-->
         <!--<spring-oxm.version>1.5.10</spring-oxm.version>-->
@@ -46,6 +47,7 @@
         <jactor.version>4.2.0</jactor.version>
         <jedis.version>2.0.0</jedis.version>
         <zookeeper.version>3.4.5</zookeeper.version>
+        <surefire-skipTests>true</surefire-skipTests>
         <naure.log.file.path>/var/web/logs</naure.log.file.path>
     </properties>
 
@@ -93,6 +95,12 @@
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>1.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
             </dependency>
 
             <dependency>
@@ -552,6 +560,16 @@
             <!--<groupId>org.codehaus.plexus</groupId>-->
             <!--<artifactId>plexus-compiler-javac</artifactId>-->
             <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                    <skipTests>${surefire-skipTests}</skipTests>
+                    <argLine>-Xms1024m -Xmx1024m -Xss1024K -XX:PermSize=256m -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit</argLine>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
