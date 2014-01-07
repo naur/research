@@ -12,5 +12,11 @@
 
     <artifactId>naure-common</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
