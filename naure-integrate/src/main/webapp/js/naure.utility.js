@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Script：
  *              贾睿之
  * Email：
@@ -35,6 +35,14 @@ define(['jquery', 'naure'], function ($, NAURE) {
 
             encodeHTML: function (data) {
                 return data.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, '&');
+            },
+
+            //TODO 有问题
+            escapeHTML: function (text) {
+                var replacements = {"<": "<", ">": ">", "&": "&", "\"": "'"};
+                return text.replace(/[<>&"]/g, function (character) {
+                    return replacements[character];
+                });
             },
 
             parseNull: function (str1, str2) {
@@ -648,8 +656,6 @@ define(['jquery', 'naure'], function ($, NAURE) {
 });
 
 
-
-
 /**
  * jQuery.query - Query String Modification and Creation for jQuery
  * Written by Blair Mitchelmore (blair DOT mitchelmore AT gmail DOT com)
@@ -660,7 +666,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
  * @version 2.1.7
  *
  **/
-new function(settings) {
+new function (settings) {
     // Various Settings
     var $separator = settings.separator || '&';
     var $spaces = settings.spaces === false ? false : true;
@@ -669,16 +675,16 @@ new function(settings) {
     var $hash = $prefix ? settings.hash === true ? "#" : "?" : "";
     var $numbers = settings.numbers === false ? false : true;
 
-    jQuery.query = new function() {
-        var is = function(o, t) {
+    jQuery.query = new function () {
+        var is = function (o, t) {
             return o != undefined && o !== null && (!!t ? o.constructor == t : true);
         };
-        var parse = function(path) {
+        var parse = function (path) {
             var m, rx = /\[([^[]*)\]/g, match = /^([^[]+)(\[.*\])?$/.exec(path), base = match[1], tokens = [];
             while (m = rx.exec(match[2])) tokens.push(m[1]);
             return [base, tokens];
         };
-        var set = function(target, tokens, value) {
+        var set = function (target, tokens, value) {
             var o, token = tokens.shift();
             if (typeof target != 'object') target = null;
             if (token === "") {
@@ -714,22 +720,22 @@ new function(settings) {
             return target;
         };
 
-        var queryObject = function(a) {
+        var queryObject = function (a) {
             var self = this;
             self.keys = {};
 
             if (a.queryObject) {
-                jQuery.each(a.get(), function(key, val) {
+                jQuery.each(a.get(), function (key, val) {
                     self.SET(key, val);
                 });
             } else {
-                jQuery.each(arguments, function() {
+                jQuery.each(arguments, function () {
                     var q = "" + this;
-                    q = q.replace(/^[?#]/,''); // remove any leading ? || #
-                    q = q.replace(/[;&]$/,''); // remove any trailing & || ;
-                    if ($spaces) q = q.replace(/[+]/g,' '); // replace +'s with spaces
+                    q = q.replace(/^[?#]/, ''); // remove any leading ? || #
+                    q = q.replace(/[;&]$/, ''); // remove any trailing & || ;
+                    if ($spaces) q = q.replace(/[+]/g, ' '); // replace +'s with spaces
 
-                    jQuery.each(q.split(/[&;]/), function(){
+                    jQuery.each(q.split(/[&;]/), function () {
                         var key = decodeURIComponent(this.split('=')[0] || "");
                         var val = decodeURIComponent(this.split('=')[1] || "");
 
@@ -756,11 +762,11 @@ new function(settings) {
 
         queryObject.prototype = {
             queryObject: true,
-            has: function(key, type) {
+            has: function (key, type) {
                 var value = this.get(key);
                 return is(value, type);
             },
-            GET: function(key) {
+            GET: function (key) {
                 if (!is(key)) return this.keys;
                 var parsed = parse(key), base = parsed[0], tokens = parsed[1];
                 var target = this.keys[base];
@@ -769,7 +775,7 @@ new function(settings) {
                 }
                 return typeof target == 'number' ? target : target || "";
             },
-            get: function(key) {
+            get: function (key) {
                 var target = this.GET(key);
                 if (is(target, Object))
                     return jQuery.extend(true, {}, target);
@@ -777,41 +783,41 @@ new function(settings) {
                     return target.slice(0);
                 return target;
             },
-            SET: function(key, val) {
+            SET: function (key, val) {
                 var value = !is(val) ? null : val;
                 var parsed = parse(key), base = parsed[0], tokens = parsed[1];
                 var target = this.keys[base];
                 this.keys[base] = set(target, tokens.slice(0), value);
                 return this;
             },
-            set: function(key, val) {
+            set: function (key, val) {
                 return this.copy().SET(key, val);
             },
-            REMOVE: function(key) {
+            REMOVE: function (key) {
                 return this.SET(key, null).COMPACT();
             },
-            remove: function(key) {
+            remove: function (key) {
                 return this.copy().REMOVE(key);
             },
-            EMPTY: function() {
+            EMPTY: function () {
                 var self = this;
-                jQuery.each(self.keys, function(key, value) {
+                jQuery.each(self.keys, function (key, value) {
                     delete self.keys[key];
                 });
                 return self;
             },
-            load: function(url) {
+            load: function (url) {
                 var hash = url.replace(/^.*?[#](.+?)(?:\?.+)?$/, "$1");
                 var search = url.replace(/^.*?[?](.+?)(?:#.+)?$/, "$1");
                 return new queryObject(url.length == search.length ? '' : search, url.length == hash.length ? '' : hash);
             },
-            empty: function() {
+            empty: function () {
                 return this.copy().EMPTY();
             },
-            copy: function() {
+            copy: function () {
                 return new queryObject(this);
             },
-            COMPACT: function() {
+            COMPACT: function () {
                 function build(orig) {
                     var obj = typeof orig == "object" ? is(orig, Array) ? [] : {} : orig;
                     if (typeof orig == 'object') {
@@ -821,27 +827,29 @@ new function(settings) {
                             else
                                 o[key] = value;
                         }
-                        jQuery.each(orig, function(key, value) {
+
+                        jQuery.each(orig, function (key, value) {
                             if (!is(value)) return true;
                             add(obj, key, build(value));
                         });
                     }
                     return obj;
                 }
+
                 this.keys = build(this.keys);
                 return this;
             },
-            compact: function() {
+            compact: function () {
                 return this.copy().COMPACT();
             },
-            toString: function() {
+            toString: function () {
                 var i = 0, queryString = [], chunks = [], self = this;
-                var encode = function(str) {
+                var encode = function (str) {
                     str = str + "";
                     if ($spaces) str = str.replace(/ /g, "+");
                     return encodeURIComponent(str);
                 };
-                var addFields = function(arr, key, value) {
+                var addFields = function (arr, key, value) {
                     if (!is(value) || value === false) return;
                     var o = [encode(key)];
                     if (value !== true) {
@@ -850,11 +858,11 @@ new function(settings) {
                     }
                     arr.push(o.join(""));
                 };
-                var build = function(obj, base) {
-                    var newKey = function(key) {
+                var build = function (obj, base) {
+                    var newKey = function (key) {
                         return !base || base == "" ? [key].join("") : [base, "[", key, "]"].join("");
                     };
-                    jQuery.each(obj, function(key, value) {
+                    jQuery.each(obj, function (key, value) {
                         if (typeof value == 'object')
                             build(value, newKey(key));
                         else
