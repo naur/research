@@ -14,6 +14,7 @@ var global = {
     naure: null, structures: null, overlay: null, message: null, http: null, graphics: [], lines: null, volumes: null, finance: null, systemFinance: null, systemEquation: null, exponents: [], coordinate: null,
     accesskey: 'F2',
     color: ['#800000', '#0000A0'],
+    realtimeApi: 'http://hq.sinajs.cn/list=',
     colorRandom: function () {
         //#A22E00
         return '#' + random().toString(16).substring(2, 5);
@@ -168,6 +169,22 @@ global.nodes = {
 
     MA: function () {
         global.finance.MovingAverage();
+    },
+
+    Realtime: function () {
+        if (!$(dom.overlayInput).val()) return;
+
+        global.http.acquire({
+            xmlUrl: global.realtimeApi + $(dom.overlayInput).val(),
+            type: 'GET',
+            context: this,
+            error: function (ex) {
+                global.message.show({content: '获取数据错误，请稍后重试！', color: 'red'});
+            },
+            success: function (obj) {
+                global.message.show({content: JSON.stringify(obj)});
+            }
+        });
     }
 };
 
@@ -268,6 +285,8 @@ require(['jquery', 'naure.message', 'naure.overlay', 'naure.xsl', 'naure.math.st
             global.graphics[i].config.zoomAxis = $(dom.zoomAxis).val();
         }
         $(dom.endDate).val(new Date().format('yyyyMMdd'))
+
+        $(dom.layer).click();
     });
 });
 

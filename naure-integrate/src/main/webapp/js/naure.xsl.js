@@ -30,7 +30,9 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
             pagingContainer: null,
 
             context: null,
-            domState: null,
+            domState: function (state) {
+                if (opt.context) $(opt.context).attr('disabled', state.disabled);
+            },
 
             count: 0,
             pageSize: 0,
@@ -43,13 +45,15 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
             ver: 0
         }, options);
 
-
+        //获取 xml 数据错误
         opt.ajaxError = function (jqXHR, textStatus, errorThrown) {
             opt.count = 0;
             if (opt.error)
                 opt.error({jqXHR: jqXHR, textStatus: textStatus, errorThrown: errorThrown, context: opt.context});
             if (opt.domState) opt.domState({disabled: false});
         };
+
+        //获取 xml 数据成功
         opt.ajaxSuccess = function (data, textStatus, jqXHR) {
             if (opt.pagingHandler) {
                 opt.count = $(data).find('result item:eq(0)').text();
@@ -67,6 +71,8 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
             }
             opt.xsltHandler(opt);
         };
+
+        //解析 xsl
         opt.xsltHandler = function (opt) {
             if (opt.ver == 0) {
                 $.xslt({
@@ -93,10 +99,14 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
                 );
             }
         };
+
+        //解析 xsl 错误
         opt.xsltError = function (ex) {
             if (opt.error) opt.error(ex);
             if (opt.domState) opt.domState({disabled: false});
         };
+
+        //解析 xsl 成功
         opt.xsltSuccess = function (obj) {
             if (opt.count == 0) {
                 //要注意的部分，测试
@@ -138,6 +148,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
             });
         }
     };
+
     $.fn.NAURE_HTTP_Acquire = function (options) {
         options.container = this;
         NAURE.HTTP.acquire(options);
@@ -147,22 +158,22 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
     $.xslt = function (options) {
         // Default settings
         var opt = {
-            xml:null,
-            xmlUrl:null,
-            xmlCache:true,
+            xml: null,
+            xmlUrl: null,
+            xmlCache: true,
 
-            xsl:null,
-            xslUrl:null,
-            xslCache:true,
+            xsl: null,
+            xslUrl: null,
+            xslCache: true,
 
-            context:null,
+            context: null,
 
-            target:null,
-            error:null,
-            success:null,
-            dataTypeXML:false,
+            target: null,
+            error: null,
+            success: null,
+            dataTypeXML: false,
 
-            hasError:false
+            hasError: false
         };
         $.extend(opt, options);
 
@@ -193,14 +204,14 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
                 }
 
                 if (opt.success != null) {
-                    opt.success({target:opt.target, output:output, context:opt.context});
+                    opt.success({target: opt.target, output: output, context: opt.context});
                 }
 
                 return output;
             } else if (opt.hasError) {
                 // Error occured
                 if (opt.error != null) {
-                    opt.error({content:false, context:opt.context});
+                    opt.error({content: false, context: opt.context});
                 }
                 return false;
             } else {
@@ -226,39 +237,39 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
         // Get XML and XSL from url if necessary
         if ((opt.xmlUrl != null) && (opt.xml == null)) {
             $.ajax({
-                url:opt.xmlUrl,
-                dataType:opt.dataTypeXML ? 'xml' : 'html',
-                error:function () {
+                url: opt.xmlUrl,
+                dataType: opt.dataTypeXML ? 'xml' : 'html',
+                error: function () {
                     opt.hasError = true;
                     opt.finish(opt);
                 },
-                success:function (data) {
+                success: function (data) {
                     opt.xml = data;
                     if (opt.xmlCache) {
                         $.xslt.cache.xml[opt.xmlUrl] = opt.dataTypeXML ? data : $.xslt.textToXML(data);
                     }
                     opt.finish(opt);
                 },
-                async:opt.async
+                async: opt.async
             });
         }
 
         if ((opt.xslUrl != null) && (opt.xsl == null)) {
             $.ajax({
-                url:opt.xslUrl,
-                dataType:opt.dataTypeXML ? 'xml' : 'html',
-                error:function (data, textStatus, jqXHR) {
+                url: opt.xslUrl,
+                dataType: opt.dataTypeXML ? 'xml' : 'html',
+                error: function (data, textStatus, jqXHR) {
                     opt.hasError = true;
                     opt.finish(opt);
                 },
-                success:function (data) {
+                success: function (data) {
                     opt.xsl = data;
                     if (opt.xslCache) {
                         $.xslt.cache.xsl[opt.xslUrl] = opt.dataTypeXML ? data : $.xslt.textToXML(data);
                     }
                     opt.finish(opt);
                 },
-                async:opt.async
+                async: opt.async
             });
         }
 
@@ -269,25 +280,25 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
     $.extend($.xslt, {
         // $.xslt.version.plugin - Plugin version
         // $.xslt.version.ajaxslt - AJAXSLT version
-        version:{
-            plugin:0.1,
-            ajaxslt:'0.8.1'
+        version: {
+            plugin: 0.1,
+            ajaxslt: '0.8.1'
         },
 
         // $.xslt.textToXML(text) - Convert text to XML DOM node
-        textToXML:function (text) {
+        textToXML: function (text) {
             return xmlParse(text);
         },
 
         // $.xslt.xmlToText(xml) - Convert XML DOM node to text
-        xmlToText:function (xml) {
+        xmlToText: function (xml) {
             return xmlText(xml);
         },
 
         // XML / XSL cache
-        cache:{
-            xml:{},
-            xsl:{}
+        cache: {
+            xml: {},
+            xsl: {}
         }
     });
     $.fn.xslt = function (options) {
@@ -305,10 +316,10 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
         if ($.browser && $.browser.msie) { // IE 5+
             $.fn.xsltv1 = function (options) {
                 var opt = $.extend({
-                    xml:null,
-                    xsl:null,
-                    target:null,
-                    callback:null
+                    xml: null,
+                    xsl: null,
+                    target: null,
+                    callback: null
                 }, options);
 
                 //var target = $(this);
@@ -351,20 +362,20 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
             if (support) {
                 $.fn.xsltv1 = function (options) {
                     var opt = $.extend({
-                        xml:null,
-                        xsl:null,
-                        target:null,
-                        callback:null
+                        xml: null,
+                        xsl: null,
+                        target: null,
+                        callback: null
                     }, options);
 
                     //var target = $(this);
                     var transformed = false;
 
                     var xm = {
-                        readyState:4
+                        readyState: 4
                     };
                     var xs = {
-                        readyState:4
+                        readyState: 4
                     };
 
                     var change = function () {
@@ -399,7 +410,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
                         xm.responseXML = new DOMParser().parseFromString(opt.xml, "text/xml");
                     }
                     else {
-                        xm = $.ajax({ dataType:"xml", url:opt.xml});
+                        xm = $.ajax({ dataType: "xml", url: opt.xml});
                         xm.onreadystatechange = change;
                     }
 
@@ -408,7 +419,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
                         change();
                     }
                     else {
-                        xs = $.ajax({ dataType:"xml", url:opt.xsl});
+                        xs = $.ajax({ dataType: "xml", url: opt.xsl});
                         xs.onreadystatechange = change;
                     }
                     return this;
@@ -418,10 +429,10 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
 
         $.xsltv1 = function (options) {
             var opt = $.extend({
-                xml:null,
-                xsl:null,
-                target:null,
-                callback:null
+                xml: null,
+                xsl: null,
+                target: null,
+                callback: null
             }, options);
             $.fn.xsltv1(opt);
             return this;
@@ -432,11 +443,11 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
     (function ($) {
         $.xsltv2 = function (options) {
             var parameters = $.extend({
-                xml:null,
-                xsl:null,
-                target:null,
-                error:null,
-                callback:null
+                xml: null,
+                xsl: null,
+                target: null,
+                error: null,
+                callback: null
             }, options);
             var xmlDoc;
             var xslDoc;
@@ -508,43 +519,43 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
     (function ($) {
         $.chainHandler = function (options) {
             var opt = $.extend({
-                xml:null,
-                xmlUrl:null,
-                xmlCache:false,
-                xsl:null,
-                xslUrl:null,
-                xslCache:true,
-                optionData:null,
-                container:null,
-                successor:null,
-                errorPrompt:'获取数据错误，请稍后重试！',
-                emptyPrompt:null,
-                error:null,
-                success:null
+                xml: null,
+                xmlUrl: null,
+                xmlCache: false,
+                xsl: null,
+                xslUrl: null,
+                xslCache: true,
+                optionData: null,
+                container: null,
+                successor: null,
+                errorPrompt: '获取数据错误，请稍后重试！',
+                emptyPrompt: null,
+                error: null,
+                success: null
             }, options);
             $(opt.container).NAURE_HTTP_Acquire({
-                xml:opt.xml,
-                xmlUrl:opt.xmlUrl,
-                xmlCache:opt.xmlCache,
-                xsl:opt.xsl,
-                xslUrl:opt.xslUrl,
-                xslCache:opt.xslCache,
-                optionData:opt.optionData,
-                success:opt.success,
-                error:function (ex) {
+                xml: opt.xml,
+                xmlUrl: opt.xmlUrl,
+                xmlCache: opt.xmlCache,
+                xsl: opt.xsl,
+                xslUrl: opt.xslUrl,
+                xslCache: opt.xslCache,
+                optionData: opt.optionData,
+                success: opt.success,
+                error: function (ex) {
                     if (opt.errorPrompt != null) {
-                        NAURE.Message.show({content:opt.errorPrompt, color:'red', inline:true});
+                        NAURE.Message.show({content: opt.errorPrompt, color: 'red', inline: true});
                     }
                     if (opt.error) {
                         opt.error(ex);
                     }
                 },
-                success:function (obj) {
+                success: function (obj) {
                     if (opt.success != null) {
                         opt.success(obj);
                     }
                     if (opt.output == "" && opt.emptyPrompt != null) {
-                        NAURE.Message.show({content:opt.emptyPrompt, color:'red', inline:true});
+                        NAURE.Message.show({content: opt.emptyPrompt, color: 'red', inline: true});
                         //$('#query').attr('disabled', true);
                         //$('#query').attr('disabled', true);
                         //暂时处理方式：对返回的为空的内容，产生 error 事件。
