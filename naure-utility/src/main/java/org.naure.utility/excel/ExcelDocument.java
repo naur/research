@@ -57,6 +57,14 @@ public class ExcelDocument {
         }
     }
 
+    /**
+     * 3.8版本的POI对excel的导出操作，一般只使用HSSFWorkbook以及SXSSFWorkbook，
+     * HSSFWorkbook用来处理较少的数据量，
+     * SXSSFWorkbook用来处理大数据量以及超大数据量的导出。
+     * @param excelType
+     * @param stream
+     * @throws IOException
+     */
     public ExcelDocument(ExcelType excelType, InputStream stream) throws IOException {
         this.excelType = excelType;
         if (this.excelType == ExcelType.Excel2003) {

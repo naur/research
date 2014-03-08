@@ -19,7 +19,7 @@
 }
 
 figure, .figure {
-    margin: 15px;JsonUtil
+    margin: 15px;
     /*width: 100px;*/
 }
 
@@ -171,8 +171,8 @@ table tbody tr .tdright {
 }
 
 table tbody tr .loading {
-    width: 15.5px;
-    height: 15.5px;
+    width: 15px;
+    height: 15px;
 }
 
 table tbody tr .tdof {
