@@ -1,9 +1,10 @@
 package com.yihaodian.ssa.ftv.common.util;
 
-import com.yihaodian.ssa.ftv.common.patterns.Comparer;
-import com.yihaodian.ssa.ftv.common.patterns.Func;
-import com.yihaodian.ssa.ftv.common.patterns.Funcm;
-import com.yihaodian.ssa.ftv.common.patterns.KeyEqualityComparer;
+
+import org.naure.common.patterns.Comparer;
+import org.naure.common.patterns.Func;
+import org.naure.common.patterns.Funcm;
+import org.naure.common.patterns.KeyEqualityComparer;
 
 import java.util.*;
 
