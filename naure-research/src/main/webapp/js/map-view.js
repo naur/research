@@ -176,6 +176,7 @@ function initialize() {
     var myOptions = {
         zoom: 14,
         center: latlng,
+        cursor: '111111',
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
@@ -185,7 +186,6 @@ function initialize() {
         title: $.format('您当前所在的位置\r\n经度：{0}\r\n维度： {1}', latlng.lng(), latlng.lat())
     });
 
-
     geocoder = new google.maps.Geocoder();
 }
 
@@ -193,7 +193,7 @@ function initialize() {
 
 /*-------------------- 初始化 START --------------------*/
 
-require(['http://maps.google.com/maps/api/js?v=3.7&sensor=false&region=zh-CN&language=zh-CN&callback=initialize']);
+require(['http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN&callback=initialize']);
 
 require(['jquery', 'naure.location', 'naure.message', 'naure.overlay', 'naure.analytics'], function ($, NAURE) {
 
