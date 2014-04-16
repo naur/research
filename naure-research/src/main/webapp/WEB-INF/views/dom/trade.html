@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="http://cdn.naure.org/css/default.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="http://cdn.naure.org/js/jquery.strings.js"></script>
+    <script>
+        //Open	High	Low	Close	Volume, EPS 
+
+        var global = {
+            stocks: [
+                ['*ST景谷', 2200, 7.320, '600265', 'sh'],
+                ['*ST华塑', 2500, 3.980, '000509', 'sh'],
+                ['天伦置业', 1500, 6.647, '000711', 'sh'],
+                ['金宇车城', 1000, 8.321, '000803', 'sh'],
+                ['德棉股份', 2100, 7.257, '002072', 'sh'],
+                ['凯撒股份', 600, 10.627, '002425', 'sh']
+            ],
+            stockHtmlTemplate: '<tr class="{5}" stock="{4}{3}"><td class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td><td class="curr">当前价</td><td class="profits">浮动盈亏</td><td class="profitability">盈亏比例(%)</td><td class="code">{3}</td><td class="cost-amount">成本金额</td><td class="latest-value">最新市值</td>' +
+                    '<td>昨日收盘价</td><td>今日开盘价</td><td>今日最高价</td><td>今日最低价</td><td>竞买价</td><td>竞买价</td><td>竞卖价</td><td>竞卖价</td><td>成交的股票数</td><td>成交金额</td></tr>',
+            stockUri: 'http://hq.sinajs.cn/list=',
+            dom: {
+                stocksContainer: '#stocks-container',
+                stocks: '#stocks-container tr'
+            }
+        };
+
+        function parstHtml(stocks) {
+            var html = '';
+            for (var index in stocks) {
+                if (!stocks.hasOwnProperty(index)) continue;
+                html += $.format(global.stockHtmlTemplate, stocks[index][0], stocks[index][1], stocks[index][2], stocks[index][3], stocks[index][4], index % 2 == 0 ? '' : 'tdeven');
+            }
+            return html;
+        }
+
+        function getStockInfo() {
+            $(global.dom.stocks).each(function () {
+                window.console.log($(this).attr('stock'));
+            });
+        }
+
+        function createRequest() {
+            if (window.XMLHttpRequest) {// code for all new browsers
+                return new XMLHttpRequest();
+            }
+            else if (window.ActiveXObject) {// code for IE5 and IE6
+                return new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            return null;
+        }
+
+        function request(uri, success, error, changed) {
+            var opt = {
+                uri: uri,
+                contentType: 'text',
+                method: 'GET',
+                async: false,
+                onStateChange: function () {
+                    if (opt.xmlhttp.readyState < 3) return;
+                    if (opt.changed)
+                        opt.changed({state: NAURE.HTTP.State(opt.xmlhttp.readyState), http: opt.xmlhttp});
+
+                    if (opt.xmlhttp.readyState == 4) {
+                        if (opt.xmlhttp.status == 200) {
+                            if (opt.success)
+                                opt.success({output: opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText, http: opt.xmlhttp, context: opt.context});
+                        }
+                        else {
+                            if (opt.error)
+                                opt.error({state: NAURE.HTTP.State(opt.xmlhttp.readyState), http: opt.xmlhttp, context: opt.context});
+                        }
+                    }
+                }
+            };
+            var xmlhttp = createRequest();
+            if (xmlhttp != null) {
+                //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+                xmlhttp.onreadystatechange = opt.onStateChange;
+                xmlhttp.open(opt.method, opt.uri, opt.async);
+                xmlhttp.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
+                xmlhttp.setRequestHeader("If-Modified-Since", "0");
+                xmlhttp.setRequestHeader("Content-Type", opt.contentType);
+                xmlhttp.send(null);    //"name=guestuser&Passwd=111111"
+                //if ($.browser.mozilla)
+                //opt.xmlhttp.onreadystatechange = opt.stateChange;
+            } else {
+                window.console.log('Your browser does not support XMLHTTP.');
+            }
+        }
+
+        $(function () {
+            $(global.dom.stocksContainer).html(parstHtml(global.stocks));
+            $(document).on('keyup', function (event) {
+                var ev = document.all ? window.event : event;
+                if (ev.keyCode == 82) {
+                    getStockInfo();
+                }
+            });
+        });
+    </script>
+    <style>
+        thead {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<table rules="rows">
+    <colgroup align="right" style="color:#0000FF;"></colgroup>
+    <thead>
+    <tr>
+        <th class="name">证券名称</th>
+        <th class="number">证券数量</th>
+        <th class="cost">成本价</th>
+        <th class="curr">当前价</th>
+        <th class="profits">浮动盈亏</th>
+        <th class="profitability">盈亏比例(%)</th>
+        <th class="code">证券代码</th>
+        <th class="cost-amount">成本金额</th>
+        <th class="latest-value">最新市值</th>
+        <th>昨日收盘价</th>
+        <th>今日开盘价</th>
+        <th>今日最高价</th>
+        <th>今日最低价</th>
+        <th>竞买价</th>
+        <th>竞买价</th>
+        <th>竞卖价</th>
+        <th>竞卖价</th>
+        <th>成交的股票数</th>
+        <th>成交金额</th>
+    </tr>
+    </thead>
+    <tbody id="stocks-container">
+    </tbody>
+</table>
+</body>
+</html>

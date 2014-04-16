@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "utility", method = {RequestMethod.GET, RequestMethod.POST})
 public class UtilityController extends ControllerBase {
 
-    @RequestMapping("html/{name}")
+    @RequestMapping("dom/{name}")
     public String html(@PathVariable final String name) {
         return "/" + name;
     }
