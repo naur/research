@@ -1,31 +1,34 @@
-package org.naure.research.web.controllers;
+package org.naure.web.controllers;
 
 import org.naure.web.ControllerBase;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Administrator
- * Date: 3/15/12
- * Time: 8:31 PM
- * To change this template use File | Settings | File Templates.
+ * Created by Administrator on 4/16/14.
  */
 @Controller
-@RequestMapping(value="/utility")
+@RequestMapping(value = "utility", method = {RequestMethod.GET, RequestMethod.POST})
 public class UtilityController extends ControllerBase {
-    @RequestMapping(value = "restful-client", method = RequestMethod.GET)
+
+    @RequestMapping("html/{name}")
+    public String html(@PathVariable final String name) {
+        return "/" + name;
+    }
+
+    @RequestMapping("restful-client")
     public String restfulClient() {
         return view("js-test");
     }
 
-    @RequestMapping(value = "js-test", method = RequestMethod.GET)
+    @RequestMapping("js-test")
     public String jsText() {
         return view("restful-client");
     }
 
-    public UtilityController(){
+    public UtilityController() {
         viewPath = "utility";
     }
 }
