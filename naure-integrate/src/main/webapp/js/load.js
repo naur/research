@@ -8,8 +8,8 @@ var load = {
     },
     script: {
         srcs: [
-            "/js/require.js",
-            "/js/require.config.js"
+            "/js/core/require.js",
+            "/js/core/require.config.js"
         ]
     }
 };
