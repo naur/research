@@ -10,7 +10,7 @@
  */
 
 
-define(['jquery', 'naure', 'jquery.validate'], function ($, NAURE) {
+define(['jquery', 'naure', 'jquery.validate.js'], function ($, NAURE) {
     NAURE.Validate = (function () {
         var validate = {
             messages_cn: function () {

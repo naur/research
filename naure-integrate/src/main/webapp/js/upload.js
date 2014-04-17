@@ -228,7 +228,7 @@ function init() {
 
 //----- 初始化 START -----------------------------------------------
 
-require(['jquery','naure.message'], function ($, NAURE) {
+require(['jquery','core/naure.message.js'], function ($, NAURE) {
 
     this.NAURE = NAURE;
     $(function () {

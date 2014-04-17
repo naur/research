@@ -18,7 +18,7 @@ asyncHandler = function (callback, timeout, param) {
 }
 
 
-define(['jquery', 'naure', 'naure.xsl'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.xsl.js'], function ($, NAURE) {
 
     NAURE.Pattern = (function () {
         var http = YHD.HTTP;

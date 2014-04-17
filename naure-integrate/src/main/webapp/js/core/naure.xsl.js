@@ -8,7 +8,7 @@
  *
  */
 
-define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.utility.js', 'ajaxslt'], function ($, NAURE) {
 
     var utility = NAURE.Utility;
 

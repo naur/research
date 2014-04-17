@@ -17,12 +17,12 @@ var jsresearch = jslocalpath.replace('naure-integrate', 'naure-research');
 require.config({
     //baseUrl: '',
     paths: {
-        jquery: jslocalpath + '/js/jquery-1.9.1.min',
-        'jquery.strings': jslocalpath + '/js/jquery.strings',
-        'jquery.validate': jslocalpath + '/js/jquery.validate',
-        'ajaxslt': jslocalpath + '/js/ajaxslt',
+        jquery: jslocalpath + '/js/core/jquery-1.9.1.min',
+        'jquery.strings': jslocalpath + '/js/core/jquery.strings',
+        'jquery.validate': jslocalpath + '/js/core/jquery.validate',
+        'ajaxslt': jslocalpath + '/js/core/ajaxslt',
 
-        'jquery.template': jslocalpath + '/js/jsrender',
+        'jquery.template': jslocalpath + '/js/core/jsrender',
 
         'moment': jslocalpath + '/js/moment',
 
@@ -40,26 +40,26 @@ require.config({
         'modern.tile-drag': jslocalpath + '/js/modern/tile-drag',
         'modern.tile-slider': jslocalpath + '/js/modern/tile-slider',
 
-        'jquery.flip': jslocalpath + '/js/jquery.flip',
+        'jquery.flip': jslocalpath + '/js/core/jquery.flip',
 
         'jStat': jslocalpath + '/js/math/jstat-1.0.0',
 
-        'oop': jslocalpath + '/js/oop',
+        'oop': jslocalpath + '/js/core/oop',
 
         'swfobject': jslocalpath + '/js/uploadify/swfobject',
         'jquery.uploadify': jslocalpath + '/js/uploadify/jquery.uploadify.v2.1.4',
 
-        'naure': jslocalpath + '/js/naure',
-        'naure.validate': jslocalpath + '/js/naure.validate',
-        'naure.pattern': jslocalpath + '/js/naure.pattern',
-        'naure.utility': jslocalpath + '/js/naure.utility',
-        'naure.analytics': jslocalpath + '/js/naure.analytics',
-        'naure.ui': jslocalpath + '/js/naure.ui',
-        'naure.location': jslocalpath + '/js/naure.location',
-        'naure.http': jslocalpath + '/js/naure.http',
-        'naure.xsl': jslocalpath + '/js/naure.xsl',
-        'naure.message': jslocalpath + '/js/naure.message',
-        'naure.overlay': jslocalpath + '/js/naure.overlay',
+        'naure': jslocalpath + '/js/core/naure',
+        'naure.validate': jslocalpath + '/js/core/naure.validate',
+        'naure.pattern': jslocalpath + '/js/core/naure.pattern',
+        'naure.utility': jslocalpath + '/js/core/naure.utility',
+        'naure.analytics': jslocalpath + '/js/core/naure.analytics',
+        'naure.ui': jslocalpath + '/js/core/naure.ui',
+        'naure.location': jslocalpath + '/js/core/naure.location',
+        'naure.http': jslocalpath + '/js/core/naure.http',
+        'naure.xsl': jslocalpath + '/js/core/naure.xsl',
+        'naure.message': jslocalpath + '/js/core/naure.message',
+        'naure.overlay': jslocalpath + '/js/core/naure.overlay',
 
         'arbor-etc': jsresearch + '/js/arbor/etc',
         'arbor-kernel': jsresearch + '/js/arbor/kernel',
