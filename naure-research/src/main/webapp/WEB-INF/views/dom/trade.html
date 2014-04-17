@@ -11,15 +11,14 @@
 
         var global = {
             stocks: [
-                ['*ST景谷', 2200, 7.320, '600265', 'sh'],
-                ['*ST华塑', 2500, 3.980, '000509', 'sh'],
-                ['天伦置业', 1500, 6.647, '000711', 'sh'],
-                ['金宇车城', 1000, 8.321, '000803', 'sh'],
-                ['德棉股份', 2100, 7.257, '002072', 'sh'],
-                ['凯撒股份', 600, 10.627, '002425', 'sh']
+                ['*', 2200, 7.320, '600265', 'sh'],
+                ['*', 2500, 3.980, '000509', 'sh'],
+                ['', 1500, 6.647, '000711', 'sh'],
+                ['', 1000, 8.321, '000803', 'sh'],
+                ['', 2100, 7.257, '002072', 'sh'],
+                ['', 600, 10.627, '002425', 'sh']
             ],
-            stockHtmlTemplate: '<tr class="{5}" stock="{4}{3}"><td class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td><td class="curr">当前价</td><td class="profits">浮动盈亏</td><td class="profitability">盈亏比例(%)</td><td class="code">{3}</td><td class="cost-amount">成本金额</td><td class="latest-value">最新市值</td>' +
-                    '<td>昨日收盘价</td><td>今日开盘价</td><td>今日最高价</td><td>今日最低价</td><td>竞买价</td><td>竞买价</td><td>竞卖价</td><td>竞卖价</td><td>成交的股票数</td><td>成交金额</td></tr>',
+            stockHtmlTemplate: '<tr class="{5}" stock="{4}{3}"><td style="display: none" class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td><td class="code">{3}</td></tr>',
             stockUri: 'http://hq.sinajs.cn/list=',
             dom: {
                 stocksContainer: '#stocks-container',
@@ -112,25 +111,7 @@
     <colgroup align="right" style="color:#0000FF;"></colgroup>
     <thead>
     <tr>
-        <th class="name">证券名称</th>
-        <th class="number">证券数量</th>
-        <th class="cost">成本价</th>
-        <th class="curr">当前价</th>
-        <th class="profits">浮动盈亏</th>
-        <th class="profitability">盈亏比例(%)</th>
-        <th class="code">证券代码</th>
-        <th class="cost-amount">成本金额</th>
-        <th class="latest-value">最新市值</th>
-        <th>昨日收盘价</th>
-        <th>今日开盘价</th>
-        <th>今日最高价</th>
-        <th>今日最低价</th>
-        <th>竞买价</th>
-        <th>竞买价</th>
-        <th>竞卖价</th>
-        <th>竞卖价</th>
-        <th>成交的股票数</th>
-        <th>成交金额</th>
+
     </tr>
     </thead>
     <tbody id="stocks-container">
