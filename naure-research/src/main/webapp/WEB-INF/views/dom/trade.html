@@ -4,11 +4,20 @@
     <meta charset="utf-8">
     <title></title>
     <link href="http://cdn.naure.org/css/default.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-    <script type="text/javascript" src="http://cdn.naure.org/js/jquery.strings.js"></script>
+    <script type="text/javascript" src="http://cdn.naure.org/js/core/require.js"></script>
+    <script type="text/javascript" src=""></script>
     <script>
-        //Open	High	Low	Close	Volume, EPS 
+        require.config({
+            paths: {
+                'jquery': 'http://code.jquery.com/jquery-2.1.0.min',
+                'jquery.string': 'http://cdn.naure.org/js/core/jquery.strings'
+            },
+            shim: {
+                'jquery.strings': ['jquery']
+            }
+        });
 
+        //Open	High	Low	Close	Volume, EPS
         var global = {
             stocks: [
                 ['*', 2200, 7.320, '600265', 'sh'],
@@ -90,13 +99,15 @@
             }
         }
 
-        $(function () {
-            $(global.dom.stocksContainer).html(parstHtml(global.stocks));
-            $(document).on('keyup', function (event) {
-                var ev = document.all ? window.event : event;
-                if (ev.keyCode == 82) {
-                    getStockInfo();
-                }
+        require(['jquery', 'jquery.string'], function ($) {
+            $(function () {
+                $(global.dom.stocksContainer).html(parstHtml(global.stocks));
+                $(document).on('keyup', function (event) {
+                    var ev = document.all ? window.event : event;
+                    if (ev.keyCode == 82) {
+                        getStockInfo();
+                    }
+                });
             });
         });
     </script>
