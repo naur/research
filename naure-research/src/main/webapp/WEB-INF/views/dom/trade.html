@@ -10,7 +10,7 @@
         require.config({
             paths: {
                 'jquery': 'http://code.jquery.com/jquery-2.1.0.min',
-                'jquery.string': 'http://cdn.naure.org/js/core/jquery.strings'
+                'jquery.strings': 'http://cdn.naure.org/js/core/jquery.strings'
             },
             shim: {
                 'jquery.strings': ['jquery']
@@ -21,13 +21,13 @@
         var global = {
             stocks: [
                 ['*', 2200, 7.320, '600265', 'sh'],
-                ['*', 2500, 3.980, '000509', 'sh'],
-                ['', 1500, 6.647, '000711', 'sh'],
-                ['', 1000, 8.321, '000803', 'sh'],
-                ['', 2100, 7.257, '002072', 'sh'],
-                ['', 600, 10.627, '002425', 'sh']
+                ['*', 2500, 3.980, '000509', 'sz'],
+                ['', 1500, 6.647, '000711', 'sz'],
+                ['', 1000, 8.321, '000803', 'sz'],
+                ['', 2100, 7.257, '002072', 'sz'],
+                ['', 600, 10.627, '002425', 'sz']
             ],
-            stockHtmlTemplate: '<tr class="{5}" stock="{4}{3}"><td style="display: none" class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td><td class="code">{3}</td></tr>',
+            stockHtmlTemplate: '<tr class="{5}" stock="{4}{3}"><td style="display: none" class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td><td class="code">{3}</td><td></td></tr>',
             stockUri: 'http://hq.sinajs.cn/list=',
             dom: {
                 stocksContainer: '#stocks-container',
@@ -35,18 +35,18 @@
             }
         };
 
-        function parstHtml(stocks) {
-            var html = '';
-            for (var index in stocks) {
-                if (!stocks.hasOwnProperty(index)) continue;
-                html += $.format(global.stockHtmlTemplate, stocks[index][0], stocks[index][1], stocks[index][2], stocks[index][3], stocks[index][4], index % 2 == 0 ? '' : 'tdeven');
-            }
-            return html;
-        }
+        function getStockInfo(codes) {
+            request(global.stockUri + codes.toString(), function (obj) {
+                eval(obj.output.replace(/var hq_str_/g, 'global.'));
+                window.console.log(obj.output);
 
-        function getStockInfo() {
-            $(global.dom.stocks).each(function () {
-                window.console.log($(this).attr('stock'));
+                var stockRealtime;
+                for (var index in codes) {
+                    stockRealtime = global[codes[index]].split(',');
+                    $(global.dom.stocks + '[stock="' + codes[index] + '"]').children().each(function (index) {
+                        if (4 == index) $(this).html(stockRealtime[0]);
+                    });
+                }
             });
         }
 
@@ -66,32 +66,38 @@
                 contentType: 'text',
                 method: 'GET',
                 async: false,
+                success: success,
+                error: error,
+                changed: changed,
                 onStateChange: function () {
                     if (opt.xmlhttp.readyState < 3) return;
                     if (opt.changed)
-                        opt.changed({state: NAURE.HTTP.State(opt.xmlhttp.readyState), http: opt.xmlhttp});
+                        opt.changed({state: opt.xmlhttp.readyState, http: opt.xmlhttp});
 
                     if (opt.xmlhttp.readyState == 4) {
                         if (opt.xmlhttp.status == 200) {
                             if (opt.success)
-                                opt.success({output: opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText, http: opt.xmlhttp, context: opt.context});
+                                opt.success({output: opt.xmlhttp.responseXML && opt.xmlhttp.responseXML.text.length > 0 ?
+                                        opt.xmlhttp.responseXML :
+                                        opt.xmlhttp.responseText,
+                                    http: opt.xmlhttp, context: opt.context});
                         }
                         else {
                             if (opt.error)
-                                opt.error({state: NAURE.HTTP.State(opt.xmlhttp.readyState), http: opt.xmlhttp, context: opt.context});
+                                opt.error({state: opt.xmlhttp.readyState, http: opt.xmlhttp, context: opt.context});
                         }
                     }
                 }
             };
-            var xmlhttp = createRequest();
-            if (xmlhttp != null) {
+            opt.xmlhttp = createRequest();
+            if (opt.xmlhttp != null) {
                 //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-                xmlhttp.onreadystatechange = opt.onStateChange;
-                xmlhttp.open(opt.method, opt.uri, opt.async);
-                xmlhttp.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
-                xmlhttp.setRequestHeader("If-Modified-Since", "0");
-                xmlhttp.setRequestHeader("Content-Type", opt.contentType);
-                xmlhttp.send(null);    //"name=guestuser&Passwd=111111"
+                opt.xmlhttp.onreadystatechange = opt.onStateChange;
+                opt.xmlhttp.open(opt.method, opt.uri, opt.async);
+                opt.xmlhttp.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
+                opt.xmlhttp.setRequestHeader("If-Modified-Since", "0");
+                opt.xmlhttp.setRequestHeader("Content-Type", opt.contentType);
+                opt.xmlhttp.send(null);    //"name=guestuser&Passwd=111111"
                 //if ($.browser.mozilla)
                 //opt.xmlhttp.onreadystatechange = opt.stateChange;
             } else {
@@ -99,13 +105,26 @@
             }
         }
 
-        require(['jquery', 'jquery.string'], function ($) {
+        function init(stocks) {
+            var codes = [];
+            var html = '';
+            for (var index in stocks) {
+                if (!stocks.hasOwnProperty(index)) continue;
+                html += $.format(global.stockHtmlTemplate, stocks[index][0], stocks[index][1], stocks[index][2], stocks[index][3], stocks[index][4], index % 2 == 0 ? '' : 'tdeven');
+                codes.push(stocks[index][4] + stocks[index][3]);
+            }
+            stocks.html = html;
+            stocks.codes = codes;
+        }
+
+        require(['jquery', 'jquery.strings'], function ($) {
+            init(global.stocks);
             $(function () {
-                $(global.dom.stocksContainer).html(parstHtml(global.stocks));
+                $(global.dom.stocksContainer).html(global.stocks.html);
                 $(document).on('keyup', function (event) {
                     var ev = document.all ? window.event : event;
                     if (ev.keyCode == 82) {
-                        getStockInfo();
+                        getStockInfo(global.stocks.codes);
                     }
                 });
             });
