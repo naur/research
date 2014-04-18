@@ -55,9 +55,11 @@ require.config({
         'naure.utility': jslocalpath + '/js/core/naure.utility',
         'naure.analytics': jslocalpath + '/js/core/naure.analytics',
         'naure.ui': jslocalpath + '/js/core/naure.ui',
+        'naure.http': jslocalpath + '/js/core/ssa.http',
+        'naure.http.xmlhttp': jslocalpath + '/js/core/ssa.http.xmlhttp',
+        'naure.http.ajax': jslocalpath + '/js/core/ssa.http.ajax',
+        'naure.http.xsl': jslocalpath + '/js/core/ssa.http.xsl',
         'naure.location': jslocalpath + '/js/core/naure.location',
-        'naure.http': jslocalpath + '/js/core/naure.http',
-        'naure.xsl': jslocalpath + '/js/core/naure.xsl',
         'naure.message': jslocalpath + '/js/core/naure.message',
         'naure.overlay': jslocalpath + '/js/core/naure.overlay',
 
