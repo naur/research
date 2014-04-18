@@ -10,7 +10,7 @@
  */
 
 define(['jquery', 'naure'], function ($, NAURE) {
-    NAURE.HTTP.State = function (state) {
+    NAURE.HTTP.state = function (state) {
         switch (state) {
             case 0:
                 return 'Uninitialized';
@@ -27,7 +27,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
         }
     };
 
-    NAURE.HTTP.Request = function (options) {
+    NAURE.HTTP.request = function (options) {
         var opt = $.extend({
             method: 'GET',
             uri: '',
@@ -51,13 +51,13 @@ define(['jquery', 'naure'], function ($, NAURE) {
 //            if (opt.xmlhttp.status <= 0)
 //                return;
             if (opt.changed) {
-                opt.changed({state: NAURE.HTTP.State(opt.xmlhttp.readyState), http: opt.xmlhttp});
+                opt.changed({state: NAURE.HTTP.state(opt.xmlhttp.readyState), http: opt.xmlhttp});
             }
 
             if (opt.xmlhttp.readyState == 4) {
                 if (opt.xmlhttp.status == 200) {
                     if (opt.success) {
-                        opt.success({output: opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText, http: opt.xmlhttp, context: opt.context});
+                        opt.success({output: opt.xmlhttp.responseXML && opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText, http: opt.xmlhttp, context: opt.context});
                         if (opt.htmlParser) {
                             if (!opt.htmlParser.parser) {
                                 if (opt.xmlhttp.getResponseHeader('Content-Type').search(/xml/g) >= 0)
@@ -82,7 +82,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
             }
         };
 
-        opt.xmlhttp = NAURE.HTTP.CreateRequest();
+        opt.xmlhttp = NAURE.HTTP.createRequest();
         if (opt.xmlhttp != null) {
             //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
             opt.xmlhttp.onreadystatechange = opt.stateChange;
@@ -103,7 +103,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
         }
     };
 
-    NAURE.HTTP.CreateRequest = function () {
+    NAURE.HTTP.createRequest = function () {
         if (window.XMLHttpRequest) {// code for all new browsers
             return new XMLHttpRequest();
         }
