@@ -45,7 +45,7 @@
                 message: '#message',
                 stocksContainer: '#stocks tbody',
                 stocksHead: '#stocks thead tr',
-                stocksName: '#stocks thead tr td:eq(1), #stocks tbody tr td:eq(1)',
+                stocksName: '#stocks thead tr td:first-child, #stocks tbody tr td:first-child',
                 stocks: '#stocks tbody tr'
             }
         };
@@ -109,16 +109,14 @@
                     var ev = document.all ? window.event : event;
                     if (ev.keyCode == 82)  getStockInfo(global.stocks.codes, true);
                     if (ev.keyCode == 72) {
-                        if ('none' == $(global.dom.stocksHead).css('display'))
-                            $(global.dom.stocksHead).css('display', 'table-row')
-                        else
-                            $(global.dom.stocksHead).css('display', 'none');
+                        'none' == $(global.dom.stocksHead).css('display') ?
+                                $(global.dom.stocksHead).css('display', 'table-row') :
+                                $(global.dom.stocksHead).css('display', 'none');
                     }
                     if (ev.keyCode == 78) {
-                        if ('none' == $(global.dom.stocksName).css('display'))
-                            $(global.dom.stocksName).css('display', 'table-row')
-                        else
-                            $(global.dom.stocksName).css('display', 'none');
+                        'none' == $(global.dom.stocksName).css('display') ?
+                                $(global.dom.stocksName).css('display', 'table-cell') :
+                                $(global.dom.stocksName).css('display', 'none');
                     }
                 });
 
@@ -127,7 +125,7 @@
         });
     </script>
     <style>
-        thead tr {
+        thead tr, tbody tr td:first-child {
             display: none;
         }
 
