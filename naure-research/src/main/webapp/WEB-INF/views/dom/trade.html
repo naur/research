@@ -43,7 +43,7 @@
             }
         };
 
-        function getStockInfo(codes) {
+        function getStockInfo(codes, refresh) {
             global.http.request({uri: global.stockUri + codes.toString(),
                 success: function (obj) {
                     eval(obj.output.replace(/var hq_str_/g, 'global.'));
@@ -56,10 +56,11 @@
                             if (4 == index) $(this).html(stockRealtime[0] + global.clock);
                         });
                     }
-                    global.message({content: 'clock: ' + clock + stockRealtime.pop() + stockRealtime.pop()});
-                    global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
-                }, error: function () {
-                    global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
+                    global.message.show({content: 'clock: ' + global.clock + ', ' + stockRealtime[stockRealtime.length - 3] + ' ' + stockRealtime[stockRealtime.length - 2]});
+                    if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
+                }, error: function (err) {
+                    global.message.show({content: 'clock: ' + global.clock + ', ' + JSON.stringify(err)});
+                    if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
                 }});
         }
 
@@ -78,14 +79,14 @@
         require(['jquery', 'jquery.strings', 'naure.http.xmlhttp', 'naure.message'], function ($, $1, NAURE) {
             global.http = NAURE.HTTP;
             global.message = NAURE.Message;
-            $('body').message({overlay: 'left-bottom', multiple: false});
+            $('body').message({overlay: 'left-bottom', multiple: false, title: ''});
             init(global.stocks);
             $(function () {
                 $(global.dom.stocksContainer).html(global.stocks.html);
                 $(document).on('keyup', function (event) {
                     var ev = document.all ? window.event : event;
                     if (ev.keyCode == 82) {
-                        getStockInfo(global.stocks.codes);
+                        getStockInfo(global.stocks.codes, true);
                     }
                 });
 
