@@ -18,12 +18,12 @@ asyncHandler = function (callback, timeout, param) {
 }
 
 
-define(['jquery', 'naure', 'naure.xsl.js'], function ($, NAURE) {
+define('ssa.pattern', ['jquery', 'naure'], function ($, NAURE) {
 
     NAURE.Pattern = (function () {
-        var http = YHD.HTTP;
 
         var pattern = {
+            http: null,
             'break': 'break',
             'continue': 'continue',
             /**
@@ -32,7 +32,7 @@ define(['jquery', 'naure', 'naure.xsl.js'], function ($, NAURE) {
              */
             chainHandler: function (options) {
                 var opt = $.extend({
-                    handler: null,      //ajax请求类型，和页面处理逻辑
+                    handler: null,      //两种：【ajax请求类型,既然 uri】或【页面处理逻辑】
                     successor: null,
                     success: null,
                     error: null,
@@ -66,6 +66,7 @@ define(['jquery', 'naure', 'naure.xsl.js'], function ($, NAURE) {
 //                        opt.successor.process();
 //                };
 
+                //处理逻辑
                 this.process = function (options) {
                     var currOpt = $.extend({}, this, options);
 
@@ -80,6 +81,7 @@ define(['jquery', 'naure', 'naure.xsl.js'], function ($, NAURE) {
                             return;
                     }
 
+                    //处理 handler 对应的函数，既处理逻辑
                     if (!currOpt.handler || (currOpt.handler && typeof(currOpt.handler) == 'function')) {
                         try {
                             if (currOpt.async && currOpt.handler) {
@@ -101,7 +103,8 @@ define(['jquery', 'naure', 'naure.xsl.js'], function ($, NAURE) {
                         if (currOpt.successor)
                             currOpt.successor.process(options);
                     } else {
-                        http.acquire({
+                        //使用 ajax 请求处理
+                        pattern.http.acquire({
                             uri: currOpt.handler,
                             data: currOpt.request,
                             context: currOpt.context,
@@ -116,7 +119,9 @@ define(['jquery', 'naure', 'naure.xsl.js'], function ($, NAURE) {
                             }
                         });
                     }
-                }
+                };
+
+                return this;
             }
         };
         return pattern;
@@ -124,3 +129,85 @@ define(['jquery', 'naure', 'naure.xsl.js'], function ($, NAURE) {
 
     return NAURE;
 });
+
+
+/**
+ * 基于 naure.http.ajax 版本的
+ */
+define('naure.pattern.ajax', ['jquery', 'naure.pattern', 'naure.http.ajax'], function ($, NAURE) {
+    NAURE.Pattern.http = NAURE.HTTP;
+    return NAURE;
+});
+
+
+/**
+ * 基于 naure.http.xsl 版本的
+ */
+define('naure.pattern.xsl', ['jquery', 'naure.pattern', 'naure.http.xsl'], function ($, NAURE) {
+    NAURE.Pattern.http = NAURE.HTTP;
+    return NAURE;
+});
+
+//
+//
+//(function ($) {
+//    $.chainHandler = function (options) {
+//        var opt = $.extend({
+//            xml: null,
+//            xmlUrl: null,
+//            xmlCache: false,
+//            xsl: null,
+//            xslUrl: null,
+//            xslCache: true,
+//            optionData: null,
+//            container: null,
+//            successor: null,
+//            errorPrompt: '获取数据错误，请稍后重试！',
+//            emptyPrompt: null,
+//            error: null,
+//            success: null
+//        }, options);
+//
+//        $(opt.container).NAURE_HTTP_Acquire({
+//            xml: opt.xml,
+//            xmlUrl: opt.xmlUrl,
+//            xmlCache: opt.xmlCache,
+//            xsl: opt.xsl,
+//            xslUrl: opt.xslUrl,
+//            xslCache: opt.xslCache,
+//            optionData: opt.optionData,
+//            success: opt.success,
+//            error: function (ex) {
+//                if (opt.errorPrompt != null) {
+//                    NAURE.Message.show({content: opt.errorPrompt, color: 'red', inline: true});
+//                }
+//                if (opt.error) {
+//                    opt.error(ex);
+//                }
+//            },
+//            success: function (obj) {
+//                if (opt.success != null) {
+//                    opt.success(obj);
+//                }
+//                if (opt.output == "" && opt.emptyPrompt != null) {
+//                    NAURE.Message.show({content: opt.emptyPrompt, color: 'red', inline: true});
+//                    //$('#query').attr('disabled', true);
+//                    //$('#query').attr('disabled', true);
+//                    //暂时处理方式：对返回的为空的内容，产生 error 事件。
+//                    if (!opt.error) {
+//                        opt.error(ex);
+//                    }
+//                } else {
+//                    if (opt.successor != null) {
+//                        opt.successor();
+//                    }
+//                }
+//            }
+//        });
+//    }
+//    $.fn.chainHandler = function (options) {
+//        options.container = this;
+//        $.chainHandler(options);
+//        return this;
+//    };
+//})(jQuery);

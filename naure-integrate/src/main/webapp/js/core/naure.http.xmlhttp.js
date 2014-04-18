@@ -4,11 +4,12 @@
  * Email：
  *          jiaruizhi@360buy.com
  * Description：
+ *          封装 [XMLHttpRequest] 和 [Microsoft.XMLHTTP] 进行 js 请求数据
  *          提供 http 工具集。使用【XMLHttpRequest】和【Microsoft.XMLHTTP】
  *
  */
 
-define('ssa.http.xmlhttp', ['jquery', 'naure'], function ($, NAURE) {
+define(['jquery', 'naure'], function ($, NAURE) {
     NAURE.HTTP.State = function (state) {
         switch (state) {
             case 0:
