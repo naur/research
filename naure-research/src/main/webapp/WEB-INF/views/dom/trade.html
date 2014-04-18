@@ -43,8 +43,10 @@
             stockUri: 'http://hq.sinajs.cn/list=',
             dom: {
                 message: '#message',
-                stocksContainer: '#stocks-container',
-                stocks: '#stocks-container tr'
+                stocksContainer: '#stocks tbody',
+                stocksHead: '#stocks thead tr',
+                stocksName: '#stocks thead tr td:eq(1), #stocks tbody tr td:eq(1)',
+                stocks: '#stocks tbody tr'
             }
         };
 
@@ -105,8 +107,18 @@
                 $(global.dom.stocksContainer).html(global.stocks.html);
                 $(document).on('keyup', function (event) {
                     var ev = document.all ? window.event : event;
-                    if (ev.keyCode == 82) {
-                        getStockInfo(global.stocks.codes, true);
+                    if (ev.keyCode == 82)  getStockInfo(global.stocks.codes, true);
+                    if (ev.keyCode == 72) {
+                        if ('none' == $(global.dom.stocksHead).css('display'))
+                            $(global.dom.stocksHead).css('display', 'table-row')
+                        else
+                            $(global.dom.stocksHead).css('display', 'none');
+                    }
+                    if (ev.keyCode == 78) {
+                        if ('none' == $(global.dom.stocksName).css('display'))
+                            $(global.dom.stocksName).css('display', 'table-row')
+                        else
+                            $(global.dom.stocksName).css('display', 'none');
                     }
                 });
 
@@ -115,9 +127,9 @@
         });
     </script>
     <style>
-        /*thead {*/
-        /*display: none;*/
-        /*}*/
+        thead tr {
+            display: none;
+        }
 
         table tbody tr {
             text-align: right;
@@ -129,7 +141,7 @@
     </style>
 </head>
 <body style="background-color: #ffffff;">
-<table rules="rows">
+<table id="stocks" rules="rows">
     <colgroup align="right" style="color:#0000FF;"></colgroup>
     <thead>
     <tr>
@@ -154,7 +166,7 @@
         <th>成交额</th>
     </tr>
     </thead>
-    <tbody id="stocks-container">
+    <tbody>
     </tbody>
 </table>
 </body>
