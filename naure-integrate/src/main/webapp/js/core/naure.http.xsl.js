@@ -576,5 +576,7 @@ define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
             return this;
         };
     })(jQuery);
+
+    return NAURE;
 });
 

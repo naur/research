@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title></title>
     <link href="http://cdn.naure.org/css/default.css" rel="stylesheet" type="text/css"/>
+    <link href="http://cdn.naure.org/css/naure.message.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="http://cdn.naure.org/js/core/require.js"></script>
     <script type="text/javascript" src=""></script>
     <script>
@@ -14,6 +15,7 @@
                 'oop': 'http://cdn.naure.org/js/core/oop',
                 'naure': 'http://cdn.naure.org/js/core/naure',
                 'naure.utility': 'http://cdn.naure.org/js/core/naure.utility',
+                'naure.message': 'http://cdn.naure.org/js/core/naure.message',
                 'naure.http.xmlhttp': 'http://cdn.naure.org/js/core/naure.http.xmlhttp'
             },
             shim: {
@@ -23,7 +25,7 @@
 
         //Open	High	Low	Close	Volume, EPS
         var global = {
-            http: null, isShow: false, clock: null,
+            http: null, message: null, isShow: false, clock: null, interval: 5000,
             stocks: [
                 ['*', 2200, 7.320, '600265', 'sh'],
                 ['*', 2500, 3.980, '000509', 'sz'],
@@ -35,73 +37,31 @@
             stockHtmlTemplate: '<tr class="{5}" stock="{4}{3}"><td style="display: none" class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td><td class="code">{3}</td><td></td></tr>',
             stockUri: 'http://hq.sinajs.cn/list=',
             dom: {
+                message: '#message',
                 stocksContainer: '#stocks-container',
                 stocks: '#stocks-container tr'
             }
         };
 
         function getStockInfo(codes) {
-            global.http.request(global.stockUri + codes.toString(), function (obj) {
-                eval(obj.output.replace(/var hq_str_/g, 'global.'));
+            global.http.request({uri: global.stockUri + codes.toString(),
+                success: function (obj) {
+                    eval(obj.output.replace(/var hq_str_/g, 'global.'));
 
-                var stockRealtime;
-                for (var index in codes) {
-                    stockRealtime = global[codes[index]].split(',');
-                    $(global.dom.stocks + '[stock="' + codes[index] + '"]').children().each(function (index) {
-                        if (!global.isShow) return;
-                        if (4 == index) $(this).html(stockRealtime[0] + global.clock);
-                    });
-                }
-                global.clock = setTimeout('getStockInfo(global.stocks.codes)', 5000);
-            }, function () {
-                global.clock = setTimeout('getStockInfo(global.stocks.codes)', 5000);
-            });
+                    var stockRealtime;
+                    for (var index in codes) {
+                        stockRealtime = global[codes[index]].split(',');
+                        $(global.dom.stocks + '[stock="' + codes[index] + '"]').children().each(function (index) {
+                            if (!global.isShow) return;
+                            if (4 == index) $(this).html(stockRealtime[0] + global.clock);
+                        });
+                    }
+                    global.message({content: 'clock: ' + clock + stockRealtime.pop() + stockRealtime.pop()});
+                    global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
+                }, error: function () {
+                    global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
+                }});
         }
-
-        //        function request(uri, success, error, changed) {
-        //            var opt = {
-        //                uri: uri,
-        //                contentType: 'text',
-        //                method: 'GET',
-        //                async: false,
-        //                success: success,
-        //                error: error,
-        //                changed: changed,
-        //                onStateChange: function () {
-        //                    if (opt.xmlhttp.readyState < 3) return;
-        //                    if (opt.changed)
-        //                        opt.changed({state: opt.xmlhttp.readyState, http: opt.xmlhttp});
-        //
-        //                    if (opt.xmlhttp.readyState == 4) {
-        //                        if (opt.xmlhttp.status == 200) {
-        //                            if (opt.success)
-        //                                opt.success({output: opt.xmlhttp.responseXML && opt.xmlhttp.responseXML.text.length > 0 ?
-        //                                        opt.xmlhttp.responseXML :
-        //                                        opt.xmlhttp.responseText,
-        //                                    http: opt.xmlhttp, context: opt.context});
-        //                        }
-        //                        else {
-        //                            if (opt.error)
-        //                                opt.error({state: opt.xmlhttp.readyState, http: opt.xmlhttp, context: opt.context});
-        //                        }
-        //                    }
-        //                }
-        //            };
-        //            opt.xmlhttp = createRequest();
-        //            if (opt.xmlhttp != null) {
-        //                //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-        //                opt.xmlhttp.onreadystatechange = opt.onStateChange;
-        //                opt.xmlhttp.open(opt.method, opt.uri, opt.async);
-        //                opt.xmlhttp.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
-        //                opt.xmlhttp.setRequestHeader("If-Modified-Since", "0");
-        //                opt.xmlhttp.setRequestHeader("Content-Type", opt.contentType);
-        //                opt.xmlhttp.send(null);    //"name=guestuser&Passwd=111111"
-        //                //if ($.browser.mozilla)
-        //                //opt.xmlhttp.onreadystatechange = opt.stateChange;
-        //            } else {
-        //                window.console.log('Your browser does not support XMLHTTP.');
-        //            }
-        //        }
 
         function init(stocks) {
             var codes = [];
@@ -115,8 +75,10 @@
             stocks.codes = codes;
         }
 
-        require(['jquery', 'jquery.strings', 'naure.http.xmlhttp'], function ($, $1, http) {
-            global.http = http;
+        require(['jquery', 'jquery.strings', 'naure.http.xmlhttp', 'naure.message'], function ($, $1, NAURE) {
+            global.http = NAURE.HTTP;
+            global.message = NAURE.Message;
+            $('body').message({overlay: 'left-bottom', multiple: false});
             init(global.stocks);
             $(function () {
                 $(global.dom.stocksContainer).html(global.stocks.html);

@@ -15,6 +15,8 @@
  *                  $('.className').message({content: '查询数据结束！', placement: 'before', fade: true});
  *                  NAURE.Message.fade('获取数据错误！', 'red');
  *                  $('#className').message.fade({content: '切换表头！', color: 'red'});
+ *      example3:
+ *                  $('body').message({overlay: 'left-bottom', multiple: false});
  *
  * DOM Element：
  *       <div class="message">

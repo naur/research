@@ -59,6 +59,8 @@ define(['jquery', 'naure', 'naure.utility'], function ($, NAURE) {
             success: opt.ajaxSuccess
         });
     };
+
+    return NAURE;
 });
 
 

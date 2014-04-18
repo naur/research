@@ -12,6 +12,7 @@
  */
 
 define(['jquery', 'naure'], function ($, NAURE) {
+    return NAURE;
 });
 
 

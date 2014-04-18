@@ -18,11 +18,16 @@ require.config({
     //baseUrl: '',
     paths: {
         jquery: jslocalpath + '/js/core/jquery-1.9.1.min',
+        'jquery.widget': jslocalpath + '/js/core/jquery.widget.min',
+        'jquery.mousewheel': jslocalpath + '/js/core/jquery.mousewheel',
         'jquery.strings': jslocalpath + '/js/core/jquery.strings',
         'jquery.validate': jslocalpath + '/js/core/jquery.validate',
-        'ajaxslt': jslocalpath + '/js/core/ajaxslt',
+        'jquery.query': jslocalpath + '/js/core/jquery.query',
+        'jquery.template': jslocalpath + '/js/core/jsrender.min',
+        'jquery.flip': jslocalpath + '/js/core/jquery.flip',
+        'metro': jslocalpath + '/js/core/metro.min',
 
-        'jquery.template': jslocalpath + '/js/core/jsrender',
+        'ajaxslt': jslocalpath + '/js/core/ajaxslt',
 
         'moment': jslocalpath + '/js/moment',
 
@@ -39,8 +44,6 @@ require.config({
         'modern.start-menu': jslocalpath + '/js/modern/start-menu',
         'modern.tile-drag': jslocalpath + '/js/modern/tile-drag',
         'modern.tile-slider': jslocalpath + '/js/modern/tile-slider',
-
-        'jquery.flip': jslocalpath + '/js/core/jquery.flip',
 
         'jStat': jslocalpath + '/js/math/jstat-1.0.0',
 

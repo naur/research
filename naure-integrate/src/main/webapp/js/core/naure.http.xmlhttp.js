@@ -72,8 +72,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     }
                     if (opt.context)
                         $(opt.context).attr('disabled', false);
-                }
-                else {
+                } else {
                     if (opt.error)
                         opt.error({state: NAURE.HTTP.State(opt.xmlhttp.readyState), http: opt.xmlhttp, context: opt.context});
                     if (opt.context)
@@ -267,4 +266,6 @@ define(['jquery', 'naure'], function ($, NAURE) {
 
         return output.join('');
     };
+
+    return NAURE;
 });
