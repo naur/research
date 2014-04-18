@@ -27,16 +27,16 @@
         var global = {
             http: null, message: null, isShow: false, clock: null, interval: 5000,
             stocks: [
-                ['*', 2200, 7.320, '600265', 'sh'],
-                ['*', 2500, 3.980, '000509', 'sz'],
-                ['', 1500, 6.647, '000711', 'sz'],
-                ['', 1000, 8.321, '000803', 'sz'],
-                ['', 2100, 7.257, '002072', 'sz'],
-                ['', 600, 10.627, '002425', 'sz']
+                ['*ST景谷', 2200, 7.320, '600265', 'sh'],
+                ['*ST华塑', 2500, 3.980, '000509', 'sz'],
+                ['天伦置业', 1500, 6.647, '000711', 'sz'],
+                ['金宇车城', 1000, 8.321, '000803', 'sz'],
+                ['德棉股份', 2100, 7.257, '002072', 'sz'],
+                ['凯撒股份', 600, 10.627, '002425', 'sz']
             ],
-            stockHtmlTemplate: '<tr class="{5}" stock="{4}{3}"><td class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td>' +
+            stockHtmlTemplate: '<tr class="{6}" stock="{4}{3}" number="{1}" cost="{2}" amount="{5}"><td class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td>' +
                     '<td class="curr"></td><td class="profits"></td><td class="profitability"></td><td class="code">{3}</td>' +
-                    '<td class="cost-amount"></td><td class="latest-value"></td><td></td><td></td>' +
+                    '<td class="cost-amount">{5}</td><td class="latest-value"></td><td></td><td></td>' +
                     '<td></td><td></td><td></td><td></td>' +
                     '<td></td><td></td><td></td><td></td>' +
                     '</tr>',
@@ -53,25 +53,28 @@
                 success: function (obj) {
                     eval(obj.output.replace(/var hq_str_/g, 'global.'));
 
-                    var stockRealtime, curr;
+                    var stockRealtime, curr, parent, cost, number, amount;
                     for (var index in codes) {
                         stockRealtime = global[codes[index]].split(',');
-                        curr = $(global.dom.stocks + '[stock="' + codes[index] + '"] .curr');
+                        parent = $(global.dom.stocks + '[stock="' + codes[index] + '"]');
+                        curr = parent.find('.curr');// $(global.dom.stocks + '[stock="' + codes[index] + '"] .curr');
+                        cost = parseFloat(parent.attr('cost'));
+                        number = parseFloat(parent.attr('number'));
+                        amount = parseFloat(parent.attr('amount'));
                         curr.html(stockRealtime[3]).
-                                next().html((stockRealtime[3] - parseInt(curr.prev('cost').html())) * parseInt(curr.prev('number').html())).
-                                next().html(stockRealtime[3]).
-                                next().next().html(parseInt(curr.prev('number').html()) * parseInt(curr.prev('cost').html())).
-                                next().html(stockRealtime[3] * parseInt(curr.prev('cost').html())).
+                                next().html(((stockRealtime[3] - cost) * number).toFixed(2)).
+                                next().html((((stockRealtime[3] - cost) * number) / amount * 100).toFixed(2)).
+                                next().next().next().html((stockRealtime[3] * number).toFixed(2)).
                                 next().html(stockRealtime[2]).
                                 next().html(stockRealtime[1]).
                                 next().html(stockRealtime[4]).
                                 next().html(stockRealtime[5]).
-                                next().html(stockRealtime[10]).
                                 next().html(stockRealtime[11]).
-                                next().html(stockRealtime[12]).
+                                next().html(stockRealtime[10]).
                                 next().html(stockRealtime[13]).
-                                next().html(stockRealtime[8]).
-                                next().html(stockRealtime[9]);
+                                next().html(stockRealtime[12]).
+                                next().html((stockRealtime[8] / 100).toFixed()).
+                                next().html((stockRealtime[9] / 10000).toFixed(2));
                     }
                     global.message.show({content: 'clock: ' + global.clock + ', ' + stockRealtime[stockRealtime.length - 3] + ' ' + stockRealtime[stockRealtime.length - 2]});
                     if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
@@ -86,7 +89,7 @@
             var html = '';
             for (var index in stocks) {
                 if (!stocks.hasOwnProperty(index)) continue;
-                html += $.format(global.stockHtmlTemplate, stocks[index][0], stocks[index][1], stocks[index][2], stocks[index][3], stocks[index][4], index % 2 == 0 ? '' : 'tdeven');
+                html += $.format(global.stockHtmlTemplate, stocks[index][0], stocks[index][1], stocks[index][2], stocks[index][3], stocks[index][4], (stocks[index][1] * stocks[index][2]).toFixed(2), index % 2 == 0 ? '' : 'tdeven');
                 codes.push(stocks[index][4] + stocks[index][3]);
             }
             stocks.html = html;
@@ -112,12 +115,16 @@
         });
     </script>
     <style>
-        thead {
-            display: none;
-        }
+        /*thead {*/
+        /*display: none;*/
+        /*}*/
 
         table tbody tr {
             text-align: right;
+        }
+
+        table tbody tr td:first-child {
+            text-align: center;
         }
     </style>
 </head>
@@ -126,7 +133,25 @@
     <colgroup align="right" style="color:#0000FF;"></colgroup>
     <thead>
     <tr>
-
+        <th class="name">证券名称</th>
+        <th class="number">证券数量</th>
+        <th class="cost">成本价</th>
+        <th class="curr">当前价</th>
+        <th class="profits">浮动盈亏</th>
+        <th class="profitability">盈亏比例(%)</th>
+        <th class="code">证券代码</th>
+        <th class="cost-amount">成本金额</th>
+        <th class="latest-value">最新市值</th>
+        <th>昨日收盘价</th>
+        <th>今日开盘价</th>
+        <th>今日最高价</th>
+        <th>今日最低价</th>
+        <th>竞买价</th>
+        <th>竞买价</th>
+        <th>竞卖价</th>
+        <th>竞卖价</th>
+        <th>成交量</th>
+        <th>成交额</th>
     </tr>
     </thead>
     <tbody id="stocks-container">
