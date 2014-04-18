@@ -28,7 +28,7 @@
  * </div>
  */
 
-define(['jquery', 'jquery.strings.js', 'naure', 'naure.utility.js'], function ($, $1, NAURE) {
+define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, NAURE) {
     $.fn.appendLine = function (str) {
         $(this).append(str + '<br />');
     };
