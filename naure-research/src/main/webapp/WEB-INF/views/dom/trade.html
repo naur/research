@@ -34,7 +34,12 @@
                 ['', 2100, 7.257, '002072', 'sz'],
                 ['', 600, 10.627, '002425', 'sz']
             ],
-            stockHtmlTemplate: '<tr class="{5}" stock="{4}{3}"><td style="display: none" class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td><td class="code">{3}</td><td></td></tr>',
+            stockHtmlTemplate: '<tr class="{5}" stock="{4}{3}"><td class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td>' +
+                    '<td class="curr"></td><td class="profits"></td><td class="profitability"></td><td class="code">{3}</td>' +
+                    '<td class="cost-amount"></td><td class="latest-value"></td><td></td><td></td>' +
+                    '<td></td><td></td><td></td><td></td>' +
+                    '<td></td><td></td><td></td><td></td>' +
+                    '</tr>',
             stockUri: 'http://hq.sinajs.cn/list=',
             dom: {
                 message: '#message',
@@ -48,13 +53,25 @@
                 success: function (obj) {
                     eval(obj.output.replace(/var hq_str_/g, 'global.'));
 
-                    var stockRealtime;
+                    var stockRealtime, curr;
                     for (var index in codes) {
                         stockRealtime = global[codes[index]].split(',');
-                        $(global.dom.stocks + '[stock="' + codes[index] + '"]').children().each(function (index) {
-                            if (!global.isShow) return;
-                            if (4 == index) $(this).html(stockRealtime[0] + global.clock);
-                        });
+                        curr = $(global.dom.stocks + '[stock="' + codes[index] + '"] .curr');
+                        curr.html(stockRealtime[3]).
+                                next().html((stockRealtime[3] - parseInt(curr.prev('cost').html())) * parseInt(curr.prev('number').html())).
+                                next().html(stockRealtime[3]).
+                                next().next().html(parseInt(curr.prev('number').html()) * parseInt(curr.prev('cost').html())).
+                                next().html(stockRealtime[3] * parseInt(curr.prev('cost').html())).
+                                next().html(stockRealtime[2]).
+                                next().html(stockRealtime[1]).
+                                next().html(stockRealtime[4]).
+                                next().html(stockRealtime[5]).
+                                next().html(stockRealtime[10]).
+                                next().html(stockRealtime[11]).
+                                next().html(stockRealtime[12]).
+                                next().html(stockRealtime[13]).
+                                next().html(stockRealtime[8]).
+                                next().html(stockRealtime[9]);
                     }
                     global.message.show({content: 'clock: ' + global.clock + ', ' + stockRealtime[stockRealtime.length - 3] + ' ' + stockRealtime[stockRealtime.length - 2]});
                     if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
@@ -98,9 +115,13 @@
         thead {
             display: none;
         }
+
+        table tbody tr {
+            text-align: right;
+        }
     </style>
 </head>
-<body>
+<body style="background-color: #ffffff;">
 <table rules="rows">
     <colgroup align="right" style="color:#0000FF;"></colgroup>
     <thead>
