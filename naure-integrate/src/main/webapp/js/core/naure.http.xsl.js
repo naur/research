@@ -4,11 +4,11 @@
  * Email：
  *          jiaruizhi@360buy.com
  * Description：
- *          数据获取 和 XSL 处理。
+ *          数据获取 和 XSL 处理。使用【ajaxslt】
  *
  */
 
-define(['jquery', 'naure', 'naure.utility.js', 'ajaxslt'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.utility', 'ajaxslt'], function ($, NAURE) {
 
     var utility = NAURE.Utility;
 
