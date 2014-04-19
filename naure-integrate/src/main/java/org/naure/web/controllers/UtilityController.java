@@ -15,7 +15,7 @@ public class UtilityController extends ControllerBase {
 
     @RequestMapping("dom/{name}")
     public String html(@PathVariable final String name) {
-        return "/" + name;
+        return "dom/" + name;
     }
 
     @RequestMapping("restful-client")
