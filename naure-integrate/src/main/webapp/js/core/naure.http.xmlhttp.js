@@ -111,7 +111,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
             };
             opt.xmlhttp.onreadystatechange = opt.stateChange;
             opt.xmlhttp.withCredentials = true; //标准的CORS请求不对cookies做任何事情，既不发送也不改变。如果希望改变这一情况，就需要将withCredentials设置为true。
-            opt.xmlhttp.setRequestHeader("Origin", null);
+            opt.xmlhttp.setRequestHeader("Origin", "hq.sinajs.cn");
             opt.xmlhttp.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
             opt.xmlhttp.setRequestHeader("If-Modified-Since", "0");
             opt.xmlhttp.setRequestHeader("Content-Type", opt.contentType);
