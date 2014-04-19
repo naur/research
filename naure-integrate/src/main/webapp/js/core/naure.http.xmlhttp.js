@@ -46,46 +46,72 @@ define(['jquery', 'naure'], function ($, NAURE) {
         $(opt.context).attr('disabled', true);
 
         opt.stateChange = function () {
-            if (opt.xmlhttp.readyState < 3)
-                return;
-//            if (opt.xmlhttp.status <= 0)
+//            if (opt.xmlhttp.readyState < 3)
 //                return;
+////            if (opt.xmlhttp.status <= 0)
+////                return;
             if (opt.changed) {
                 opt.changed({state: NAURE.HTTP.state(opt.xmlhttp.readyState), http: opt.xmlhttp});
             }
 
-            if (opt.xmlhttp.readyState == 4) {
-                if (opt.xmlhttp.status == 200) {
-                    if (opt.success) {
-                        opt.success({output: opt.xmlhttp.responseXML && opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText, http: opt.xmlhttp, context: opt.context});
-                        if (opt.htmlParser) {
-                            if (!opt.htmlParser.parser) {
-                                if (opt.xmlhttp.getResponseHeader('Content-Type').search(/xml/g) >= 0)
-                                    opt.htmlParser.parser = NAURE.XML.Parser;
-                                if (opt.xmlhttp.getResponseHeader('Content-Type').search(/json/g) >= 0)
-                                    opt.htmlParser.parser = NAURE.JSON.Parser;
-                            }
-
-                            if (opt.htmlParser.parser)
-                                opt.htmlParser.parser(opt.xmlhttp.responseText, opt.htmlParser.delegate);
-                        }
-                    }
-                    if (opt.context)
-                        $(opt.context).attr('disabled', false);
-                } else {
-                    if (opt.error)
-                        opt.error({state: NAURE.HTTP.State(opt.xmlhttp.readyState), http: opt.xmlhttp, context: opt.context});
-                    if (opt.context)
-                        $(opt.context).attr('disabled', false);
-                }
-            }
+//            if (opt.xmlhttp.readyState == 4) {
+//                if (opt.xmlhttp.status == 200) {
+//                    if (opt.success) {
+//                        opt.success({output: opt.xmlhttp.responseXML && opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText, http: opt.xmlhttp, context: opt.context});
+//                        if (opt.htmlParser) {
+//                            if (!opt.htmlParser.parser) {
+//                                if (opt.xmlhttp.getResponseHeader('Content-Type').search(/xml/g) >= 0)
+//                                    opt.htmlParser.parser = NAURE.XML.Parser;
+//                                if (opt.xmlhttp.getResponseHeader('Content-Type').search(/json/g) >= 0)
+//                                    opt.htmlParser.parser = NAURE.JSON.Parser;
+//                            }
+//
+//                            if (opt.htmlParser.parser)
+//                                opt.htmlParser.parser(opt.xmlhttp.responseText, opt.htmlParser.delegate);
+//                        }
+//                    }
+//                    if (opt.context)
+//                        $(opt.context).attr('disabled', false);
+//                } else {
+//                    if (opt.error)
+//                        opt.error({state: NAURE.HTTP.state(opt.xmlhttp.readyState), http: opt.xmlhttp, context: opt.context});
+//                    if (opt.context)
+//                        $(opt.context).attr('disabled', false);
+//                }
+//            }
         };
 
         opt.xmlhttp = NAURE.HTTP.createRequest();
         if (opt.xmlhttp != null) {
             //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-            opt.xmlhttp.onreadystatechange = opt.stateChange;
             opt.xmlhttp.open(opt.method, opt.uri, opt.async);
+            opt.xmlhttp.onload = function () {
+                if (opt.success) {
+                    opt.success({output: opt.xmlhttp.responseXML && opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText, http: opt.xmlhttp, context: opt.context});
+                    if (opt.htmlParser) {
+                        if (!opt.htmlParser.parser) {
+                            if (opt.xmlhttp.getResponseHeader('Content-Type').search(/xml/g) >= 0)
+                                opt.htmlParser.parser = NAURE.XML.Parser;
+                            if (opt.xmlhttp.getResponseHeader('Content-Type').search(/json/g) >= 0)
+                                opt.htmlParser.parser = NAURE.JSON.Parser;
+                        }
+
+                        if (opt.htmlParser.parser)
+                            opt.htmlParser.parser(opt.xmlhttp.responseText, opt.htmlParser.delegate);
+                    }
+                }
+                if (opt.context)
+                    $(opt.context).attr('disabled', false);
+            };
+            opt.xmlhttp.onerror = function () {
+                if (opt.error)
+                    opt.error({state: NAURE.HTTP.state(opt.xmlhttp.readyState), http: opt.xmlhttp, context: opt.context});
+                if (opt.context)
+                    $(opt.context).attr('disabled', false);
+            };
+            opt.xmlhttp.onreadystatechange = opt.stateChange;
+            opt.xmlhttp.withCredentials = true; //标准的CORS请求不对cookies做任何事情，既不发送也不改变。如果希望改变这一情况，就需要将withCredentials设置为true。
+            opt.xmlhttp.setRequestHeader("Origin", null);
             opt.xmlhttp.setRequestHeader("Cache-Control", "no-cache, must-revalidate");
             opt.xmlhttp.setRequestHeader("If-Modified-Since", "0");
             opt.xmlhttp.setRequestHeader("Content-Type", opt.contentType);
@@ -103,10 +129,17 @@ define(['jquery', 'naure'], function ($, NAURE) {
     };
 
     NAURE.HTTP.createRequest = function () {
-        if (window.XMLHttpRequest) {// code for all new browsers
-            return new XMLHttpRequest();
+        if (window.XDomainRequest) {// code for all new browsers
+            return new XDomainRequest();
+
         }
-        else if (window.ActiveXObject) {// code for IE5 and IE6
+        if (window.XMLHttpRequest) {// code for all new browsers
+            var xhr = new XMLHttpRequest();
+            if ("withCredentials" in xhr) { //"withCredentials" only exists on XMLHTTPRequest2 objects.
+                return xhr;
+            }
+        }
+        if (window.ActiveXObject) {// code for IE5 and IE6
             return new ActiveXObject("Microsoft.XMLHTTP");
         }
         return null;

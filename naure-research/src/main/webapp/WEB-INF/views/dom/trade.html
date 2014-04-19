@@ -81,8 +81,11 @@
                     global.message.show({content: 'clock: ' + global.clock + ', ' + stockRealtime[stockRealtime.length - 3] + ' ' + stockRealtime[stockRealtime.length - 2]});
                     if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
                 }, error: function (err) {
+                    delete err.http;
                     global.message.show({content: 'clock: ' + global.clock + ', ' + JSON.stringify(err)});
                     if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
+                }, changed: function (obj) {
+                    //window.console.log(JSON.stringify({clock: global.clock, state: obj.state}));
                 }});
         }
 
