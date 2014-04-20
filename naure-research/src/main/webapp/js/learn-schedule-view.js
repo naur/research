@@ -334,7 +334,7 @@ function initEvent() {
 /*-------------------- 初始化 START ------------------*/
 
 require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics',
-    'naure.xsl', 'naure.chart.gantt',
+    'naure.http.xsl', 'naure.chart.gantt',
     'swfobject',
     'jquery.uploadify'], function ($, NAURE) {
     naure = NAURE;
