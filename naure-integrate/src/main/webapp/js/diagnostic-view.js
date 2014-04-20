@@ -42,7 +42,7 @@ var overlayNodes = {
 
 /*-------------------- 初始化 START --------------------*/
 
-require(['jquery', 'core/naure.message.js', 'core/naure.overlay.js', 'core/naure.xsl.js', 'core/naure.analytics.js'], function ($, NAURE) {
+require(['jquery', 'naure.message', 'naure.overlay', 'naure.xsl', 'naure.analytics'], function ($, NAURE) {
     naure = NAURE;
     message = NAURE.Message;
 

@@ -25,22 +25,23 @@
 
         //Open	High	Low	Close	Volume, EPS
         var global = {
-            http: null, message: null, isShow: false, clock: null, interval: 5000,
+            http: null, message: null, isShow: false, clock: null, interval: 10000, totalAmount: 0, currAmount: 0,
             stocks: [
-                ['*ST景谷', 2200, 7.320, '600265', 'sh'],
-                ['*ST华塑', 2500, 3.980, '000509', 'sz'],
-                ['天伦置业', 1500, 6.647, '000711', 'sz'],
-                ['金宇车城', 1000, 8.321, '000803', 'sz'],
-                ['德棉股份', 2100, 7.257, '002072', 'sz'],
-                ['凯撒股份', 600, 10.627, '002425', 'sz']
+                ['*ST景谷', 2200, 16104.37, '600265', 'sh'],
+                ['*ST华塑', 2500, 9949.81, '000509', 'sz'],
+                ['天伦置业', 1500, 9969.86, '000711', 'sz'],
+                ['金宇车城', 1000, 8320.75, '000803', 'sz'],
+                ['德棉股份', 2100, 15239.01, '002072', 'sz'],
+                ['凯撒股份', 600, 6375.90, '002425', 'sz', 9.24]
             ],
-            stockHtmlTemplate: '<tr class="{6}" stock="{4}{3}" number="{1}" cost="{2}" amount="{5}"><td class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td>' +
+            stockHtmlTemplate: '<tr class="{7}" stock="{4}{3}" number="{1}" cost="{2}" amount="{5}" curr="{6}"><td class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td>' +
                     '<td class="curr"></td><td class="profits"></td><td class="profitability"></td><td class="code">{3}</td>' +
-                    '<td class="cost-amount">{5}</td><td class="latest-value"></td><td></td><td></td>' +
+                    '<td class="amount">{5}</td><td class="latest-value"></td><td></td><td></td>' +
                     '<td></td><td></td><td></td><td></td>' +
                     '<td></td><td></td><td></td><td></td>' +
                     '</tr>',
             stockUri: 'http://hq.sinajs.cn/list=',
+            messageTemplate: 'clock: {0}, cost: {1}, curr: {2}, {3}, {4} {5}',
             dom: {
                 message: '#message',
                 stocksContainer: '#stocks tbody',
@@ -55,18 +56,21 @@
                 success: function (obj) {
                     eval(obj.output.replace(/var hq_str_/g, 'global.'));
 
-                    var stockRealtime, curr, parent, cost, number, amount;
+                    global.currAmount = 0;
+                    var stockRealtime, startDom, curr, parent, cost, number, amount;
                     for (var index in codes) {
                         stockRealtime = global[codes[index]].split(',');
                         parent = $(global.dom.stocks + '[stock="' + codes[index] + '"]');
-                        curr = parent.find('.curr');// $(global.dom.stocks + '[stock="' + codes[index] + '"] .curr');
+                        startDom = parent.find('.curr');// $(global.dom.stocks + '[stock="' + codes[index] + '"] .curr');
                         cost = parseFloat(parent.attr('cost'));
                         number = parseFloat(parent.attr('number'));
                         amount = parseFloat(parent.attr('amount'));
-                        curr.html(stockRealtime[3]).
-                                next().html(((stockRealtime[3] - cost) * number).toFixed(2)).
-                                next().html((((stockRealtime[3] - cost) * number) / amount * 100).toFixed(2)).
-                                next().next().next().html((stockRealtime[3] * number).toFixed(2)).
+                        curr = parseFloat(parent.attr('curr')) == 0 ? stockRealtime[3] : parseFloat(parent.attr('curr'));
+                        global.currAmount += number * curr;
+                        startDom.html(curr).
+                                next().html((curr * number - amount).toFixed(2)).
+                                next().html(((curr * number - amount) / amount * 100).toFixed(2)).
+                                next().next().next().html((curr * number).toFixed(2)).
                                 next().html(stockRealtime[2]).
                                 next().html(stockRealtime[1]).
                                 next().html(stockRealtime[4]).
@@ -78,11 +82,11 @@
                                 next().html((stockRealtime[8] / 100).toFixed()).
                                 next().html((stockRealtime[9] / 10000).toFixed(2));
                     }
-                    global.message.show({content: 'clock: ' + global.clock + ', ' + stockRealtime[stockRealtime.length - 3] + ' ' + stockRealtime[stockRealtime.length - 2]});
+                    global.message.show({content: $.format(global.messageTemplate, global.clock, global.totalAmount, global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), stockRealtime[stockRealtime.length - 3], stockRealtime[stockRealtime.length - 2])});
                     if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
                 }, error: function (err) {
                     delete err.http;
-                    global.message.show({content: 'clock: ' + global.clock + ', ' + JSON.stringify(err)});
+                    global.message.show({content: $.format(global.messageTemplate, global.clock, global.totalAmount, global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), JSON.stringify(err))});
                     if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
                 }, changed: function (obj) {
                     //window.console.log(JSON.stringify({clock: global.clock, state: obj.state}));
@@ -94,7 +98,12 @@
             var html = '';
             for (var index in stocks) {
                 if (!stocks.hasOwnProperty(index)) continue;
-                html += $.format(global.stockHtmlTemplate, stocks[index][0], stocks[index][1], stocks[index][2], stocks[index][3], stocks[index][4], (stocks[index][1] * stocks[index][2]).toFixed(2), index % 2 == 0 ? '' : 'tdeven');
+                global.totalAmount += stocks[index][2];
+                html += $.format(global.stockHtmlTemplate,
+                        stocks[index][0], stocks[index][1],
+                        (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][3],
+                        stocks[index][4], stocks[index][2].toFixed(2),
+                        stocks[index][5] ? stocks[index][5] : 0, index % 2 == 0 ? '' : 'tdeven');
                 codes.push(stocks[index][4] + stocks[index][3]);
             }
             stocks.html = html;
@@ -153,7 +162,7 @@
         <th class="profits">浮动盈亏</th>
         <th class="profitability">盈亏比例(%)</th>
         <th class="code">证券代码</th>
-        <th class="cost-amount">成本金额</th>
+        <th class="amount">成本金额</th>
         <th class="latest-value">最新市值</th>
         <th>昨日收盘价</th>
         <th>今日开盘价</th>

@@ -8,7 +8,7 @@
  * Description:
  *              NAURE Analytics Service
  */
-define(['jquery', 'jquery.strings.js', 'naure', 'naure.utility.js'], function ($, $1, NAURE) {
+define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, NAURE) {
     var utility = NAURE.Utility;
 
     NAURE.Analytics = (function () {

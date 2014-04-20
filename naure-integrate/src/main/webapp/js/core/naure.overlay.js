@@ -26,7 +26,7 @@
  * Usage:
  */
 
-define(['jquery', 'jquery.strings.js', 'naure', 'naure.utility.js'], function ($, $1, NAURE) {
+define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, NAURE) {
 
     NAURE.UI.Overlay = (function () {
         var dom = {
