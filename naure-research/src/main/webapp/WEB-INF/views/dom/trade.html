@@ -27,16 +27,17 @@
         var global = {
             http: null, message: null, isShow: false, clock: null, interval: 10000, totalAmount: 0, currAmount: 0,
             stocks: [
-                ['*ST景谷', 2200, 16104.37, '600265', 'sh'],
+                ['*ST景谷', 2200, 16104.37, '600265', 'sh', 9.05],
                 ['*ST华塑', 2500, 9949.81, '000509', 'sz'],
                 ['天伦置业', 1500, 9969.86, '000711', 'sz'],
                 ['金宇车城', 1000, 8320.75, '000803', 'sz'],
                 ['德棉股份', 2100, 15239.01, '002072', 'sz'],
                 ['凯撒股份', 600, 6375.90, '002425', 'sz', 9.24]
             ],
-            stockHtmlTemplate: '<tr class="{7}" stock="{4}{3}" number="{1}" cost="{2}" amount="{5}" curr="{6}"><td class="name">{0}</td><td class="number">{1}</td><td class="cost">{2}</td>' +
-                    '<td class="curr"></td><td class="profits"></td><td class="profitability"></td><td class="code">{3}</td>' +
-                    '<td class="amount">{5}</td><td class="latest-value"></td><td></td><td></td>' +
+            stockHtmlTemplate: '<tr class="{7}" stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">' +
+                    '<td class="name">{6}</td><td class="code">{1}</td><td class="number">{2}</td><td class="cost">{3}</td>' +
+                    '<td class="curr"></td><td class="profits"></td><td class="profitability"></td>' +
+                    '<td class="amount">{4}</td><td class="latest-value"></td><td></td><td></td>' +
                     '<td></td><td></td><td></td><td></td>' +
                     '<td></td><td></td><td></td><td></td>' +
                     '</tr>',
@@ -70,7 +71,7 @@
                         startDom.html(curr).
                                 next().html((curr * number - amount).toFixed(2)).
                                 next().html(((curr * number - amount) / amount * 100).toFixed(2)).
-                                next().next().next().html((curr * number).toFixed(2)).
+                                next().next().html((curr * number).toFixed(2)).
                                 next().html(stockRealtime[2]).
                                 next().html(stockRealtime[1]).
                                 next().html(stockRealtime[4]).
@@ -100,10 +101,9 @@
                 if (!stocks.hasOwnProperty(index)) continue;
                 global.totalAmount += stocks[index][2];
                 html += $.format(global.stockHtmlTemplate,
-                        stocks[index][0], stocks[index][1],
-                        (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][3],
-                        stocks[index][4], stocks[index][2].toFixed(2),
-                        stocks[index][5] ? stocks[index][5] : 0, index % 2 == 0 ? '' : 'tdeven');
+                        stocks[index][4], stocks[index][3],
+                        stocks[index][1], (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][2],
+                        stocks[index][5] ? stocks[index][5] : 0, stocks[index][1], index % 2 == 0 ? '' : 'tdeven');
                 codes.push(stocks[index][4] + stocks[index][3]);
             }
             stocks.html = html;
@@ -137,7 +137,7 @@
         });
     </script>
     <style>
-        thead tr, tbody tr td:first-child {
+        thead tr, tbody tr td.name {
             display: none;
         }
 
@@ -145,7 +145,7 @@
             text-align: right;
         }
 
-        table tbody tr td:first-child {
+        table tbody tr td.name, table tbody tr td.code {
             text-align: center;
         }
     </style>
