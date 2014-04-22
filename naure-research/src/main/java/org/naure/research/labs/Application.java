@@ -1,8 +1,8 @@
 package org.naure.research.labs;
 
-import com.yihaodian.ssa.ftv.common.util.EnumerableUtils;
 import org.naure.common.patterns.Enable;
 import org.naure.common.patterns.Func;
+import org.naure.common.util.EnumerableUtils;
 import org.naure.common.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class Application {
 
         //substring(1): 排除开始的 [/] 字符    --       [file:/D:/Research/projects/jlabs/target/classes/]
         final String classPath = classLoader.getResource("").getPath().replace("/", "\\").substring(1);
-        List<String> classNames = FileUtil.getFiles(classPath, new Func<File, String>() {
+        List<String> classNames = FileUtil.getFiles(classPath + "org\\naure\\research\\labs", new Func<File, String>() {
             @Override
             public String execute(File file) {
                 if (!".class".equals(FileUtil.fileType(file.getPath()))) return null;

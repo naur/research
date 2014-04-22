@@ -33,6 +33,11 @@
             <artifactId>jactor</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.httl</groupId>
+            <artifactId>httl-springmvc</artifactId>
+        </dependency>
+
         <!--JSON-->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
