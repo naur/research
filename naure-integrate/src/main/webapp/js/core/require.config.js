@@ -117,8 +117,14 @@ require.config({
 //        }
 //    },
     shim: {
+        'jquery.widget': ['jquery'],
+        'jquery.mousewheel': ['jquery'],
         'jquery.strings': ['jquery'],
+        'jquery.validate': ['jquery'],
+        'jquery.query': ['jquery'],
+        'jquery.template': ['jquery'],
         'jquery.uploadify': ['jquery'],
+        'metro': ['jquery', 'jquery.widget', 'jquery.mousewheel'],
         'modern.calendar': ['moment']
     }
 });
