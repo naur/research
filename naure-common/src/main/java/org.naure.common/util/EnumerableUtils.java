@@ -1,4 +1,4 @@
-package com.yihaodian.ssa.ftv.common.util;
+package org.naure.common.util;
 
 
 import org.naure.common.patterns.Comparer;

@@ -1,4 +1,4 @@
-package org.naure.research.labs.common;
+package org.naure.research.labs.entities;
 
 /**
  * Created by Administrator on 9/12/13.

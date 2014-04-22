@@ -5,6 +5,10 @@
  */
 package org.naure.research.web.controllers;
 
+import org.naure.web.ControllerBase;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 /**
  * <pre>
  * author jiaruizhi
@@ -15,5 +19,7 @@ package org.naure.research.web.controllers;
  * 评审人 ：
  * </pre>
  */
-public class LabsController {
+@Controller
+@RequestMapping(value = "document")
+public class LabsController extends ControllerBase {
 }

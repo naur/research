@@ -3,7 +3,7 @@
  * 
  * Copy Right@ 纽海信息技术有限公司
  */
-package com.yihaodian.scm.scs.framework.util;
+package org.naure.common.util;
 
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
