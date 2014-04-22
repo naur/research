@@ -26,4 +26,14 @@ public interface ShardPolicy {
 	 */
 	Shard getShard(byte[] key);
 
+    /**
+     * 获取分片
+     * 
+     * @param key
+     * @return
+     * 
+     * @since 1.2
+     */
+    Shard getShard(String key);
+
 }

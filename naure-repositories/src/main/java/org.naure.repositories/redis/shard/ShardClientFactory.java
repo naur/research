@@ -1,5 +1,10 @@
 package org.naure.repositories.redis.shard;
 
+import labs.repositories.redis.JedisOperation;
+import labs.repositories.redis.support.LogBasedAlarm;
+import labs.repositories.redis.support.RedisCommands;
+import org.apache.log4j.Logger;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -11,13 +16,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantLock;
 
-
-import org.naure.repositories.redis.JedisOperation;
-import org.naure.repositories.redis.support.LogBasedAlarm;
-import org.naure.repositories.redis.support.RedisCommands;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Redis分片主备客户端工厂类
  * 
@@ -25,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class ShardClientFactory {
-	private static final Logger logger = LoggerFactory
+	private static final Logger logger = Logger
 			.getLogger(ShardClientFactory.class);
 
 	private String hosts;
@@ -33,6 +31,18 @@ public class ShardClientFactory {
 	private List<Shard> shards = new ArrayList<Shard>();
 	private Map<Shard, ShardRedis> shardRedises = new HashMap<Shard, ShardRedis>();
 	private ShardPolicy shardPolicy;
+    /**
+     * @since 1.2
+     */
+    private HashAlgorithm hashAlgorithm;
+    /**
+     * @since 1.2
+     */
+    private String keyTagPattern;
+    /**
+     * @since 1.2.1
+     */
+    private String keyEncoding = "UTF-8";
 	private ShardRepository shardRepository;
 	private ShardRedisFactory shardFactory;
 	private Heartbeat hearteat;
@@ -57,6 +67,33 @@ public class ShardClientFactory {
 	public void setShardPolicy(ShardPolicy shardHash) {
 		this.shardPolicy = shardHash;
 	}
+
+    /**
+     * 
+     * @param hashAlgorithm
+     * @since 1.2
+     */
+    public void setHashAlgorithm(HashAlgorithm hashAlgorithm) {
+        this.hashAlgorithm = hashAlgorithm;
+    }
+
+    /**
+     * 
+     * @param keyTagPattern
+     * @since 1.2
+     */
+    public void setKeyTagPattern(String keyTagPattern) {
+        this.keyTagPattern = keyTagPattern;
+    }
+
+    /**
+     * 
+     * @param keyEncoding
+     * @since 1.2.1
+     */
+    public void setKeyEncoding(String keyEncoding) {
+        this.keyEncoding = keyEncoding;
+    }
 
 	public void setShardRepository(ShardRepository shardRepository) {
 		this.shardRepository = shardRepository;
@@ -83,13 +120,13 @@ public class ShardClientFactory {
 			initialize();
 			// 通过Proxy构造代理对象
 			redis = (RedisCommands) Proxy.newProxyInstance(
-					RedisCommands.class.getClassLoader(),
-					new Class[] { RedisCommands.class },
-					new InvocationHandler() {
+                    RedisCommands.class.getClassLoader(),
+                    new Class[]{RedisCommands.class},
+                    new InvocationHandler() {
 
-						@Override
-						public Object invoke(Object proxy, Method method,
-								Object[] args) throws Throwable {
+                        @Override
+                        public Object invoke(Object proxy, Method method,
+                                             Object[] args) throws Throwable {
                             String methodName = method.getName();
                             if ("close".equals(methodName)) {
                                 close();
@@ -98,7 +135,12 @@ public class ShardClientFactory {
 
                             if (args != null && args.length > 0) {
                                 if ("nativeExecute".equals(methodName)) {
-                                    nativeExecute((JedisOperation) args[0]);
+                                    if (args.length == 1) {
+                                        nativeExecute((JedisOperation) args[0]);
+                                    } else {
+                                        nativeExecute(args[0],
+                                                (JedisOperation) args[1]);
+                                    }
                                     return null;
                                 }
                                 try {
@@ -109,11 +151,11 @@ public class ShardClientFactory {
                                     throw e.getCause();
                                 }
                             } else {
-								throw new UnsupportedOperationException(method
-										.getName() + "is not supported.");
-							}
-						}
-					});
+                                throw new UnsupportedOperationException(method
+                                        .getName() + "is not supported.");
+                            }
+                        }
+                    });
 		} catch (Exception e) {
 			throw new IllegalStateException(e.getMessage(), e);
 		} finally {
@@ -122,12 +164,12 @@ public class ShardClientFactory {
 		return redis;
 	}
 
-	/**
-	 * 判断对象属于那个类
-	 * 
-	 * @param key
-	 * @return
-	 */
+    /**
+     * 判断对象属于那个分片
+     * 
+     * @param key
+     * @return
+     */
 	protected ShardRedis getShardRedis(Object key) {
 		if (key == null)
 			throw new IllegalArgumentException("key is null");
@@ -139,13 +181,13 @@ public class ShardClientFactory {
 		if (shards.size() == 1) {
 			shard = shards.get(0);
 		} else {
-			byte[] bytes = null;
-			if (key instanceof byte[]) {
-				bytes = (byte[]) key;
+            if (key instanceof String) {
+                shard = shardPolicy.getShard((String) key);
+            } else if (key instanceof byte[]) {
+                shard = shardPolicy.getShard((byte[]) key);
 			} else {
-				bytes = key.toString().getBytes();
+                shard = shardPolicy.getShard(key.toString().getBytes());
 			}
-			shard = shardPolicy.getShard(bytes);
 		}
 		return shardRedises.get(shard);
 	}
@@ -156,9 +198,9 @@ public class ShardClientFactory {
 	 * @throws Exception
 	 */
 	protected void initialize() throws Exception {
-		if (shardPolicy == null)
-			shardPolicy = new KetamaHashing();
-
+        if (shardPolicy == null) {
+            shardPolicy = new KetamaHashing(hashAlgorithm, keyTagPattern, keyEncoding);
+        }
 		if (shardRepository == null) {
 			shardRepository = new ZkShardRepository(config.getZkServers(),
 					config.getZkSessionTimeout(), hosts);
@@ -190,6 +232,11 @@ public class ShardClientFactory {
             shardRedis.nativeExecute(op);
         }
     }
+
+    protected void nativeExecute(Object key, JedisOperation op) {
+        getShardRedis(key).nativeExecute(op);
+    }
+
 	/**
 	 * 关闭
 	 */

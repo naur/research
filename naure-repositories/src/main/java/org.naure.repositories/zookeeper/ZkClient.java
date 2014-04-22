@@ -1,26 +1,17 @@
 package org.naure.repositories.zookeeper;
 
+import org.apache.zookeeper.*;
+import org.apache.zookeeper.Watcher.Event.EventType;
+import org.apache.zookeeper.ZooDefs.Ids;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.Watcher.Event.EventType;
-import org.apache.zookeeper.ZooDefs.Ids;
-import org.apache.zookeeper.ZooKeeper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ZkClient {
     private static final Logger logger = LoggerFactory
@@ -41,10 +32,10 @@ public class ZkClient {
 
     /**
      * Get native zookeeper client.
-     * <p>
+     * <p/>
      * <b>NOTE</b>: zookeeper client instance hold by zkClient will be changed
      * against session expired.
-     * 
+     *
      * @return native zookeeper client instance.
      */
     public ZooKeeper getHandler() {
@@ -72,9 +63,9 @@ public class ZkClient {
 
     /**
      * Connect to zookeeper, block invoker until connected or connect timeout.
-     * 
+     *
      * @throws InterruptedException
-     * @throws IOException
+     * @throws java.io.IOException
      */
     private void connect() throws InterruptedException, IOException {
         final CountDownLatch connectionLatch = new CountDownLatch(1);
@@ -110,55 +101,54 @@ public class ZkClient {
     }
 
     private void sessionEvent(final CountDownLatch assignLatch,
-            final CountDownLatch connectionLatch,
-            final WatchedEvent event) throws InterruptedException, IOException {
+                              final CountDownLatch connectionLatch,
+                              final WatchedEvent event) throws InterruptedException, IOException {
         logger.info("Zookeeper event: {}", event);
         assignLatch.await();
         switch (event.getState()) {
-        case SyncConnected: {
-            long newSessionId = zk.getSessionId();
-            long oldSessionId = zkSessionId.getAndSet(newSessionId);
+            case SyncConnected: {
+                long newSessionId = zk.getSessionId();
+                long oldSessionId = zkSessionId.getAndSet(newSessionId);
             /*
              * Reconnected after disconnected, sessionId is not changed.
              * sessionId will be changed if reconnected after session expired or
              * first connected.
              */
-            if (oldSessionId != newSessionId) {
-                logger.info("SyncConnected to Zookeeper.");
-                for (SessionListener listener : sessionListeners) {
-                    try {
-                        listener.onSessionCreated(this);
-                    } catch (Exception e) {
-                        logger.error(
-                                "Exception during zookeeper connection established callback",
-                                e);
+                if (oldSessionId != newSessionId) {
+                    logger.info("SyncConnected to Zookeeper.");
+                    for (SessionListener listener : sessionListeners) {
+                        try {
+                            listener.onSessionCreated(this);
+                        } catch (Exception e) {
+                            logger.error(
+                                    "Exception during zookeeper connection established callback",
+                                    e);
+                        }
                     }
+                } else {
+                    logger.info("ReConnected to Zookeeper.");
                 }
-            } else {
-                logger.info("ReConnected to Zookeeper.");
+                connectionLatch.countDown();
+                break;
             }
-            connectionLatch.countDown();
-            break;
-        }
-        case Expired: {
-            // Session was expired; create a new zookeeper connection
-            logger.info("Zookeeper session expired, recreating zkClient and connect...");
-            connect();
-            break;
-        }
-        default:
-            // Disconnected -- zookeeper library will handle reconnects
-            break;
+            case Expired: {
+                // Session was expired; create a new zookeeper connection
+                logger.info("Zookeeper session expired, recreating zkClient and connect...");
+                connect();
+                break;
+            }
+            default:
+                // Disconnected -- zookeeper library will handle reconnects
+                break;
         }
 
     }
 
     /**
-     * 
      * Given a string representing a path, return each subpath.
-     * <p>
+     * <p/>
      * subPaths("/a/b/c") == ["/a", "/a/b", "/a/b/c"]
-     * 
+     *
      * @param path
      * @return
      */
@@ -185,7 +175,7 @@ public class ZkClient {
     /**
      * Explicit close zookeeper connection. After shutdown, all watcher will not
      * be triggered, and this instance shouldn't be used.
-     * 
+     *
      * @throws InterruptedException
      */
     public void close() throws InterruptedException {
@@ -214,11 +204,10 @@ public class ZkClient {
 
     /**
      * ZooKeeper version of mkdir -p
-     * 
-     * @param path
-     *            absolute path
+     *
+     * @param path absolute path
      * @throws InterruptedException
-     * @throws KeeperException
+     * @throws org.apache.zookeeper.KeeperException
      */
     public void createPath(String path) throws KeeperException,
             InterruptedException {
@@ -249,10 +238,9 @@ public class ZkClient {
 
     /**
      * Delete a node along with all of its children, like rm -r
-     * 
-     * @param path
-     *            parent node absolute path
-     * @throws KeeperException
+     *
+     * @param path parent node absolute path
+     * @throws org.apache.zookeeper.KeeperException
      * @throws InterruptedException
      */
     public void deleteRecursive(String path) throws InterruptedException,
@@ -269,8 +257,8 @@ public class ZkClient {
     }
 
     private void updateData(EventType eventType, String path,
-            Watcher dataGetter,
-            DataChangedListener listener) throws InterruptedException,
+                            Watcher dataGetter,
+                            DataChangedListener listener) throws InterruptedException,
             KeeperException {
         try {
             listener.onDataChanged(eventType,
@@ -282,8 +270,8 @@ public class ZkClient {
     }
 
     private void deleteData(EventType eventType, String path,
-            Watcher dataGetter,
-            DataChangedListener listener) throws KeeperException,
+                            Watcher dataGetter,
+                            DataChangedListener listener) throws KeeperException,
             InterruptedException {
         listener.onDataChanged(eventType, null);
         if (zk.exists(path, dataGetter) != null) {
@@ -295,17 +283,14 @@ public class ZkClient {
     /**
      * Gets node's data, and watches the node when NodeDataChanged, NodeCreated.
      * When node deleted, track the node's re-creation with an existence watch.
-     * <p>
+     * <p/>
      * <b>Note:</b>Normally, watch* method should be performed in
      * SessionListener, because watcher will be destroyed after session expired.
-     * 
-     * @param path
-     *            node absolute path
-     * @param listener
-     *            watcher to get node's data.
-     * @throws KeeperException
+     *
+     * @param path     node absolute path
+     * @param listener watcher to get node's data.
+     * @throws org.apache.zookeeper.KeeperException
      * @throws InterruptedException
-     * 
      * @see SessionListener#onSessionCreated(ZkClient)
      */
     public void watchNode(final String path, final DataChangedListener listener)
@@ -348,22 +333,19 @@ public class ZkClient {
      * Monitor a node's children list. Gets the children' name for a node,
      * watches for each NodeChildrenChanged event and fire and re-watches the
      * node's children.
-     * 
-     * <p>
+     * <p/>
+     * <p/>
      * <b>Note:</b>Normally, watch* method should be performed in
      * SessionListener, because watcher will be destroyed after session expired.
-     * 
-     * @param path
-     *            parent node absolute path
-     * @param listener
-     *            watcher to get newly children list.
+     *
+     * @param path     parent node absolute path
+     * @param listener watcher to get newly children list.
      * @throws InterruptedException
-     * @throws KeeperException
-     * 
+     * @throws org.apache.zookeeper.KeeperException
      * @see SessionListener#onSessionCreated(ZkClient)
      */
     public void watchChildren(final String path,
-            final ChildrenChangedListener listener)
+                              final ChildrenChangedListener listener)
             throws InterruptedException, KeeperException {
 
         Watcher childWatcher = new Watcher() {
@@ -392,37 +374,32 @@ public class ZkClient {
         } catch (KeeperException e) {
             // Node was deleted -- fire a watch on node re-creation
             logger.warn("Failed to read path {}: {}", path, e);
-            listener.onChildrenChanged(Collections.<String> emptyList());
+            listener.onChildrenChanged(Collections.<String>emptyList());
             zk.exists(path, childWatcher);
         }
     }
 
     /**
      * Monitor a node's children and their data.
-     * <p>
+     * <p/>
      * <b>WARNING</b>: watchMap must be thread-safe. Writing is synchronized on
      * the watchMap. Readers MUST also synchronize on the watchMap for safety.
-     * <p>
+     * <p/>
      * <b>Note:</b>Normally, watch* method should be performed in
      * SessionListener, because watcher will be destroyed after session expired.
-     * 
-     * @param <T>
-     *            type of children's node data
-     * @param path
-     *            parent node absolute path
-     * @param watchMap
-     *            view of children' data. key is child's node short name, value
-     *            is child's node data
-     * @param serializer
-     *            serialize watchMap's value
+     *
+     * @param <T>        type of children's node data
+     * @param path       parent node absolute path
+     * @param watchMap   view of children' data. key is child's node short name, value
+     *                   is child's node data
+     * @param serializer serialize watchMap's value
      * @throws InterruptedException
-     * @throws KeeperException
-     * 
+     * @throws org.apache.zookeeper.KeeperException
      * @see SessionListener#onSessionCreated(ZkClient)
      */
     public <T> void watchChildrenWithData(final String path,
-            final Map<String, T> watchMap,
-            final ZkSerializer<T> serializer)
+                                          final Map<String, T> watchMap,
+                                          final ZkSerializer<T> serializer)
             throws InterruptedException, KeeperException {
         watchChildrenWithData(path, watchMap, serializer, null);
     }
@@ -430,33 +407,27 @@ public class ZkClient {
     /**
      * Get and monitor a node's children and their data, with an explicit
      * notifier.The notifier will be called whenever the watchMap is modified.
-     * <p>
+     * <p/>
      * <b>WARNING</b>: watchMap must be thread-safe. Writing is synchronized on
      * the watchMap. Readers MUST also synchronize on the watchMap for safety.
-     * <p>
+     * <p/>
      * <b>Note:</b>Normally, watch* method should be performed in
      * SessionListener, because watcher will be destroyed after session expired.
-     * 
-     * @param <T>
-     *            type of children's node data
-     * @param path
-     *            parent node absolute path
-     * @param watchMap
-     *            view of children' data. key is child's node short name, value
-     *            is child's node data
-     * @param serializer
-     *            serialize watchMap's value
-     * @param notifier
-     *            to watch which child node changed
+     *
+     * @param <T>        type of children's node data
+     * @param path       parent node absolute path
+     * @param watchMap   view of children' data. key is child's node short name, value
+     *                   is child's node data
+     * @param serializer serialize watchMap's value
+     * @param notifier   to watch which child node changed
      * @throws InterruptedException
-     * @throws KeeperException
-     * 
+     * @throws org.apache.zookeeper.KeeperException
      * @see SessionListener#onSessionCreated(ZkClient)
      */
     public <T> void watchChildrenWithData(final String path,
-            final Map<String, T> watchMap,
-            final ZkSerializer<T> serializer,
-            final ChildrenNodeChangedListener notifier)
+                                          final Map<String, T> watchMap,
+                                          final ZkSerializer<T> serializer,
+                                          final ChildrenNodeChangedListener notifier)
             throws InterruptedException, KeeperException {
 
         ChildrenChangedListener parentWatcher = new ChildrenChangedListener() {
@@ -528,7 +499,7 @@ public class ZkClient {
     }
 
     private static <T> Collection<T> subtract(final Collection<T> a,
-            final Collection<T> b) {
+                                              final Collection<T> b) {
         List<T> result = new ArrayList<T>(a);
         for (T o : new ArrayList<T>(b)) {
             result.remove(o);

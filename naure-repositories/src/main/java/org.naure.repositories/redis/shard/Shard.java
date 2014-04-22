@@ -1,9 +1,9 @@
 package org.naure.repositories.redis.shard;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * 分片

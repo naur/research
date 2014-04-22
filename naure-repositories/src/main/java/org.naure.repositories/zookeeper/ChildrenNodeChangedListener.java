@@ -18,8 +18,8 @@ public interface ChildrenNodeChangedListener {
      * @param simpleName
      *            changed child node's name. <b>NOTE: not absolute path but
      *            simple name</b>
-     * @see DataChangedListener#onDataChanged(EventType, byte[])
+     * @see DataChangedListener#onDataChanged(org.apache.zookeeper.Watcher.Event.EventType, byte[])
      */
     void onChildNodeChanged(EventType eventType,
-            String simpleName);
+                            String simpleName);
 }

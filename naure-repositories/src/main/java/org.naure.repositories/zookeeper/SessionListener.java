@@ -21,7 +21,7 @@ public interface SessionListener {
      *            can use native zookeeper client instance by
      *            zkClient.getHandler()
      * 
-     * @throws KeeperException
+     * @throws org.apache.zookeeper.KeeperException
      * @throws InterruptedException
      */
     void onSessionCreated(ZkClient client) throws KeeperException,

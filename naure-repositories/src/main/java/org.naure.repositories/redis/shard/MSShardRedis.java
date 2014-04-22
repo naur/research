@@ -1,14 +1,13 @@
 package org.naure.repositories.redis.shard;
 
+import labs.repositories.redis.support.PooledRedis;
+import labs.repositories.redis.support.RedisDataSource;
+import org.apache.log4j.Logger;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.SocketTimeoutException;
-
-import org.naure.repositories.redis.support.PooledRedis;
-import org.naure.repositories.redis.support.RedisDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author xiaofei
@@ -18,7 +17,7 @@ public class MSShardRedis implements InvocationHandler, Failover {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(MSShardRedis.class);
+	private static final Logger logger = Logger.getLogger(MSShardRedis.class);
 
 	protected volatile Shard shard;
 	protected final ShardRedisConfig config;
@@ -39,8 +38,11 @@ public class MSShardRedis implements InvocationHandler, Failover {
 			Node node) {
 		if (node == null)
 			return null;
-		return new RedisDataSource(node.getHost(), node.getPort(),
-				config.getUser(), config.getPassword(), node.getDb(), config);
+        return new RedisDataSource(node.getHost(), node.getPort(),
+                config.getUser(), config.getPassword(),
+                (config.getPreferDB() != null) ? config.getPreferDB()
+                        : node.getDb(),
+                        config);
 	}
 
 	protected void close() {
@@ -140,7 +142,7 @@ public class MSShardRedis implements InvocationHandler, Failover {
 				lastError = fail;
 				monitor.onFail(shard, System.currentTimeMillis() - start);
 
-				if (retry == config.getHeartbeatRetryTimes()
+                if (retry == config.getRedisRetryTimes()
 						|| !contain(fail, SocketTimeoutException.class)) {
 					throw fail;
 				} else if (config.getRedisRetryInterval() > 0) {

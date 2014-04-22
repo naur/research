@@ -33,4 +33,5 @@ public class MD5Hash implements HashAlgorithm {
 				| ((long) (bKey[1] & 0xFF) << 8) | (long) (bKey[0] & 0xFF);
 		return res;
 	}
+
 }

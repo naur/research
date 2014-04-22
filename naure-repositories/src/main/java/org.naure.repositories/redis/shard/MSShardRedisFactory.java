@@ -15,9 +15,9 @@ public class MSShardRedisFactory implements ShardRedisFactory {
 			final Monitor monitor) {
 
 		ShardRedis shardRedis = (ShardRedis) Proxy.newProxyInstance(
-				MSShardRedisFactory.class.getClassLoader(),
-				new Class[] { ShardRedis.class }, new MSShardRedis(shard,
-						config, monitor));
+                MSShardRedisFactory.class.getClassLoader(),
+                new Class[]{ShardRedis.class}, new MSShardRedis(shard,
+                config, monitor));
 
 		return shardRedis;
 	}

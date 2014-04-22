@@ -1,16 +1,15 @@
 package org.naure.repositories.zookeeper.election;
 
+import labs.repositories.zk.ChildrenChangedListener;
+import labs.repositories.zk.SessionListener;
+import labs.repositories.zk.ZkClient;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException;
-import org.naure.repositories.zookeeper.ChildrenChangedListener;
-import org.naure.repositories.zookeeper.SessionListener;
-import org.naure.repositories.zookeeper.ZkClient;
-
 
 /**
  * Dynamic leader election based on zookeeper's EPHEMERAL_SEQUENTIAL node.
@@ -34,12 +33,12 @@ public class LeaderElection {
 	 *            watch leader or member list changed. can't be null.
 	 * @throws IllegalArgumentException
 	 *             listener is null
-	 * @throws KeeperException
+	 * @throws org.apache.zookeeper.KeeperException
 	 * @throws InterruptedException
 	 */
 	public LeaderElection(final ZkClient client, final String electionPath,
 			final ElectionListener listener) throws KeeperException,
-			InterruptedException {
+            InterruptedException {
 		if (listener == null) {
 			throw new IllegalArgumentException("listener can't be null.");
 		}
@@ -60,7 +59,7 @@ public class LeaderElection {
 	}
 
 	void registerElection(ZkClient client) throws KeeperException,
-			InterruptedException {
+            InterruptedException {
 
 		String path = client.create(electionPath + "/member-", null,
 				CreateMode.EPHEMERAL_SEQUENTIAL);

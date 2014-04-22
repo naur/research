@@ -1,22 +1,16 @@
 package org.naure.repositories.redis.shard;
 
+import org.apache.log4j.Logger;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Protocol;
+import redis.clients.jedis.exceptions.JedisException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.Protocol;
-import redis.clients.jedis.exceptions.JedisException;
+import java.util.concurrent.*;
 
 /**
  * 心跳
@@ -29,7 +23,7 @@ public class Heartbeat extends Thread {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(Heartbeat.class);
+	private static final Logger logger = Logger.getLogger(Heartbeat.class);
 
 	private static final int DEFAULT_POOLSIZE = 10;
 

@@ -13,6 +13,7 @@ public class RedisPoolConfig extends Config {
 
 	private String user;
 	private String password;
+    private Integer preferDB;
 	private int timeOut;
 
 	public RedisPoolConfig() {
@@ -135,6 +136,14 @@ public class RedisPoolConfig extends Config {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+    public void setPreferDB(Integer preferDB) {
+        this.preferDB = preferDB;
+    }
+
+    public Integer getPreferDB() {
+        return preferDB;
+    }
 
 	public int getTimeOut() {
 		return timeOut;

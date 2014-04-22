@@ -1,7 +1,6 @@
 package org.naure.repositories.redis.shard;
 
-
-import org.naure.repositories.redis.support.RedisCommands;
+import labs.repositories.redis.support.RedisCommands;
 
 /**
  * 分片的操作

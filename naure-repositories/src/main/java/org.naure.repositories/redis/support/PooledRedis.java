@@ -1,11 +1,9 @@
 package org.naure.repositories.redis.support;
 
 import org.apache.commons.pool.ObjectPool;
-
+import org.naure.repositories.redis.JedisOperation;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Protocol;
-
-import org.naure.repositories.redis.JedisOperation;
 
 /**
  * 池化Redis连接
@@ -106,6 +104,11 @@ public class PooledRedis extends Jedis implements RedisCommands {
 
     @Override
     public void nativeExecute(JedisOperation op) {
+        op.call(this);
+    }
+
+    @Override
+    public void nativeExecute(String taggedKey, JedisOperation op) {
         op.call(this);
     }
 

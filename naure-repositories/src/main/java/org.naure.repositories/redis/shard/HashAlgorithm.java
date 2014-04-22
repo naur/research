@@ -14,5 +14,4 @@ public interface HashAlgorithm {
 	 * @return
 	 */
 	long hash(byte[] value);
-
 }
