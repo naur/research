@@ -1,6 +1,7 @@
 package org.naure.repositories.redis.shard;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisException;
@@ -23,7 +24,7 @@ public class Heartbeat extends Thread {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = Logger.getLogger(Heartbeat.class);
+	private static final Logger logger = LoggerFactory.getLogger(Heartbeat.class);
 
 	private static final int DEFAULT_POOLSIZE = 10;
 

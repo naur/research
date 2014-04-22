@@ -1,8 +1,8 @@
 package org.naure.repositories.zookeeper.election;
 
-import labs.repositories.zk.ChildrenChangedListener;
-import labs.repositories.zk.SessionListener;
-import labs.repositories.zk.ZkClient;
+import org.naure.repositories.zookeeper.ChildrenChangedListener;
+import org.naure.repositories.zookeeper.SessionListener;
+import org.naure.repositories.zookeeper.ZkClient;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 

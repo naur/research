@@ -1,8 +1,9 @@
 package org.naure.repositories.redis.shard;
 
-import labs.repositories.redis.support.PooledRedis;
-import labs.repositories.redis.support.RedisDataSource;
-import org.apache.log4j.Logger;
+import org.naure.repositories.redis.support.PooledRedis;
+import org.naure.repositories.redis.support.RedisDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +18,7 @@ public class MSShardRedis implements InvocationHandler, Failover {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = Logger.getLogger(MSShardRedis.class);
+	private static final Logger logger = LoggerFactory.getLogger(MSShardRedis.class);
 
 	protected volatile Shard shard;
 	protected final ShardRedisConfig config;

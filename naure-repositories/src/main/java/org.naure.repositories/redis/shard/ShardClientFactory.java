@@ -1,9 +1,10 @@
 package org.naure.repositories.redis.shard;
 
-import labs.repositories.redis.JedisOperation;
-import labs.repositories.redis.support.LogBasedAlarm;
-import labs.repositories.redis.support.RedisCommands;
-import org.apache.log4j.Logger;
+import org.naure.repositories.redis.JedisOperation;
+import org.naure.repositories.redis.support.LogBasedAlarm;
+import org.naure.repositories.redis.support.RedisCommands;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -23,7 +24,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 
  */
 public class ShardClientFactory {
-	private static final Logger logger = Logger
+	private static final Logger logger = LoggerFactory
 			.getLogger(ShardClientFactory.class);
 
 	private String hosts;

@@ -1,6 +1,8 @@
 package org.naure.repositories.redis.shard;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +18,7 @@ public class Monitor implements Alarm {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = Logger.getLogger(Monitor.class);
+	private static final Logger logger = LoggerFactory.getLogger(Monitor.class);
 
 	private final Statistic stat = new Statistic();// 访问统计
 	private final Map<Shard, Long> lastSuccessTimes = new ConcurrentHashMap<Shard, Long>();// 上次成功时间

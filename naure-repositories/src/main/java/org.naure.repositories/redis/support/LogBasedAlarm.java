@@ -14,10 +14,11 @@
  */
 package org.naure.repositories.redis.support;
 
-import labs.repositories.redis.shard.Alarm;
-import labs.repositories.redis.shard.Node;
-import labs.repositories.redis.shard.Shard;
-import org.apache.log4j.Logger;
+import org.naure.repositories.redis.shard.Alarm;
+import org.naure.repositories.redis.shard.Node;
+import org.naure.repositories.redis.shard.Shard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * do nothing,when event come just record the log
@@ -28,7 +29,7 @@ import org.apache.log4j.Logger;
  */
 
 public class LogBasedAlarm implements Alarm {
-    private final static Logger logger = Logger.getLogger(LogBasedAlarm.class);
+    private final static Logger logger = LoggerFactory.getLogger(LogBasedAlarm.class);
 	@Override
 	public void onNodeWeak(Node node) {
         logger.warn("invoke onNodeWeak(),node=" + node.toString());

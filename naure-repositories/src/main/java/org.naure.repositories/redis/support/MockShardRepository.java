@@ -1,9 +1,10 @@
 package org.naure.repositories.redis.support;
 
-import labs.repositories.redis.shard.Failover;
-import labs.repositories.redis.shard.Shard;
-import labs.repositories.redis.shard.ShardRepository;
-import org.apache.log4j.Logger;
+import org.naure.repositories.redis.shard.Failover;
+import org.naure.repositories.redis.shard.Shard;
+import org.naure.repositories.redis.shard.ShardRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author xiaofei
  */
 public class MockShardRepository implements ShardRepository {
-    private static final Logger logger = Logger
+    private static final Logger logger = LoggerFactory
             .getLogger(MockShardRepository.class);
     private final List<Shard> shards;
 

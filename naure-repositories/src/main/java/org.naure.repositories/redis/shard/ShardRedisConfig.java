@@ -1,6 +1,6 @@
 package org.naure.repositories.redis.shard;
 
-import labs.repositories.redis.support.RedisPoolConfig;
+import org.naure.repositories.redis.support.RedisPoolConfig;
 
 /**
  * Redis配置
