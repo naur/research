@@ -17,6 +17,7 @@ var jsresearch = jslocalpath.replace('naure-integrate', 'naure-research');
 require.config({
     //baseUrl: '',
     paths: {
+        'loading': '/js/loading',
         jquery: jslocalpath + '/js/core/jquery-1.9.1.min',
         'jquery.widget': jslocalpath + '/js/core/jquery.widget.min',
         'jquery.mousewheel': jslocalpath + '/js/core/jquery.mousewheel',
@@ -55,6 +56,8 @@ require.config({
         'naure': jslocalpath + '/js/core/naure',
         'naure.validate': jslocalpath + '/js/core/naure.validate',
         'naure.pattern': jslocalpath + '/js/core/naure.pattern',
+        'naure.pattern.ajax': jslocalpath + '/js/core/naure.pattern',
+        'naure.pattern.xsl': jslocalpath + '/js/core/naure.pattern',
         'naure.utility': jslocalpath + '/js/core/naure.utility',
         'naure.analytics': jslocalpath + '/js/core/naure.analytics',
         'naure.ui': jslocalpath + '/js/core/naure.ui',

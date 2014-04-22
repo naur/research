@@ -16,8 +16,7 @@ define(['jquery', 'metro', 'jquery.template',
         echarts.EVENT = event;
         return {
             jquery: $,
-            naure: naure,
-            echarts: echarts
+            naure: naure
         }
     }
 );

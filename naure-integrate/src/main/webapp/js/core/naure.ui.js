@@ -302,7 +302,7 @@ define(['jquery', 'naure'], function($, NAURE) {
         return actionPanel;
     })();
 
-    YHD.UI.speedEdit = (function () {
+    NAURE.UI.speedEdit = (function () {
         var speedEdit = function (options) {
             var opt = $.extend({
                 container: null,
