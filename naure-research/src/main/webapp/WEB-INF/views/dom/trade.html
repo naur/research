@@ -103,7 +103,7 @@
                 html += $.format(global.stockHtmlTemplate,
                         stocks[index][4], stocks[index][3],
                         stocks[index][1], (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][2],
-                        stocks[index][5] ? stocks[index][5] : 0, stocks[index][1], index % 2 == 0 ? '' : 'tdeven');
+                        stocks[index][5] ? stocks[index][5] : 0, stocks[index][0], index % 2 == 0 ? '' : 'tdeven');
                 codes.push(stocks[index][4] + stocks[index][3]);
             }
             stocks.html = html;
