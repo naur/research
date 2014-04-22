@@ -21,7 +21,7 @@ public class ProbabilityController extends ControllerBase {
         return view("probability-stochastic");
     }
 
-    public ProbabilityController() {
-        this.viewPath = "math";
+    {
+        viewPath = "math";
     }
 }

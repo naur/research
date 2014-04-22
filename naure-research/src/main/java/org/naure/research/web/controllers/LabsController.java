@@ -20,6 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * </pre>
  */
 @Controller
-@RequestMapping(value = "document")
+@RequestMapping(value = "labs")
 public class LabsController extends ControllerBase {
+
+    @RequestMapping
+    public String view() {
+        return view("view");
+    }
+
+    {
+        viewPath = "labs";
+    }
 }
