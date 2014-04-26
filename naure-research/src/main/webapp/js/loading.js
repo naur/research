@@ -12,8 +12,8 @@ define(['jquery', 'metro', 'jquery.template',
 //            $(global.dom.navigation).html($.render.navigation());
 //            $.Metro.initAll();
 //        });
-
-        echarts.EVENT = event;
+        $(function () {
+        });
         return {
             jquery: $,
             naure: naure
