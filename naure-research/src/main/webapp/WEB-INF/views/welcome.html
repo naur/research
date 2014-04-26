@@ -1,21 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title> Naure.org Research </title>
-    <script id="menuTemplate" type="text/x-jsrender">
-        {{if type}}
-        <li data-role="{{:type}}">
-            <a href="{{:uri}}">{{:name}}</a>
-            <ul class="{{:type}}-menu">
-                {{for nodes tmpl='#menuTemplate'/}}
-            </ul>
-        </li>
-        {{else}}
-        <li><a href="{{:uri}}">{{:name}}</a></li>
-        {{/if}}
-    </script>
-</head>
-<body class="metrouicss">
+$!{extends("/layout.html")}
+
+#macro(title)Naure.org Research#end
+
+#macro(content)
+
 
 <div class="page">
     <!--Menusdemo-->
@@ -97,27 +85,14 @@
     </div>
 </div>
 
-
-<script type="text/javascript" data="script"
-        src="/js/core/load.js"></script>
 <script type="text/javascript">
-    require(['jquery', 'jquery.template', 'modern.dropdown', 'modern.calendar', 'naure.analytics'], function ($) {
+    var global = {
+    };
+    require(['loading'], function (NAURE) {
         $(function () {
-            $.get("/resources/menu.json", function (result) {
-                $(".menu").html(
-                        $("#menuTemplate").render($.parseJSON(result))
-                );
-                $('[data-role="dropdown"]').each(function () {
-                    $(this).Dropdown();
-                })
-                $('.pull-menu, .menu-pull').each(function () {
-                    $(this).PullDown();
-                })
-            });
         });
     });
 </script>
 
+#end
 
-</body>
-</html>
