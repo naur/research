@@ -43,9 +43,15 @@
             stockUri: {
                 sina: {uri: 'http://hq.sinajs.cn/list=', parse: function (codes, info) {
                     eval(info.replace(/var hq_str_/g, 'global.'));
-                    var stocks = {};
+                    var stock, stocks = {};
                     for (var index in codes) {
-                        stocks[codes[index]] = global[codes[index]].split(',');
+                        stock = global[codes[index]].split(',');
+                        stocks[codes[index]] = {};
+                        stocks[codes[index]].curr = stock[3];
+                        stocks[codes[index]].yclose = stock[2];
+                        stocks[codes[index]].open = stock[1];
+                        stocks[codes[index]].high = stock[4];
+                        stocks[codes[index]].low = stock[5];
                     }
 
                     return stocks;
@@ -75,27 +81,19 @@
                     for (var index in codes) {
                         stockRealtime = stocks[codes[index]];
                         parent = $(global.dom.stocks + '[stock="' + codes[index] + '"]');
-                        startDom = parent.find('.curr');// $(global.dom.stocks + '[stock="' + codes[index] + '"] .curr');
                         cost = parseFloat(parent.attr('cost'));
                         number = parseFloat(parent.attr('number'));
                         amount = parseFloat(parent.attr('amount'));
-                        curr = parseFloat(parent.attr('curr')) == 0 ? stockRealtime[3] : parseFloat(parent.attr('curr'));
+                        curr = parseFloat(parent.attr('curr')) == 0 ? stockRealtime.curr : parseFloat(parent.attr('curr'));
                         global.currAmount += number * curr;
-                        startDom.html(curr).
-                                next().html((curr * number - amount).toFixed(2)).
-                                next().html(((curr * number - amount) / amount * 100).toFixed(2)).
-                                next().next().html((curr * number).toFixed(2)).
-                                next().next().
-                                next().html(stockRealtime[2]).
-                                next().html(stockRealtime[1]).
-                                next().html(stockRealtime[4]).
-                                next().html(stockRealtime[5]).
-                                next().html(stockRealtime[11]).
-                                next().html(stockRealtime[10]).
-                                next().html(stockRealtime[13]).
-                                next().html(stockRealtime[12]).
-                                next().html((stockRealtime[8] / 100).toFixed()).
-                                next().html((stockRealtime[9] / 10000).toFixed(2));
+                        parent.find('.curr').html(curr);
+                        parent.find('.profits').html((curr * number - amount).toFixed(2));
+                        parent.find('.profitability').html(((curr * number - amount) / amount * 100).toFixed(2));
+                        parent.find('.latest-value').html((curr * number).toFixed(2));
+                        parent.find('.yclose').html(stockRealtime.yclose);
+                        parent.find('.open').html(stockRealtime.open);
+                        parent.find('.high').html(stockRealtime.high);
+                        parent.find('.low').html(stockRealtime.low);
                     }
                     global.message.show({content: $.format(global.messageTemplate, global.clock, global.totalAmount, global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), stockRealtime[stockRealtime.length - 3], stockRealtime[stockRealtime.length - 2])});
                     if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
@@ -180,10 +178,10 @@
         <th class="latest-value">最新市值</th>
         <th class="totalcapital">总股本</th>
         <th class="currcapital">流通股本</th>
-        <th>昨日收盘价</th>
-        <th>今日开盘价</th>
-        <th>今日最高价</th>
-        <th>今日最低价</th>
+        <th class="yclose">昨日收盘价</th>
+        <th class="open">今日开盘价</th>
+        <th class="high">今日最高价</th>
+        <th class="low">今日最低价</th>
         <th>竞买价</th>
         <th>竞买价</th>
         <th>竞卖价</th>
@@ -197,7 +195,6 @@
 </table>
 </body>
 </html>
-
 
 var lta = 9026.9304;//流通A股,老数据保留
 var lastfive = 30.8432;//过去5个交易日平均每分钟成交量
