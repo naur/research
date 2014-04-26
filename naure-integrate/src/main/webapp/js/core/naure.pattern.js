@@ -18,7 +18,7 @@ asyncHandler = function (callback, timeout, param) {
 }
 
 
-define('ssa.pattern', ['jquery', 'naure'], function ($, NAURE) {
+define('naure.pattern', ['jquery', 'naure'], function ($, NAURE) {
 
     NAURE.Pattern = (function () {
 
