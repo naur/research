@@ -32,12 +32,11 @@
         <struts.version>2.2.3.1</struts.version>
         <poi.version>3.7</poi.version>
         <junit.version>4.7</junit.version>
-        <je.version>5.0.34</je.version>
+        <berkeley.je.version>5.0.103</berkeley.je.version>
         <jackson.version>1.9.3</jackson.version>
         <spring-release-mongodb.version>1.0.1.RELEASE</spring-release-mongodb.version>
         <spring-data-commons-core.version>1.2.1.RELEASE</spring-data-commons-core.version>
-        <commons-lang.version>2.6</commons-lang.version>
-        <commons-lang3.version>3.1</commons-lang3.version>
+        <commons-lang3.version>3.3.2</commons-lang3.version>
         <!--3.0.5-->
         <!--<spring-oxm.version>1.5.10</spring-oxm.version>-->
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
@@ -98,12 +97,6 @@
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>1.3</version>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>${commons-lang.version}</version>
             </dependency>
 
             <dependency>
@@ -251,7 +244,7 @@
             <dependency>
                 <groupId>com.sleepycat</groupId>
                 <artifactId>je</artifactId>
-                <version>${je.version}</version>
+                <version>${berkeley.je.version}</version>
             </dependency>
 
             <!--jrobin-->
