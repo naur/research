@@ -6,7 +6,6 @@ import org.naure.common.entities.InformationLevel;
 import org.naure.common.entities.OffsetInfo;
 import org.naure.common.patterns.Delegator;
 import org.naure.common.patterns.Handler;
-import org.naure.common.patterns.Delegator;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
