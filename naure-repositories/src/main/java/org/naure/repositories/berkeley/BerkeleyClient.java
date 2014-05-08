@@ -3,7 +3,7 @@
  * 
  * Copy Right@ 纽海信息技术有限公司
  */
-package berkeley;
+package org.naure.repositories.berkeley;
 
 import com.sleepycat.je.DatabaseException;
 import com.sleepycat.je.Environment;
