@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <javaSourceLevel>1.7</javaSourceLevel>
+        <java.version>1.7</java.version>
         <maven-plugins.version>3.0.4</maven-plugins.version>
         <org.codehaus.plexus.version>1.9</org.codehaus.plexus.version>
         <maven-compiler-plugin.varsion>2.5</maven-compiler-plugin.varsion>
@@ -532,10 +532,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.varsion}</version>
-                    <!--<configuration>-->
-                        <!--<source>${javaSourceLevel}</source>-->
-                        <!--<target>${javaSourceLevel}</target>-->
-                    <!--</configuration>-->
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -582,8 +578,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <!--<source>${javaSourceLevel}</source>-->
-                    <!--<target>${javaSourceLevel}</target>-->
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
