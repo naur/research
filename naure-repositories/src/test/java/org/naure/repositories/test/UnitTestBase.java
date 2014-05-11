@@ -1,8 +1,13 @@
 package org.naure.repositories.test;
 
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -13,26 +18,30 @@ import java.util.List;
  * Time: 3:25 PM
  * To change this template use File | Settings | File Templates.
  */
+//@RunWith(value = Parameterized.class)
 @ContextConfiguration(locations = {
         "classpath*:applicationContext*.xml"
 })
 public class UnitTestBase extends AbstractJUnit4SpringContextTests {
-    public <T> boolean contains(List<T> list, Comparator comparator, T... value) {
-        int compInt;
-        for (T item : list) {
-            compInt = comparator.compare(item, value.length == 0 ? null : value[0]);
-            if (compInt >= 0) {
-                return true;
-            }
+    @Test
+    @Ignore
+    public void runtimeTest() {
+        System.out.println("-------------运行-runtimeTest----------------");
+        try {
+            Thread.sleep(2 * 60 * 1000);
+        } catch (InterruptedException e) {
         }
-        return false;
     }
 
-    public <T> T find(List<T> list, Comparator comparator, T... value) {
-        for (T item : list) {
-            if (comparator.compare(item, value.length == 0 ? null : value[0]) >= 0)
-                return item;
-        }
-        return null;
+    //用于 【Parameterized】 的情况下。
+    @Before
+    public void testGenerateDataSponsor() throws Exception {
+        this.testContextManager = new TestContextManager(getClass());
+        this.testContextManager.prepareTestInstance(this);
     }
+
+    protected Comparator comparator;
+    private TestContextManager testContextManager;
+
+    protected static List<Integer> NULL = Arrays.asList();
 }

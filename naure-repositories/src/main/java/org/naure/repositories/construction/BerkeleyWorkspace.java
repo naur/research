@@ -36,7 +36,7 @@ public class BerkeleyWorkspace implements Workspace {
 
     @Override
     public <T> boolean add(T t) throws Exception {
-        //configuration.db().put();
+        configuration.db().put(null, );
         return false;
     }
 

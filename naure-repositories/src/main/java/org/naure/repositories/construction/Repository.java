@@ -14,9 +14,13 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class Repository {
+    protected Workspace workspace;
+
     @Autowired
     @Qualifier("mongoWorkspace")
-    protected Workspace workspace;
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
+    }
 
     public <T, U> List<U> get(T params, Class<U> resultClass) throws Exception {
         return workspace.get(params, resultClass);
