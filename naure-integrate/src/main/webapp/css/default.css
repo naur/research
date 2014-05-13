@@ -203,24 +203,31 @@ table tbody tr .loading {
     height: 15.5px;
 }
 
-table tbody tr .tdof {
-    background-color: #f0f8e6;
-    padding: 9px 30px 9px 9px;
-}
-
 /* e4f7cb */
-table tbody tr .tdon {
+table tbody tr.hover {
     background-color: #b3d8ea;
     padding: 9px 30px 9px 9px;
     cursor: default;
 }
 
-table tbody .tdodd {
+table tbody .even {
+    background-color: #f1f9fc;
+}
+
+table tbody .odd {
     background-color: #f0f8e6;
 }
 
-table tbody .tdeven {
-    background-color: #f1f9fc;
+table tbody tr .tdof {
+    background-color: #f0f8e6;
+    padding: 9px 30px 9px 9px;
+}
+
+/*e4f7cb*/
+table tbody tr .tdon {
+    background-color: #b3d8ea;
+    padding: 9px 30px 9px 9px;
+    cursor: default;
 }
 
 table thead tr .cellHide {

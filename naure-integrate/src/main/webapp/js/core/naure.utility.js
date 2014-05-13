@@ -278,11 +278,10 @@ define(['jquery', 'naure'], function ($, NAURE) {
             //----- TR 状态改变事件  -----------------------------------------------//
             trMouseOverEvent: function () {
                 $(".raisefocus tr td").on("mouseover", function () {
-                    originalClass = this.parentNode.className;
-                    this.parentNode.className = 'tdon';
+                    $(this).parent().addClass('hover');
                 });
                 $(".raisefocus tr td").on("mouseout", function () {
-                    this.parentNode.className = originalClass;
+                    $(this).parent().removeClass('hover');
                 });
             }
         };

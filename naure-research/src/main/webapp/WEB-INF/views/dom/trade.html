@@ -25,20 +25,20 @@
 
         //Open	High	Low	Close	Volume, EPS
         var global = {
-            http: null, message: null, isShow: false, clock: null, interval: 10000, totalAmount: 0, currAmount: 0,
+            http: null, message: null, utility: null, isShow: false, clock: null, interval: 10000, totalAmount: 0, currAmount: 0,
             stocks: [
                 ['*ST景谷', 2200, 16104.37, '600265', 'sh'],
                 ['*ST华塑', 2500, 9949.81, '000509', 'sz'],
                 ['天伦置业', 1500, 9969.86, '000711', 'sz'],
                 ['金宇车城', 1000, 8320.75, '000803', 'sz'],
                 ['德棉股份', 2100, 15239.01, '002072', 'sz'],
-                ['凯撒股份', 600, 6375.90, '002425', 'sz', 9.24]
+                ['凯撒股份', 600, 6375.90, '002425', 'sz']
             ],
             stockHtmlTemplate: '<tr class="{7}" stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">' +
                     '<td class="name">{6}</td><td class="code">{1}</td><td class="number">{2}</td><td class="cost">{3}</td>' +
                     '<td class="curr"></td><td class="profits"></td><td class="profitability"></td>' +
                     '<td class="amount">{4}</td><td class="latest-value"></td><td class="totalcapital"></td><td class="currcapital"></td>' +
-                    '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>' +
+                    '<td class="yclose"></td><td class="open"></td><td class="high"></td><td class="low"></td><td></td><td></td><td></td><td></td><td></td><td></td>' +
                     '</tr>',
             stockUri: {
                 sina: {uri: 'http://hq.sinajs.cn/list=', parse: function (codes, info) {
@@ -115,20 +115,22 @@
                 html += $.format(global.stockHtmlTemplate,
                         stocks[index][4], stocks[index][3],
                         stocks[index][1], (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][2],
-                        stocks[index][5] ? stocks[index][5] : 0, stocks[index][0], index % 2 == 0 ? '' : 'tdeven');
+                        stocks[index][5] ? stocks[index][5] : 0, stocks[index][0], index % 2 == 0 ? '' : 'even');
                 codes.push(stocks[index][4] + stocks[index][3]);
             }
             stocks.html = html;
             stocks.codes = codes;
         }
 
-        require(['jquery', 'jquery.strings', 'naure.http.xmlhttp', 'naure.message'], function ($, $1, NAURE) {
+        require(['jquery', 'jquery.strings', 'naure.http.xmlhttp', 'naure.message', 'naure.utility'], function ($, $1, NAURE) {
             global.http = NAURE.HTTP;
             global.message = NAURE.Message;
+            global.utility = NAURE.Utility;
             $('body').message({overlay: 'left-bottom', multiple: false, title: ''});
             init(global.stocks);
             $(function () {
                 $(global.dom.stocksContainer).html(global.stocks.html);
+                global.utility.trMouseOverEvent();
                 $(document).on('keyup', function (event) {
                     var ev = document.all ? window.event : event;
                     if (ev.keyCode == 82)  getStockInfo(global.stocks.codes, true);
@@ -163,7 +165,7 @@
     </style>
 </head>
 <body style="background-color: #ffffff;">
-<table id="stocks" rules="rows">
+<table id="stocks" rules="rows" class="raisefocus">
     <colgroup align="right" style="color:#0000FF;"></colgroup>
     <thead>
     <tr>
