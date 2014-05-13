@@ -55,7 +55,7 @@
                         stocks[codes[index]].open = stock[1];
                         stocks[codes[index]].high = stock[4];
                         stocks[codes[index]].low = stock[5];
-                        stocks[codes[index]].priceLimit = ((stocks[codes[index]].curr - stocks[codes[index]].yclose) / stocks[codes[index]].yclose).toFixed(3) + ' %';
+                        stocks[codes[index]].priceLimit = ((stocks[codes[index]].curr - stocks[codes[index]].yclose) / stocks[codes[index]].yclose * 100) .toFixed(2) + ' %';
                     }
 
                     return stocks;
@@ -160,6 +160,7 @@
             $(function () {
                 $(global.dom.stocksContainer).html(global.stocks.html);
                 global.utility.trMouseOverEvent();
+                getCapitalInfo(global.stocks.codes);
                 $(document).on('keyup', function (event) {
                     var ev = document.all ? window.event : event;
                     if (ev.keyCode == global.utility.keyCode.R)  getRealtimeInfo(global.stocks.codes, true);
