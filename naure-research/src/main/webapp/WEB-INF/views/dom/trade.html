@@ -29,16 +29,19 @@
             stocks: [
                 ['*ST景谷', 2200, 16104.37, '600265', 'sh'],
                 ['*ST华塑', 2500, 9949.81, '000509', 'sz'],
-                ['天伦置业', 1500, 9969.86, '000711', 'sz'],
-                ['金宇车城', 1000, 8320.75, '000803', 'sz'],
                 ['德棉股份', 2100, 15239.01, '002072', 'sz'],
-                ['凯撒股份', 600, 6375.90, '002425', 'sz']
+                ['天伦置业', 1500, 9969.86, '000711', 'sz'],
+                ['凯撒股份', 600, 6375.90, '002425', 'sz'],
+                ['国通管业', 0, 0, '600444', 'sh'],
+                ['----', 0, 0, '000001', 'sh'],
+                ['金宇车城', 1000, 8320.75, '000803', 'sz']
             ],
             stockHtmlTemplate: '<tr class="{7}" stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">' +
                     '<td class="name">{6}</td><td class="code">{1}</td><td class="number">{2}</td><td class="cost">{3}</td>' +
                     '<td class="curr"></td><td class="profits"></td><td class="profitability"></td>' +
                     '<td class="amount">{4}</td><td class="latest-value"></td><td class="totalcapital"></td><td class="currcapital"></td>' +
-                    '<td class="yclose"></td><td class="open"></td><td class="high"></td><td class="low"></td><td></td><td></td><td></td><td></td><td></td><td></td>' +
+                    '<td class="open"></td><td class="yclose"></td><td class="high"></td><td class="low"></td><td class="priceLimit"></td>' +
+                    '<td></td><td></td><td></td><td></td><td></td>' +
                     '</tr>',
             stockUri: {
                 sina: {uri: 'http://hq.sinajs.cn/list=', parse: function (codes, info) {
@@ -52,6 +55,7 @@
                         stocks[codes[index]].open = stock[1];
                         stocks[codes[index]].high = stock[4];
                         stocks[codes[index]].low = stock[5];
+                        stocks[codes[index]].priceLimit = ((stocks[codes[index]].curr - stocks[codes[index]].yclose) / stocks[codes[index]].yclose).toFixed(3) + ' %';
                     }
 
                     return stocks;
@@ -88,12 +92,13 @@
                         global.currAmount += number * curr;
                         parent.find('.curr').html(curr);
                         parent.find('.profits').html((curr * number - amount).toFixed(2));
-                        parent.find('.profitability').html(((curr * number - amount) / amount * 100).toFixed(2));
+                        parent.find('.profitability').html(((curr * number - amount) / amount * 100).toFixed(2) + ' %');
                         parent.find('.latest-value').html((curr * number).toFixed(2));
                         parent.find('.yclose').html(stockRealtime.yclose);
                         parent.find('.open').html(stockRealtime.open);
                         parent.find('.high').html(stockRealtime.high);
                         parent.find('.low').html(stockRealtime.low);
+                        parent.find('.priceLimit').html(stockRealtime.priceLimit);
                     }
                     global.message.show({content: $.format(global.messageTemplate, global.clock, global.totalAmount, global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), stockRealtime[stockRealtime.length - 3], stockRealtime[stockRealtime.length - 2])});
                     if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
@@ -180,10 +185,11 @@
         <th class="latest-value">最新市值</th>
         <th class="totalcapital">总股本</th>
         <th class="currcapital">流通股本</th>
-        <th class="yclose">昨日收盘价</th>
         <th class="open">今日开盘价</th>
+        <th class="yclose">昨日收盘价</th>
         <th class="high">今日最高价</th>
         <th class="low">今日最低价</th>
+        <th class="priceLimit">涨跌幅</th>
         <th>竞买价</th>
         <th>竞买价</th>
         <th>竞卖价</th>
