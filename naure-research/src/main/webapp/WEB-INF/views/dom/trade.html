@@ -61,6 +61,15 @@
                     return stocks;
                 }},
                 tencent: {uri: 'http://qt.gtimg.cn/q=', parse: function () {
+                }},
+                capital: {uri: 'http://finance.sina.com.cn/realstock/company/{0}/jsvar.js', parse: function (code, info) {
+                    global.capital = info;
+                    var info = info.match(/totalcapital\s=\s(\d+(\D\d+)?);[\s\S]+currcapital\s=\s(\d+(\D\d+)?);/i);
+                    return {
+                        code: code,
+                        total: parseFloat(info[1]).toFixed(4),
+                        curr: parseFloat(info[3]).toFixed(4)
+                    }
                 }}
             },
             currStockUri: 'sina',
@@ -74,10 +83,9 @@
             }
         };
 
-        function getStockInfo(codes, refresh) {
+        function getRealtimeInfo(codes, refresh) {
             global.http.request({uri: global.stockUri[global.currStockUri].uri + codes.toString(),
                 success: function (obj) {
-                    //TODO
                     var stocks = global.stockUri[global.currStockUri].parse(codes, obj.output);
 
                     global.currAmount = 0;
@@ -101,14 +109,30 @@
                         parent.find('.priceLimit').html(stockRealtime.priceLimit);
                     }
                     global.message.show({content: $.format(global.messageTemplate, global.clock, global.totalAmount, global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), stockRealtime[stockRealtime.length - 3], stockRealtime[stockRealtime.length - 2])});
-                    if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
+                    if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', global.interval);
                 }, error: function (err) {
                     delete err.http;
                     global.message.show({content: $.format(global.messageTemplate, global.clock, global.totalAmount, global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), JSON.stringify(err))});
-                    if (!refresh) global.clock = setTimeout('getStockInfo(global.stocks.codes)', global.interval);
+                    if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', global.interval);
                 }, changed: function (obj) {
                     //window.console.log(JSON.stringify({clock: global.clock, state: obj.state}));
                 }});
+        }
+
+        function getCapitalInfo(codes) {
+            for (var index in codes) {
+                var code = codes[index];
+                global.http.request({
+                    uri: $.format(global.stockUri.capital.uri, code),
+                    context: $(global.dom.stocks + '[stock="' + code + '"]'),
+                    success: function (obj) {
+                        var capital = global.stockUri.capital.parse(obj.context.attr('stock'), obj.output);
+                        var parent = obj.context;
+                        parent.find('.totalcapital').html(capital.total);
+                        parent.find('.currcapital').html(capital.curr);
+                    }
+                });
+            }
         }
 
         function init(stocks) {
@@ -138,20 +162,21 @@
                 global.utility.trMouseOverEvent();
                 $(document).on('keyup', function (event) {
                     var ev = document.all ? window.event : event;
-                    if (ev.keyCode == 82)  getStockInfo(global.stocks.codes, true);
-                    if (ev.keyCode == 72) {
+                    if (ev.keyCode == global.utility.keyCode.R)  getRealtimeInfo(global.stocks.codes, true);
+                    if (ev.keyCode == global.utility.keyCode.C)  getCapitalInfo(global.stocks.codes);
+                    if (ev.keyCode == global.utility.keyCode.H) {
                         'none' == $(global.dom.stocksHead).css('display') ?
                                 $(global.dom.stocksHead).css('display', 'table-row') :
                                 $(global.dom.stocksHead).css('display', 'none');
                     }
-                    if (ev.keyCode == 78) {
+                    if (ev.keyCode == global.utility.keyCode.H) {
                         'none' == $(global.dom.stocksName).css('display') ?
                                 $(global.dom.stocksName).css('display', 'table-cell') :
                                 $(global.dom.stocksName).css('display', 'none');
                     }
                 });
 
-                global.clock = setTimeout('getStockInfo(global.stocks.codes)', 5000);
+                global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', 5000);
             });
         });
     </script>
