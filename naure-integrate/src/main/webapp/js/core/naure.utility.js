@@ -20,7 +20,12 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 H: 72, I: 73, J: 74, K: 75, L: 76, M: 77, N: 78,
                 O: 79, P: 80, Q: 81, R: 82, S: 83, T: 84,
                 U: 85, V: 86, W: 87, X: 88, Y: 89, Z: 90,
-                0: 48, 1: 49, 2: 50, 3: 51, 4: 52, 5: 53, 6: 54, 7: 55, 8: 56, 9: 57
+                0: 48, 1: 49, 2: 50, 3: 51, 4: 52, 5: 53, 6: 54, 7: 55, 8: 56, 9: 57,
+                BACKSPACE: 8, CAPS_LOCK: 20, COMMA: 188, CONTROL: 17, DELETE: 46, DOWN: 40,
+                END: 35, ENTER: 13, ESCAPE: 27, HOME: 36, INSERT:  45, LEFT: 37,
+                NUMPAD_ADD: 107, NUMPAD_DECIMAL: 110, NUMPAD_DIVIDE: 111, NUMPAD_ENTER: 108,
+                NUMPAD_MULTIPLY: 106, NUMPAD_SUBTRACT: 109, PAGE_DOWN: 34, PAGE_UP: 33,
+                PERIOD: 190, RIGHT: 39, SHIFT: 16, SPACE: 32, TAB: 9, UP: 38
             },
 
             isArray: function (obj) {
