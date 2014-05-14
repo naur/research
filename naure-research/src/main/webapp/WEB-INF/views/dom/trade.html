@@ -136,8 +136,8 @@
                 success: function (obj) {
                     var capital = global.stockUri.capital.parse(obj.context.attr('stock'), obj.output);
                     var parent = obj.context;
-                    parent.find('.totalcapital').html(capital.total);
-                    parent.find('.currcapital').html(capital.curr);
+                    parent.find('.totalcapital').html(capital.total.thousandsSeparator());
+                    parent.find('.currcapital').html(capital.curr.thousandsSeparator());
                 }
             });
         }

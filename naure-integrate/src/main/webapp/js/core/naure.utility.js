@@ -22,7 +22,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 U: 85, V: 86, W: 87, X: 88, Y: 89, Z: 90,
                 0: 48, 1: 49, 2: 50, 3: 51, 4: 52, 5: 53, 6: 54, 7: 55, 8: 56, 9: 57,
                 BACKSPACE: 8, CAPS_LOCK: 20, COMMA: 188, CONTROL: 17, DELETE: 46, DOWN: 40,
-                END: 35, ENTER: 13, ESCAPE: 27, HOME: 36, INSERT:  45, LEFT: 37,
+                END: 35, ENTER: 13, ESCAPE: 27, HOME: 36, INSERT: 45, LEFT: 37,
                 NUMPAD_ADD: 107, NUMPAD_DECIMAL: 110, NUMPAD_DIVIDE: 111, NUMPAD_ENTER: 108,
                 NUMPAD_MULTIPLY: 106, NUMPAD_SUBTRACT: 109, PAGE_DOWN: 34, PAGE_UP: 33,
                 PERIOD: 190, RIGHT: 39, SHIFT: 16, SPACE: 32, TAB: 9, UP: 38
@@ -288,6 +288,20 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 });
             },
 
+            //千位分隔符
+            thousandsSeparator: function (num, prefix) {
+                if (/[^0-9\.]/.test(num)) return "invalid value";
+                num = num.replace(/^(\d*)$/, "$1.");
+                num = (num + "00").replace(/(\d*\.\d\d)\d*/, "$1");
+                num = num.replace(".", ",");
+                var re = /(\d)(\d{3},)/;
+                while (re.test(s))
+                    num = num.replace(re, "$1,$2");
+                num = num.replace(/,(\d\d)$/, ".$1");
+                //"￥"
+                return  (prefix ? prefix : "") + s.replace(/^\./, "0.")
+            },
+
             //----- TODO TR 状态改变事件 , 【过时】，通过CSS 来控制  -----------------------------------------------//
             trMouseOverEvent: function () {
                 $(".raisefocus tr td").on("mouseover", function () {
@@ -297,6 +311,11 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     $(this).parent().removeClass('hover');
                 });
             }
+        };
+
+        //prototype
+        String.prototype.thousandsSeparator = function (num, prefix) {
+            return utility.argumentsToArray(this);
         };
 
         return utility;
