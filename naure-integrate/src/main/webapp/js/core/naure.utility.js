@@ -295,11 +295,11 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 num = (num + "00").replace(/(\d*\.\d\d)\d*/, "$1");
                 num = num.replace(".", ",");
                 var re = /(\d)(\d{3},)/;
-                while (re.test(s))
+                while (re.test(num))
                     num = num.replace(re, "$1,$2");
                 num = num.replace(/,(\d\d)$/, ".$1");
                 //"￥"
-                return  (prefix ? prefix : "") + s.replace(/^\./, "0.")
+                return  (prefix ? prefix : "") + num.replace(/^\./, "0.")
             },
 
             //----- TODO TR 状态改变事件 , 【过时】，通过CSS 来控制  -----------------------------------------------//
@@ -315,7 +315,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
 
         //prototype
         String.prototype.thousandsSeparator = function (num, prefix) {
-            return utility.argumentsToArray(this);
+            return utility.thousandsSeparator(this);
         };
 
         return utility;

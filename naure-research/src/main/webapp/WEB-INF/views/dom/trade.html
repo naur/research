@@ -67,13 +67,12 @@
             tencent: {uri: 'http://qt.gtimg.cn/q=', parse: function () {
             }},
             capital: {uri: 'http://finance.sina.com.cn/realstock/company/{0}/jsvar.js', parse: function (code, info) {
-                global.capital = info;
-                var info = info.match(/totalcapital\s=\s(\d+(\D\d+)?);[\s\S]+currcapital\s=\s(\d+(\D\d+)?);/i);
-                return {
-                    code: code,
-                    total: parseFloat(info[1]).toFixed(4),
-                    curr: parseFloat(info[3]).toFixed(4)
-                }
+                var result = { code: code, total: 0, curr: 0 };
+                info = info.match(/totalcapital\s=\s(\d+(\D\d+)?);[\s\S]+currcapital\s=\s(\d+(\D\d+)?);/i);
+                if (!info) return result;
+                result.total = parseFloat(info[1]).toFixed(4);
+                result.curr = parseFloat(info[3]).toFixed(4);
+                return result
             }}
         },
         currStockUri: 'sina',
