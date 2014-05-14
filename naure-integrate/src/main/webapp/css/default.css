@@ -218,12 +218,12 @@ table tbody tr.hover {
     cursor: default;
 }
 
-table tbody .even {
+table tbody tr:nth-child(even) {
     background-color: #f1f9fc;
 }
 
-table tbody .odd {
-    background-color: #f0f8e6;
+table tbody tr:nth-child(odd) {
+    /*background-color: #f0f8e6;*/
 }
 
 table tbody tr .tdof {
