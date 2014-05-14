@@ -211,19 +211,6 @@ table tbody tr .loading {
     height: 15.5px;
 }
 
-table tbody tr:hover {
-    background-color: #b3d8ea;
-    padding: 9px 30px 9px 9px;
-    cursor: default;
-}
-
-/* e4f7cb */
-table tbody tr.hover {
-    background-color: #b3d8ea;
-    padding: 9px 30px 9px 9px;
-    cursor: default;
-}
-
 table tbody tr:nth-child(even) {
     background-color: #f1f9fc;
 }
@@ -232,13 +219,8 @@ table tbody tr:nth-child(odd) {
     /*background-color: #f0f8e6;*/
 }
 
-table tbody tr .tdof {
-    background-color: #f0f8e6;
-    padding: 9px 30px 9px 9px;
-}
-
-/*e4f7cb*/
-table tbody tr .tdon {
+/* e4f7cb */
+table tbody tr:hover {
     background-color: #b3d8ea;
     padding: 9px 30px 9px 9px;
     cursor: default;
