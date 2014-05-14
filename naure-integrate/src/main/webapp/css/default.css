@@ -211,6 +211,12 @@ table tbody tr .loading {
     height: 15.5px;
 }
 
+table tbody tr:hover {
+    background-color: #b3d8ea;
+    padding: 9px 30px 9px 9px;
+    cursor: default;
+}
+
 /* e4f7cb */
 table tbody tr.hover {
     background-color: #b3d8ea;

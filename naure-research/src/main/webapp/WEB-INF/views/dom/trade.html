@@ -167,7 +167,6 @@
         init(global.stocks);
         $(function () {
             $(global.dom.stocksContainer).html(global.stocks.html);
-            global.utility.trMouseOverEvent();
             getCapitalInfo(global.stocks.codes);
             $(document).on('keyup', function (event) {
                 var ev = document.all ? window.event : event;

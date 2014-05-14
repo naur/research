@@ -288,7 +288,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 });
             },
 
-            //----- TR 状态改变事件  -----------------------------------------------//
+            //----- TODO TR 状态改变事件 , 【过时】，通过CSS 来控制  -----------------------------------------------//
             trMouseOverEvent: function () {
                 $(".raisefocus tr td").on("mouseover", function () {
                     $(this).parent().addClass('hover');
