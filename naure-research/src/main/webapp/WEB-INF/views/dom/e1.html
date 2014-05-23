@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<SCRIPT language="JavaScript">
+    function DoImportFromAddressBook() {
+        return OpenABW();
+    }
+
+    function StXMLSetVars(obj, rgstProps, rgstFields) {
+        var ist;
+        var st = "";
+
+        for (ist = 0; ist < rgstProps.length; ist++) {
+            st += "<SetVar Name=\"urn:schemas-microsoft-com:office:office#" + rgstFields[ist] + "\">" + obj[rgstProps[ist]] + "</SetVar>";
+        }
+        return st;
+    }
+
+
+    function ProcessABWCollection(col) {
+        var rgstProps = new Array("FirstName", "LastName", "SMTPAddress", "CompanyName", "JobTitle", "HomeTelephoneNumber",
+                "BusinessTelephoneNumber", "MobileTelephoneNumber", "BusinessFaxNumber", "BusinessAddressStreet",
+                "BusinessAddressCity", "BusinessAddressState", "BusinessAddressPostalCode", "Body");
+        var rgstFields = new Array("FirstName", "Title", "Email", "Company", "JobTitle", "HomePhone", "WorkPhone",
+                "CellPhone", "WorkFax", "WorkAddress", "WorkCity", "WorkState", "WorkZip", "Comments");
+        var st;
+        var e = new Enumerator(col);
+
+        if (e.atEnd())
+            return "";
+
+        st = "<" + "ows:Batch OnError=\"Return\">";
+
+        for (; !e.atEnd(); e.moveNext()) {
+            st += "<Method ID=\"0\"><SetList Scope=\"Request\">Contacts</SetList><SetVar Name=\"Cmd\">Save</SetVar><SetVar Name=\"ID\">New</SetVar>";
+            st += StXMLSetVars(e.item(), rgstProps, rgstFields);
+            st += "<SetVar Name=\"urn:schemas-microsoft-com:office:office#WebPage" + "\">" + e.item()["WebPage"] + ", </SetVar>";
+            st += "</Method>";
+        }
+        st += "</ows:Batch>";
+
+        return st;
+    }
+</SCRIPT>
+
+<SCRIPT language="JavaScript">
+    function ImportFromAddressBook() {
+        if (0 == EnsureImport()) {
+
+            st = DoImportFromAddressBook();
+
+            if (st.length > 0) {
+                FormABWImport.NextUsing.value = window.parent.location;
+                FormABWImport.PostBody.value = st;
+                FormABWImport.submit();
+            }
+        }
+    }
+</SCRIPT>
+
+<FORM id=FormABWImport method="POST" action="http://STSServer1/Sub1/_vti_bin/owssvr.dll?CS=109">
+    <INPUT type=hidden name="NextUsing" value="">
+    <INPUT type=hidden name="Cmd" value="DisplayPost">
+    <INPUT type=hidden name="PostBody" value="">
+</FORM>
+</body>
+</html>

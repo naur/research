@@ -1,0 +1,91 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Office在线编辑</title>
+</head>
+<body>
+
+<script language="javascript">
+    function CreateDoc() {
+        document.all.OA1.CreateNew("Word.Document");
+    }
+    function CreateExcel() {
+        document.all.OA1.CreateNew("Excel.Sheet");
+    }
+    function CreatePPT() {
+        document.all.OA1.CreateNew("PowerPoint.Slide");
+    }
+    function OpenFromLocal() {
+        document.all.OA1.OpenLocalDialog();
+    }
+    function ShowToolbars() {
+        var x = document.all.OA1.GetToolbarsIsShow();
+        document.all.OA1.ShowToolbars(!x);
+    }
+    function PrintFile() {
+        if (document.all.OA1.IsOpen()) {
+            document.all.OA1.Print();
+        }
+    }
+    function DocIsDirty() {
+        if (document.all.OA1.IsOpen()) {
+            if (document.all.OA1.IsDirty()) {
+                window.alert("The file has been modified!");
+            }
+            else {
+                window.alert("The file hasn't been modified!");
+            }
+        }
+    }
+    function SaveAs() {
+        document.all.OA1.SaveLocalDialog();
+    }
+    function CloseFile() {
+        if (document.all.OA1.IsOpen()) {
+            document.all.OA1.Close();
+        }
+    }
+    function OpenFromServer() {
+        var sPath = window.prompt("服务器文件路径:", "http://192.168.1.216:6888/msbb/tmp/office/test.doc");
+        document.all.OA1.OpenWebFile(sPath)
+    }
+    function SavetoServer() {
+
+        if (document.all.OA1.IsOpen()) {
+            window.alert("保存文件到服务器！");
+            document.all.OA1.SaveWebFile("http://192.168.1.216:6888/msbb/UpLoadServlet");
+        }
+    }
+</script>
+
+
+<object classid="clsid:18A295DA-088E-42D1-BE31-5028D7F9B9B5" id="OA1" width="100%" height="700"
+        codebase="http://192.168.1.216:6888/msbb/tmp/office/OA.CAB#3,1,0,4">
+    <param name="_Version" value="65536">
+    <param name="_ExtentX" value="17859">
+    <param name="_ExtentY" value="10848">
+    <param name="_StockProps" value="0">
+    <param name="BorderStyle" value="1">
+    <param name="BorderColor" value="16777215">
+    <param name="CaptionColor" value="12632256">
+    <param name="CaptionLabel" value="等待打开一个 Office 文档!">
+</object>
+
+<input type="button" onClick="CreateDoc()" value="新建 Word">
+<input type="button" onClick="CreateExcel()" value="新建 Excel">
+<input type="button" onClick="CreatePPT()" value="新建 PPT">
+<input type="button" onClick="OpenFromLocal()" value="打开">
+<input type="button" onClick="ShowToolbars()" value="显示/隐藏工具栏">
+<input type="button" onClick="DocIsDirty()" value="是否修改">
+<input type="button" onClick="PrintFile()" value="打印">
+<input type="button" onClick="SaveAs()" value="保存">
+<input type="button" onClick="CloseFile()" value="关闭">
+<br>
+<input type="button" onClick="OpenFromServer()" value="从服务器打开">
+
+<form>
+    <input type="button" onClick="SavetoServer()" value="保存到服务器">
+</form>
+</body>
+
+</html>
