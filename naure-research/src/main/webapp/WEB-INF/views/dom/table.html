@@ -21,6 +21,12 @@
             background: white;
             margin: 20px;
         }
+
+        .handsontable td.td_title {
+            color: green;
+            fontWeight: bold;
+            background-color: #CCEECC;
+        }
     </style>
 </head>
 <body class="metro" style="background-color: #ffffff">
@@ -54,6 +60,7 @@
 
 <script type="text/javascript">
 var global = {
+    keys: ['CHECK', 'TABLE', 'FIELD'],
     tableEditor: {'Handsontable': handsontableShow, 'Table Smart Editor': tableSmartEditorShow, 'Tables Generator': tablesGeneratorShow},
     rowTemplate: "<div class=\"row\">\n" +
             "        <div class=\"span3\">\n" +
@@ -67,67 +74,52 @@ var global = {
         grid: '.grid',
         example: function (n) {
             return '.demo:eq(' + (n - 1) + ')'
-        }},
-    renderer: {
-        cellRenderer: function (instance, td, row, col, prop, value, cellProperties) {
-            if ('object' == typeof(value)) {
-                for (var key in value) {
-                    if (!value.hasOwnProperty(key)) continue;
-                    cellType[value[key].type].apply(this, arguments);
-                    break;
-                }
-            } else {
-                Handsontable.renderers.TextRenderer.apply(this, arguments);
-            }
+        }}
+};
+
+var tableEditor = function (options) {
+    var opt = $.extend({
+        container: null,
+        date: null,
+        style: {
+            title: 'title',
+            check: 'check',
+            table: null,
+            field: null,
+            value: null
+        }
+    }, options);
+
+    this.renderer = {
+        checkRenderer: function (instance, td, row, col, prop, value, cellProperties) {
         },
-        parseProperties: function (obj) {
-            for (var key in obj) {
-                if (!obj.hasOwnProperty(key)) continue;
-                return {key: key, value: obj[key]};
-            }
-        },
-        typeRenderer: function (instance, td, row, col, prop, value, cellProperties) {
-        },
-        titleRenderer: function (instance, td, row, col, prop, value, cellProperties) {
-            var params = global.renderer.parseProperties(value);
-            cellProperties.readOnly = true;
-            value = params.key;
-            arguments[5] = params.key;
+        tableRenderer: function (instance, td, row, col, prop, value, cellProperties) {
             Handsontable.renderers.TextRenderer.apply(this, arguments);
-            td.style.fontWeight = 'bold';
-            td.style.color = 'green';
-            td.style.background = '#CEC';
-        },
-        headRenderer: function (instance, td, row, col, prop, value, cellProperties) {
+            $(td).addClass('td_title');
         },
         fieldRenderer: function (instance, td, row, col, prop, value, cellProperties) {
         },
         valueRenderer: function (instance, td, row, col, prop, value, cellProperties) {
+        },
+        titleRenderer: function (instance, td, row, col, prop, value, cellProperties) {
+        },
+
+        cellRenderer: function (instance, td, row, col, prop, value, cellProperties) {
+            if (0 != col && opt.style[instance.getDataAtCell(row, 0)]) {
+                $(td).addClass(opt.style[instance.getDataAtCell(row, 0)]);
+            }
+            if (0 == col) {
+                $(td).addClass(opt.style[instance.getDataAtCell(row, 0)]);
+            }
+            Handsontable.renderers.TextRenderer.apply(this, arguments);
         }
-    }
-};
+    };
 
-var cellType = {
-    title: global.renderer.titleRenderer,
-    head: 'head',
-    field: 'field',
-    value: 'value'
-};
-
-function orangeRenderer(instance, td, row, col, prop, value, cellProperties) {
-    Handsontable.renderers.TextRenderer.apply(this, arguments);
-    $(td).css({background: 'orange'});
-}
-
-function handsontableShow() {
-    $(global.dom.example(1)).handsontable({
+    $(contailer).handsontable({
         data: [
             ['TABLE', 'tran_order_detail', '调拨明细信息', 'SCS_DATA_DS'],
             ['FIELD', 'ID' , 'RAN_ORDER_NO', 'PRODUCT_ID', 'CREATE_TIME'],
-            [
-                {'KEY': {type: 'title'}},
-                'ID'
-            ],
+            ['KEY', 'ID'],
             ['VALUE', -7000, -7200, 17627, '2013-07-31 09:20:00'],
             ['VALUE', -7001, -7201, 17628, '2013-07-01 09:20:00'],
             ['VALUE', -7002, -7202, 17629, '2013-07-26 09:20:00'],
@@ -146,7 +138,104 @@ function handsontableShow() {
         manualColumnMove: true,
         outsideClickDeselects: false,
         cells: function (row, col, prop) {
-            //this.renderer = global.renderer.cellRenderer;
+            this.renderer = global.renderer.cellRenderer;
+            return {};
+        },
+        contextMenu: {
+            callback: function (key, options) {
+                var m = "clicked: " + key;
+                global.message.show({content: m + ': ' + JSON.stringify(options), color: 'red'});
+            },
+            items: {
+                'row_above': {},
+                'row_below': {},
+                'row_copy_above': {name: '插入的单元格', icon: null, disabled: function () {
+                    //return ($(global.dom.example(1)).handsontable('getSelected')[0] === 0);
+                    return false;
+                }, callback: function (key, options) {
+                    global.message.show({content: JSON.stringify(arguments), color: 'red'});
+                }},
+                'hsep1': '---------',
+                'col_left': {},
+                'col_right': {},
+                'hsep2': '---------',
+                'remove_row': {},
+                'remove_col': {},
+                'hsep3': '---------',
+                'undo': {},
+                'redo': {},
+                'hsep4': '---------',
+                overwrite: {name: 'overwrite', callback: function (key, options) {
+                    if (!this.data) this.data = {};
+                    this.data['pasteMode'] = 'overwrite';
+                    this.updateSettings({pasteMode: this.data['pasteMode']});
+                    return false;
+                }, disabled: function (key, options) {
+                    return  !this.data ? true : 'overwrite' == this.data['pasteMode'];
+                }},
+                shiftDown: {name: 'shift_down', callback: function (key, options) {
+                    if (!this.data) this.data = {};
+                    this.data['pasteMode'] = 'shift_down';
+                    this.updateSettings({pasteMode: this.data['pasteMode']});
+                    return false;
+                }, disabled: function (key, options) {
+                    return  !this.data ? false : 'shift_down' == this.data['pasteMode'];
+                }},
+                shiftRight: {name: 'shift_right', callback: function (key, options) {
+                    if (!this.data) this.data = {};
+                    this.data['pasteMode'] = 'shift_right';
+                    this.updateSettings({pasteMode: this.data['pasteMode']});
+                    return false;
+                }, disabled: function (key, options) {
+                    return  !this.data ? false : 'shift_right' == this.data['pasteMode'];
+                }},
+                "about": {name: '一号店表格编辑', callback: function () {
+                    alert('一号店表格编辑');
+                    return false;
+                }}
+            }
+        }
+    });
+};
+
+
+var cellType = {
+    title: global.renderer.titleRenderer,
+    head: 'head',
+    field: 'field',
+    value: 'value'
+};
+
+function orangeRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.renderers.TextRenderer.apply(this, arguments);
+    $(td).css({background: 'orange'});
+}
+
+function handsontableShow() {
+    $(global.dom.example(1)).handsontable({
+        data: [
+            ['TABLE', 'tran_order_detail', '调拨明细信息', 'SCS_DATA_DS'],
+            ['FIELD', 'ID' , 'RAN_ORDER_NO', 'PRODUCT_ID', 'CREATE_TIME'],
+            ['KEY', 'ID'],
+            ['VALUE', -7000, -7200, 17627, '2013-07-31 09:20:00'],
+            ['VALUE', -7001, -7201, 17628, '2013-07-01 09:20:00'],
+            ['VALUE', -7002, -7202, 17629, '2013-07-26 09:20:00'],
+            ['VALUE', -7003, -7203, 17630, '2013-07-26 09:20:00'],
+            [],
+            ['CHECK', '删除md_product'],
+            ['TABLE', 'md_product', 'md_product', 'SCS_DATA_DS'],
+            ['FIELD', 'SQL'],
+            ['VALUE', 'delete from md_product WHERE id IN (17627, 17628, 17629, 17630);']
+        ],
+        colHeaders: true,
+        rowHeaders: true,
+        minSpareCols: 1,
+        minSpareRows: 1,
+        manualColumnResize: true,
+        manualColumnMove: true,
+        outsideClickDeselects: false,
+        cells: function (row, col, prop) {
+            this.renderer = global.renderer.cellRenderer;
             return {};
         },
         contextMenu: {
