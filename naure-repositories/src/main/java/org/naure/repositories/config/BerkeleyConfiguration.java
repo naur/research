@@ -6,6 +6,7 @@
 package org.naure.repositories.config;
 
 import com.sleepycat.je.*;
+import org.naure.common.util.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +36,11 @@ public class BerkeleyConfiguration {
 
     @Bean
     public Database db() throws Exception {
-        dbEnvironment = new Environment(new File(file), getEnv());
+        File dbFile = new File(file);
+        if (!dbFile.exists()) {
+            dbFile.mkdirs();
+        }
+        dbEnvironment = new Environment(dbFile, getEnv());
         return dbEnvironment.openDatabase(null, databaseName, getCnf());
     }
 
@@ -68,11 +73,18 @@ public class BerkeleyConfiguration {
         return dbConfig;
     }
 
-    @Value("${berkeley.file}") private String file;
-    @Value("${berkeley.databaseName}") private String databaseName;
-    @Value("${berkeley.allowCreate}") private boolean allowCreate;
-    @Value("${berkeley.sharedCache}") private boolean sharedCache;
-    @Value("${berkeley.isTransactional}") private boolean isTransactional;
-    @Value("${berkeley.readOnly}") private boolean readOnly;
-    @Value("${berkeley.deferredWrite}") private boolean deferredWrite;
+    @Value("${berkeley.file}")
+    private String file;
+    @Value("${berkeley.databaseName}")
+    private String databaseName;
+    @Value("${berkeley.allowCreate}")
+    private boolean allowCreate;
+    @Value("${berkeley.sharedCache}")
+    private boolean sharedCache;
+    @Value("${berkeley.isTransactional}")
+    private boolean isTransactional;
+    @Value("${berkeley.readOnly}")
+    private boolean readOnly;
+    @Value("${berkeley.deferredWrite}")
+    private boolean deferredWrite;
 }

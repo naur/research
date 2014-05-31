@@ -1,5 +1,6 @@
 package org.naure.repositories;
 
+import org.naure.common.entities.Entity;
 import org.naure.repositories.construction.Repository;
 import org.naure.repositories.construction.Workspace;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,11 @@ public class SystemRepository extends Repository {
         this.workspace = workspace;
     }
 
-    public <T> boolean add(T t) throws Exception {
+    public <T extends Entity> boolean add(T t) throws Exception {
         return this.workspace.add(t);
+    }
+
+    public Object all() throws Exception {
+        return this.workspace.get(null, null);
     }
 }
