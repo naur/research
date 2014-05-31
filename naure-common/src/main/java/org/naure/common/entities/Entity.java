@@ -1,5 +1,6 @@
 package org.naure.common.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Date;
  * Time: 10:41 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class Entity {
+public abstract class Entity implements Serializable {
     public String getId() {
         return id;
     }

@@ -1,5 +1,10 @@
 package org.naure.repositories.construction;
 
+import com.sleepycat.je.DatabaseEntry;
+import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.SerializationUtils;
+import org.naure.common.entities.Entity;
+import org.naure.common.util.ByteSerializer;
 import org.naure.repositories.config.BerkeleyConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,7 +20,6 @@ import java.util.List;
  */
 @Component
 public class BerkeleyWorkspace implements Workspace {
-
     @Autowired
     BerkeleyConfiguration configuration;
 
@@ -36,7 +40,9 @@ public class BerkeleyWorkspace implements Workspace {
 
     @Override
     public <T> boolean add(T t) throws Exception {
-        configuration.db().put(null, );
+        DatabaseEntry key = new DatabaseEntry(t.getClass().getName().getBytes(CharEncoding.UTF_8));
+        DatabaseEntry value = new DatabaseEntry(SerializationUtils.serialize((Entity) t));
+        configuration.db().put(null, key, value);
         return false;
     }
 

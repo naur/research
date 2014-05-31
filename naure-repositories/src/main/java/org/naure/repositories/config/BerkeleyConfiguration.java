@@ -48,8 +48,21 @@ public class BerkeleyConfiguration {
         return envConfig;
     }
 
+    /**
+     * 数据库配置
+     */
     private DatabaseConfig getCnf() {
         DatabaseConfig dbConfig = new DatabaseConfig();
+        dbConfig.setAllowCreate(allowCreate);
+        dbConfig.setDeferredWrite(deferredWrite);
+        return dbConfig;
+    }
+
+    /**
+     * 二级数据库配置
+     */
+    private DatabaseConfig getSecCnf() {
+        SecondaryConfig dbConfig = new SecondaryConfig();
         dbConfig.setAllowCreate(allowCreate);
         dbConfig.setDeferredWrite(deferredWrite);
         return dbConfig;

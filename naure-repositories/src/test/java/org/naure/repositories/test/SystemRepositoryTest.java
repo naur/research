@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SystemRepositoryTest extends UnitTestBase {
     @Test
     public void test_add() {
-        repository
+        //repository
     }
 
     @Autowired
