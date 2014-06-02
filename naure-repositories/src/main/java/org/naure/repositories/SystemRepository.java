@@ -18,7 +18,7 @@ public class SystemRepository extends Repository {
         this.workspace = workspace;
     }
 
-    public <T extends Entity> boolean add(T t) throws Exception {
+    public <T extends Entity> boolean   add(T t) throws Exception {
         return this.workspace.add(t);
     }
 

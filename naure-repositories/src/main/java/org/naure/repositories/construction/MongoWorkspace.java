@@ -22,7 +22,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-public class MongoWorkspace implements Workspace {
+public class MongoWorkspace extends AbstractWorkspace {
 
     @Override
     public <T, U> List<U> get(T t, Class<U> resultClass) throws Exception {
@@ -65,28 +65,10 @@ public class MongoWorkspace implements Workspace {
     }
 
     @Override
-    public <U> U get(int identifier, Class<U> resultClass) throws Exception {
-        throw new Exception("Not implemented");
-    }
-
-
-    @Override
-    public <T, U> U add(T t, Class<U>... resultClass) throws Exception {
-//        MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
-//        mongoOps.insert(t);
-        throw new Exception("Not implemented");
-    }
-
-    @Override
     public <T> boolean add(T t) throws Exception {
         MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
         mongoOps.insert(t, ((Entity) t).collectionName());
         return true;
-    }
-
-    @Override
-    public <T, U> U delete(T t, Class<U>... resultClass) throws Exception {
-        throw new Exception("Not implemented");
     }
 
     @Override
@@ -117,11 +99,6 @@ public class MongoWorkspace implements Workspace {
 
         mongoOperations.remove(query, params.get("class").toString());
         return true;
-    }
-
-    @Override
-    public <T, U> U update(T t, Class<U>... resultClass) throws Exception {
-        throw new Exception("Not implemented");
     }
 
     @Override

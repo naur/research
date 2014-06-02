@@ -1,9 +1,6 @@
 package org.naure.repositories.construction;
 
-import com.sleepycat.je.Cursor;
-import com.sleepycat.je.DatabaseEntry;
-import com.sleepycat.je.LockMode;
-import com.sleepycat.je.OperationStatus;
+import com.sleepycat.je.*;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.SerializationUtils;
 import org.naure.common.entities.Entity;
@@ -24,62 +21,34 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Component
-public class BerkeleyWorkspace implements Workspace {
+public class BerkeleyWorkspace extends AbstractWorkspace {
     @Autowired
-    BerkeleyConfiguration configuration;
+    private BerkeleyConfiguration configuration;
+    //编码
+    private String coding = CharEncoding.UTF_8;
 
     /**
-     * 对于 Berkeley, 只支持通过 key 查询数据，而且 key 是 String 类型
-     * 约定返回值继承于 Entity
+     * resultClass：
+     * 如果是 Entity，就查询所有数据
+     * 如果是 Entity 的子类，那么查询子类对应的数据库
      */
-    @Override
     public <T, U> List<U> get(T t, Class<U> resultClass) throws Exception {
-        Assert.isAssignable(String.class, t.getClass());
+        if (null != t) {
+            Assert.isAssignable(String.class, t.getClass());
+        }
         Assert.isAssignable(Entity.class, resultClass);
 
-        List<U> result = new ArrayList<U>();
-        DatabaseEntry key = new DatabaseEntry();
-        DatabaseEntry date = new DatabaseEntry();
-        if ("" == t) {
-            Cursor cursor = null;
-            try {
-                cursor = configuration.db().openCursor(null, null);
-
-                // 通过cursor.getNex方法来遍历记录
-                while (cursor.getNext(key, date, LockMode.DEFAULT) ==
-                        OperationStatus.SUCCESS) {
-                    result.add((U)SerializationUtils.deserialize(date.getData()));
-                }
-            } catch (Exception ex) {
-            } finally {
-                try {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
-                } catch (Exception ex) {
-                }
+        final List<U> result = new ArrayList<U>();
+        configuration.execute(resultClass.getName(),
+                new DatabaseEntry(null == t || "" == t ? null : t.toString().getBytes(coding)),
+                new DatabaseEntry(), new BerkeleyConfiguration.Action() {
+            @Override
+            public void execute(DatabaseEntry key, DatabaseEntry data) {
+                result.add((U) SerializationUtils.deserialize(data.getData()));
             }
-        } else {
-            key.setData(t.toString().getBytes(CharEncoding.UTF_8));
-            if (configuration.db().get(null, key, date, LockMode.DEFAULT) ==
-                    OperationStatus.SUCCESS) {
-                result.add((U) SerializationUtils.deserialize(date.getData()));
-            } else {
-                //TODO
-            }
-        }
+        });
 
         return result;
-    }
-
-    @Override
-    public <U> U get(int identifier, Class<U> resultClass) throws Exception {
-        return null;
-    }
-
-    @Override
-    public <T, U> U add(T t, Class<U>... resultClass) throws Exception {
-        return null;
     }
 
     /**
@@ -88,40 +57,12 @@ public class BerkeleyWorkspace implements Workspace {
     @Override
     public <T> boolean add(T t) throws Exception {
         Assert.isAssignable(Entity.class, t.getClass());
-
-        DatabaseEntry key = new DatabaseEntry(t.getClass().getName().getBytes(CharEncoding.UTF_8));
-        DatabaseEntry value = new DatabaseEntry(SerializationUtils.serialize((Entity) t));
-        configuration.db().put(null, key, value);
-        return false;
-    }
-
-    @Override
-    public <T, U> U delete(T t, Class<U>... resultClass) throws Exception {
-        return null;
-    }
-
-    @Override
-    public <T> boolean delete(T t) throws Exception {
-        return false;
-    }
-
-    @Override
-    public <T, U> U update(T t, Class<U>... resultClass) throws Exception {
-        return null;
-    }
-
-    @Override
-    public <T> boolean update(T t) throws Exception {
-        return false;
-    }
-
-    @Override
-    public <T> boolean exists(T t) throws Exception {
-        return false;
-    }
-
-    @Override
-    public <T> long count(T t) throws Exception {
-        return 0;
+        Entity entity = (Entity) t;
+        //以 t.getClass().getName() 作为数据库名
+        String dbName = t.getClass().getName();
+        return configuration.execute(dbName,
+                new DatabaseEntry(dbName.getBytes(coding)),
+                new DatabaseEntry(SerializationUtils.serialize(entity)),
+                null);
     }
 }
