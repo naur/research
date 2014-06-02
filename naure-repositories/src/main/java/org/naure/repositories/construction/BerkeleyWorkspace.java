@@ -67,4 +67,18 @@ public class BerkeleyWorkspace extends AbstractWorkspace {
                 new DatabaseEntry(SerializationUtils.serialize(entity)),
                 null);
     }
+
+    @Override
+    public <T> boolean exists(T t) throws Exception {
+        Assert.isAssignable(Entity.class, t.getClass());
+        Entity entity = (Entity) t;
+        Assert.hasText(entity.getId());
+
+        return configuration.execute(
+                //以 t.getClass().getName() 作为数据库名
+                t.getClass().getName(),
+                //以 id 为 key
+                new DatabaseEntry(entity.getId().getBytes(coding)),
+                null, null);
+    }
 }

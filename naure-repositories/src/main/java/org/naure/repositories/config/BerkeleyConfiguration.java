@@ -64,13 +64,15 @@ public class BerkeleyConfiguration {
         }
         try {
             db = this.db(dbName);
-            //如果 value 为空，那么是从数据库获取数据
-            if (null == data.getData()) {
+            //如果 data 为空，那么是从数据库获取数据
+            if (null == data || null == data.getData()) {
                 //如果 key 不为空，获取特定 Key 对应的数据
                 if (null != key.getData()) {
                     if ((status = db.get(null, key, data, LockMode.DEFAULT)) ==
                             OperationStatus.SUCCESS) {
-                        action.execute(key, data);
+                        if (null != action) {
+                            action.execute(key, data);
+                        }
                     } else {
                         //TODO
                     }
@@ -81,7 +83,9 @@ public class BerkeleyConfiguration {
                     // 通过cursor.getNex方法来遍历记录
                     while ((status = cursor.getNext(key, data, LockMode.DEFAULT)) ==
                             OperationStatus.SUCCESS) {
-                        action.execute(key, data);
+                        if (null != action) {
+                            action.execute(key, data);
+                        }
                     }
                 }
             } else {

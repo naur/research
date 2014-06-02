@@ -1,11 +1,15 @@
 package org.naure.repositories;
 
 import org.naure.repositories.construction.Repository;
+import org.naure.repositories.construction.Workspace;
 import org.naure.repositories.models.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,7 +22,37 @@ import java.util.Map;
 @Component
 public class SessionRepository extends Repository {
 
+    @Autowired
+    @Qualifier("berkeleyWorkspace")
+    public void getWorkspace(Workspace workspace) {
+        this.workspace = workspace;
+    }
+
+    /**
+     * berkeley 版本
+     */
     public boolean add(final Session session) throws Exception {
+        //对 berkeley 来说，默认是用 id 作为 key
+        session.setId(session.getSessionId());
+
+        //以当前毫秒数作为 id
+        if (null == session.getId()) {
+            session.setId(String.valueOf(System.currentTimeMillis()));
+        }
+
+        if (this.exists(session)) {
+            List<Session> temp = this.workspace.get(session, Session.class);
+            session.getLogs().addAll(temp.get(0).getLogs());
+        }
+
+        return this.workspace.add(session);
+    }
+
+    /**
+     * 【未使用】MongoDB 版本
+     */
+    @Deprecated
+    public boolean addMongo(final Session session) throws Exception {
         if (null == session.getSessionId())
             return workspace.add(session);
 
@@ -31,7 +65,7 @@ public class SessionRepository extends Repository {
         if (this.exists(query)) {
             Map<String, Object> update = new HashMap<String, Object>();
             update.put("query", query);
-            update.put("update", new HashMap<String, Object>(){{
+            update.put("update", new HashMap<String, Object>() {{
                 put("updated", Calendar.getInstance().getTime());
                 put("logs", session.getLogs());
             }});
