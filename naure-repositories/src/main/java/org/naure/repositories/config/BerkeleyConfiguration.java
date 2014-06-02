@@ -67,7 +67,7 @@ public class BerkeleyConfiguration {
             //如果 value 为空，那么是从数据库获取数据
             if (null == data.getData()) {
                 //如果 key 不为空，获取特定 Key 对应的数据
-                if (null == key.getData()) {
+                if (null != key.getData()) {
                     if ((status = db.get(null, key, data, LockMode.DEFAULT)) ==
                             OperationStatus.SUCCESS) {
                         action.execute(key, data);

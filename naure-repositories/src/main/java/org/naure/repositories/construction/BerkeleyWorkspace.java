@@ -58,10 +58,12 @@ public class BerkeleyWorkspace extends AbstractWorkspace {
     public <T> boolean add(T t) throws Exception {
         Assert.isAssignable(Entity.class, t.getClass());
         Entity entity = (Entity) t;
-        //以 t.getClass().getName() 作为数据库名
-        String dbName = t.getClass().getName();
-        return configuration.execute(dbName,
-                new DatabaseEntry(dbName.getBytes(coding)),
+
+        return configuration.execute(
+                //以 t.getClass().getName() 作为数据库名
+                t.getClass().getName(),
+                //以 id 为 key
+                new DatabaseEntry(entity.getId().getBytes(coding)),
                 new DatabaseEntry(SerializationUtils.serialize(entity)),
                 null);
     }
