@@ -79,6 +79,6 @@ public class BerkeleyWorkspace extends AbstractWorkspace {
                 t.getClass().getName(),
                 //以 id 为 key
                 new DatabaseEntry(entity.getId().getBytes(coding)),
-                null, null);
+                new DatabaseEntry(), null);
     }
 }

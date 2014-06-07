@@ -46,7 +46,7 @@ public class SessionRepository extends Repository {
         }
 
         if (this.exists(session)) {
-            List<Session> temp = this.workspace.get(session, Session.class);
+            List<Session> temp = this.workspace.get(session.getId(), Session.class);
             session.getLogs().addAll(temp.get(0).getLogs());
         }
 
