@@ -236,7 +236,7 @@ function arborDrawing(options) {
 /*-------------------- 初始化 START ------------------*/
 
 require(['jquery', 'naure.message', 'naure.overlay',
-    'naure.xsl',
+    'naure.http.xsl',
     'arbor-etc',
     'arbor-kernel',
     'arbor-graphics-colors',

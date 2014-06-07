@@ -2,6 +2,7 @@ package org.naure.repositories.models;
 
 import org.naure.common.entities.TraceEventType;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Date;
  * Time: 3:02 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SessionLog {
+public class SessionLog implements Serializable {
 
     public SessionLog(String ipAddress,
                       String hostName,
