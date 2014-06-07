@@ -13,6 +13,7 @@
         <module>naure-common</module>
         <module>naure-utility</module>
         <module>naure-repositories</module>
+        <module>naure-integrate</module>
         <!--<module>naure-home</module>-->
         <!--<module>naure-research</module>-->
     </modules>
@@ -26,16 +27,8 @@
         </profile>
 
         <profile>
-            <id>integrate</id>
-            <modules>
-                <module>naure-integrate</module>
-            </modules>
-        </profile>
-
-        <profile>
             <id>home</id>
             <modules>
-                <module>naure-integrate</module>
                 <module>naure-home</module>
             </modules>
         </profile>
@@ -43,7 +36,6 @@
         <profile>
             <id>research</id>
             <modules>
-                <module>naure-integrate</module>
                 <module>naure-research</module>
             </modules>
         </profile>
