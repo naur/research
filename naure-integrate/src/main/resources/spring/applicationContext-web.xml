@@ -157,6 +157,4 @@
         <property name="cacheSeconds" value="0"/>
     </bean>
 
-    <import resource="applicationContext-repositories.xml"/>
-
 </beans>
