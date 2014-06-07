@@ -33,14 +33,14 @@ public class BerkeleyWorkspace extends AbstractWorkspace {
      * 如果是 Entity 的子类，那么查询子类对应的数据库
      */
     public <T, U> List<U> get(T t, Class<U> resultClass) throws Exception {
-        if (null != t) {
-            Assert.isAssignable(String.class, t.getClass());
-        }
         Assert.isAssignable(Entity.class, resultClass);
+        if (null != t) {
+            Assert.isTrue(t instanceof String || t instanceof Entity, "T 必须是 String 或 Entity");
+        }
 
         final List<U> result = new ArrayList<U>();
         configuration.execute(resultClass.getName(),
-                new DatabaseEntry(null == t || "" == t ? null : t.toString().getBytes(coding)),
+                new DatabaseEntry(null == t || "" == t ? null : (t instanceof Entity ? ((Entity) t).getId() : t.toString()).getBytes(coding)),
                 new DatabaseEntry(), new BerkeleyConfiguration.Action() {
             @Override
             public void execute(DatabaseEntry key, DatabaseEntry data) {
