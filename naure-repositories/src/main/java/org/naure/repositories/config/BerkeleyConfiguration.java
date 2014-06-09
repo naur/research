@@ -64,7 +64,7 @@ public class BerkeleyConfiguration {
         }
         try {
             db = this.db(dbName);
-            //如果 data 为空，那么是从数据库获取数据
+            //如果 data 为空，那么是从数据库获取数据。注：data == null 的时候，action 也为空，这种情况用于判断数据库是否存在记录。
             if (null == data || null == data.getData()) {
                 //如果 key 不为空，获取特定 Key 对应的数据
                 if (null != key.getData()) {
@@ -72,6 +72,7 @@ public class BerkeleyConfiguration {
                             OperationStatus.SUCCESS) {
                         if (null != action) {
                             action.execute(key, data);
+                            data.setData(null);
                         }
                     } else {
                         //TODO

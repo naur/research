@@ -61,6 +61,31 @@ public class SystemRepositoryTest extends UnitTestBase {
         }
     }
 
+    @Test
+    public void test_get_all() throws Exception {
+        Menu menu1 = new Menu();
+        menu1.setId("finance");
+        menu1.setName("金融");
+        menu1.setUri("/finance/view");
+
+        Menu menu2 = new Menu();
+        menu2.setId("finance1");
+        menu2.setName("金融");
+        menu2.setUri("/finance/view");
+
+        Session session = new Session();
+        session.setId("12121212");
+        session.setApplication("research");
+        session.setSessionId("12121212");
+
+        repository.add(menu1);
+        repository.add(menu2);
+        repository.add(session);
+
+        List<Entity> list = repository.get(null, Entity.class);
+        Assert.assertTrue(list.size() >= 3);
+    }
+
     @Autowired
     private SystemRepository repository;
 }
