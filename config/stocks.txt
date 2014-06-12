@@ -1,0 +1,5 @@
+sh: 600000 -- 603993
+sz: 000001 -- 002725
+     300001 -- 300383
+
+http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=19950802&end_date=20120723&type=xml

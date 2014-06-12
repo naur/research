@@ -22,11 +22,11 @@ import java.util.Map;
 @Component
 public class SessionRepository extends Repository {
 
-    @Autowired
-    @Qualifier("berkeleyWorkspace")
-    public void getWorkspace(Workspace workspace) {
-        this.workspace = workspace;
-    }
+//    @Autowired
+//    @Qualifier("berkeleyWorkspace")
+//    public void getWorkspace(Workspace workspace) {
+//        this.workspace = workspace;
+//    }
 
     @Override
     public <T, U> List<U> get(T params, Class<U> resultClass) throws Exception {
@@ -34,9 +34,10 @@ public class SessionRepository extends Repository {
     }
 
     /**
-     * berkeley 版本
+     * 【未使用】berkeley 版本
      */
-    public boolean add(final Session session) throws Exception {
+    @Deprecated
+    public boolean addBerkeley(final Session session) throws Exception {
         //对 berkeley 来说，默认是用 id 作为 key
         session.setId(session.getSessionId());
 
@@ -54,10 +55,9 @@ public class SessionRepository extends Repository {
     }
 
     /**
-     * 【未使用】MongoDB 版本
+     * MongoDB 版本
      */
-    @Deprecated
-    public boolean addMongo(final Session session) throws Exception {
+    public boolean add(final Session session) throws Exception {
         if (null == session.getSessionId())
             return workspace.add(session);
 
