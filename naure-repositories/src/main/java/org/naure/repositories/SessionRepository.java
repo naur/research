@@ -28,11 +28,6 @@ public class SessionRepository extends Repository {
 //        this.workspace = workspace;
 //    }
 
-    @Override
-    public <T, U> List<U> get(T params, Class<U> resultClass) throws Exception {
-        return workspace.get(null, resultClass);
-    }
-
     /**
      * 【未使用】berkeley 版本
      */
