@@ -135,6 +135,7 @@
         <constructor-arg>
             <map>
                 <entry key="information" value="org.naure.common.entities.Information" />
+                <entry key="level" value="org.naure.common.entities.InformationLevel" />
                 <entry key="session" value="org.naure.repositories.models.Session" />
                 <entry key="sessionLog" value="org.naure.repositories.models.SessionLog" />
                 <entry key="eng" value="org.naure.repositories.models.learn.Eng" />
