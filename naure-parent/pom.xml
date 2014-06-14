@@ -520,6 +520,21 @@
     </repositories>
 
     <build>
+        <resources>
+            <resource>
+                <!--<directory>${javaSourceDirectory}</directory>-->
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
         <pluginManagement>
             <plugins>
 
@@ -577,7 +592,9 @@
                 <configuration>
                     <useSystemClassLoader>false</useSystemClassLoader>
                     <skipTests>${surefire-skipTests}</skipTests>
-                    <argLine>-Xms1024m -Xmx1024m -Xss1024K -XX:PermSize=256m -XX:MaxPermSize=512m -XX:-UseGCOverheadLimit</argLine>
+                    <argLine>-Xms1024m -Xmx1024m -Xss1024K -XX:PermSize=256m -XX:MaxPermSize=512m
+                        -XX:-UseGCOverheadLimit
+                    </argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -592,6 +609,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -599,20 +625,6 @@
             </plugin>
         </plugins>
 
-        <resources>
-            <resource>
-                <!--<directory>${javaSourceDirectory}</directory>-->
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-            </testResource>
-        </testResources>
     </build>
 
 </project>
