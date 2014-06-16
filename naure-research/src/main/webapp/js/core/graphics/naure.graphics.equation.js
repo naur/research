@@ -11,7 +11,7 @@
 
 
 
-define(['jquery', 'naure', 'naure.graphics.math', 'math',
+define(['jquery', 'naure', 'naure.graphics.math.js', 'math',
     'naure.graphics.ui',
     'naure.graphics.layout'], function ($, NAURE) {
 

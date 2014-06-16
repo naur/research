@@ -3,6 +3,8 @@ package org.naure.repositories.models.finance;
 import java.util.Date;
 
 /**
+ * 报价
+ * <p/>
  * Created with IntelliJ IDEA.
  * User: Administrator
  * Date: 8/1/12
@@ -82,18 +84,32 @@ public class Quote {
         this.date = date;
     }
 
-    //今开盘 最高价 最低价 收盘价 结算价
-    private double open;
-    private double high;
-    private double low;
-    private double close;
-    private double settle;
+    public String getCode() {
+        return code;
+    }
 
-    // 【成交量、持仓量：手（按单边计算） 】
-    // 【成交额：万元（按单边计算）】
-    private double volume;  //成交量
-    private double turnover; //成交金额
-    private double openInterest; //持仓量
+    public void setCode(String code) {
+        this.code = code;
+    }
 
+    //code
+    private String code;
+    //日期
     private Date date;
+    //今开盘
+    private double open;
+    //最高价
+    private double high;
+    //最低价
+    private double low;
+    //收盘价
+    private double close;
+    //结算价
+    private double settle;
+    //成交量：手（按单边计算） 】
+    private double volume;
+    //持仓量：手（按单边计算）
+    private double openInterest;
+    // 成交金额：万元（按单边计算）
+    private double turnover;
 }

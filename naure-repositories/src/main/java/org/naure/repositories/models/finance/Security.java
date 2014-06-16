@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 有价证券
+ *
  * Created with IntelliJ IDEA.
  * User: Administrator
  * Date: 8/1/12

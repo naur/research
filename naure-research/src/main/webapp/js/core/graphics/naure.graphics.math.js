@@ -9,7 +9,7 @@
  *
  */
 
-define(['jquery', 'naure', 'naure.math', 'naure.graphics'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math', 'naure.graphics.js'], function ($, NAURE) {
     NAURE.Graphics.Math = (function () {
 
         var mathutil = { //产生x1,x2之间的N点行矢量

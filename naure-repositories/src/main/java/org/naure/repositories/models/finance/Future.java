@@ -4,13 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 期货市场
+ *
  * Created with IntelliJ IDEA.
  * User: Administrator
  * Date: 8/1/12
  * Time: 3:57 PM
  * To change this template use File | Settings | File Templates.
  */
-//期货市场
 public class Future extends Security {
     public Future() {
 

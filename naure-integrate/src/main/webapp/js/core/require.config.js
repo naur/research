@@ -99,16 +99,16 @@ require.config({
         'naure.math.statistics': jsresearch + '/js/math/statistics/naure.math.statistics',
         'naure.math.statistics.finance': jsresearch + '/js/math/statistics/naure.math.statistics.finance',
 
-        'naure.chart.gantt': jsresearch + '/js/chart/naure.chart.gantt',
+        'naure.chart.gantt': jsresearch + '/js/core/chart/naure.chart.gantt',
 
-        'naure.graphics': jsresearch + '/js/graphics/naure.graphics',
-        'naure.graphics.math': jsresearch + '/js/graphics/naure.graphics.math',
-        'naure.graphics.gridlines': jsresearch + '/js/graphics/naure.graphics.gridlines',
-        'naure.graphics.ui': jsresearch + '/js/graphics/naure.graphics.ui',
-        'naure.graphics.layout': jsresearch + '/js/graphics/naure.graphics.layout',
-        'naure.graphics.equation': jsresearch + '/js/graphics/naure.graphics.equation',
-        'naure.graphics.finance': jsresearch + '/js/graphics/naure.graphics.finance',
-        'naure.graphics.stochastic': jsresearch + '/js/graphics/naure.graphics.stochastic',
+        'naure.graphics': jsresearch + '/js/core/graphics/naure.graphics',
+        'naure.graphics.math': jsresearch + '/js/core/graphics/naure.graphics.math',
+        'naure.graphics.gridlines': jsresearch + '/js/core/graphics/naure.graphics.gridlines',
+        'naure.graphics.ui': jsresearch + '/js/core/graphics/naure.graphics.ui',
+        'naure.graphics.layout': jsresearch + '/js/core/graphics/naure.graphics.layout',
+        'naure.graphics.equation': jsresearch + '/js/core/graphics/naure.graphics.equation',
+        'naure.graphics.finance': jsresearch + '/js/core/graphics/naure.graphics.finance',
+        'naure.graphics.stochastic': jsresearch + '/js/core/graphics/naure.graphics.stochastic',
 
         'math': jsresearch + '/js/math/math',
         'math.matrix': jslocalpath + '/js/math/math.matrix'

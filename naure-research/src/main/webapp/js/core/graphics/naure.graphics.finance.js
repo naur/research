@@ -12,7 +12,7 @@
 
 
 define(['jquery', 'naure', 'naure.math',
-    'naure.graphics.ui',
+    'naure.graphics.ui.js',
     'naure.graphics.layout'], function ($, NAURE) {
 
     NAURE.Graphics.Finance = (function () {
