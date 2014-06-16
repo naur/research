@@ -104,10 +104,10 @@ public class Quote {
     private double low;
     //收盘价
     private double close;
-    //结算价
-    private double settle;
     //成交量：手（按单边计算） 】
     private double volume;
+    //结算价
+    private double settle;
     //持仓量：手（按单边计算）
     private double openInterest;
     // 成交金额：万元（按单边计算）
