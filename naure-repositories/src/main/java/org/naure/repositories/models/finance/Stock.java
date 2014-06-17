@@ -1,5 +1,6 @@
 package org.naure.repositories.models.finance;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -61,5 +62,13 @@ public class Stock extends Security<StockQuote> {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public Map identifier() {
+        return new HashMap<String, Object>() {{
+            put("code", code);
+            put("type", type);
+        }};
     }
 }

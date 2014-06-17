@@ -1,5 +1,7 @@
 package org.naure.repositories.models.finance;
 
+import java.util.Map;
+
 /**
  * 货币市场
  * <p/>
@@ -10,4 +12,8 @@ package org.naure.repositories.models.finance;
  * To change this template use File | Settings | File Templates.
  */
 public class Money extends Security<Quote> {
+    @Override
+    public Map identifier() {
+        return null;
+    }
 }
