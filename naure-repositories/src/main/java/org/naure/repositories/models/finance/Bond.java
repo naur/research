@@ -9,5 +9,5 @@ package org.naure.repositories.models.finance;
  * Time: 3:40 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Bond {
+public class Bond extends Security<Quote> {
 }

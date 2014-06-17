@@ -1,5 +1,7 @@
 package org.naure.repositories.models.finance;
 
+import org.naure.common.entities.Entity;
+
 import java.util.Date;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Date;
  * Time: 4:31 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Quote {
+public abstract class Quote {
     public double getOpen() {
         return open;
     }
@@ -84,16 +86,6 @@ public class Quote {
         this.date = date;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    //code
-    private String code;
     //日期
     private Date date;
     //今开盘
