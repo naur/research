@@ -26,9 +26,12 @@ require.config({
         'jquery.query': jslocalpath + '/js/core/jquery.query',
         'jquery.template': jslocalpath + '/js/core/jsrender.min',
         'jquery.flip': jslocalpath + '/js/core/jquery.flip',
-        'jquery.velocity' : jslocalpath + '/js/core/jquery.velocity.min',
+        'jquery.velocity': jslocalpath + '/js/core/jquery.velocity.min',
 
+        //metro ui css
         'metro': jslocalpath + '/js/core/metro.min',
+        //bootstrap
+        'bootstrap': jslocalpath + '/js/core/bootstrap.min',
 
         'ajaxslt': jslocalpath + '/js/core/ajaxslt',
 
