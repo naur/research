@@ -1,42 +1,38 @@
-<nav class="navigation-bar">
-    <nav class="navigation-bar-content">
-        <a class="element" href="/"><span class="icon-grid-view"></span> NAURE.ORG <sup>1.0</sup></a>
+<nav class="navbar navbar-inverse" role="navigation">
 
-        <!--分隔符-->
-        <span class="element-divider"></span>
-        <a class="element brand" href="#"><span class="icon-spin"></span></a>
-        <a class="element brand" href="#"><span class="icon-printer"></span></a>
-        <a class="element brand" href="#"><span class="icon-locked-2"></span></a>
-        <!--分隔符-->
-        <span class="element-divider"></span>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">NAURE.ORG <sup>1.0</sup></a>
+    </div>
 
-        <div class="element">
-            <a class="dropdown-toggle" href="#">Algorithms</a>
-            <ul class="dropdown-menu" data-show="hover" data-role="dropdown">
-                <li><a href="/do/whTime">Demo</a></li>
-                <li><a href="/do/time">Arbor</a></li>
-                <li><a href="/do/wh">Heapsort</a></li>
-                <li><a href="/do/wh">Heapsort</a></li>
-            </ul>
-        </div>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="#">Link 1</a></li>
+            <li><a href="#">Link 2</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">One more separated link</a></li>
+                </ul>
+            </li>
+        </ul>
 
-        <!--分隔符-->
-        <span class="element-divider"></span>
-
-        <div class="element place-right">
-            <a class="dropdown-toggle" href="#"><span class="icon-cog"></span></a>
-            <ul class="dropdown-menu place-right" data-role="dropdown">
-                <li><a href="#">Login</a></li>
-            </ul>
-        </div>
-        <!--分隔符-->
-        <span class="element-divider place-right"></span>
-        <!--分隔符-->
-        <span class="element-divider place-right"></span>
-        <button class="element image-button image-left place-right">
-            About Me
-            <img src="images/me.jpg"/>
-        </button>
-
-    </nav>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Link</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 </nav>
