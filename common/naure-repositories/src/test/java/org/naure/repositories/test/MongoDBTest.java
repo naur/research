@@ -1,7 +1,6 @@
 package org.naure.repositories.test;
 
 import org.junit.Test;
-import org.naure.common.test.UnitTestBase;
 import org.naure.repositories.config.MongoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -13,7 +12,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
  * Time: 2:26 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MongoDBTest extends UnitTestBase {
+public class MongoDBTest {
     @Test
     public void test1() throws Exception {
         MongoOperations mongoOps = mongoConfiguration.mongoTemplate();

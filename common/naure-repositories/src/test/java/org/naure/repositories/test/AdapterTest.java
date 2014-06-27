@@ -1,7 +1,6 @@
 package org.naure.repositories.test;
 
 import org.junit.Test;
-import org.naure.common.test.UnitTestBase;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +9,7 @@ import org.naure.common.test.UnitTestBase;
  * Time: 3:24 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AdapterTest extends UnitTestBase {
+public class AdapterTest {
     @Test
     public void formatText() {
         //常规类型 【%[argument_index$][flags][width][.precision]conversion】

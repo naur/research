@@ -1,7 +1,6 @@
 package org.naure.repositories.test;
 
 import org.junit.Test;
-import org.naure.common.test.UnitTestBase;
 import org.naure.repositories.models.learn.Eng;
 
 /**
@@ -11,7 +10,7 @@ import org.naure.repositories.models.learn.Eng;
  * Time: 2:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class EntityText extends UnitTestBase {
+public class EntityText {
     @Test
     public void test1() {
         Eng eng = new Eng();
