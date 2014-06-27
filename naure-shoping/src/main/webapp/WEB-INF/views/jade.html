@@ -1,4 +1,4 @@
-$!{extends("/layout.html")}
+$!{extends("/layout_debug.html")}
 
 #macro(title) Test #end
 
@@ -6,7 +6,25 @@ $!{extends("/layout.html")}
 
 
 <div class="row">
+    <div class="col-md-1">
 
+    </div>
+    <div class="col-md-10">
+        <ul class="media-list">
+            <li class="media">
+                <a class="pull-left" href="#">
+                    <img class="img-rounded media-object" src="..." alt="...">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">Media heading</h4>
+                    ...
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-1">
+
+    </div>
 </div>
 
 <script type="text/javascript">
