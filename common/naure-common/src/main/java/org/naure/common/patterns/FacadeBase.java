@@ -1,8 +1,5 @@
 package org.naure.common.patterns;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator

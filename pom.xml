@@ -9,11 +9,12 @@
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
-        <module>naure-parent</module>
-        <module>naure-common</module>
-        <module>naure-utility</module>
-        <module>naure-repositories</module>
-        <module>naure-integrate</module>
+        <module>common/naure-parent</module>
+        <module>common/naure-common</module>
+        <module>common/naure-utility</module>
+        <module>common/naure-repositories</module>
+        <module>common/naure-integrate</module>
+        <module>naure-shoping</module>
         <!--<module>naure-home</module>-->
         <!--<module>naure-research</module>-->
     </modules>

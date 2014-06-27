@@ -1,7 +1,5 @@
 package org.naure.common.patterns;
 
-import java.util.Comparator;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator
