@@ -22,6 +22,8 @@
 
         <jboss.domain>default</jboss.domain>
         <naure.version>1.0</naure.version>
+        <guava.version>17.0</guava.version>
+
         <org.springframework.version>3.1.1.RELEASE</org.springframework.version>
         <servlet-api.version>3.0-alpha-1</servlet-api.version>
         <org.aspectj.version>1.6.11</org.aspectj.version>
@@ -113,6 +115,12 @@
             <!--<artifactId>naure-research</artifactId>-->
             <!--<version>${naure.version}</version>-->
             <!--</dependency>-->
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}}</version>
+            </dependency>
 
             <dependency>
                 <groupId>commons-codec</groupId>
