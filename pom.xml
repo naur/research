@@ -14,9 +14,6 @@
         <module>common/naure-utility</module>
         <module>common/naure-repositories</module>
         <module>common/naure-integrate</module>
-        <module>naure-shoping</module>
-        <!--<module>naure-home</module>-->
-        <!--<module>naure-research</module>-->
     </modules>
 
     <profiles>
@@ -38,6 +35,13 @@
             <id>research</id>
             <modules>
                 <module>naure-research</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>shoping</id>
+            <modules>
+                <module>naure-shoping</module>
             </modules>
         </profile>
 
