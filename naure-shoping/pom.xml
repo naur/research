@@ -6,7 +6,7 @@
         <artifactId>naure-parent</artifactId>
         <groupId>org.naure</groupId>
         <version>1.0</version>
-        <relativePath>../naure-parent/pom.xml</relativePath>
+        <relativePath>../common/naure-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
