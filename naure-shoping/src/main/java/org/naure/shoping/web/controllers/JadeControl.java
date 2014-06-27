@@ -5,6 +5,10 @@
  */
 package org.naure.shoping.web.controllers;
 
+import org.naure.web.ControllerBase;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 /**
  * <pre>
  * author jiaruizhi
@@ -16,5 +20,11 @@ package org.naure.shoping.web.controllers;
  * 评审人 ：
  * </pre>
  */
-public class JadeControl {
+@Controller
+@RequestMapping(value = "jade")
+public class JadeControl extends ControllerBase {
+    @RequestMapping
+    public String view() {
+        return view("jade");
+    }
 }
