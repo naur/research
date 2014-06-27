@@ -1,6 +1,7 @@
 package org.naure.repositories.test;
 
 import org.junit.Test;
+import org.naure.common.test.UnitTestBase;
 import org.naure.repositories.config.MongoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;

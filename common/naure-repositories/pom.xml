@@ -28,6 +28,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.naure</groupId>
+            <artifactId>naure-common</artifactId>
+            <type>test-jar</type>
+        </dependency>
+
+        <dependency>
             <groupId>com.sleepycat</groupId>
             <artifactId>je</artifactId>
         </dependency>

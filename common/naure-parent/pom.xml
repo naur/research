@@ -68,6 +68,20 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+
+            <dependency>
+                <groupId>org.naure</groupId>
+                <artifactId>naure-common</artifactId>
+                <version>${naure.version}</version>
+                <type>test-jar</type>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-lang</artifactId>
+                        <groupId>commons-lang</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <dependency>
                 <groupId>org.naure</groupId>
                 <artifactId>naure-utility</artifactId>

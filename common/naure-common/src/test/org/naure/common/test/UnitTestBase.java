@@ -1,4 +1,4 @@
-package org.naure.repositories.test;
+package org.naure.common.test;
 
 import org.junit.Before;
 import org.junit.Ignore;

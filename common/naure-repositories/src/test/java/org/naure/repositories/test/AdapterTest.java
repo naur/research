@@ -1,6 +1,7 @@
 package org.naure.repositories.test;
 
 import org.junit.Test;
+import org.naure.common.test.UnitTestBase;
 
 /**
  * Created with IntelliJ IDEA.
