@@ -55,7 +55,7 @@ require.config({
 
         'oop': jslocalpath + '/js/core/oop',
 
-        'swfobject': jslocalpath + '/js/core/uploadify/swfobject',
+        //'swfobject': jslocalpath + '/js/core/uploadify/swfobject',
         'jquery.uploadify': jslocalpath + '/js/core/uploadify/jquery.uploadify.min',
 
         'arbor-etc': jsresearch + '/js/arbor/etc',
@@ -128,7 +128,7 @@ require.config({
         'jquery.validate': ['jquery'],
         'jquery.query': ['jquery'],
         'jquery.template': ['jquery'],
-        'jquery.uploadify': ['jquery', 'swfobject'],
+        'jquery.uploadify': ['jquery'],
         'metro': ['jquery', 'jquery.widget', 'jquery.mousewheel'],
         'bootstrap': ['jquery'],
         'modern.calendar': ['moment']

@@ -30,12 +30,12 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "upload", method = {RequestMethod.GET, RequestMethod.POST})
 public class UploadController extends ControllerBase {
-    @RequestMapping("view")
+    @RequestMapping()
     public String view() {
         return "upload";
     }
 
-    @RequestMapping
+    @RequestMapping("file")
     public Information upload(@RequestParam MultipartFile fileData, HttpServletRequest request) throws IOException {
         this.setApplicationPath(request);
         Map params = new HashMap<String, Object>();

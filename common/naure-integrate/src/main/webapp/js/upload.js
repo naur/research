@@ -6,9 +6,9 @@
 
 var action;
 var uploadOpt = {
-    'script': '/work/upload!file',
-    'uploader': '/js/uploadify/uploadify.swf',
-    'cancelImg': '/js/uploadify/cancel.png',
+    'uploader': '/upload/file.json',
+    'swf': '/js/core/uploadify/uploadify.swf',
+    'cancelImg': '/js/core/uploadify/uploadify-cancel.png',
     'folder': '/upload/file',
     'uploadvalidXsl': '/xsl/uploadvalid.xsl',
     'makevalidXsl': '/xsl/makevalid.xsl',
@@ -28,7 +28,7 @@ function init() {
 
         $('#fileupload').uploadify({
             'uploader': uploadOpt.uploader,
-            'script': uploadOpt.script,
+            'swf': uploadOpt.swf,
             fileDataName: 'fileData', //设置一个名字，在服务器处理程序中根据该名字来取上传文件的数据。默认为Filedata
             'cancelImg': uploadOpt.cancelImg,
             'folder': uploadOpt.folder,
