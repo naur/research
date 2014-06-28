@@ -1,0 +1,51 @@
+$!{extends("/layout.html")}
+
+#macro(title) Test #end
+
+#macro(content)
+
+<div class="row">
+    <div class="jumbotron">
+        <!--classify-->
+        <div class="input-group">
+            <span class="input-group-addon">Classify</span>
+            <input type="text" class="form-control" placeholder="类别">
+        </div>
+
+        <!--name-->
+        <div class="input-group">
+            <span class="input-group-addon">Name</span>
+            <input type="text" class="form-control" placeholder="图片名称">
+        </div>
+
+        <!--title-->
+        <div class="input-group">
+            <span class="input-group-addon">Title</span>
+            <input type="text" class="form-control" placeholder="图片标题">
+        </div>
+
+        <!--uri-->
+        <div class="input-group">
+            <span class="input-group-addon">Uri</span>
+            <input type="text" class="form-control" placeholder="图片链接">
+        </div>
+
+        <!--description-->
+        <div class="input-group">
+            <span class="input-group-addon">Description</span>
+            <input type="text" class="form-control" placeholder="图片描述信息">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var global = {
+    };
+    require(['loading'], function (NAURE) {
+        $(function () {
+        });
+    });
+</script>
+
+#end
+

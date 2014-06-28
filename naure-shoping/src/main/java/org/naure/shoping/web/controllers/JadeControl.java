@@ -5,14 +5,20 @@
  */
 package org.naure.shoping.web.controllers;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.patterns.exception.Sub;
+import org.naure.repositories.models.learn.Schedule;
 import org.naure.shoping.model.Jade;
+import org.naure.shoping.service.JadeService;
 import org.naure.web.ControllerBase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -30,24 +36,77 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "jade")
 public class JadeControl extends ControllerBase {
+
+    @Autowired
+    private JadeService jadeService;
+
+    /**
+     * jade 页面
+     */
     @RequestMapping
     public String view() {
-        return view("jade");
+        return view("view");
+    }
+
+    /**
+     * edit 页面
+     */
+    @RequestMapping("edit")
+    public String edit() {
+        return view("edit");
     }
 
     /**
      * get
      */
-    @RequestMapping("{params}")
-    public Information get(@PathVariable final String params) {
+    @RequestMapping("{classify}")
+    public Information get(@PathVariable final String classify) {
         return handler(new Sub<Information>() {
             @Override
             public Information execute() throws Exception {
                 Information<List<Jade>> info = new Information<List<Jade>>();
-                //info.setData(scheduleService.get(map));
+                Jade params = new Jade();
+                params.setClassify(classify);
+                info.setData(jadeService.get(params));
                 info.setLevel(InformationLevel.SUCCESS.value());
                 return info;
             }
         });
+    }
+
+    /**
+     * edit
+     */
+    @RequestMapping("edit/{id}")
+    public Information edit(@ModelAttribute final Jade jade) {
+        return handler(new Sub<Information>() {
+            @Override
+            public Information execute() throws Exception {
+                Information<String> information = new Information<String>();
+                information.setData(jadeService.edit(jade) ? "Success" : "Error");
+                information.setLevel(InformationLevel.SUCCESS.value());
+                return information;
+            }
+        });
+    }
+
+    /**
+     * add
+     */
+    @RequestMapping("add")
+    public Information add(@ModelAttribute final Jade jade) {
+        return handler(new Sub<Information>() {
+            @Override
+            public Information execute() throws Exception {
+                Information<String> information = new Information<String>();
+                information.setData(jadeService.add(jade) ? "Success" : "Error");
+                information.setLevel(InformationLevel.SUCCESS.value());
+                return information;
+            }
+        });
+    }
+
+    {
+        this.viewPath = "jade";
     }
 }
