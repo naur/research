@@ -4,6 +4,8 @@ $!{extends("/layout.html")}
 
 #macro(content)
 
+<link rel="stylesheet" type="text/css" href="/js/core/uploadify/uploadify.css"/>
+
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
@@ -34,7 +36,6 @@ $!{extends("/layout.html")}
                 <div class="input-group">
                     <span class="input-group-addon">图片链接</span>
                     <input type="text" class="form-control" placeholder="图片链接" id="jade_uri"/>
-                    <input id="fileupload" type="file" name="filedata"/>
                 </div>
                 <br>
                 <!--description-->
@@ -42,6 +43,14 @@ $!{extends("/layout.html")}
                     <span class="input-group-addon">图片描述</span>
                     <input type="text" class="form-control" placeholder="图片描述信息" id="jade_description"/>
                 </div>
+                <br>
+
+                <div class="input-group">
+                    <span class="input-group-addon">图片上传</span>
+                    <input type="file" name="filedata" id="jade_fileupload"/>
+                    <button type="button" class="btn btn-primary" id="jade_fileupload_btn">Upload</button>
+                </div>
+
             </form>
 
         </div>
@@ -65,14 +74,7 @@ $!{extends("/layout.html")}
     <div class="col-md-1"></div>
 </div>
 
-<script type="text/javascript">
-    var global = {
-    };
-    require(['loading'], function (NAURE) {
-        $(function () {
-        });
-    });
-</script>
+<script type="text/javascript" src="/js/shoping/jade-edit.js"></script>
 
 #end
 
