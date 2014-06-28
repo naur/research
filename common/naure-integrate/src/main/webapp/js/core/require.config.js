@@ -56,7 +56,7 @@ require.config({
         'oop': jslocalpath + '/js/core/oop',
 
         'swfobject': jslocalpath + '/js/core/uploadify/swfobject',
-        'jquery.uploadify': jslocalpath + '/js/core/uploadify/jquery.uploadify.v2.1.4',
+        'jquery.uploadify': jslocalpath + '/js/core/uploadify/jquery.uploadify.min',
 
         'arbor-etc': jsresearch + '/js/arbor/etc',
         'arbor-kernel': jsresearch + '/js/arbor/kernel',
