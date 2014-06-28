@@ -18,23 +18,32 @@ import java.util.Map;
 @Component
 public class SecurityRepository extends Repository {
 
-    public boolean add(final Security security) throws Exception {
+    public boolean exists(final Security security) throws Exception {
         Map<String, Object> query = security.identifier();
         query.put("class", security.collectionName());
 
-        if (this.exists(query)) {
-            Map<String, Object> update = new HashMap<String, Object>();
-            update.put("query", query);
-            update.put("update", new HashMap<String, Object>() {{
-                put("updated", Calendar.getInstance().getTime());
-                put("quotes", security.getQuotes());
-            }});
-            update.put("class", security.collectionName());
-            return update(update);
-        } else {
-            security.setCreated(Calendar.getInstance().getTime());
-            security.setUpdated(security.getCreated());
-            return workspace.add(security);
-        }
+        return this.exists(query);
+    }
+
+    public boolean update(final Security security) throws Exception {
+        Map<String, Object> query = security.identifier();
+        query.put("class", security.collectionName());
+
+        Map<String, Object> update = new HashMap<String, Object>();
+        update.put("query", query);
+        update.put("update", new HashMap<String, Object>() {{
+            put("updated", Calendar.getInstance().getTime());
+            put("quotes", security.getQuotes());
+        }});
+        update.put("class", security.collectionName());
+
+        return update(update);
+
+    }
+
+    public boolean add(final Security security) throws Exception {
+        security.setCreated(Calendar.getInstance().getTime());
+        security.setUpdated(security.getCreated());
+        return workspace.add(security);
     }
 }

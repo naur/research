@@ -23,7 +23,13 @@ public class SecurityService {
     }
 
     public boolean add(final Security security) throws Exception {
-        return securityRepository.add(security);
+        boolean result = false;
+        if (securityRepository.exists(security)) {
+            result = securityRepository.update(security);
+        } else {
+            result = securityRepository.add(security);
+        }
+        return result;
     }
 
     @Autowired

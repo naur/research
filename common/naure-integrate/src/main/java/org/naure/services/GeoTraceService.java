@@ -1,5 +1,7 @@
 package org.naure.services;
 
+import org.naure.common.location.GeoCoordinate;
+import org.naure.common.location.GeoPosition;
 import org.naure.common.location.GeoTrace;
 import org.naure.repositories.GeoTraceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +29,21 @@ public class GeoTraceService {
     }
 
     public boolean add(final GeoTrace geoTrace) throws Exception {
+        if (geoTraceRepository.exists(geoTrace)) {
+            throw new Exception(String.format("GeoTrace: 已经存在 name=%0$s, 的记录", geoTrace.getName()));
+        }
         return geoTraceRepository.add(geoTrace);
     }
 
-    public boolean update(final Map params) throws Exception {
-        return geoTraceRepository.update(params);
+    public boolean update(final GeoTrace geoTrace) throws Exception {
+
+        if (!geoTraceRepository.exists(geoTrace)) {
+            //throw new Exception(String.format("GeoTrace: 不存在 name=%0$s, 的记录",  params.get("name")));
+            //当没有时进行 【增加】操作
+            return this.add(geoTrace);
+        }
+
+        return geoTraceRepository.update(geoTrace);
     }
 
     @Autowired

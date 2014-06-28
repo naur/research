@@ -20,39 +20,32 @@ import java.util.Map;
 @Component
 public class GeoTraceRepository extends Repository {
 
-    public boolean add(final GeoTrace geoTrace) throws Exception {
+    public boolean exists(final GeoTrace geoTrace) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("name", geoTrace.getName());
             put("class", geoTrace.collectionName());
         }};
-        if (this.exists(query)) {
-            throw new Exception(String.format("GeoTrace: 已经存在 name=%0$s, 的记录", geoTrace.getName()));
-        }
+
+        return this.exists(query);
+    }
+
+    public boolean add(final GeoTrace geoTrace) throws Exception {
         geoTrace.setCreated(Calendar.getInstance().getTime());
         geoTrace.setUpdated(geoTrace.getCreated());
         return workspace.add(geoTrace);
     }
 
-    public boolean update(final Map params) throws Exception {
+    public boolean update(final GeoTrace geoTrace) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
-            put("name", params.get("name"));
+            put("name", geoTrace.getName());
             put("class", new GeoTrace().collectionName());
         }};
-
-        if (!this.exists(query)) {
-            //throw new Exception(String.format("GeoTrace: 不存在 name=%0$s, 的记录",  params.get("name")));
-            //当没有时进行 【增加】操作
-            GeoPosition<GeoCoordinate>[] positions = (GeoPosition<GeoCoordinate>[])params.get("position");
-            GeoTrace geoTrace = new GeoTrace();
-            geoTrace.setName(String.valueOf(params.get("name")));
-            geoTrace.getPositions().add(new GeoPosition<GeoCoordinate>(new GeoCoordinate(positions[0].getLocation().getLongitude(), positions[0].getLocation().getLatitude())));
-            return this.add(geoTrace);
-        }
 
         Map<String, Object> update = new HashMap<String, Object>();
         update.put("query", query);
         update.put("update", new HashMap<String, Object>() {{
-            put("positions", params.get("position"));
+            //TODO 以前这个参数是数组，未验证 List 是否可以存储。
+            put("positions", geoTrace.getPositions().toArray());
             put("updated", Calendar.getInstance().getTime());
         }});
         update.put("class", new GeoTrace().collectionName());

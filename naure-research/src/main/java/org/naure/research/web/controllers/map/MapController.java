@@ -72,12 +72,18 @@ public class MapController extends ControllerBase {
         return handler(new Information<String>(), new Func<Information, Information>() {
             @Override
             public Information execute(Information information) throws Exception {
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put("name", name);
-                params.put("position", new GeoPosition[]{
-                        new GeoPosition<GeoCoordinate>(new GeoCoordinate(longitude, latitude))
-                });
-                information.setData(geoTraceService.update(params) ? "Success" : "Error");
+                //TODO 参数由  Map<String, Object> 改为  GeoTrace, 未验证
+//                Map<String, Object> params = new HashMap<String, Object>();
+//                params.put("name", name);
+//                params.put("position", new GeoPosition[]{
+//                        new GeoPosition<GeoCoordinate>(new GeoCoordinate(longitude, latitude))
+//                });
+
+                GeoTrace geoTrace = new GeoTrace();
+                geoTrace.setName(name);
+                geoTrace.getPositions().add(new GeoPosition<GeoCoordinate>(new GeoCoordinate(longitude, latitude)));
+
+                information.setData(geoTraceService.update(geoTrace) ? "Success" : "Error");
                 information.setLevel(InformationLevel.SUCCESS.value());
                 return information;
             }

@@ -22,12 +22,17 @@ public class ScheduleService {
     }
 
     public boolean edit(Schedule schedule) throws Exception {
-        return scheduleRepository.edit(schedule);
+        boolean result = false;
+        if (scheduleRepository.exists(schedule)) {
+            result = scheduleRepository.update(schedule);
+        } else {
+            result = scheduleRepository.add(schedule);
+        }
+        return result;
     }
 
-    public boolean delete(Map params) throws Exception {
-        params.put("class", new Schedule().collectionName());
-        return scheduleRepository.delete(params);
+    public boolean delete(Schedule schedule) throws Exception {
+        return scheduleRepository.delete(schedule);
     }
 
     @Autowired

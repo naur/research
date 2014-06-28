@@ -22,6 +22,10 @@ public abstract class Repository {
         this.workspace = workspace;
     }
 
+    public  <T> boolean add(T params) throws Exception {
+        return workspace.add(params);
+    }
+
     public <T, U> List<U> get(T params, Class<U> resultClass) throws Exception {
         return workspace.get(params, resultClass);
     }
@@ -42,7 +46,7 @@ public abstract class Repository {
         return workspace.delete(params);
     }
 
-    public <T> boolean exists(T params) throws Exception {
+    public  <T> boolean exists(T params) throws Exception {
         return workspace.exists(params);
     }
 

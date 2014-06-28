@@ -22,6 +22,40 @@ import java.util.Map;
 @Component
 public class SessionRepository extends Repository {
 
+    public boolean exists(final Session session) throws Exception {
+        Map<String, Object> query = new HashMap<String, Object>() {{
+            put("application", session.getApplication());
+            put("sessionId", session.getSessionId());
+            put("class", session.collectionName());
+        }};
+
+        return this.exists(query);
+    }
+
+    public boolean update(final Session session) throws Exception {
+        Map<String, Object> query = new HashMap<String, Object>() {{
+            put("application", session.getApplication());
+            put("sessionId", session.getSessionId());
+            put("class", session.collectionName());
+        }};
+
+        Map<String, Object> update = new HashMap<String, Object>();
+        update.put("query", query);
+        update.put("update", new HashMap<String, Object>() {{
+            put("updated", Calendar.getInstance().getTime());
+            put("logs", session.getLogs());
+        }});
+        update.put("class", session.collectionName());
+        return update(update);
+    }
+
+    public boolean add(final Session session) throws Exception {
+        session.setCreated(Calendar.getInstance().getTime());
+        session.setUpdated(session.getCreated());
+        return workspace.add(session);
+    }
+
+
 //    @Autowired
 //    @Qualifier("berkeleyWorkspace")
 //    public void getWorkspace(Workspace workspace) {
@@ -52,29 +86,29 @@ public class SessionRepository extends Repository {
     /**
      * MongoDB 版本
      */
-    public boolean add(final Session session) throws Exception {
-        if (null == session.getSessionId())
-            return workspace.add(session);
-
-        Map<String, Object> query = new HashMap<String, Object>() {{
-            put("application", session.getApplication());
-            put("sessionId", session.getSessionId());
-            put("class", session.collectionName());
-        }};
-
-        if (this.exists(query)) {
-            Map<String, Object> update = new HashMap<String, Object>();
-            update.put("query", query);
-            update.put("update", new HashMap<String, Object>() {{
-                put("updated", Calendar.getInstance().getTime());
-                put("logs", session.getLogs());
-            }});
-            update.put("class", session.collectionName());
-            return update(update);
-        } else {
-            session.setCreated(Calendar.getInstance().getTime());
-            session.setUpdated(session.getCreated());
-            return workspace.add(session);
-        }
-    }
+//    public boolean add(final Session session) throws Exception {
+//        if (null == session.getSessionId())
+//            return workspace.add(session);
+//
+//        Map<String, Object> query = new HashMap<String, Object>() {{
+//            put("application", session.getApplication());
+//            put("sessionId", session.getSessionId());
+//            put("class", session.collectionName());
+//        }};
+//
+//        if (this.exists(query)) {
+//            Map<String, Object> update = new HashMap<String, Object>();
+//            update.put("query", query);
+//            update.put("update", new HashMap<String, Object>() {{
+//                put("updated", Calendar.getInstance().getTime());
+//                put("logs", session.getLogs());
+//            }});
+//            update.put("class", session.collectionName());
+//            return update(update);
+//        } else {
+//            session.setCreated(Calendar.getInstance().getTime());
+//            session.setUpdated(session.getCreated());
+//            return workspace.add(session);
+//        }
+//    }
 }

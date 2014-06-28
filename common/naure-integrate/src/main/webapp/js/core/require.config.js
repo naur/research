@@ -130,6 +130,7 @@ require.config({
         'jquery.template': ['jquery'],
         'jquery.uploadify': ['jquery'],
         'metro': ['jquery', 'jquery.widget', 'jquery.mousewheel'],
+        'bootstrap': ['jquery'],
         'modern.calendar': ['moment']
     }
 });

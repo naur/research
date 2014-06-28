@@ -30,8 +30,19 @@ public class SessionService {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    try{
-                        sessionRepository.add(session);
+                    try {
+                        //如果没有 SessionID，就增加数据
+                        if (null == session.getSessionId()) {
+                            sessionRepository.add(session);
+                            return;
+                        }
+
+                        if (sessionRepository.exists(session)) {
+                            sessionRepository.update(session);
+                        } else {
+                            sessionRepository.add(session);
+                        }
+                        //sessionRepository.add(session);
                     } catch (Exception ex) {
                     }
                 }

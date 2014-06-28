@@ -1,0 +1,39 @@
+$!{extends("/layout.html")}
+
+#macro(title) Test #end
+
+#macro(content)
+
+<div class="row">
+    <div class="col-md-1">
+
+    </div>
+    <div class="col-md-10">
+        <ul class="media-list">
+            <li class="media">
+                <a class="pull-left" href="#">
+                    <img class="img-rounded media-object" src="..." alt="...">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">Media heading</h4>
+                    ...
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-1">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    var global = {
+    };
+    require(['loading'], function (NAURE) {
+        $(function () {
+        });
+    });
+</script>
+
+#end
+

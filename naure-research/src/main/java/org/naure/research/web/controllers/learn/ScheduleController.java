@@ -47,15 +47,9 @@ public class ScheduleController extends ControllerBase {
             @Override
             public Information execute() throws Exception {
                 Information<Boolean> info = new Information<Boolean>();
-                Map<String, Object> map = new HashMap<String, Object>();
-                if (params.isEmpty() || "all".equals(params))
-                    map.put("path", new Tree<String>(Type.Regex, "^\\d+,"));
-                else {
-                    //todo 1,2,3,...
-                    map.put("path", new Tree<String>(Type.Regex, "^[" + params.replace(",", "|") + "]+,"));
-                }
-
-                info.setData(scheduleService.delete(map));
+                Schedule schedule = new Schedule();
+                schedule.setPath(params);
+                info.setData(scheduleService.delete(schedule));
                 info.setLevel(InformationLevel.SUCCESS.value());
                 return info;
             }
