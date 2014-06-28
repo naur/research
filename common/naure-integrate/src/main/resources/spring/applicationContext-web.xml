@@ -6,8 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
     <!--<context:property-placeholder location="classpath:jdbc.properties"/>-->
-    <context:component-scan
-            base-package="org.naure.web,org.naure.services,org.naure.web.controllers,org.naure.*.web.controllers"/>
+    <context:component-scan base-package="org.naure"/>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
@@ -79,13 +78,13 @@
     <!--<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>-->
     <!--Default ViewResolver  Resolves view names to protected .jsp resources within the /WEB-INF/views directory-->
     <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-        <!--&lt;!&ndash;<property name="order" value="0"/>&ndash;&gt;-->
-        <!--&lt;!&ndash;<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>&ndash;&gt;-->
-        <!--<property name="prefix" value="/WEB-INF/views/"/>-->
-        <!--<property name="suffix" value=".html"/>-->
+    <!--&lt;!&ndash;<property name="order" value="0"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>&ndash;&gt;-->
+    <!--<property name="prefix" value="/WEB-INF/views/"/>-->
+    <!--<property name="suffix" value=".html"/>-->
     <!--</bean>-->
     <bean id="viewResolver" class="httl.web.springmvc.HttlViewResolver">
-        <property name="contentType" value="text/html; charset=UTF-8" />
+        <property name="contentType" value="text/html; charset=UTF-8"/>
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".html"/>
     </bean>
@@ -97,11 +96,11 @@
     </bean>
 
     <!--<bean id="xsltViewResolver" class="org.springframework.web.servlet.view.xslt.XsltViewResolver">-->
-        <!--<property name="viewClass" value="org.springframework.web.servlet.view.xslt.XsltView"/>-->
-        <!--<property name="sourceKey" value="logins" />-->
-        <!--<property name="prefix" value="/xsl/"/>-->
-        <!--<property name="suffix" value=".xsl"/>-->
-        <!--<property name="order"><value>2</value></property>&lt;!&ndash;优先 顺序 &ndash;&gt;-->
+    <!--<property name="viewClass" value="org.springframework.web.servlet.view.xslt.XsltView"/>-->
+    <!--<property name="sourceKey" value="logins" />-->
+    <!--<property name="prefix" value="/xsl/"/>-->
+    <!--<property name="suffix" value=".xsl"/>-->
+    <!--<property name="order"><value>2</value></property>&lt;!&ndash;优先 顺序 &ndash;&gt;-->
     <!--</bean>-->
 
     <!--视图-->
@@ -134,17 +133,17 @@
     <bean id="xStreamMarshaller" class="org.naure.web.CustomXStreamMarshaller">
         <constructor-arg>
             <map>
-                <entry key="information" value="org.naure.common.entities.Information" />
-                <entry key="level" value="org.naure.common.entities.InformationLevel" />
-                <entry key="session" value="org.naure.repositories.models.Session" />
-                <entry key="sessionLog" value="org.naure.repositories.models.SessionLog" />
-                <entry key="eng" value="org.naure.repositories.models.learn.Eng" />
-                <entry key="bond" value="org.naure.repositories.models.finance.Bond" />
-                <entry key="future" value="org.naure.repositories.models.finance.Future" />
-                <entry key="money" value="org.naure.repositories.models.finance.Money" />
-                <entry key="option" value="org.naure.repositories.models.finance.Option" />
-                <entry key="stock" value="org.naure.repositories.models.finance.Stock" />
-                <entry key="quote" value="org.naure.repositories.models.finance.Quote" />
+                <entry key="information" value="org.naure.common.entities.Information"/>
+                <entry key="level" value="org.naure.common.entities.InformationLevel"/>
+                <entry key="session" value="org.naure.repositories.models.Session"/>
+                <entry key="sessionLog" value="org.naure.repositories.models.SessionLog"/>
+                <entry key="eng" value="org.naure.repositories.models.learn.Eng"/>
+                <entry key="bond" value="org.naure.repositories.models.finance.Bond"/>
+                <entry key="future" value="org.naure.repositories.models.finance.Future"/>
+                <entry key="money" value="org.naure.repositories.models.finance.Money"/>
+                <entry key="option" value="org.naure.repositories.models.finance.Option"/>
+                <entry key="stock" value="org.naure.repositories.models.finance.Stock"/>
+                <entry key="quote" value="org.naure.repositories.models.finance.Quote"/>
             </map>
         </constructor-arg>
     </bean>
