@@ -39,9 +39,15 @@ public class UploadController extends ControllerBase {
     public Information upload(@RequestParam MultipartFile fileData, HttpServletRequest request) throws IOException {
         this.setApplicationPath(request);
         Map params = new HashMap<String, Object>();
+        //上传的文件数据
         params.put("fileData", fileData);
+        //是否重命名上传的文件
+        if (request.getParameter("rename") != null)
+            params.put("rename", request.getParameter("rename"));
+        //从命名上传的文件的名字
         if (request.getParameter("fileName") != null)
             params.put("newFileName", request.getParameter("fileName"));
+        //上传文件的路径
         if (request.getParameter("folder") != null)
             params.put("folder", request.getParameter("folder"));
 
@@ -58,7 +64,14 @@ public class UploadController extends ControllerBase {
                     return information;
                 }
 
-                String newFileName = params.get("newFileName") != null ? String.valueOf(params.get("newFileName")) : makeNewFileName(multipartFile.getOriginalFilename());
+                //判断是否重命名上传的文件名
+                String newFileName = null;
+                if (params.get("rename") == null) {
+                    newFileName = params.get("newFileName") != null ? String.valueOf(params.get("newFileName")) : makeNewFileName(multipartFile.getOriginalFilename());
+                } else {
+                    newFileName = multipartFile.getOriginalFilename();
+                }
+
                 String filePath = filePath(String.valueOf(params.get("folder")), information);
                 if (InformationLevel.ERROR.value() == information.getLevel()) {
                     return information;
@@ -114,10 +127,10 @@ public class UploadController extends ControllerBase {
         return filePath;
     }
 
-    //产生新文件名
+    //产生新文件名，格式【原文件名_yyyyMMdd-HHmmss-SSS.xxx】
     private String makeNewFileName(String originalFilename) {
         //UUID.randomUUID().toString();
-        return (new SimpleDateFormat("yyyyMMdd-HHmmss-SSS")).format(new Date()) + "-" + fileType(originalFilename);
+        return fileName(originalFilename) + "_" + (new SimpleDateFormat("yyyyMMdd-HHmmss-SSS")).format(new Date()) + fileType(originalFilename);
     }
 
     //获取文件扩展名
@@ -126,6 +139,16 @@ public class UploadController extends ControllerBase {
             return ".txt";
         if (fileDataFileName.lastIndexOf(".") >= 0) {
             return fileDataFileName.substring(fileDataFileName.lastIndexOf("."));
+        }
+        return ".xls";
+    }
+
+    //获取不包含扩展名的文件名
+    private String fileName(String fileDataFileName) {
+        if (null == fileDataFileName)
+            return "";
+        if (fileDataFileName.lastIndexOf(".") >= 0) {
+            return fileDataFileName.substring(0, fileDataFileName.lastIndexOf("."));
         }
         return ".xls";
     }
