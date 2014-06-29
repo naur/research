@@ -5,6 +5,15 @@ $!{extends("/layout.html")}
 #macro(content)
 
 <link rel="stylesheet" type="text/css" href="/js/core/uploadify/uploadify.css"/>
+<style type="text/css">
+    #jade_fileupload-queue {
+        float: left;
+        position: absolute;
+        top: -10px;
+        left: 140px;
+        width: 500px;
+    }
+</style>
 
 <div class="row">
     <div class="col-md-9">
@@ -18,31 +27,36 @@ $!{extends("/layout.html")}
                     <span class="input-group-addon">图片类别</span>
                     <input type="text" class="form-control" placeholder="类别" id="jade_classify"/>
                 </div>
-                <br>
+                <br/>
                 <!--name-->
                 <div class="input-group">
                     <span class="input-group-addon">图片名称</span>
                     <input type="text" class="form-control" placeholder="图片名称" id="jade_name"/>
                 </div>
-                <br>
+                <br/>
                 <!--title-->
                 <div class="input-group">
                     <span class="input-group-addon">图片标题</span>
                     <input type="text" class="form-control" placeholder="图片标题" id="jade_title"/>
                 </div>
-                <br>
+                <br/>
                 <!--uri-->
                 <div class="input-group">
                     <span class="input-group-addon">图片链接</span>
                     <input type="text" class="form-control" placeholder="图片链接" id="jade_uri"/>
                 </div>
-                <br>
+
+                <br/>
+                <!--uri-->
+                <div class="input-group">
+                    <input type="file" name="filedata" id="jade_fileupload"/>
+                </div>
+                <br/>
                 <!--description-->
                 <div class="input-group">
                     <span class="input-group-addon">图片描述</span>
                     <input type="text" class="form-control" placeholder="图片描述信息" id="jade_description"/>
                 </div>
-                <br>
 
             </form>
 
@@ -51,10 +65,10 @@ $!{extends("/layout.html")}
     </div>
 
     <div class="col-md-3">
-        <div class="btn-group">
-            <input type="file" name="filedata" id="jade_fileupload"/>
-            <button type="button" class="btn btn-primary" id="jade_fileupload_btn">上传文件</button>
-        </div>
+        <a href="#" class="thumbnail" id="jade_img_preview">
+            <img data-src="holder.js/100%x180" alt="上传图片预览"/>
+        </a>
+        <br/>
     </div>
 </div>
 

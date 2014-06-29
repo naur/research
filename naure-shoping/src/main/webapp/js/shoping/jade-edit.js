@@ -15,12 +15,18 @@ var global = {
     uploadOpt: {
         uploader: '/upload/file.json',
         swf: '/js/core/uploadify/uploadify.swf',
-        folder: '/jade',
+        folder: '/jade/',
         buttonText: '选择文件'
     },
     dom: {
         fileupload: '#jade_fileupload',
-        fileuploadButton: '#jade_fileupload_btn'
+        fileuploadButton: '#jade_fileupload_btn',
+        classify: '#jade_classify',
+        name: '#jade_name',
+        title: '#jade_title',
+        uri: '#jade_uri',
+        description: '#jade_description',
+        imgPreview: "#jade_img_preview"
     }
 };
 
@@ -46,20 +52,21 @@ function initUpload() {
         fileTypeDesc: 'Excel Files (.xls, .xlsx, .csv)', //fileTypeExt，用来设置选择文件对话框中的提示文本，如设置fileDesc为“请选择rar doc pdf文件”
         onSelect: function (file) {
             global.message.empty();
-            global.message.promptLine({content: "选择文件【" + file.name + "】"});
+            global.message.show({content: "选择文件【" + file.name + "】"});
         },
         onUploadStart: function (file) {
             $(global.dom.fileuploadButton).attr('disabled', true);
-            global.message.promptLine({content: "正在准备上传，请稍候... "});
+            global.message.show({content: "正在准备上传，请稍候... "});
         },
         onUploadError: function (file, errorCode, errorMsg, errorString) {
-            global.message.promptLine({content: '错误：' + file.name + ", " + errorString, color: 'red'});
+            global.message.show({content: '错误：' + file.name + ", " + errorString, color: 'red'});
             $(global.dom.fileuploadButton).attr('disabled', false);
         },
         onUploadSuccess: function (file, data, response) {
             var result = JSON.parse(data);
-            alert(result.information.data);
-            global.message.promptLine({content: "上传文件【" + file.name + "】完成！"});
+            $(global.dom.uri).val("/upload" + global.uploadOpt.folder + result.information.data);
+            $(global.dom.imgPreview + ' img').attr('src', $(global.dom.uri).val());
+            global.message.show({content: "上传文件【" + file.name + "】完成！"});
             $(global.dom.fileuploadButton).attr('disabled', false);
         }
     });
@@ -84,7 +91,8 @@ require(['loading', 'jquery.uploadify', 'naure.http.ajax', 'naure.message'], fun
     global.message = mod.naure.Message;
 
     $(function () {
-        $(global.dom.fileuploadButton).message({title: '上传文件', placement: 'after'});
+        $(global.dom.imgPreview).message({title: '上传文件', placement: 'after'});
+        global.message.show({content: "正在准备上传，请稍候... "});
         initEvent();
         initUpload();
     });

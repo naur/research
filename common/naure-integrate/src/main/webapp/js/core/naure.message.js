@@ -19,13 +19,13 @@
  *                  $('body').message({overlay: 'left-bottom', multiple: false});
  *
  * DOM Element：
- *       <div class="message">
- *           <span class="title">上传文件：</span>
- *          <span id="prompt"></span>
+ *       <div class="naure-message">
+ *           <span class="naure-title">上传文件：</span>
+ *          <span id="naure-prompt"></span>
  *
- *            <div class="show">
- *                  <span class="comment">反馈信息：</span>
- *                <span id="information"></span>
+ *            <div class="naure-show">
+ *                  <span class="naure-comment">反馈信息：</span>
+ *                <span id="naure-information"></span>
  *      </div>
  * </div>
  */
@@ -65,10 +65,10 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 dateformat: 'HH:mm:ss.fff'        //yyyy-MM-dd HH:mm:ss fff
             },
             empty: function () {
-                $('.message').hide();
-                $('.show').hide();
-                $('#prompt').empty();
-                $('#information').empty();
+                $('.naure-message').hide();
+                $('.naure-show').hide();
+                $('#naure-prompt').empty();
+                $('#naure-information').empty();
             },
             prompt: function (options) {
                 if (!isInit) {
@@ -81,10 +81,10 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 }
 
                 var opt = $.extend({}, message.defaults, options);
-                $('.message').show();
-                $('.show').hide();
-                $('#information').empty();
-                NAURE.Message.renderHtml('#prompt', opt);
+                $('.naure-message').show();
+                $('.naure-show').hide();
+                $('#naure-information').empty();
+                NAURE.Message.renderHtml('#naure-prompt', opt);
             },
             promptLine: function (options) {
                 if (!isInit) {
@@ -92,8 +92,8 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 }
 
                 var opt = $.extend({}, message.defaults, options);
-                $('.message').show();
-                NAURE.Message.renderHtml('#prompt', opt);
+                $('.naure-message').show();
+                NAURE.Message.renderHtml('#naure-prompt', opt);
             },
             show: function (options) {
                 //初始化
@@ -114,8 +114,8 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 }
 
                 var opt = $.extend({}, message.defaults, options);
-                $('.show').show();
-                NAURE.Message.renderHtml('#information', opt);
+                $('.naure-show').show();
+                NAURE.Message.renderHtml('#naure-information', opt);
             },
             showLine: function (options) {
                 if (!isInit) {
@@ -128,8 +128,8 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 }
 
                 var opt = $.extend({}, message.defaults, options);
-                $('.show').show();
-                NAURE.Message.renderHtml('#information', opt);
+                $('.naure-show').show();
+                NAURE.Message.renderHtml('#naure-information', opt);
             },
             renderHtml: function (container, options) {
                 if (options.multiple)
@@ -143,11 +143,11 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 if (!options.inline) $(container).appendLine(NAURE.Message.renderContent(options));
                 else $(container).append(NAURE.Message.renderContent(options));
 
-//                $('#prompt').append(NAURE.Message.renderContent(options));
-//                $('#prompt').appendLine(NAURE.Message.renderContent(opt));
+//                $('#naure-prompt').append(NAURE.Message.renderContent(options));
+//                $('#naure-prompt').appendLine(NAURE.Message.renderContent(opt));
 //
-//                $('#information').html(NAURE.Message.renderContent(opt));
-//                $('#information').appendLine(NAURE.Message.renderContent(opt));
+//                $('#naure-information').html(NAURE.Message.renderContent(opt));
+//                $('#naure-information').appendLine(NAURE.Message.renderContent(opt));
 
             },
             renderContent: function (options) {
@@ -204,29 +204,29 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                         break;
                 }
 
-                $('.message>.title').on('click', function () {
+                $('.naure-message>.naure-title').on('click', function () {
                     message.defaults.global.transparent = !message.defaults.global.transparent;
-                    if (message.defaults.global.transparent) $('.message').addClass('message-transparent');
-                    else $('.message').removeClass('message-transparent');
+                    if (message.defaults.global.transparent) $('.naure-message').addClass('message-transparent');
+                    else $('.naure-message').removeClass('message-transparent');
                 });
 
-                if (message.defaults.global.transparent) $('.message').addClass('message-transparent');
+                if (message.defaults.global.transparent) $('.naure-message').addClass('message-transparent');
 
                 isInit = true;
             },
             position: function (str) {
                 //设置位置
                 if (message.defaults.global.overlay)
-                    $('.message').removeClass('message-' + message.defaults.global.overlay);
+                    $('.naure-message').removeClass('message-' + message.defaults.global.overlay);
                 if (str)
-                    $('.message').addClass('message-' + str);
+                    $('.naure-message').addClass('message-' + str);
             }
         };
 
         message.fade = function (options) {
             var opt = $.extend({
                 fadeClass: 'message-fade',
-                fadeContainer: '.message-fade p',
+                fadeContainer: '.naure-message-fade p',
                 domHandle: function (status) {
                     if (options.element) {
                         if ('INPUT' == $(options.element).attr('tagName'))
