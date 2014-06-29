@@ -15,18 +15,18 @@ import java.util.List;
 @Service
 public class JadeService {
 
-    public List<Jade> get(Jade params) {
-        //jadeRepository.get();;
+    public List<Jade> get(Jade jade) throws Exception {
+        //jadeRepository.get(jade);
 
         List<Jade> list = new ArrayList<>();
         for (int i = 1; i < 20; i++) {
-            Jade jade = new Jade();
-            jade.setId(String.valueOf(i));
-            jade.setName("NAME:" + jade.getId());
-            jade.setClassify(JadeClassify.SMALL.name());
-            jade.setTitle("TITLE" + jade.getId());
-            jade.setDescription("Description: id = " + jade.getId() + ", name = " + jade.getName() + ", classify = " + jade.getClassify() + ", title = " + jade.getTitle());
-            list.add(jade);
+            Jade temp = new Jade();
+            temp.setId(String.valueOf(i));
+            temp.setName("NAME:" + jade.getId());
+            temp.setClassify(JadeClassify.SMALL.name());
+            temp.setTitle("TITLE" + jade.getId());
+            temp.setDescription("Description: id = " + temp.getId() + ", name = " + temp.getName() + ", classify = " + temp.getClassify() + ", title = " + temp.getTitle());
+            list.add(temp);
         }
 
         return list;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,6 +14,11 @@ import java.util.Map;
  */
 @Component
 public class JadeRepository extends Repository {
+
+    public List<Jade> get(Jade jade) throws Exception {
+        Map params = new HashMap();
+        return workspace.get(params, Jade.class);
+    }
 
     public boolean exists(final Jade jade) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{

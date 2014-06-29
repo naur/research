@@ -114,7 +114,10 @@ require.config({
         'naure.graphics.stochastic': jsresearch + '/js/core/graphics/naure.graphics.stochastic',
 
         'math': jsresearch + '/js/math/math',
-        'math.matrix': jslocalpath + '/js/math/math.matrix'
+        'math.matrix': jslocalpath + '/js/math/math.matrix',
+
+        //Shoping template
+        'shoping-template': jslocalpath + '/js/shoping-template'
     },
 //    config: {
 //        'naure.analytics': {

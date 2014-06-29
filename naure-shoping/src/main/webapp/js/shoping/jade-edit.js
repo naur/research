@@ -12,6 +12,7 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var global = {
+    jadeUri: '',
     uploadOpt: {
         uploader: '/upload/file.json',
         swf: '/js/core/uploadify/uploadify.swf',
@@ -19,6 +20,7 @@ var global = {
         buttonText: '上传文件'
     },
     dom: {
+        submit: '#submit',
         fileupload: '#jade_fileupload',
         fileuploadButton: '#jade_fileupload_btn',
         classify: '#jade_classify',
@@ -79,6 +81,10 @@ function initUpload() {
 function initEvent() {
     $(global.dom.fileuploadButton).on('click', function () {
         $(global.dom.fileupload).uploadify('upload', '*');
+    });
+
+    $(global.dom.submit).on('click', function () {
+
     });
 }
 
