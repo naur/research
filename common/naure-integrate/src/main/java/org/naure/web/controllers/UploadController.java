@@ -39,26 +39,28 @@ public class UploadController extends ControllerBase {
     @RequestMapping("file")
     public Information upload(HttpServletRequest request,
                               //上传的文件数据
-                              @RequestParam final MultipartFile fileData,
-                              //是否重命名上传的文件
-                              @RequestParam final boolean rename,
-                              //从命名上传的文件的名字
-                              @RequestParam final String fileName,
-                              //上传文件的路径
-                              @RequestParam final String folder) throws IOException {
+                              @RequestParam final MultipartFile fileData) throws IOException {
         this.setApplicationPath(request);
-//        Map params = new HashMap<String, Object>();
-//
-//        params.put("fileData", fileData);
-//
-//        if (request.getParameter("rename") != null)
-//            params.put("rename", request.getParameter("rename"));
-//
-//        if (request.getParameter("fileName") != null)
-//            params.put("newFileName", request.getParameter("fileName"));
-//
-//        if (request.getParameter("folder") != null)
-//            params.put("folder", request.getParameter("folder"));
+        //是否重命名上传的文件
+        final boolean rename;
+        //从命名上传的文件的名字
+        final String fileName;
+        //上传文件的路径
+        final String folder;
+
+        if (request.getParameter("rename") != null)
+            rename = true;
+        else
+            rename = false;
+        if (request.getParameter("fileName") != null)
+            fileName = request.getParameter("fileName");
+        else
+            fileName = null;
+        if (request.getParameter("folder") != null)
+            folder = request.getParameter("folder");
+        else
+            folder = null;
+
 
         return handler(new Information<String>(), new Func<Information, Information>() {
             @Override

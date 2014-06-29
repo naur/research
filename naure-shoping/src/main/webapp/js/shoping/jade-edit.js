@@ -57,6 +57,8 @@ function initUpload() {
             $(global.dom.fileuploadButton).attr('disabled', false);
         },
         onUploadSuccess: function (file, data, response) {
+            var result = JSON.parse(data);
+            alert(result.information.data);
             global.message.promptLine({content: "上传文件【" + file.name + "】完成！"});
             $(global.dom.fileuploadButton).attr('disabled', false);
         }
