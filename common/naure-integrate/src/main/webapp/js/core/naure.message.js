@@ -181,9 +181,9 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                     message.defaults.global.transparent = opt.transparent;
 
                 if (opt.fade) {
-                    opt.domElement = '<div class="message-fade"><p>' + opt.content + '</p></div>';
+                    opt.domElement = '<div class="naure-message-fade"><p>' + opt.content + '</p></div>';
                 } else {
-                    opt.domElement = $.format('<div class="message {0}"><span class="title">' + (opt.title.length > 0 ? opt.title + '：' : '') + '</span><span id="prompt"></span><div class="show"><span class="comment">' + opt.comment + '：</span><span id="information"></span></div></div>', opt.overlay ? 'message-' + opt.overlay : '');
+                    opt.domElement = $.format('<div class="naure-message {0}"><span class="naure-title">' + (opt.title.length > 0 ? opt.title + '：' : '') + '</span><span id="naure-prompt"></span><div class="naure-show"><span class="naure-comment">' + opt.comment + '：</span><span id="naure-information"></span></div></div>', opt.overlay ? 'naure-message-' + opt.overlay : '');
                 }
 
                 switch (opt.placement) {

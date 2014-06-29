@@ -16,7 +16,7 @@ var global = {
         uploader: '/upload/file.json',
         swf: '/js/core/uploadify/uploadify.swf',
         folder: '/jade/',
-        buttonText: '选择文件'
+        buttonText: '上传文件'
     },
     dom: {
         fileupload: '#jade_fileupload',
@@ -92,7 +92,6 @@ require(['loading', 'jquery.uploadify', 'naure.http.ajax', 'naure.message'], fun
 
     $(function () {
         $(global.dom.imgPreview).message({title: '上传文件', placement: 'after'});
-        global.message.show({content: "正在准备上传，请稍候... "});
         initEvent();
         initUpload();
     });

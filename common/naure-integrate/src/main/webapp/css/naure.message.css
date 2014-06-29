@@ -73,7 +73,7 @@ body {
 }
 
 /*ff9300*/
-.naure-message .title {
+.naure-message .naure-title {
     /*color: #0000ff;*/
     color: red;
     cursor: pointer;
