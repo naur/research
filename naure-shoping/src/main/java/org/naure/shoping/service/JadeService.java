@@ -25,6 +25,7 @@ public class JadeService {
             temp.setName("NAME:" + jade.getId());
             temp.setClassify(JadeClassify.SMALL.name());
             temp.setTitle("TITLE" + jade.getId());
+            temp.setUri("http://www.ghibli.jp/skin/images/kazetachinu_banner.jpg");
             temp.setDescription("Description: id = " + temp.getId() + ", name = " + temp.getName() + ", classify = " + temp.getClassify() + ", title = " + temp.getTitle());
             list.add(temp);
         }

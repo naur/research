@@ -29,7 +29,7 @@ function query() {
         error: function (err) {
         },
         success: function (obj) {
-            $(dom.contailer).html($.render.jade(obj.information.data));
+            $(global.dom.contailer).html($.render.jade(obj.output.information.data));
         }
     });
 }

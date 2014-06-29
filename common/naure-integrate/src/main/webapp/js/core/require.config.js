@@ -117,7 +117,7 @@ require.config({
         'math.matrix': jslocalpath + '/js/math/math.matrix',
 
         //Shoping template
-        'shoping-template': jslocalpath + '/js/shoping-template'
+        'shoping-template': jslocalpath + '/templates/shoping-template'
     },
 //    config: {
 //        'naure.analytics': {
