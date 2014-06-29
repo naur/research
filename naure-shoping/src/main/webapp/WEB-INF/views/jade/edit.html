@@ -16,7 +16,8 @@ $!{extends("/layout.html")}
 </style>
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-1"></div>
+    <div class="col-md-8">
 
         <div class="jumbotron">
 
@@ -58,30 +59,30 @@ $!{extends("/layout.html")}
                     <input type="text" class="form-control" placeholder="图片描述信息" id="jade_description"/>
                 </div>
 
+                <br/>
+                <div class="btn-group navbar-right">
+                    <button type="button" class="btn btn-primary" id="submit">Submit</button>
+                </div>
+
             </form>
 
         </div>
 
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <a href="#" class="thumbnail" id="jade_img_preview">
             <img data-src="holder.js/100%x180" alt="上传图片预览"/>
         </a>
         <br/>
     </div>
+    <div class="col-md-1"></div>
 </div>
 
 <div class="row">
-
-    <div class="col-md-9">
-
-        <div class="btn-group navbar-right">
-            <button type="button" class="btn btn-primary" id="submit">Submit</button>
-        </div>
-    </div>
-
-    <div class="col-md-3"></div>
+    <div class="col-md-1"></div>
+    <div class="col-md-10"></div>
+    <div class="col-md-1"></div>
 </div>
 
 <script type="text/javascript" src="/js/shoping/jade-edit.js"></script>

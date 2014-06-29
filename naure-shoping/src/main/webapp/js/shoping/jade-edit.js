@@ -28,7 +28,8 @@ var global = {
         title: '#jade_title',
         uri: '#jade_uri',
         description: '#jade_description',
-        imgPreview: "#jade_img_preview"
+        imgPreview: "#jade_img_preview",
+        message: '.row:eq(1) .col-md-10'
     }
 };
 
@@ -97,7 +98,7 @@ require(['loading', 'jquery.uploadify', 'naure.http.ajax', 'naure.message'], fun
     global.message = mod.naure.Message;
 
     $(function () {
-        $(global.dom.imgPreview).message({title: '上传文件', placement: 'after'});
+        $(global.dom.message).message({title: '上传文件', placement: 'prepend'});
         initEvent();
         initUpload();
     });

@@ -21,23 +21,22 @@ define(['jquery', 'jquery.template'],
         //作业环节，格式：{id:name, ...... }
         $.templates("phaseJson", '"{{>id}}" : "{{>value}}",');
 
-        $.templates('jade', "<div class=\"col-md-3\">" +
-            "        <div class=\"thumbnail\">" +
-            "            <img style=\"width: 100%; height: 180px; display: block;\" alt=\"{{>title}}\"" +
-            "                 src=\"{{>uri}}\"" +
-            "" +
-            "            <div class=\"caption\">" +
-            "                <h4>{{>name}}</h4>" +
-            "" +
-            "                <p>{{>description}}</p>" +
-            "" +
-            "                <p class=\"text-right\">" +
-            "                    <!--<a class=\"btn btn-primary\" role=\"button\" href=\"#\">Button</a>-->" +
-            "                    <a class=\"btn btn-info\" role=\"button\" href=\"#\">Button</a>" +
-            "                </p>" +
-            "            </div>" +
-            "        </div>" +
-            "    </div>");
+        $.templates('jade', '<div class=\"col-md-2\">' +
+            '        <div class=\"thumbnail\">' +
+            '            <img style=\"width: 100%;  display: block;\" alt=\"{{>title}}\"' +
+            '                 src=\"{{>uri}}\"' +
+            '' +
+            '            <div class=\"caption\">' +
+            '                <h4>{{>name}}</h4>' +
+            '' +
+            '                <p>{{>description}}</p>' +
+            '' +
+            '                <div class=\"text-right\">' +
+            '                   <a class="btn btn-info btn-xs" role="button" href="#">购买</a>' +
+            '                </div>' +
+            '            </div>' +
+            '        </div>' +
+            '    </div>');
 
         return {
             jquery: $

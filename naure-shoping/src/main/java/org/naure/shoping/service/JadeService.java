@@ -22,11 +22,11 @@ public class JadeService {
         for (int i = 1; i < 20; i++) {
             Jade temp = new Jade();
             temp.setId(String.valueOf(i));
-            temp.setName("NAME:" + jade.getId());
-            temp.setClassify(JadeClassify.SMALL.name());
-            temp.setTitle("TITLE" + jade.getId());
+            temp.setName("图片名字" + temp.getId());
+            temp.setClassify("图片分类" + temp.getId());
+            temp.setTitle("图片标题" + temp.getId());
             temp.setUri("http://www.ghibli.jp/skin/images/kazetachinu_banner.jpg");
-            temp.setDescription("Description: id = " + temp.getId() + ", name = " + temp.getName() + ", classify = " + temp.getClassify() + ", title = " + temp.getTitle());
+            temp.setDescription("图片描述信息" + temp.getId());
             list.add(temp);
         }
 
