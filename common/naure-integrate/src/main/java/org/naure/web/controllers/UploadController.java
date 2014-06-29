@@ -1,5 +1,6 @@
 package org.naure.web.controllers;
 
+import httl.util.StringUtils;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.patterns.exception.Func;
@@ -36,27 +37,35 @@ public class UploadController extends ControllerBase {
     }
 
     @RequestMapping("file")
-    public Information upload(@RequestParam MultipartFile fileData, HttpServletRequest request) throws IOException {
+    public Information upload(HttpServletRequest request,
+                              //上传的文件数据
+                              @RequestParam final MultipartFile fileData,
+                              //是否重命名上传的文件
+                              @RequestParam final boolean rename,
+                              //从命名上传的文件的名字
+                              @RequestParam final String fileName,
+                              //上传文件的路径
+                              @RequestParam final String folder) throws IOException {
         this.setApplicationPath(request);
-        Map params = new HashMap<String, Object>();
-        //上传的文件数据
-        params.put("fileData", fileData);
-        //是否重命名上传的文件
-        if (request.getParameter("rename") != null)
-            params.put("rename", request.getParameter("rename"));
-        //从命名上传的文件的名字
-        if (request.getParameter("fileName") != null)
-            params.put("newFileName", request.getParameter("fileName"));
-        //上传文件的路径
-        if (request.getParameter("folder") != null)
-            params.put("folder", request.getParameter("folder"));
+//        Map params = new HashMap<String, Object>();
+//
+//        params.put("fileData", fileData);
+//
+//        if (request.getParameter("rename") != null)
+//            params.put("rename", request.getParameter("rename"));
+//
+//        if (request.getParameter("fileName") != null)
+//            params.put("newFileName", request.getParameter("fileName"));
+//
+//        if (request.getParameter("folder") != null)
+//            params.put("folder", request.getParameter("folder"));
 
-        return handler(params, new Func<Map, Information>() {
+        return handler(new Information<String>(), new Func<Information, Information>() {
             @Override
-            public Information execute(Map params) throws Exception {
-                Information<String> information = new Information<String>();
+            public Information execute(Information information) throws Exception {
+                information = new Information<String>();
 
-                MultipartFile multipartFile = (MultipartFile) params.get("fileData");
+                MultipartFile multipartFile = fileData;
                 if (multipartFile.isEmpty()) {
                     information.setData("Error");
                     information.setKeywords("multipartFile is empty!");
@@ -64,15 +73,19 @@ public class UploadController extends ControllerBase {
                     return information;
                 }
 
-                //判断是否重命名上传的文件名
+                //判断是否重命名上传的文件名，顺序：【fileName，rename】
                 String newFileName = null;
-                if (params.get("rename") == null) {
-                    newFileName = params.get("newFileName") != null ? String.valueOf(params.get("newFileName")) : makeNewFileName(multipartFile.getOriginalFilename());
+                if (StringUtils.isNotEmpty(fileName)) {
+                    newFileName = fileName;
                 } else {
-                    newFileName = multipartFile.getOriginalFilename();
+                    if (rename) {
+                        newFileName = makeNewFileName(multipartFile.getOriginalFilename());
+                    } else {
+                        newFileName = multipartFile.getOriginalFilename();
+                    }
                 }
 
-                String filePath = filePath(String.valueOf(params.get("folder")), information);
+                String filePath = filePath(folder, information);
                 if (InformationLevel.ERROR.value() == information.getLevel()) {
                     return information;
                 }

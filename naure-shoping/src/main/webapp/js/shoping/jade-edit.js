@@ -34,7 +34,7 @@ function initUpload() {
         uploader: global.uploadOpt.uploader,
         formData: {
             folder: global.uploadOpt.folder,
-            rename: false
+            rename: true
         },
         fileObjName: 'fileData', //设置一个名字，在服务器处理程序中根据该名字来取上传文件的数据。默认为Filedata
         folder: global.uploadOpt.folder,
