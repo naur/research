@@ -12,7 +12,9 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var global = {
-    jadeUri: '',
+    searchUri: '/jade/{0}.json',
+    addUri: '/jade/add.json',
+    editUri: '/jade/edit.json',
     uploadOpt: {
         uploader: '/upload/file.json',
         swf: '/js/core/uploadify/uploadify.swf',
@@ -25,8 +27,9 @@ var global = {
         add: '#add',
         fileupload: '#jade_fileupload',
         fileuploadButton: '#jade_fileupload_btn',
-        classify: '#jade_classify',
+        id: '#jade_id',
         name: '#jade_name',
+        classify: '#jade_classify',
         title: '#jade_title',
         uri: '#jade_uri',
         description: '#jade_description',
@@ -38,6 +41,30 @@ var global = {
 /*-------------------- 全局变量 END ------------------*/
 
 /*-------------------- 函数 START --------------------*/
+
+/**
+ * 如果有入参，把值赋值给页面元素
+ * 如果没有入参，把页面元素的值组合成 json 对象返回
+ */
+function parseParams(jade) {
+    if (jade) {
+        $(global.dom.id).val(jade.id);
+        $(global.dom.name).val(jade.name);
+        $(global.dom.classify).val(jade.classify);
+        $(global.dom.title).val(jade.title);
+        $(global.dom.uri).val(jade.uri);
+        $(global.dom.description).val(jade.description);
+    } else {
+        return {
+            id: $(global.dom.id).val(),
+            name: $(global.dom.name).val(),
+            classify: $(global.dom.classify).val(),
+            title: $(global.dom.title).val(),
+            uri: $(global.dom.uri).val(),
+            description: $(global.dom.description).val()
+        }
+    }
+}
 
 function initUpload() {
     $(global.dom.fileupload).uploadify({
@@ -86,8 +113,60 @@ function initEvent() {
         $(global.dom.fileupload).uploadify('upload', '*');
     });
 
-    $(global.dom.submit).on('click', function () {
+    $(global.dom.search).on('click', function () {
+        var params = parseParams();
+        if (!params.name) {
+            //TODO
+            return;
+        }
 
+        global.http.acquire({
+            uri: global.utility.format(global.searchUri, params.name),
+            success: function (obj) {
+                parseParams(obj.output.information.data[0])
+            },
+            error: function (err) {
+                //TODO
+            }
+        });
+    });
+
+    $(global.dom.edit).on('click', function () {
+        var params = parseParams();
+        if (!params.name) {
+            //TODO
+            return;
+        }
+
+        global.http.acquire({
+            uri: global.editUri,
+            data: params,
+            success: function (obj) {
+                //TODO
+            },
+            error: function (err) {
+                //TODO
+            }
+        });
+    });
+
+    $(global.dom.add).on('click', function () {
+        var params = parseParams();
+        if (!params.name) {
+            //TODO
+            return;
+        }
+
+        global.http.acquire({
+            uri: global.addUri,
+            data: params,
+            success: function (obj) {
+                //TODO
+            },
+            error: function (err) {
+                //TODO
+            }
+        });
     });
 }
 
@@ -96,6 +175,7 @@ function initEvent() {
 /*-------------------- 初始化 START ------------------*/
 
 require(['loading', 'jquery.uploadify', 'naure.http.ajax', 'naure.message'], function (mod) {
+    global.utility = mod.naure.Utility;
     global.http = mod.naure.HTTP;
     global.message = mod.naure.Message;
 

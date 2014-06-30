@@ -1,8 +1,11 @@
 package org.naure.shoping.repositories;
 
 import httl.util.StringUtils;
+import org.naure.common.patterns.Tree;
+import org.naure.common.patterns.Type;
 import org.naure.repositories.construction.Repository;
-import org.naure.shoping.model.Jade;
+import org.naure.shoping.models.Jade;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
@@ -19,7 +22,8 @@ public class JadeRepository extends Repository {
     public List<Jade> get(Jade jade) throws Exception {
         Map params = new HashMap();
         if (StringUtils.isNotEmpty(jade.getName())) {
-            params.put("name", jade.getName());
+            //name 模糊查询
+            params.put("name", new Tree<String>(Type.Regex, jade.getName()));
         }
         if (StringUtils.isNotEmpty(jade.getClassify())) {
             params.put("classify", jade.getClassify());

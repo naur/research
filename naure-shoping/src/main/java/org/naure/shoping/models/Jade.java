@@ -1,4 +1,4 @@
-package org.naure.shoping.model;
+package org.naure.shoping.models;
 
 import org.naure.common.entities.Entity;
 

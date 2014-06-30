@@ -22,17 +22,22 @@ $!{extends("/layout.html")}
         <div class="jumbotron">
 
             <form class="navbar-form">
-
-                <!--classify-->
-                <div class="input-group">
-                    <span class="input-group-addon">图片类别</span>
-                    <input type="text" class="form-control" placeholder="类别" id="jade_classify"/>
+                <!--id-->
+                <div class="input-group" style="display: none">
+                    <span class="input-group-addon">图片ID</span>
+                    <input type="text" class="form-control" placeholder="图片ID" id="jade_id"/>
                 </div>
                 <br/>
                 <!--name-->
                 <div class="input-group">
                     <span class="input-group-addon">图片名称</span>
                     <input type="text" class="form-control" placeholder="图片名称" id="jade_name"/>
+                </div>
+                <br/>
+                <!--classify-->
+                <div class="input-group">
+                    <span class="input-group-addon">图片类别</span>
+                    <input type="text" class="form-control" placeholder="类别" id="jade_classify" value="small"/>
                 </div>
                 <br/>
                 <!--title-->
@@ -59,12 +64,12 @@ $!{extends("/layout.html")}
                     <input type="text" class="form-control" placeholder="图片描述信息" id="jade_description"/>
                 </div>
 
-                <br/>
+                <br/><br/>
 
                 <div class="btn-group btn-group-justified">
-                    <button type="button" class="btn btn-primary btn-group-sm" id="search">Search</button>
-                    <button type="button" class="btn btn-primary btn-group-sm" id="edit">Edit</button>
-                    <button type="button" class="btn btn-primary btn-group-sm" id="add">Add</button>
+                    <button type="button" class="btn btn-default btn-group-sm" id="search">Search</button>
+                    <button type="button" class="btn btn-default btn-group-sm" id="edit">Edit</button>
+                    <button type="button" class="btn btn-default btn-group-sm" id="add">Add</button>
                 </div>
 
             </form>

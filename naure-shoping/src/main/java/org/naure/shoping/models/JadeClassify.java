@@ -4,7 +4,7 @@
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.shoping.model;
+package org.naure.shoping.models;
 
 /**
  * <pre>
