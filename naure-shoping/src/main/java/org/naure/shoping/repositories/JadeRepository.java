@@ -1,5 +1,6 @@
 package org.naure.shoping.repositories;
 
+import httl.util.StringUtils;
 import org.naure.repositories.construction.Repository;
 import org.naure.shoping.model.Jade;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,12 @@ public class JadeRepository extends Repository {
 
     public List<Jade> get(Jade jade) throws Exception {
         Map params = new HashMap();
+        if (StringUtils.isNotEmpty(jade.getName())) {
+            params.put("name", jade.getName());
+        }
+        if (StringUtils.isNotEmpty(jade.getClassify())) {
+            params.put("classify", jade.getClassify());
+        }
         return workspace.get(params, Jade.class);
     }
 

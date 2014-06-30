@@ -20,7 +20,9 @@ var global = {
         buttonText: '上传文件'
     },
     dom: {
-        submit: '#submit',
+        search: '#search',
+        edit: '#edit',
+        add: '#add',
         fileupload: '#jade_fileupload',
         fileuploadButton: '#jade_fileupload_btn',
         classify: '#jade_classify',

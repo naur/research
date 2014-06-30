@@ -60,12 +60,13 @@ public class JadeControl extends ControllerBase {
      * get
      */
     @RequestMapping("{classify}")
-    public Information get(@PathVariable final String classify) {
+    public Information get(@PathVariable final String name, @PathVariable final String classify) {
         return handler(new Sub<Information>() {
             @Override
             public Information execute() throws Exception {
                 Information<List<Jade>> info = new Information<List<Jade>>();
                 Jade params = new Jade();
+                params.setName(name);
                 params.setClassify(classify);
                 info.setData(jadeService.get(params));
                 info.setLevel(InformationLevel.SUCCESS.value());
