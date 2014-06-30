@@ -13,8 +13,9 @@
 
 var global = {
     jadeUri: '/jade/get.json',
+    row: '<div class="row"></div>',
     dom: {
-        contailer: '.row:first'
+        contailer: '.row:last'
     }
 };
 
@@ -32,7 +33,15 @@ function query() {
         error: function (err) {
         },
         success: function (obj) {
-            $(global.dom.contailer).html($.render.jade(obj.output.information.data));
+            var jades = obj.output.information.data;
+            if (!jades) return;
+
+            do {
+                $(global.dom.contailer).after(global.row);
+                $(global.dom.contailer).html(
+                    $.render.jade(jades.splice(0, 6))
+                );
+            } while (jades.length > 0);
         }
     });
 }
@@ -47,8 +56,9 @@ function query() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['loading', 'shoping-template'], function (mod) {
+require(['loading', 'shoping-template', 'naure.utility'], function (mod) {
     global.http = mod.naure.HTTP;
+    global.utility = mod.naure.Utility;
 
     $(function () {
         query();
