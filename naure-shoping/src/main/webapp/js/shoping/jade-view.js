@@ -24,7 +24,10 @@ var global = {
 
 function query() {
     global.http.acquire({
-        data: null,
+        data: {
+            name: null,
+            classify: null
+        },
         uri: global.jadeUri,
         error: function (err) {
         },
