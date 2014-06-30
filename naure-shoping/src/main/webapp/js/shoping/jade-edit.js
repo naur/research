@@ -12,7 +12,7 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var global = {
-    searchUri: '/jade/{0}.json',
+    searchUri: '/jade/get.json',
     addUri: '/jade/add.json',
     editUri: '/jade/edit.json',
     uploadOpt: {
@@ -122,6 +122,7 @@ function initEvent() {
 
         global.http.acquire({
             uri: global.utility.format(global.searchUri, params.name),
+            data: params,
             success: function (obj) {
                 parseParams(obj.output.information.data[0])
             },

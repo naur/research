@@ -1,5 +1,6 @@
 package org.naure.repositories.construction;
 
+import org.apache.commons.lang3.StringUtils;
 import org.naure.common.entities.Entity;
 import org.naure.common.patterns.Tree;
 import org.naure.repositories.config.MongoConfiguration;
@@ -66,6 +67,11 @@ public class MongoWorkspace extends AbstractWorkspace {
 
     @Override
     public <T> boolean add(T t) throws Exception {
+        //TODO 如果是空字符串，那么要把 id 置为 null, 否则 MongoDB 不能自动生成 _id 值
+        if (StringUtils.isEmpty(((Entity) t).getId())) {
+            ((Entity) t).setId(null);
+        }
+
         MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
         mongoOps.insert(t, ((Entity) t).collectionName());
         return true;

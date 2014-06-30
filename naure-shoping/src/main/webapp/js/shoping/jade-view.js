@@ -12,7 +12,7 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var global = {
-    jadeUri: '/jade/all.json',
+    jadeUri: '/jade/get.json',
     dom: {
         contailer: '.row:first'
     }

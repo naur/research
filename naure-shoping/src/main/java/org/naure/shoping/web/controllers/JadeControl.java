@@ -5,6 +5,7 @@
  */
 package org.naure.shoping.web.controllers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.patterns.exception.Sub;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -56,17 +58,15 @@ public class JadeControl extends ControllerBase {
     /**
      * get
      */
-    @RequestMapping("{name}")
-    public Information get(@PathVariable final String name) {
+    @RequestMapping("get")
+    public Information get(@RequestParam final String name, @RequestParam final String classify) {
         return handler(new Sub<Information>() {
             @Override
             public Information execute() throws Exception {
                 Information<List<Jade>> info = new Information<List<Jade>>();
                 Jade params = new Jade();
-                //指定 all 查询所有数据，指定名字 ，查询和名字符合的数据
-                if (!"all".equals(name)) {
-                    params.setName(name);
-                }
+                params.setName(name);
+                params.setClassify(classify);
                 info.setData(jadeService.get(params));
                 info.setLevel(InformationLevel.SUCCESS.value());
                 return info;
