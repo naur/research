@@ -65,14 +65,14 @@ public class RequestClient {
     private static RequestClient instance;
     private static Executor executor;
 
-    public static String get(String uri) throws IOException {
+    public String get(String uri) throws IOException {
         return executor
                 .execute(Request.Get(uri))
                 .returnContent()
                 .asString();
     }
 
-    public static Document get(String uri, ResponseHandler<Document> handler) throws IOException {
+    public Document get(String uri, ResponseHandler<Document> handler) throws IOException {
         return executor
                 .execute(Request.Get(uri)).handleResponse(new ResponseHandler<Document>() {
                     @Override
