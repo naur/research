@@ -44,14 +44,16 @@
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
         <!--<commons-io.version>1.2</commons-io.version>-->
         <commons-io.version>2.0.1</commons-io.version>
-        <commons-httpclient.version>3.1</commons-httpclient.version>
+        <httpcomponents.version>4.4-alpha1</httpcomponents.version>
         <jactor.version>4.2.0</jactor.version>
         <jrobin.version>1.5.9</jrobin.version>
         <jedis.version>2.0.0</jedis.version>
         <zookeeper.version>3.4.5</zookeeper.version>
         <surefire-skipTests>true</surefire-skipTests>
         <httl.version>1.0.11</httl.version>
+
         <naure.log.file.path>/var/web/logs</naure.log.file.path>
+
     </properties>
 
     <dependencyManagement>
@@ -139,12 +141,6 @@
                 <artifactId>commons-fileupload</artifactId>
                 <version>${commons-fileupload.version}</version>
                 <scope>runtime</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-httpclient</groupId>
-                <artifactId>commons-httpclient</artifactId>
-                <version>${commons-httpclient.version}</version>
             </dependency>
 
             <!-- Servlet -->
@@ -374,6 +370,13 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-oxm</artifactId>
                 <version>${org.springframework.version}</version>
+            </dependency>
+
+            <!--Http Components-->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>fluent-hc</artifactId>
+                <version>${httpcomponents.version}</version>
             </dependency>
 
             <!-- Uses Castor for XML -->
