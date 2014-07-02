@@ -5,23 +5,15 @@
  */
 package org.naure.research.web.services;
 
-import com.sun.javafx.binding.StringFormatter;
-import org.apache.xerces.parsers.XMLDocumentParser;
-import org.apache.xerces.parsers.XMLParser;
-import org.exolab.castor.xml.util.XMLParserUtils;
 import org.naure.common.util.RequestClient;
 import org.naure.research.config.SecurityConfiguration;
 import org.naure.repositories.models.finance.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
 import org.springframework.oxm.castor.CastorMarshaller;
 import org.springframework.stereotype.Service;
 
 import javax.xml.transform.stream.StreamSource;
-import java.beans.XMLDecoder;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringBufferInputStream;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;

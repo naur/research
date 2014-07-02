@@ -91,7 +91,7 @@
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize">
-            <value>1048576</value>
+            <value>10485760</value>
         </property>
     </bean>
 
@@ -105,8 +105,10 @@
 
     <!--视图-->
     <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
-        <constructor-arg ref="xStreamMarshaller"/>
-        <property name="modelKey" value="information"/>
+        <!--DOTO 改为使用castorMarshaller -->
+        <!--<constructor-arg ref="xStreamMarshaller"/>-->
+        <constructor-arg ref="castorMarshaller"/>
+        <!--<property name="modelKey" value="information"/>-->
     </bean>
     <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
     <bean id="atomView" class="org.naure.web.views.AtomView"/>
