@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class SecurityConfiguration {
-    public @Value("${stock.realtime.uri}") String stockRealtimeUri;
-    public @Value("${stock.capital.uri}")  String stockCapitalUri;
-    public @Value("${stock.history.uri}")  String stockHistoryUri;
+    public @Value("${security.stock.realtime.uri}") String stockRealtimeUri;
+    public @Value("${security.stock.capital.uri}")  String stockCapitalUri;
+    public @Value("${security.stock.history.uri}")  String stockHistoryUri;
 }
