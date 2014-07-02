@@ -5,6 +5,12 @@
  */
 package org.naure.research.test;
 
+import org.junit.Test;
+import org.naure.common.util.RequestClient;
+
+import java.io.IOException;
+import java.text.MessageFormat;
+
 /**
  * <pre>
  * author jiaruizhi
@@ -18,5 +24,18 @@ package org.naure.research.test;
  */
 public class XmlTest {
 
+    private String stockUri = "http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol={0}&begin_date={1}&end_date={2}&type={3}";
+    private String stock = "sz300197";
+    private String beginDate = "20140701";
+    private String endDate = "20140701";
+    private String type = "xml";
 
+    @Test
+    public void test() throws IOException {
+        String result = RequestClient.getInstance().get(
+                MessageFormat.format(stockUri, stock, beginDate, endDate, type)
+        );
+
+
+    }
 }
