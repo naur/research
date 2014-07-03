@@ -39,7 +39,7 @@ public class XmlTest extends UnitTestBase {
     private CastorMarshaller castorMarshaller;
     private String stock = "sz300197";
     private String beginDate = "20140701";
-    private String endDate = "20140701";
+    private String endDate = "20140702";
     private String type = "xml";
 
     @Test

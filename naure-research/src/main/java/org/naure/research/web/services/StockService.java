@@ -5,6 +5,7 @@
  */
 package org.naure.research.web.services;
 
+import org.exolab.castor.mapping.GeneralizedFieldHandler;
 import org.naure.common.util.RequestClient;
 import org.naure.research.config.SecurityConfiguration;
 import org.naure.repositories.models.finance.Stock;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 

@@ -50,6 +50,8 @@
         <jedis.version>2.0.0</jedis.version>
         <zookeeper.version>3.4.5</zookeeper.version>
         <surefire-skipTests>true</surefire-skipTests>
+        <xstream.version>1.4.2</xstream.version>
+        <castor.version>1.2</castor.version>
         <httl.version>1.0.11</httl.version>
 
         <naure.log.file.path>/var/web/logs</naure.log.file.path>
@@ -383,13 +385,13 @@
             <dependency>
                 <groupId>org.codehaus.castor</groupId>
                 <artifactId>castor</artifactId>
-                <version>1.2</version>
+                <version>${castor.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
-                <version>1.4.2</version>
+                <version>${xstream.version}</version>
             </dependency>
 
             <!-- Castor need this -->

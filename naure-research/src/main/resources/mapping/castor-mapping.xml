@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
-<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
-        "http://castor.org/mapping.dtd">
 <mapping>
+    <field-handler name="dateFieldHandler" class="org.naure.research.web.services.DateFieldHandler">
+        <param name="date-format" value="yyyy-MM-dd"/>
+    </field-handler>
+
     <class name="org.naure.repositories.models.finance.Stock">
         <map-to xml="control"/>
         <field name="quotes" type="org.naure.repositories.models.finance.StockQuote" collection="arraylist">
@@ -10,7 +12,7 @@
     </class>
     <class name="org.naure.repositories.models.finance.StockQuote">
         <map-to xml="content"/>
-        <field name="date" type="date">
+        <field name="date" type="string" handler="dateFieldHandler">
             <bind-xml name="d" node="attribute"/>
         </field>
         <field name="open" type="double">
@@ -20,7 +22,7 @@
             <bind-xml name="h" node="attribute"/>
         </field>
         <field name="low" type="double">
-            <bind-xml name="d" node="attribute"/>
+            <bind-xml name="l" node="attribute"/>
         </field>
         <field name="close" type="double">
             <bind-xml name="c" node="attribute"/>
