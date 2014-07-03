@@ -67,7 +67,7 @@
         </property>
         <property name="viewResolvers">
             <list>
-                <ref bean="viewResolver"/>
+                <!--<ref bean="viewResolver"/>-->
                 <!--<ref bean="multipartResolver"/>-->
             </list>
         </property>
@@ -168,7 +168,7 @@
     <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
         <property name="mappingLocations">
             <list>
-                <value>classpath:mapping/castor.xml</value>
+                <value>classpath:mapping/castor-mapping.xml</value>
             </list>
         </property>
     </bean>
