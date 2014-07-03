@@ -131,24 +131,40 @@
     </bean>
 
     <!--序列化工具-->
-    <!--<bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller" />-->
-    <bean id="xStreamMarshaller" class="org.naure.web.CustomXStreamMarshaller">
-        <constructor-arg>
-            <map>
-                <entry key="information" value="org.naure.common.entities.Information"/>
-                <entry key="level" value="org.naure.common.entities.InformationLevel"/>
-                <entry key="session" value="org.naure.repositories.models.Session"/>
-                <entry key="sessionLog" value="org.naure.repositories.models.SessionLog"/>
-                <entry key="eng" value="org.naure.repositories.models.learn.Eng"/>
-                <entry key="bond" value="org.naure.repositories.models.finance.Bond"/>
-                <entry key="future" value="org.naure.repositories.models.finance.Future"/>
-                <entry key="money" value="org.naure.repositories.models.finance.Money"/>
-                <entry key="option" value="org.naure.repositories.models.finance.Option"/>
-                <entry key="stock" value="org.naure.repositories.models.finance.Stock"/>
-                <entry key="quote" value="org.naure.repositories.models.finance.Quote"/>
-            </map>
-        </constructor-arg>
+    <bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+        <property name="aliases">
+            <props>
+                <prop key="information">org.naure.common.entities.Information</prop>
+                <prop key="level">org.naure.common.entities.InformationLevel</prop>
+                <prop key="session">org.naure.repositories.models.Session</prop>
+                <prop key="sessionLog">org.naure.repositories.models.SessionLog</prop>
+                <prop key="eng">org.naure.repositories.models.learn.Eng</prop>
+                <prop key="bond">org.naure.repositories.models.finance.Bond</prop>
+                <prop key="future">org.naure.repositories.models.finance.Future</prop>
+                <prop key="money">org.naure.repositories.models.finance.Money</prop>
+                <prop key="option">org.naure.repositories.models.finance.Option</prop>
+                <prop key="stock">org.naure.repositories.models.finance.Stock</prop>
+                <prop key="quote">org.naure.repositories.models.finance.Quote</prop>
+            </props>
+        </property>
     </bean>
+    <!--<bean id="xStreamMarshaller" class="org.naure.web.CustomXStreamMarshaller">-->
+        <!--<constructor-arg>-->
+            <!--<map>-->
+                <!--<entry key="information" value="org.naure.common.entities.Information"/>-->
+                <!--<entry key="level" value="org.naure.common.entities.InformationLevel"/>-->
+                <!--<entry key="session" value="org.naure.repositories.models.Session"/>-->
+                <!--<entry key="sessionLog" value="org.naure.repositories.models.SessionLog"/>-->
+                <!--<entry key="eng" value="org.naure.repositories.models.learn.Eng"/>-->
+                <!--<entry key="bond" value="org.naure.repositories.models.finance.Bond"/>-->
+                <!--<entry key="future" value="org.naure.repositories.models.finance.Future"/>-->
+                <!--<entry key="money" value="org.naure.repositories.models.finance.Money"/>-->
+                <!--<entry key="option" value="org.naure.repositories.models.finance.Option"/>-->
+                <!--<entry key="stock" value="org.naure.repositories.models.finance.Stock"/>-->
+                <!--<entry key="quote" value="org.naure.repositories.models.finance.Quote"/>-->
+            <!--</map>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
     <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
         <property name="mappingLocations">
             <list>

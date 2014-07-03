@@ -72,7 +72,7 @@ public class RequestClient {
                 .asString();
     }
 
-    public Document get(String uri, ResponseHandler<Document> handler) throws IOException {
+    public Document getXml(String uri) throws IOException {
         return executor
                 .execute(Request.Get(uri)).handleResponse(new ResponseHandler<Document>() {
                     @Override

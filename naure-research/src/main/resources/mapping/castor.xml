@@ -10,7 +10,7 @@
     </class>
     <class name="org.naure.repositories.models.finance.StockQuote">
         <map-to xml="content"/>
-        <field name="date" type="java.util.Date">
+        <field name="date" type="date">
             <bind-xml name="d" node="attribute"/>
         </field>
         <field name="open" type="double">
