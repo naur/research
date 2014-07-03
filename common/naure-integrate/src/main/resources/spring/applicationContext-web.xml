@@ -106,9 +106,9 @@
     <!--视图-->
     <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
         <!--DOTO 改为使用castorMarshaller -->
-        <!--<constructor-arg ref="xStreamMarshaller"/>-->
-        <constructor-arg ref="castorMarshaller"/>
-        <!--<property name="modelKey" value="information"/>-->
+        <constructor-arg ref="xStreamMarshaller"/>
+        <property name="modelKey" value="information"/>
+        <!--<constructor-arg ref="castorMarshaller"/>-->
     </bean>
     <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
     <bean id="atomView" class="org.naure.web.views.AtomView"/>
@@ -149,7 +149,13 @@
             </map>
         </constructor-arg>
     </bean>
-    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller"/>
+    <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
+        <property name="mappingLocations">
+            <list>
+                <value>mapping/castor.xml</value>
+            </list>
+        </property>
+    </bean>
 
     <mvc:interceptors>
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>

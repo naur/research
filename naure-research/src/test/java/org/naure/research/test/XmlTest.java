@@ -6,7 +6,11 @@
 package org.naure.research.test;
 
 import org.junit.Test;
+import org.naure.common.test.UnitTestBase;
 import org.naure.common.util.RequestClient;
+import org.naure.research.config.SecurityConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.oxm.castor.CastorMarshaller;
 
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -22,9 +26,12 @@ import java.text.MessageFormat;
  * 评审人 ：
  * </pre>
  */
-public class XmlTest {
+public class XmlTest extends UnitTestBase {
 
-    private String stockUri = "http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol={0}&begin_date={1}&end_date={2}&type={3}";
+    @Autowired
+    private SecurityConfiguration securityConfiguration;
+    @Autowired
+    private CastorMarshaller castorMarshaller;
     private String stock = "sz300197";
     private String beginDate = "20140701";
     private String endDate = "20140701";
@@ -33,9 +40,9 @@ public class XmlTest {
     @Test
     public void test() throws IOException {
         String result = RequestClient.getInstance().get(
-                MessageFormat.format(stockUri, stock, beginDate, endDate, type)
+                MessageFormat.format(securityConfiguration.stockHistoryUri, stock, beginDate, endDate, type)
         );
 
-
+        castorMarshaller.unmarshal();
     }
 }
