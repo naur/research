@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <!--<context:property-placeholder location="classpath:jdbc.properties"/>-->
+    <context:component-scan base-package="org.naure"/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:application.properties</value>
+                <value>classpath:httl.properties</value>
+                <value>classpath:jdbc.properties</value>
+                <value>classpath:berkeley.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 注册aspectj -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!-- Configures the @Controller programming model -->
+    <mvc:annotation-driven/>
+    <!-- Forwards requests to the "/" resource to the "welcome" view -->
+
+    <mvc:view-controller path="/" view-name="welcome"/>
+
+    <mvc:default-servlet-handler/>
+
+    <!--To enable @RequestMapping process on type level and method level-->
+    <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonConverter"/>
+                <ref bean="marshallingConverter"/>
+                <ref bean="atomConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="order" value="100"/>
+        <property name="defaultContentType" value="text/html"/>
+        <property name="favorPathExtension" value="true"/>
+        <property name="favorParameter" value="false"/>
+        <property name="ignoreAcceptHeader" value="true"/>
+        <property name="mediaTypes">
+            <map>
+                <entry key="xml" value="application/xml"/>
+                <entry key="json" value="application/json"/>
+                <entry key="atom" value="application/atom+xml"/>
+                <entry key="rss" value="application/rss+xml"/>
+            </map>
+        </property>
+        <property name="defaultViews">
+            <list>
+                <ref bean="marshallingView"/>
+                <ref bean="mappingJacksonJsonView"/>
+                <ref bean="atomView"/>
+                <ref bean="rssView"/>
+            </list>
+        </property>
+        <property name="viewResolvers">
+            <list>
+                <ref bean="viewResolver"/>
+                <!--<ref bean="multipartResolver"/>-->
+            </list>
+        </property>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize">
+            <value>10485760</value>
+        </property>
+    </bean>
+
+    <!--视图-->
+    <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
+        <!--DOTO 改为使用castorMarshaller -->
+        <constructor-arg ref="xStreamMarshaller"/>
+        <property name="modelKey" value="information"/>
+        <!--<constructor-arg ref="castorMarshaller"/>-->
+    </bean>
+    <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+    <bean id="atomView" class="org.naure.web.views.AtomView"/>
+    <bean id="rssView" class="org.naure.web.views.RssView"/>
+
+    <!--转换程序-->
+    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/json"/>
+    </bean>
+    <bean id="marshallingConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/xml"/>
+        <!--<property name="supportedMediaTypes" value="application/vnd.stocks+xml"/>-->
+        <property name="marshaller" ref="castorMarshaller"/>
+        <property name="unmarshaller" ref="castorMarshaller"/>
+        <!--<constructor-arg ref="jaxbMarshaller" />-->
+        <!--<constructor-arg ref="xStreamMarshaller"/>-->
+    </bean>
+    <bean id="atomConverter" class="org.springframework.http.converter.feed.AtomFeedHttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/atom+xml"/>
+    </bean>
+
+    <!--序列化工具-->
+    <bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+        <property name="aliases">
+            <props>
+                <prop key="information">org.naure.common.entities.Information</prop>
+                <prop key="level">org.naure.common.entities.InformationLevel</prop>
+                <prop key="session">org.naure.repositories.models.Session</prop>
+                <prop key="sessionLog">org.naure.repositories.models.SessionLog</prop>
+                <prop key="eng">org.naure.repositories.models.learn.Eng</prop>
+                <prop key="bond">org.naure.repositories.models.finance.Bond</prop>
+                <prop key="future">org.naure.repositories.models.finance.Future</prop>
+                <prop key="money">org.naure.repositories.models.finance.Money</prop>
+                <prop key="option">org.naure.repositories.models.finance.Option</prop>
+                <prop key="stock">org.naure.repositories.models.finance.Stock</prop>
+                <prop key="quote">org.naure.repositories.models.finance.Quote</prop>
+            </props>
+        </property>
+    </bean>
+    <!--<bean id="xStreamMarshaller" class="org.naure.web.CustomXStreamMarshaller">-->
+    <!--<constructor-arg>-->
+    <!--<map>-->
+    <!--<entry key="information" value="org.naure.common.entities.Information"/>-->
+    <!--<entry key="level" value="org.naure.common.entities.InformationLevel"/>-->
+    <!--<entry key="session" value="org.naure.repositories.models.Session"/>-->
+    <!--<entry key="sessionLog" value="org.naure.repositories.models.SessionLog"/>-->
+    <!--<entry key="eng" value="org.naure.repositories.models.learn.Eng"/>-->
+    <!--<entry key="bond" value="org.naure.repositories.models.finance.Bond"/>-->
+    <!--<entry key="future" value="org.naure.repositories.models.finance.Future"/>-->
+    <!--<entry key="money" value="org.naure.repositories.models.finance.Money"/>-->
+    <!--<entry key="option" value="org.naure.repositories.models.finance.Option"/>-->
+    <!--<entry key="stock" value="org.naure.repositories.models.finance.Stock"/>-->
+    <!--<entry key="quote" value="org.naure.repositories.models.finance.Quote"/>-->
+    <!--</map>-->
+    <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+    </mvc:interceptors>
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="/WEB-INF/messages/messages"/>
+        <property name="cacheSeconds" value="0"/>
+    </bean>
+
+</beans>
