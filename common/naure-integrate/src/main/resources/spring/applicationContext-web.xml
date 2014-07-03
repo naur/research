@@ -152,7 +152,7 @@
     <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
         <property name="mappingLocations">
             <list>
-                <value>mapping/castor.xml</value>
+                <value>classpath:mapping/castor.xml</value>
             </list>
         </property>
     </bean>

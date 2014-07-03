@@ -5,14 +5,19 @@
  */
 package org.naure.research.test;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.naure.common.test.UnitTestBase;
 import org.naure.common.util.RequestClient;
+import org.naure.repositories.models.finance.Stock;
 import org.naure.research.config.SecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.castor.CastorMarshaller;
+import org.w3c.dom.Document;
 
+import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
+import java.io.StringReader;
 import java.text.MessageFormat;
 
 /**
@@ -39,10 +44,11 @@ public class XmlTest extends UnitTestBase {
 
     @Test
     public void test() throws IOException {
-        String result = RequestClient.getInstance().get(
+        String xml = RequestClient.getInstance().get(
                 MessageFormat.format(securityConfiguration.stockHistoryUri, stock, beginDate, endDate, type)
         );
 
-        castorMarshaller.unmarshal();
+        Object result = castorMarshaller.unmarshal(new StreamSource(new StringReader(xml)));
+        Assert.assertTrue(result instanceof Stock);
     }
 }

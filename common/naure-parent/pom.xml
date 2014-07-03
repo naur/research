@@ -438,7 +438,7 @@
                 <scope>compile</scope>
             </dependency>
 
-           <!--任务调度-->
+            <!--任务调度-->
             <dependency>
                 <groupId>it.sauronsoftware.cron4j</groupId>
                 <artifactId>cron4j</artifactId>
@@ -624,9 +624,9 @@
                 <configuration>
                     <useSystemClassLoader>false</useSystemClassLoader>
                     <skipTests>${surefire-skipTests}</skipTests>
-                    <argLine>-Xms1024m -Xmx1024m -Xss1024K -XX:PermSize=256m -XX:MaxPermSize=512m
-                        -XX:-UseGCOverheadLimit
-                    </argLine>
+                    <!--<argLine>-Xms1024m -Xmx1024m -Xss1024K -XX:PermSize=256m -XX:MaxPermSize=512m-->
+                        <!---XX:-UseGCOverheadLimit-->
+                    <!--</argLine>-->
                 </configuration>
             </plugin>
             <plugin>
