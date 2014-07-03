@@ -65,12 +65,12 @@
                 <ref bean="rssView"/>
             </list>
         </property>
-        <property name="viewResolvers">
-            <list>
-                <ref bean="viewResolver"/>
+        <!--<property name="viewResolvers">-->
+            <!--<list>-->
+                <!--<ref bean="viewResolver"/>-->
                 <!--<ref bean="multipartResolver"/>-->
-            </list>
-        </property>
+            <!--</list>-->
+        <!--</property>-->
     </bean>
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -78,6 +78,7 @@
             <value>10485760</value>
         </property>
     </bean>
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
 
     <!--视图-->
     <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
@@ -124,28 +125,11 @@
             </props>
         </property>
     </bean>
-    <!--<bean id="xStreamMarshaller" class="org.naure.web.CustomXStreamMarshaller">-->
-    <!--<constructor-arg>-->
-    <!--<map>-->
-    <!--<entry key="information" value="org.naure.common.entities.Information"/>-->
-    <!--<entry key="level" value="org.naure.common.entities.InformationLevel"/>-->
-    <!--<entry key="session" value="org.naure.repositories.models.Session"/>-->
-    <!--<entry key="sessionLog" value="org.naure.repositories.models.SessionLog"/>-->
-    <!--<entry key="eng" value="org.naure.repositories.models.learn.Eng"/>-->
-    <!--<entry key="bond" value="org.naure.repositories.models.finance.Bond"/>-->
-    <!--<entry key="future" value="org.naure.repositories.models.finance.Future"/>-->
-    <!--<entry key="money" value="org.naure.repositories.models.finance.Money"/>-->
-    <!--<entry key="option" value="org.naure.repositories.models.finance.Option"/>-->
-    <!--<entry key="stock" value="org.naure.repositories.models.finance.Stock"/>-->
-    <!--<entry key="quote" value="org.naure.repositories.models.finance.Quote"/>-->
-    <!--</map>-->
-    <!--</constructor-arg>-->
-    <!--</bean>-->
 
     <mvc:interceptors>
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
     </mvc:interceptors>
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
+
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basename" value="/WEB-INF/messages/messages"/>
         <property name="cacheSeconds" value="0"/>

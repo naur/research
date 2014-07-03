@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
+import java.io.StringReader;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,10 +36,13 @@ public class StockService {
     //股票配置信息
     @Autowired
     private SecurityConfiguration securityConfiguration;
+    //xml解析
     @Autowired
     private CastorMarshaller castorMarshaller;
     //请求的类型
     private String type = "xml";
+    //日期解析
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
     /**
      * 获取股票历史数据
@@ -48,13 +52,13 @@ public class StockService {
      * @param endDate   [20120723]
      */
     public Stock getHistory(String stock, Date beginDate, Date endDate) throws IOException {
-        String result = RequestClient.getInstance().get(
-                MessageFormat.format(securityConfiguration.stockHistoryUri, stock, beginDate, endDate, type)
+        String xml = RequestClient.getInstance().get(
+                MessageFormat.format(
+                        securityConfiguration.stockHistoryUri,
+                        stock, dateFormat.format(beginDate), dateFormat.format(endDate),
+                        type)
         );
-        StreamSource stream = new StreamSource(result);
-        castorMarshaller.unmarshal(stream);
-
-        return null;
+        return (Stock) castorMarshaller.unmarshal(new StreamSource(new StringReader(xml)));
     }
 
     /**
