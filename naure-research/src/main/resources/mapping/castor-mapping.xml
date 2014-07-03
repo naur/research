@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <mapping>
-    <field-handler name="dateFieldHandler" class="org.naure.research.web.services.DateFieldHandler">
+    <field-handler name="dateFieldHandler" class="org.naure.common.util.DateFieldHandler">
         <param name="date-format" value="yyyy-MM-dd"/>
     </field-handler>
 
