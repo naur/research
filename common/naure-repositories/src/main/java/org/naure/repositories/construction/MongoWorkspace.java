@@ -1,5 +1,6 @@
 package org.naure.repositories.construction;
 
+import com.mongodb.WriteResult;
 import org.apache.commons.lang3.StringUtils;
 import org.naure.common.entities.Entity;
 import org.naure.common.patterns.Tree;
@@ -26,47 +27,28 @@ import java.util.Map;
 public class MongoWorkspace extends AbstractWorkspace {
 
     /**
-     * 支持分页查询，分页参数【pageSize, pageIndex】
+     * 支持分页查询，分页参数【Paging:   put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(3), new Tree<Integer>(1)))】
      * 支持返回的字段和排除的字段【include, exclude】, 以逗号分割
      */
     @Override
     public <T, U> List<U> get(T t, Class<U> resultClass) throws Exception {
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
+        //默认页面信息
         int pageSize = 30;
         int pageIndex = 1;
         Map params = (Map) t;
         if (null != params) {
             for (Object key : params.keySet()) {
-                //STEP 1:  分页参数
-                if ("pageSize".equals(key)) {
-                    pageSize = Integer.parseInt(params.get(key).toString());
-                    continue;
-                }
-                if ("pageIndex".equals(key)) {
-                    pageIndex = Integer.parseInt(params.get(key).toString());
-                    if (pageIndex == 0)
-                        pageIndex = 1;
-                    continue;
-                }
-                //STEP 2:  返回的字段和排除的字段
-                if ("include".equals(key)) {
-                    String[] keys = params.get(key).toString().split(",");
-                    for (String subKey : keys) {
-                        query.fields().include(subKey);
-                    }
-                    continue;
-                }
-                if ("exclude".equals(key)) {
-                    String[] keys = params.get(key).toString().split(",");
-                    for (String subKey : keys) {
-                        query.fields().include(subKey);
-                    }
-                    continue;
-                }
                 if (params.get(key) instanceof Tree) {
                     Tree tree = (Tree) params.get(key);
                     switch (tree.getType()) {
+                        case Paging:
+                            pageSize = (Integer) tree.getLeft().getInfo();
+                            pageIndex = (Integer) tree.getRight().getInfo();
+                            //默认第一页是【1】
+                            if (pageIndex == 0) pageIndex = 1;
+                            break;
                         case In:
                             query.addCriteria(Criteria.where(key.toString()).in(tree.getLeft().getInfo(), tree.getRight().getInfo()));
                             break;
@@ -75,6 +57,18 @@ public class MongoWorkspace extends AbstractWorkspace {
                             break;
                         case Regex:
                             query.addCriteria(Criteria.where(key.toString()).regex(String.valueOf(tree.getInfo())));
+                            break;
+                        case Include:
+                            String[] includeKeys =tree.getInfo().toString().split(",");
+                            for (String subKey : includeKeys) {
+                                query.fields().include(subKey);
+                            }
+                            break;
+                        case Exclude:
+                            String[] excludeKeys =tree.getInfo().toString().split(",");
+                            for (String subKey : excludeKeys) {
+                                query.fields().exclude(subKey);
+                            }
                             break;
                     }
                 } else
@@ -190,6 +184,7 @@ public class MongoWorkspace extends AbstractWorkspace {
 
     /**
      * 根据类名解析获取 MongoDB 的 collections 名
+     *
      * @return
      */
     private String collectionName(String classFullName) {

@@ -9,7 +9,7 @@ package org.naure.common.patterns;
  */
 public enum Type {
     //2,3,4,5,6,7  ln,neg,+,-,*,/
-    Add(4), In(101), Between(102), Regex(201);
+    Add(4), In(101), Between(102), Regex(201), Include(501), Exclude(501), Paging(700);
 
     private final int value;
 
