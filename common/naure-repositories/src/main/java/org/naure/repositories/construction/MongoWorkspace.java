@@ -7,6 +7,7 @@ import org.naure.common.patterns.Tree;
 import org.naure.repositories.config.MongoConfiguration;
 import org.naure.repositories.construction.Workspace;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -44,6 +45,7 @@ public class MongoWorkspace extends AbstractWorkspace {
                     Tree tree = (Tree) params.get(key);
                     switch (tree.getType()) {
                         case Paging:
+                            //Usage: put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(3), new Tree<Integer>(1)));
                             pageSize = (Integer) tree.getLeft().getInfo();
                             pageIndex = (Integer) tree.getRight().getInfo();
                             //默认第一页是【1】
@@ -59,16 +61,21 @@ public class MongoWorkspace extends AbstractWorkspace {
                             query.addCriteria(Criteria.where(key.toString()).regex(String.valueOf(tree.getInfo())));
                             break;
                         case Include:
-                            String[] includeKeys =tree.getInfo().toString().split(",");
+                            //Usage: put(Type.Exclude.name(), new Tree<String>(Type.Exclude, "quotes"));
+                            String[] includeKeys = tree.getInfo().toString().split(",");
                             for (String subKey : includeKeys) {
                                 query.fields().include(subKey);
                             }
                             break;
                         case Exclude:
-                            String[] excludeKeys =tree.getInfo().toString().split(",");
+                            String[] excludeKeys = tree.getInfo().toString().split(",");
                             for (String subKey : excludeKeys) {
                                 query.fields().exclude(subKey);
                             }
+                            break;
+                        case Sort:
+                            //TODO 暂时处理
+                            query.with(new Sort(tree.getInfo().toString().split(",")));
                             break;
                     }
                 } else
@@ -82,7 +89,6 @@ public class MongoWorkspace extends AbstractWorkspace {
                 query,
                 resultClass,
                 collectionName(resultClass.getName())
-                //((Entity) resultClass.newInstance()).collectionName()
         );
     }
 

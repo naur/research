@@ -45,7 +45,32 @@ public class MongoDBTest extends UnitTestBase {
         }}, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(5, result.size());
-        Assert.assertEquals(2, result.get(0).getQuotes().size());
+        Assert.assertEquals(6, result.get(0).getQuotes().size());
+    }
+
+    //查询：排序
+    @Test
+    public void testSort() throws Exception {
+        List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
+            put("type", "test");
+            put(Type.Sort.name(), new Tree<String>(Type.Sort, "code"));
+        }}, Stock.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(5, result.size());
+        Assert.assertEquals(6, result.get(0).getQuotes().size());
+    }
+
+    //查询：子集合数据
+    @Test
+    public void testGetSubCollection() throws Exception {
+        List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
+            put("type", "test");
+            put("code", "600000");
+            put("quotes.date", dateFormat.parse("2014-07-02"));
+        }}, Stock.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals(1, result.get(0).getQuotes().size());
     }
 
     //查询：分页数据
@@ -57,7 +82,7 @@ public class MongoDBTest extends UnitTestBase {
         }}, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(3, result.size());
-        Assert.assertEquals(2, result.get(0).getQuotes().size());
+        Assert.assertEquals(6, result.get(0).getQuotes().size());
     }
 
     //查询：排除特定字段
@@ -86,12 +111,25 @@ public class MongoDBTest extends UnitTestBase {
 
     private Stock parseStock(String type, int code) throws ParseException {
         Stock stock = new Stock();
+        stock.setCode(String.valueOf(code));
         stock.setType(type);
         stock.getQuotes().add(new StockQuote(
-                dateFormat.parse("2014-07-0" + code), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+                dateFormat.parse("2014-07-01"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
         ));
         stock.getQuotes().add(new StockQuote(
-                dateFormat.parse("2014-07-0" + (code + 1)), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+                dateFormat.parse("2014-07-02"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+        ));
+        stock.getQuotes().add(new StockQuote(
+                dateFormat.parse("2014-07-03"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+        ));
+        stock.getQuotes().add(new StockQuote(
+                dateFormat.parse("2014-07-04"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+        ));
+        stock.getQuotes().add(new StockQuote(
+                dateFormat.parse("2014-07-05"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+        ));
+        stock.getQuotes().add(new StockQuote(
+                dateFormat.parse("2014-07-10"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
         ));
         return stock;
     }
