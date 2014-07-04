@@ -28,7 +28,4 @@ public abstract class Security<T extends Quote> extends Entity {
     }
 
     private List<T> quotes;
-
-    //有价证券标识符，可能由多种信息来表示一种有价证券
-    public abstract Map identifier();
 }

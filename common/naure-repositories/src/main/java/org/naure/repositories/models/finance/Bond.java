@@ -12,8 +12,4 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class Bond extends Security<Quote> {
-    @Override
-    public Map identifier() {
-        return null;
-    }
 }

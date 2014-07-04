@@ -19,15 +19,11 @@ import java.util.Map;
 public class SecurityRepository extends Repository {
 
     public boolean exists(final Security security) throws Exception {
-        Map<String, Object> query = security.identifier();
-        query.put("class", security.collectionName());
-
-        return this.exists(query);
+        return this.exists(identifier(security));
     }
 
     public boolean update(final Security security) throws Exception {
-        Map<String, Object> query = security.identifier();
-        query.put("class", security.collectionName());
+        Map<String, Object> query = identifier(security);
 
         Map<String, Object> update = new HashMap<String, Object>();
         update.put("query", query);
@@ -45,5 +41,11 @@ public class SecurityRepository extends Repository {
         security.setCreated(Calendar.getInstance().getTime());
         security.setUpdated(security.getCreated());
         return workspace.add(security);
+    }
+
+    private Map identifier(final Security security) {
+        return new HashMap<String, Object>() {{
+            put("class", security.collectionName());
+        }};
     }
 }

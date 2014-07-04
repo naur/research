@@ -25,6 +25,9 @@ import java.util.Map;
 @Component
 public class MongoWorkspace extends AbstractWorkspace {
 
+    /**
+     * 支持分页查询，分页参数【pageSize, pageIndex】
+     */
     @Override
     public <T, U> List<U> get(T t, Class<U> resultClass) throws Exception {
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
@@ -62,7 +65,11 @@ public class MongoWorkspace extends AbstractWorkspace {
 
         query.skip(pageSize * (pageIndex - 1));
         query.limit(pageSize);
-        return mongoOperations.find(query, resultClass, ((Entity) resultClass.newInstance()).collectionName());
+        return mongoOperations.find(
+                query,
+                resultClass,
+                ((Entity) resultClass.newInstance()).collectionName()
+        );
     }
 
     @Override
@@ -146,6 +153,10 @@ public class MongoWorkspace extends AbstractWorkspace {
 
     @Override
     public <T> long count(T t) throws Exception {
+        if (!(t instanceof Map)) {
+            throw new Exception("t is not Map!");
+        }
+
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
         Map params = (Map) t;

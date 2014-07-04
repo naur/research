@@ -7,6 +7,7 @@ package org.naure.research.web.services;
 
 import org.exolab.castor.mapping.GeneralizedFieldHandler;
 import org.naure.common.util.RequestClient;
+import org.naure.repositories.StockRepository;
 import org.naure.research.config.SecurityConfiguration;
 import org.naure.repositories.models.finance.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ import java.util.List;
  */
 @Service
 public class StockService {
+    @Autowired
+    private StockRepository stockRepository;
+
     //股票配置信息
     @Autowired
     private SecurityConfiguration securityConfiguration;

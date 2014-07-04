@@ -36,8 +36,10 @@
         <junit.version>4.7</junit.version>
         <berkeley.je.version>5.0.103</berkeley.je.version>
         <jackson.version>1.9.3</jackson.version>
-        <spring-release-mongodb.version>1.0.1.RELEASE</spring-release-mongodb.version>
-        <spring-data-commons-core.version>1.2.1.RELEASE</spring-data-commons-core.version>
+
+        <spring-data-mongodb.version>1.5.1.RELEASE</spring-data-mongodb.version>
+        <spring-data-commons-core.version>1.4.1.RELEASE</spring-data-commons-core.version>
+
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <!--3.0.5-->
         <!--<spring-oxm.version>1.5.10</spring-oxm.version>-->
@@ -354,7 +356,7 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-mongodb</artifactId>
-                <version>${spring-release-mongodb.version}</version>
+                <version>${spring-data-mongodb.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.data</groupId>

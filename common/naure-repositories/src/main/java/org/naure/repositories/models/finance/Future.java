@@ -39,11 +39,11 @@ public class Future extends Security<Quote> {
         this.contract = contract;
     }
 
-    @Override
-    public Map identifier() {
-        return new HashMap<String, Object>() {{
-            put("species", species);
-            put("contract", contract);
-        }};
-    }
+//    @Override
+//    public Map identifier() {
+//        return new HashMap<String, Object>() {{
+//            put("species", species);
+//            put("contract", contract);
+//        }};
+//    }
 }

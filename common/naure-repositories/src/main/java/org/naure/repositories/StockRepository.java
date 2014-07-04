@@ -14,26 +14,43 @@ import java.util.Map;
  */
 @Component
 public class StockRepository extends Repository {
-    public boolean add(final Stock stock) throws Exception {
 
-        Map<String, Object> query = new HashMap<String, Object>() {{
-            putAll(stock.identifier());
+    public boolean exists(final Stock stock) throws Exception {
+        return this.exists(identifier(stock));
+    }
+
+    public boolean update(final Stock stock) throws Exception {
+        Map<String, Object> query = identifier(stock);
+
+        Map<String, Object> update = new HashMap<String, Object>();
+        update.put("query", query);
+        update.put("update", new HashMap<String, Object>() {{
+            put("updated", Calendar.getInstance().getTime());
+            put("quotes", stock.getQuotes());
+        }});
+        update.put("class", stock.collectionName());
+        return update(update);
+    }
+
+    public boolean add(final Stock stock) throws Exception {
+        stock.setCreated(Calendar.getInstance().getTime());
+        stock.setUpdated(stock.getCreated());
+        return workspace.add(stock);
+    }
+
+    private Map identifier(final Stock stock) {
+        return new HashMap<String, Object>() {{
+            put("code", stock.getCode());
+            put("type", stock.getType());
             put("class", stock.collectionName());
         }};
+    }
 
-        if (this.exists(query)) {
-            Map<String, Object> update = new HashMap<String, Object>();
-            update.put("query", query);
-            update.put("update", new HashMap<String, Object>() {{
-                put("updated", Calendar.getInstance().getTime());
-                put("quotes", stock.getQuotes());
-            }});
-            update.put("class", stock.collectionName());
-            return update(update);
-        } else {
-            stock.setCreated(Calendar.getInstance().getTime());
-            stock.setUpdated(stock.getCreated());
-            return workspace.add(stock);
-        }
+    private Map identifierQuote(final Stock stock) {
+        return new HashMap<String, Object>() {{
+            put("code", stock.getCode());
+            put("type", stock.getType());
+            put("class", stock.collectionName());
+        }};
     }
 }

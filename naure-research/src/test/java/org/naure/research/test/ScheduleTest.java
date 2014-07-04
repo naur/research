@@ -31,7 +31,7 @@ public class ScheduleTest {
         final AtomicInteger atomicInteger = new AtomicInteger();
         atomicInteger.set(0);
         Scheduler scheduler = new Scheduler();
-        scheduler.schedule("/5 * * * *", new Runnable() {
+        scheduler.schedule("* * * * *", new Runnable() {
             @Override
             public void run() {
                 System.out.println("count: " + String.valueOf(atomicInteger.addAndGet(1)));
@@ -39,7 +39,7 @@ public class ScheduleTest {
         });
         scheduler.start();
         try {
-            Thread.sleep(1L * 60L * 1000L);
+            Thread.sleep(3L * 60L * 1000L);
         } catch (InterruptedException e) {
         }
         scheduler.stop();

@@ -1,6 +1,7 @@
 package org.naure.repositories.test;
 
 import org.junit.Test;
+import org.naure.common.test.UnitTestBase;
 import org.naure.repositories.StockRepository;
 import org.naure.repositories.models.finance.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Created by Administrator on 6/17/14.
  */
-public class StockRepositoryTest {
+public class StockRepositoryTest extends UnitTestBase {
 
     @Autowired
     private StockRepository stockRepository;
