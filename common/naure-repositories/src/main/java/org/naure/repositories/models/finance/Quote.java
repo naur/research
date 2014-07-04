@@ -87,21 +87,21 @@ public abstract class Quote {
     }
 
     //日期
-    private Date date;
+    protected Date date;
     //今开盘
-    private double open;
+    protected double open;
     //最高价
-    private double high;
+    protected double high;
     //最低价
-    private double low;
+    protected double low;
     //收盘价
-    private double close;
+    protected double close;
     //成交量：手（按单边计算） 】
-    private double volume;
+    protected double volume;
     //结算价
-    private double settle;
+    protected double settle;
     //持仓量：手（按单边计算）
-    private double openInterest;
+    protected double openInterest;
     // 成交金额：万元（按单边计算）
-    private double turnover;
+    protected double turnover;
 }

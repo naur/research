@@ -38,11 +38,4 @@ public abstract class Entity implements Serializable {
     private String id;
     private Date created; // createDate;
     private Date updated; //updatedDate;
-
-    public String collectionName() {
-        String classFullName = getClass().getName();
-        return classFullName.substring(
-                classFullName.indexOf("models.") + 7
-        ).toLowerCase();
-    }
 }

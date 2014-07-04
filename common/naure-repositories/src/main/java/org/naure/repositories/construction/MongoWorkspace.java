@@ -27,6 +27,7 @@ public class MongoWorkspace extends AbstractWorkspace {
 
     /**
      * 支持分页查询，分页参数【pageSize, pageIndex】
+     * 支持返回的字段和排除的字段【include, exclude】, 以逗号分割
      */
     @Override
     public <T, U> List<U> get(T t, Class<U> resultClass) throws Exception {
@@ -35,32 +36,50 @@ public class MongoWorkspace extends AbstractWorkspace {
         int pageSize = 30;
         int pageIndex = 1;
         Map params = (Map) t;
-        for (Object key : params.keySet()) {
-            if ("pageSize".equals(key)) {
-                pageSize = Integer.parseInt(params.get(key).toString());
-                continue;
-            }
-            if ("pageIndex".equals(key)) {
-                pageIndex = Integer.parseInt(params.get(key).toString());
-                if (pageIndex == 0)
-                    pageIndex = 1;
-                continue;
-            }
-            if (params.get(key) instanceof Tree) {
-                Tree tree = (Tree) params.get(key);
-                switch (tree.getType()) {
-                    case In:
-                        query.addCriteria(Criteria.where(key.toString()).in(tree.getLeft().getInfo(), tree.getRight().getInfo()));
-                        break;
-                    case Between:
-                        query.addCriteria(Criteria.where(key.toString()).gte(tree.getLeft().getInfo()).lte(tree.getRight().getInfo()));
-                        break;
-                    case Regex:
-                        query.addCriteria(Criteria.where(key.toString()).regex(String.valueOf(tree.getInfo())));
-                        break;
+        if (null != params) {
+            for (Object key : params.keySet()) {
+                //STEP 1:  分页参数
+                if ("pageSize".equals(key)) {
+                    pageSize = Integer.parseInt(params.get(key).toString());
+                    continue;
                 }
-            } else
-                query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+                if ("pageIndex".equals(key)) {
+                    pageIndex = Integer.parseInt(params.get(key).toString());
+                    if (pageIndex == 0)
+                        pageIndex = 1;
+                    continue;
+                }
+                //STEP 2:  返回的字段和排除的字段
+                if ("include".equals(key)) {
+                    String[] keys = params.get(key).toString().split(",");
+                    for (String subKey : keys) {
+                        query.fields().include(subKey);
+                    }
+                    continue;
+                }
+                if ("exclude".equals(key)) {
+                    String[] keys = params.get(key).toString().split(",");
+                    for (String subKey : keys) {
+                        query.fields().include(subKey);
+                    }
+                    continue;
+                }
+                if (params.get(key) instanceof Tree) {
+                    Tree tree = (Tree) params.get(key);
+                    switch (tree.getType()) {
+                        case In:
+                            query.addCriteria(Criteria.where(key.toString()).in(tree.getLeft().getInfo(), tree.getRight().getInfo()));
+                            break;
+                        case Between:
+                            query.addCriteria(Criteria.where(key.toString()).gte(tree.getLeft().getInfo()).lte(tree.getRight().getInfo()));
+                            break;
+                        case Regex:
+                            query.addCriteria(Criteria.where(key.toString()).regex(String.valueOf(tree.getInfo())));
+                            break;
+                    }
+                } else
+                    query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+            }
         }
 
         query.skip(pageSize * (pageIndex - 1));
@@ -68,7 +87,8 @@ public class MongoWorkspace extends AbstractWorkspace {
         return mongoOperations.find(
                 query,
                 resultClass,
-                ((Entity) resultClass.newInstance()).collectionName()
+                collectionName(resultClass.getName())
+                //((Entity) resultClass.newInstance()).collectionName()
         );
     }
 
@@ -80,7 +100,7 @@ public class MongoWorkspace extends AbstractWorkspace {
         }
 
         MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
-        mongoOps.insert(t, ((Entity) t).collectionName());
+        mongoOps.insert(t, collectionName(t.getClass().getName()));
         return true;
     }
 
@@ -110,7 +130,7 @@ public class MongoWorkspace extends AbstractWorkspace {
                 query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
         }
 
-        mongoOperations.remove(query, params.get("class").toString());
+        mongoOperations.remove(query, collectionName(params.get("class").toString()));
         return true;
     }
 
@@ -142,7 +162,7 @@ public class MongoWorkspace extends AbstractWorkspace {
                 }
         }
 
-        mongoOps.updateMulti(query, update, params.get("class").toString());
+        mongoOps.updateMulti(query, update, collectionName(params.get("class").toString()));
         return true;
     }
 
@@ -160,12 +180,22 @@ public class MongoWorkspace extends AbstractWorkspace {
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
         Map params = (Map) t;
-        String collectionName = params.get("class").toString();
+        String collectionName = collectionName(params.get("class").toString());
         params.remove("class");
         for (Object key : params.keySet()) {
             query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
         }
         return mongoOperations.count(query, collectionName);
+    }
+
+    /**
+     * 根据类名解析获取 MongoDB 的 collections 名
+     * @return
+     */
+    private String collectionName(String classFullName) {
+        return classFullName.substring(
+                classFullName.indexOf("models.") + 7
+        ).toLowerCase();
     }
 
     @Autowired

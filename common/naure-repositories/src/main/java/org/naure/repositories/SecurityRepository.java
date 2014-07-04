@@ -31,7 +31,7 @@ public class SecurityRepository extends Repository {
             put("updated", Calendar.getInstance().getTime());
             put("quotes", security.getQuotes());
         }});
-        update.put("class", security.collectionName());
+        update.put("class", security.getClass());
 
         return update(update);
 
@@ -45,7 +45,7 @@ public class SecurityRepository extends Repository {
 
     private Map identifier(final Security security) {
         return new HashMap<String, Object>() {{
-            put("class", security.collectionName());
+            put("class", security.getClass());
         }};
     }
 }

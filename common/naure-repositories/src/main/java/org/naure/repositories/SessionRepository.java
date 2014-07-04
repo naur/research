@@ -26,7 +26,7 @@ public class SessionRepository extends Repository {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("application", session.getApplication());
             put("sessionId", session.getSessionId());
-            put("class", session.collectionName());
+            put("class", session.getClass());
         }};
 
         return this.exists(query);
@@ -36,7 +36,7 @@ public class SessionRepository extends Repository {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("application", session.getApplication());
             put("sessionId", session.getSessionId());
-            put("class", session.collectionName());
+            put("class", session.getClass());
         }};
 
         Map<String, Object> update = new HashMap<String, Object>();
@@ -45,7 +45,7 @@ public class SessionRepository extends Repository {
             put("updated", Calendar.getInstance().getTime());
             put("logs", session.getLogs());
         }});
-        update.put("class", session.collectionName());
+        update.put("class", session.getClass());
         return update(update);
     }
 

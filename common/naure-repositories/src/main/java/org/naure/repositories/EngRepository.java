@@ -22,7 +22,7 @@ public class EngRepository extends Repository {
     public boolean exists(final Eng eng) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("word", eng.getWord());
-            put("class", eng.collectionName());
+            put("class", eng.getClass());
         }};
 
         return this.exists(query);
@@ -31,7 +31,7 @@ public class EngRepository extends Repository {
     public boolean update(final Eng eng) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("word", eng.getWord());
-            put("class", eng.collectionName());
+            put("class", eng.getClass());
         }};
 
         Map<String, Object> update = new HashMap<String, Object>();

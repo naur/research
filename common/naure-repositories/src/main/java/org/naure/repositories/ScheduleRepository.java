@@ -30,13 +30,13 @@ public class ScheduleRepository extends Repository {
             //todo 1,2,3,...
             params.put("path", new Tree<String>(Type.Regex, "^[" + path.replace(",", "|") + "]+,"));
         }
-        params.put("class", schedule.collectionName());
+        params.put("class", schedule.getClass());
         return delete(params);
     }
 
     public boolean exists(final Schedule schedule) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
-            put("class", schedule.collectionName());
+            put("class", schedule.getClass());
             if (null != schedule.getId() || "" != schedule.getId())
                 put("id", schedule.getId());
             else {
@@ -52,7 +52,7 @@ public class ScheduleRepository extends Repository {
 
     public boolean update(final Schedule schedule) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
-            put("class", schedule.collectionName());
+            put("class", schedule.getClass());
             if (null != schedule.getId() || "" != schedule.getId())
                 put("id", schedule.getId());
             else {
@@ -80,7 +80,7 @@ public class ScheduleRepository extends Repository {
                 put("path", schedule.getPath());
             put("updated", Calendar.getInstance().getTime());
         }});
-        update.put("class", schedule.collectionName());
+        update.put("class", schedule.getClass());
         return update(update);
     }
 

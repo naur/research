@@ -23,7 +23,7 @@ public class GeoTraceRepository extends Repository {
     public boolean exists(final GeoTrace geoTrace) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("name", geoTrace.getName());
-            put("class", geoTrace.collectionName());
+            put("class", geoTrace.getClass());
         }};
 
         return this.exists(query);
@@ -38,7 +38,7 @@ public class GeoTraceRepository extends Repository {
     public boolean update(final GeoTrace geoTrace) throws Exception {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("name", geoTrace.getName());
-            put("class", new GeoTrace().collectionName());
+            put("class", new GeoTrace().getClass());
         }};
 
         Map<String, Object> update = new HashMap<String, Object>();
@@ -48,7 +48,7 @@ public class GeoTraceRepository extends Repository {
             put("positions", geoTrace.getPositions().toArray());
             put("updated", Calendar.getInstance().getTime());
         }});
-        update.put("class", new GeoTrace().collectionName());
+        update.put("class", new GeoTrace().getClass());
         return workspace.update(update);
     }
 }

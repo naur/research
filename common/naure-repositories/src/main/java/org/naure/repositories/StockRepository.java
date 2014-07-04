@@ -28,7 +28,7 @@ public class StockRepository extends Repository {
             put("updated", Calendar.getInstance().getTime());
             put("quotes", stock.getQuotes());
         }});
-        update.put("class", stock.collectionName());
+        update.put("class", stock.getClass());
         return update(update);
     }
 
@@ -42,7 +42,7 @@ public class StockRepository extends Repository {
         return new HashMap<String, Object>() {{
             put("code", stock.getCode());
             put("type", stock.getType());
-            put("class", stock.collectionName());
+            put("class", stock.getClass());
         }};
     }
 
@@ -50,7 +50,7 @@ public class StockRepository extends Repository {
         return new HashMap<String, Object>() {{
             put("code", stock.getCode());
             put("type", stock.getType());
-            put("class", stock.collectionName());
+            put("class", stock.getClass());
         }};
     }
 }
