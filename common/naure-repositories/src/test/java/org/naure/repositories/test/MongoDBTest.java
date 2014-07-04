@@ -61,10 +61,11 @@ public class MongoDBTest extends UnitTestBase {
     }
 
     //查询：排除特定字段
+    @Test
     public void testExclude() throws Exception {
         List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
             put("type", "test");
-            put(Type.Exclude.name(), new Tree<String>("quotes"));
+            put(Type.Exclude.name(), new Tree<String>(Type.Exclude, "quotes"));
         }}, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(5, result.size());
