@@ -106,6 +106,29 @@ public class RedisCache<T> implements Cache {
     }
 
     @Override
+    public <U> U get(Object key, Class<U> type) {
+        //TODO 未测试
+        byte[] prefixKey = prefixKey(key);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Getting from cache, key:"
+                    + new String(prefixKey, charset));
+        }
+
+        byte[] bVal = client.get(prefixKey);
+        if (bVal == null) {
+            return null;
+        }
+
+        T val;
+        try {
+            val = serializer.deserialize(bVal);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return (val != null ? (U)val : null);
+    }
+
+    @Override
     public void put(Object key, Object value) {
         if (value == null) {
             return;
