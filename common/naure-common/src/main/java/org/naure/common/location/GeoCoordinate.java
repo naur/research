@@ -1,5 +1,6 @@
 package org.naure.common.location;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 //表示由纬度和经度坐标确定的地理位置。也可以包括海拔高度、精度、速度和航向信息。
-public class GeoCoordinate {
+public class GeoCoordinate implements Serializable {
     public GeoCoordinate() {
     }
 

@@ -1,5 +1,7 @@
 package org.naure.common.location;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator
@@ -8,7 +10,7 @@ package org.naure.common.location;
  * To change this template use File | Settings | File Templates.
  */
 //表示市政地址。一个市政地址可以包括街道地址、邮政编码、省/直辖市/自治区和国家/地区等字段。
-public class CivicAddress {
+public class CivicAddress implements Serializable {
     public CivicAddress() {
     }
 

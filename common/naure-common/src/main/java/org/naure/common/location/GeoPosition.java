@@ -1,5 +1,6 @@
 package org.naure.common.location;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 //包含 GeoPosition(T) 类的类型参数所指定类型的位置数据。
-public class GeoPosition<T> {
+public class GeoPosition<T> implements Serializable {
     public GeoPosition() {
 
     }
