@@ -45,7 +45,7 @@ public class MongoWorkspace extends AbstractWorkspace {
 
         //如果 t 包含【match, unwind, group】 那么采用【聚合】查询
         Map params = (Map) t;
-        if (params.containsKey("match1") && params.containsKey("unwind") && params.containsKey("group")) {
+        if (params.containsKey("match") && params.containsKey("unwind") && params.containsKey("group")) {
             result = aggregate(params, resultClass);
         } else {
             result = find(params, resultClass);
@@ -234,12 +234,12 @@ public class MongoWorkspace extends AbstractWorkspace {
     private <U> List<U> aggregate(Map params, Class<U> resultClass) throws Exception {
         List<AggregationOperation> operations = new ArrayList<AggregationOperation>();
         //对2个 match ，分开与不分开结果一样。
-        Map<String, Object> matchParams = (Map) params.get("match1");
+        Map<String, Object> matchParams = (Map) params.get("match");
         for (Map.Entry<String, Object> entry : matchParams.entrySet()) {
             operations.add(match(parseCriteria(entry.getValue(), entry.getKey())));
         }
         operations.add(unwind(params.get("unwind").toString()));
-        matchParams = (Map) params.get("match2");
+        matchParams = (Map) params.get("match");
         for (Map.Entry<String, Object> entry : matchParams.entrySet()) {
             operations.add(match(parseCriteria(entry.getValue(), entry.getKey())));
         }
