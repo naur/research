@@ -9,6 +9,10 @@ package org.naure.common.patterns;
  */
 public class Tree<T> {
 
+    public Tree(Type type) {
+        this(type, null, null, null);
+    }
+
     public Tree(T info) {
         this(null, info, null, null);
     }
@@ -36,32 +40,36 @@ public class Tree<T> {
         return right;
     }
 
-    public void setRight(Tree right) {
+    public Tree setRight(Tree right) {
         this.right = right;
+        return this;
     }
 
     public Tree getLeft() {
         return left;
     }
 
-    public void setLeft(Tree left) {
+    public Tree setLeft(Tree left) {
         this.left = left;
+        return this;
     }
 
     public Type getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public Tree setType(Type type) {
         this.type = type;
+        return this;
     }
 
     public T getInfo() {
         return info;
     }
 
-    public void setInfo(T info) {
+    public Tree setInfo(T info) {
         this.info = info;
+        return this;
     }
 
     private Tree right;

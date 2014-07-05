@@ -16,10 +16,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,7 +45,7 @@ public class MongoDBTest extends UnitTestBase {
         Assert.assertEquals(6, result.get(0).getQuotes().size());
     }
 
-    //查询：排序
+    //TODO 查询：排序 代码未完成
     @Test
     public void testSort() throws Exception {
         List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
@@ -60,17 +57,39 @@ public class MongoDBTest extends UnitTestBase {
         Assert.assertEquals(6, result.get(0).getQuotes().size());
     }
 
-    //查询：子集合数据
+    //查询：子集合数据-相等查询
     @Test
     public void testGetSubCollection() throws Exception {
         List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
             put("type", "test");
             put("code", "600000");
-            put("quotes.date", dateFormat.parse("2014-07-02"));
+            put("quotes", new Tree(Type.Match, new HashMap<String, Object>() {{
+                put("date", dateFormat.parse("2014-07-02"));
+            }}));
         }}, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(1, result.get(0).getQuotes().size());
+    }
+
+    //查询：子集合数据-指定范围查询
+    @Test
+    public void testGetSubCollectionRange() throws Exception {
+        List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
+            put(Type.Sort.name(), new Tree<String>(Type.Sort, "quotes.date"));
+            put("type", "test");
+            put("code", "600000");
+            put("quotes", new Tree(Type.Match, new HashMap<String, Object>() {{
+                put("date", new Tree(Type.Between)
+                        .setLeft(new Tree(dateFormat.parse("2014-07-02")))
+                        .setRight(new Tree(dateFormat.parse("2014-07-04"))));
+            }}));
+        }}, Stock.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals(3, result.get(0).getQuotes().size());
+        Assert.assertEquals("2014-07-02", dateFormat.format(result.get(0).getQuotes().get(0).getDate()));
+        Assert.assertEquals("2014-07-04", dateFormat.format(result.get(0).getQuotes().get(2).getDate()));
     }
 
     //查询：分页数据
@@ -114,22 +133,22 @@ public class MongoDBTest extends UnitTestBase {
         stock.setCode(String.valueOf(code));
         stock.setType(type);
         stock.getQuotes().add(new StockQuote(
-                dateFormat.parse("2014-07-01"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+                dateFormat.parse("2014-07-01"), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt()
         ));
         stock.getQuotes().add(new StockQuote(
-                dateFormat.parse("2014-07-02"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+                dateFormat.parse("2014-07-02"), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt()
         ));
         stock.getQuotes().add(new StockQuote(
-                dateFormat.parse("2014-07-03"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+                dateFormat.parse("2014-07-03"), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt()
         ));
         stock.getQuotes().add(new StockQuote(
-                dateFormat.parse("2014-07-04"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+                dateFormat.parse("2014-07-04"), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt()
         ));
         stock.getQuotes().add(new StockQuote(
-                dateFormat.parse("2014-07-05"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+                dateFormat.parse("2014-07-05"), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt()
         ));
         stock.getQuotes().add(new StockQuote(
-                dateFormat.parse("2014-07-10"), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble(), random.nextDouble()
+                dateFormat.parse("2014-07-10"), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt(), random.nextInt()
         ));
         return stock;
     }

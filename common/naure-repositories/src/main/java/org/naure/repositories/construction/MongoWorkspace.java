@@ -35,56 +35,13 @@ public class MongoWorkspace extends AbstractWorkspace {
     public <T, U> List<U> get(T t, Class<U> resultClass) throws Exception {
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
-        //默认页面信息
-        int pageSize = 30;
-        int pageIndex = 1;
         Map params = (Map) t;
         if (null != params) {
             for (Object key : params.keySet()) {
-                if (params.get(key) instanceof Tree) {
-                    Tree tree = (Tree) params.get(key);
-                    switch (tree.getType()) {
-                        case Paging:
-                            //Usage: put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(3), new Tree<Integer>(1)));
-                            pageSize = (Integer) tree.getLeft().getInfo();
-                            pageIndex = (Integer) tree.getRight().getInfo();
-                            //默认第一页是【1】
-                            if (pageIndex == 0) pageIndex = 1;
-                            break;
-                        case In:
-                            query.addCriteria(Criteria.where(key.toString()).in(tree.getLeft().getInfo(), tree.getRight().getInfo()));
-                            break;
-                        case Between:
-                            query.addCriteria(Criteria.where(key.toString()).gte(tree.getLeft().getInfo()).lte(tree.getRight().getInfo()));
-                            break;
-                        case Regex:
-                            query.addCriteria(Criteria.where(key.toString()).regex(String.valueOf(tree.getInfo())));
-                            break;
-                        case Include:
-                            //Usage: put(Type.Exclude.name(), new Tree<String>(Type.Exclude, "quotes"));
-                            String[] includeKeys = tree.getInfo().toString().split(",");
-                            for (String subKey : includeKeys) {
-                                query.fields().include(subKey);
-                            }
-                            break;
-                        case Exclude:
-                            String[] excludeKeys = tree.getInfo().toString().split(",");
-                            for (String subKey : excludeKeys) {
-                                query.fields().exclude(subKey);
-                            }
-                            break;
-                        case Sort:
-                            //TODO 暂时处理
-                            query.with(new Sort(tree.getInfo().toString().split(",")));
-                            break;
-                    }
-                } else
-                    query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+                parseQuery(query, key, params.get(key));
             }
         }
 
-        query.skip(pageSize * (pageIndex - 1));
-        query.limit(pageSize);
         return mongoOperations.find(
                 query,
                 resultClass,
@@ -113,21 +70,7 @@ public class MongoWorkspace extends AbstractWorkspace {
             if ("class".equals(key)) {
                 continue;
             }
-            if (params.get(key) instanceof Tree) {
-                Tree tree = (Tree) params.get(key);
-                switch (tree.getType()) {
-                    case In:
-                        query.addCriteria(Criteria.where(key.toString()).in(tree.getLeft().getInfo(), tree.getRight().getInfo()));
-                        break;
-                    case Between:
-                        query.addCriteria(Criteria.where(key.toString()).gte(tree.getLeft().getInfo()).lte(tree.getRight().getInfo()));
-                        break;
-                    case Regex:
-                        query.addCriteria(Criteria.where(key.toString()).regex(String.valueOf(tree.getInfo())));
-                        break;
-                }
-            } else
-                query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+            parseQuery(query, key, params.get(key));
         }
 
         mongoOperations.remove(query, collectionName(params.get("class").toString()));
@@ -136,39 +79,58 @@ public class MongoWorkspace extends AbstractWorkspace {
 
     @Override
     public <T> boolean update(T t) throws Exception {
-        MongoOperations mongoOps = mongoConfiguration.mongoTemplate();
         Map params = (Map) t;
         Query query = new Query();
         Update update = new Update();
+
+        //STEP 1: 获取查询条件
         Map subMap = null;
-        for (Object key : params.keySet()) {
-            if ("class".equals(key))
-                continue;
-            subMap = (Map) params.get(key);
-            if ("query".equals(key))
-                for (Object key1 : subMap.keySet())
-                    query.addCriteria(Criteria.where(key1.toString()).is(subMap.get(key1)));
-            if ("update".equals(key))
-                for (Object key2 : subMap.keySet()) {
-                    //文档参考：http://hi.baidu.com/farmerluo/item/15ba88579b8bbb9409be17bb
-                    //todo 对 pushAll 支持有问题 【can't serialize class org.naure.common.location.GeoPosition】
-                    if (subMap.get(key2) instanceof Object[]) {
-                        update.addToSet(key2.toString(), ((Object[]) subMap.get(key2))[0]);
-                    } else if (null != subMap.get(key2) && subMap.get(key2) instanceof List && ((List) subMap.get(key2)).size() > 0) {
-                        update.addToSet(key2.toString(), ((List) subMap.get(key2)).get(0));
-                    } else {
-                        update.set(key2.toString(), subMap.get(key2));
-                    }
-                }
+        if (params.containsKey("query")) {
+            subMap = (Map) params.get("query");
+            for (Object key1 : subMap.keySet()) {
+                query.addCriteria(Criteria.where(key1.toString()).is(subMap.get(key1)));
+            }
         }
 
-        mongoOps.updateMulti(query, update, collectionName(params.get("class").toString()));
+        //STEP 2: 获取更新信息
+        Object array = null;
+        if (params.containsKey("update")) {
+            subMap = (Map) params.get("update");
+            for (Object key2 : subMap.keySet()) {
+                array = subMap.get(key2);
+                if (null == array) continue;
+                //文档参考：http://hi.baidu.com/farmerluo/item/15ba88579b8bbb9409be17bb
+                //todo 对 pushAll 支持有问题 【can't serialize class org.naure.common.location.GeoPosition】
+                if (array instanceof Object[]) {
+                    update.addToSet(key2.toString(), ((Object[]) array)[0]);
+                } else if (array instanceof List && ((List) array).size() > 0) {
+                    update.addToSet(key2.toString(), ((List) array).get(0));
+                } else {
+                    update.set(key2.toString(), array);
+                }
+            }
+        }
+
+        mongoConfiguration.mongoTemplate()
+                .updateMulti(query, update, collectionName(params.get("class").toString()));
         return true;
     }
 
     @Override
     public <T> boolean exists(T t) throws Exception {
-        return !new Long(0).equals(this.count(t));
+        if (!(t instanceof Map)) {
+            throw new Exception("t is not Map!");
+        }
+
+        MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
+        Query query = new Query();
+        Map params = (Map) t;
+        String collectionName = collectionName(params.get("class").toString());
+        params.remove("class");
+        for (Object key : params.keySet()) {
+            query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+        }
+        return mongoOperations.exists(query, collectionName);
     }
 
     @Override
@@ -186,6 +148,89 @@ public class MongoWorkspace extends AbstractWorkspace {
             query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
         }
         return mongoOperations.count(query, collectionName);
+    }
+
+    /**
+     * 如果 key 是 Map, 默认是 Criteria.is
+     */
+    private void parseQuery(Query query, Object key, Object value) {
+        if (value instanceof Tree) {
+            Tree tree = (Tree) value;
+            switch (tree.getType()) {
+                case Paging:
+                    //Usage: put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(3), new Tree<Integer>(1)));
+                    int pageSize = (Integer) tree.getLeft().getInfo();
+                    int pageIndex = (Integer) tree.getRight().getInfo();
+                    ////默认页面信息: 默认第一页是【1】
+                    if (pageSize == 0) pageSize = 30;
+                    if (pageIndex == 0) pageIndex = 1;
+                    query.skip(pageSize * (pageIndex - 1));
+                    query.limit(pageSize);
+                    break;
+                case Include:
+                    //Usage: put(Type.Exclude.name(), new Tree<String>(Type.Exclude, "quotes"));
+                    String[] includeKeys = tree.getInfo().toString().split(",");
+                    for (String subKey : includeKeys) {
+                        query.fields().include(subKey);
+                    }
+                    break;
+                case Exclude:
+                    String[] excludeKeys = tree.getInfo().toString().split(",");
+                    for (String subKey : excludeKeys) {
+                        query.fields().exclude(subKey);
+                    }
+                    break;
+                case Match:
+                    if (tree.getInfo() instanceof Map) {
+                        for (Map.Entry entry : ((Map<String, Object>) tree.getInfo()).entrySet()) {
+                            query.fields().elemMatch(key.toString(), parseCriteria(entry.getValue(), entry.getKey()));
+                        }
+                    } else {
+                        query.fields().elemMatch(key.toString(), parseCriteria(tree.getInfo()));
+                    }
+                    break;
+                case Sort:
+                    //TODO 暂时处理
+                    query.with(new Sort(tree.getInfo().toString().split(",")));
+                    break;
+                default:
+                    query.addCriteria(parseCriteria(tree, key));
+                    break;
+            }
+        } else {
+            query.addCriteria(Criteria.where(key.toString()).is(value));
+        }
+    }
+
+    private Criteria parseCriteria(Object value, Object... keys) {
+        Criteria criteria = null;
+        String key = keys.length > 0 ? keys[0].toString() : null;
+        if (value instanceof Tree) {
+            Tree tree = (Tree) value;
+            //如果有 keys 参数，去参数的第 0 个，如果没有 keys 参数，那么取 tree 的 info 字段作为 key
+            if (null == key) key = tree.getInfo().toString();
+            switch (tree.getType()) {
+                case In:
+                    // info 值必须是 List
+                    criteria = Criteria.where(key.toString()).in((List) tree.getInfo());
+                    break;
+                case Between:
+                    criteria = Criteria.where(key.toString()).gte(tree.getLeft().getInfo()).lte(tree.getRight().getInfo());
+                    break;
+                case All:
+                    criteria = Criteria.where(key.toString()).all(tree.getInfo());
+                    break;
+                case And:
+                    //query.addCriteria(Criteria.where(key.toString()).and(tree.getLeft().getInfo(), tree.getRight().getInfo()));
+                    break;
+                case Regex:
+                    criteria = Criteria.where(key.toString()).regex(String.valueOf(tree.getInfo()));
+                    break;
+            }
+        } else {
+            criteria = Criteria.where(key.toString()).is(value);
+        }
+        return criteria;
     }
 
     /**
