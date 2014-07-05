@@ -10,11 +10,14 @@ import org.springframework.data.mongodb.core.MongoOperations;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +45,7 @@ public class MongoWorkspace extends AbstractWorkspace {
 
         //如果 t 包含【match, unwind, group】 那么采用【聚合】查询
         Map params = (Map) t;
-        if (params.containsKey("match") && params.containsKey("unwind") && params.containsKey("group")) {
+        if (params.containsKey("match1") && params.containsKey("unwind") && params.containsKey("group")) {
             result = aggregate(params, resultClass);
         } else {
             result = find(params, resultClass);
@@ -229,17 +232,20 @@ public class MongoWorkspace extends AbstractWorkspace {
      * 采用【聚合】查询
      */
     private <U> List<U> aggregate(Map params, Class<U> resultClass) throws Exception {
-        Criteria criteria = new Criteria();
+        List<AggregationOperation> operations = new ArrayList<AggregationOperation>();
         //对2个 match ，分开与不分开结果一样。
-        Map<String, Object> matchParams = (Map) params.get("match");
+        Map<String, Object> matchParams = (Map) params.get("match1");
         for (Map.Entry<String, Object> entry : matchParams.entrySet()) {
-            criteria.elemMatch(parseCriteria(entry.getValue(), entry.getKey()));
+            operations.add(match(parseCriteria(entry.getValue(), entry.getKey())));
         }
+        operations.add(unwind(params.get("unwind").toString()));
+        matchParams = (Map) params.get("match2");
+        for (Map.Entry<String, Object> entry : matchParams.entrySet()) {
+            operations.add(match(parseCriteria(entry.getValue(), entry.getKey())));
+        }
+        operations.add(group("id").addToSet(params.get("group").toString()).as(params.get("group").toString()));
         return mongoConfiguration.mongoTemplate().aggregate(newAggregation(resultClass,
-                match(criteria),
-                unwind(params.get("unwind").toString()),
-                match(criteria),
-                group("id").addToSet(params.get("group").toString()).as(params.get("group").toString())
+                operations
         ), collectionName(resultClass.getName()), resultClass).getMappedResults();
     }
 

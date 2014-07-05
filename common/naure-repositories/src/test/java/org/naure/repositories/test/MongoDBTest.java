@@ -93,9 +93,11 @@ public class MongoDBTest extends UnitTestBase {
     public void testGetSubCollectionRange() throws Exception {
         List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
             //put(Type.Sort.name(), new Tree<String>(Type.Sort, "quotes.date"));
-            put("match", new HashMap<String, Object>() {{
+            put("match1", new HashMap<String, Object>() {{
                 put("type", "test");
                 put("code", "600005");
+            }});
+            put("match2", new HashMap<String, Object>() {{
                 put("quotes.date", new Tree(Type.Between)
                         .setLeft(new Tree(dateFormat.parse("2014-05-02")))
                         .setRight(new Tree(dateFormat.parse("2014-05-04"))));
