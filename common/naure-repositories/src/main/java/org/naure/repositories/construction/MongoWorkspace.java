@@ -230,19 +230,30 @@ public class MongoWorkspace extends AbstractWorkspace {
 
     /**
      * 采用【聚合】查询
+     * Usage:
+     *          put("type", "test");
+     *          put("code", "600005");
+     *          put("quotes.date", new Tree(Type.Between)
+     *              .setLeft(new Tree(dateFormat.parse("2014-05-02")))
+     *              .setRight(new Tree(dateFormat.parse("2014-05-04"))));
      */
     private <U> List<U> aggregate(Map params, Class<U> resultClass) throws Exception {
         List<AggregationOperation> operations = new ArrayList<AggregationOperation>();
-        //对2个 match ，分开与不分开结果一样。
+
+        //对2个 match ，传参时不分开。
         Map<String, Object> matchParams = (Map) params.get("match");
+        List<MatchOperation> matchs = new ArrayList<MatchOperation>();
+        List<MatchOperation> subMatchs = new ArrayList<MatchOperation>();
         for (Map.Entry<String, Object> entry : matchParams.entrySet()) {
-            operations.add(match(parseCriteria(entry.getValue(), entry.getKey())));
+            //TODO 包含【.】的是子集合的查询条件
+            if (entry.getKey().contains("."))
+                subMatchs.add(match(parseCriteria(entry.getValue(), entry.getKey())));
+            else
+                matchs.add(match(parseCriteria(entry.getValue(), entry.getKey())));
         }
+        operations.addAll(matchs);
         operations.add(unwind(params.get("unwind").toString()));
-        matchParams = (Map) params.get("match");
-        for (Map.Entry<String, Object> entry : matchParams.entrySet()) {
-            operations.add(match(parseCriteria(entry.getValue(), entry.getKey())));
-        }
+        operations.addAll(subMatchs);
         operations.add(group("id").addToSet(params.get("group").toString()).as(params.get("group").toString()));
         return mongoConfiguration.mongoTemplate().aggregate(newAggregation(resultClass,
                 operations
