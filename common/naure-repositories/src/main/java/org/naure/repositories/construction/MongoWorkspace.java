@@ -43,9 +43,9 @@ public class MongoWorkspace extends AbstractWorkspace {
 
         List<U> result = null;
 
-        //如果 t 包含【match, unwind, group】 那么采用【聚合】查询
+        //如果 t 包含【match, unwind】 那么采用【聚合】查询
         Map params = (Map) t;
-        if (params.containsKey("match") && params.containsKey("unwind") && params.containsKey("group")) {
+        if (params.containsKey("match") && params.containsKey("unwind")) {
             result = aggregate(params, resultClass);
         } else {
             result = find(params, resultClass);
@@ -231,14 +231,21 @@ public class MongoWorkspace extends AbstractWorkspace {
     /**
      * 采用【聚合】查询
      * Usage:
-     *          put("type", "test");
-     *          put("code", "600005");
-     *          put("quotes.date", new Tree(Type.Between)
-     *              .setLeft(new Tree(dateFormat.parse("2014-05-02")))
-     *              .setRight(new Tree(dateFormat.parse("2014-05-04"))));
+     * <pre>
+     *      put("type", "test");
+     *      put("type", "test");
+     *      put("code", "600005");
+     *      put("quotes.date", new Tree(Type.Between)
+     *          .setLeft(new Tree(dateFormat.parse("2014-05-02")))
+     *          setRight(new Tree(dateFormat.parse("2014-05-04"))));
+     *      put("fields", "id,type,code,name,totalcapital,currcapital");
+     * </pre>
      */
     private <U> List<U> aggregate(Map params, Class<U> resultClass) throws Exception {
         List<AggregationOperation> operations = new ArrayList<AggregationOperation>();
+
+        //对文档，设置需要返回的字段
+        if (!params.containsKey("fields")) params.put("fields", "id");
 
         //对2个 match ，传参时不分开。
         Map<String, Object> matchParams = (Map) params.get("match");
@@ -254,7 +261,7 @@ public class MongoWorkspace extends AbstractWorkspace {
         operations.addAll(matchs);
         operations.add(unwind(params.get("unwind").toString()));
         operations.addAll(subMatchs);
-        operations.add(group("id").addToSet(params.get("group").toString()).as(params.get("group").toString()));
+        operations.add(group(params.get("fields").toString().split(",")).addToSet(params.get("unwind").toString()).as(params.get("unwind").toString()));
         return mongoConfiguration.mongoTemplate().aggregate(newAggregation(resultClass,
                 operations
         ), collectionName(resultClass.getName()), resultClass).getMappedResults();

@@ -101,7 +101,7 @@ public class MongoDBTest extends UnitTestBase {
                         .setRight(new Tree(dateFormat.parse("2014-05-04"))));
             }});
             put("unwind", "quotes");
-            put("group", "quotes");
+            put("fields", "id,type,code,name,totalcapital,currcapital");
         }}, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
