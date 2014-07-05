@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,6 +15,17 @@ import java.util.Map;
  */
 @Component
 public class StockRepository extends Repository {
+
+    public List<Stock> get(Map<String, Object> params) throws Exception {
+        List<Stock> result = null;
+        //TODO 如果不是按时间范围查询数据
+        if (!params.containsKey("quotes.data")) {
+            result = this.get(params, Stock.class);
+        } else {
+            //TODO 把条件拆分成【match, unwind, group】
+        }
+        return result;
+    }
 
     public boolean exists(final Stock stock) throws Exception {
         return this.exists(identifier(stock));

@@ -1,14 +1,15 @@
 package org.naure.repositories.construction;
 
-import com.mongodb.WriteResult;
 import org.apache.commons.lang3.StringUtils;
 import org.naure.common.entities.Entity;
 import org.naure.common.patterns.Tree;
 import org.naure.repositories.config.MongoConfiguration;
-import org.naure.repositories.construction.Workspace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -33,20 +34,20 @@ public class MongoWorkspace extends AbstractWorkspace {
      */
     @Override
     public <T, U> List<U> get(T t, Class<U> resultClass) throws Exception {
-        MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
-        Query query = new Query();
-        Map params = (Map) t;
-        if (null != params) {
-            for (Object key : params.keySet()) {
-                parseQuery(query, key, params.get(key));
-            }
+        if (!(t instanceof Map)) {
+            throw new Exception("t is not Map");
         }
 
-        return mongoOperations.find(
-                query,
-                resultClass,
-                collectionName(resultClass.getName())
-        );
+        List<U> result = null;
+
+        //如果 t 包含【match, unwind, group】 那么采用【聚合】查询
+        Map params = (Map) t;
+        if (params.containsKey("match") && params.containsKey("unwind") && params.containsKey("group")) {
+            result = aggregate(params, resultClass);
+        } else {
+            result = find(params, resultClass);
+        }
+        return result;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class MongoWorkspace extends AbstractWorkspace {
             if ("class".equals(key)) {
                 continue;
             }
-            parseQuery(query, key, params.get(key));
+            query.addCriteria(parseCriteria(params.get(key), key));
         }
 
         mongoOperations.remove(query, collectionName(params.get("class").toString()));
@@ -151,57 +152,97 @@ public class MongoWorkspace extends AbstractWorkspace {
     }
 
     /**
-     * 如果 key 是 Map, 默认是 Criteria.is
+     * 采用直接查询
      */
-    private void parseQuery(Query query, Object key, Object value) {
-        if (value instanceof Tree) {
-            Tree tree = (Tree) value;
-            switch (tree.getType()) {
-                case Paging:
-                    //Usage: put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(3), new Tree<Integer>(1)));
-                    int pageSize = (Integer) tree.getLeft().getInfo();
-                    int pageIndex = (Integer) tree.getRight().getInfo();
-                    ////默认页面信息: 默认第一页是【1】
-                    if (pageSize == 0) pageSize = 30;
-                    if (pageIndex == 0) pageIndex = 1;
-                    query.skip(pageSize * (pageIndex - 1));
-                    query.limit(pageSize);
-                    break;
-                case Include:
-                    //Usage: put(Type.Exclude.name(), new Tree<String>(Type.Exclude, "quotes"));
-                    String[] includeKeys = tree.getInfo().toString().split(",");
-                    for (String subKey : includeKeys) {
-                        query.fields().include(subKey);
+    private <U> List<U> find(Map params, Class<U> resultClass) throws Exception {
+        MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
+        Query query = new Query();
+
+        //默认页面信息: 默认第一页是【1】
+        int pageSize = 30;
+        int pageIndex = 1;
+        Object value = null;
+
+        if (null != params) {
+            for (Object key : params.keySet()) {
+                value = params.get(key);
+                if (value instanceof Tree) {
+                    Tree tree = (Tree) value;
+                    switch (tree.getType()) {
+                        case Paging:
+                            //Usage: put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(3), new Tree<Integer>(1)));
+                            pageSize = (Integer) tree.getLeft().getInfo();
+                            pageIndex = (Integer) tree.getRight().getInfo();
+                            break;
+                        case Include:
+                            //Usage: put(Type.Exclude.name(), new Tree<String>(Type.Exclude, "quotes"));
+                            String[] includeKeys = tree.getInfo().toString().split(",");
+                            for (String subKey : includeKeys) {
+                                query.fields().include(subKey);
+                            }
+                            break;
+                        case Exclude:
+                            String[] excludeKeys = tree.getInfo().toString().split(",");
+                            for (String subKey : excludeKeys) {
+                                query.fields().exclude(subKey);
+                            }
+                            break;
+                        case Field:
+                            if (tree.getInfo() instanceof Map) {
+                                //Usage: Map<Key, Map<SubKey, Value>>
+                                for (Map.Entry entry : ((Map<String, Object>) tree.getInfo()).entrySet()) {
+                                    query.fields().elemMatch(key.toString(), parseCriteria(entry.getValue(), entry.getKey()));
+                                }
+                            } else {
+                                //Usage: Map<Key, Value>
+                                query.fields().elemMatch(key.toString(), parseCriteria(tree.getInfo()));
+                            }
+                            break;
+                        case Sort:
+                            //TODO 暂时处理
+                            query.with(new Sort(tree.getInfo().toString().split(",")));
+                            break;
+                        default:
+                            query.addCriteria(parseCriteria(tree, key));
+                            break;
                     }
-                    break;
-                case Exclude:
-                    String[] excludeKeys = tree.getInfo().toString().split(",");
-                    for (String subKey : excludeKeys) {
-                        query.fields().exclude(subKey);
-                    }
-                    break;
-                case Match:
-                    if (tree.getInfo() instanceof Map) {
-                        for (Map.Entry entry : ((Map<String, Object>) tree.getInfo()).entrySet()) {
-                            query.fields().elemMatch(key.toString(), parseCriteria(entry.getValue(), entry.getKey()));
-                        }
-                    } else {
-                        query.fields().elemMatch(key.toString(), parseCriteria(tree.getInfo()));
-                    }
-                    break;
-                case Sort:
-                    //TODO 暂时处理
-                    query.with(new Sort(tree.getInfo().toString().split(",")));
-                    break;
-                default:
-                    query.addCriteria(parseCriteria(tree, key));
-                    break;
+                } else {
+                    query.addCriteria(Criteria.where(key.toString()).is(value));
+                }
+
             }
-        } else {
-            query.addCriteria(Criteria.where(key.toString()).is(value));
         }
+
+        //默认页面信息: 默认第一页是【1】
+        if (pageSize == 0) pageSize = 30;
+        if (pageIndex == 0) pageIndex = 1;
+        query.skip(pageSize * (pageIndex - 1));
+        query.limit(pageSize);
+        return mongoOperations.find(
+                query,
+                resultClass,
+                collectionName(resultClass.getName())
+        );
     }
 
+    /**
+     * 采用【聚合】查询
+     */
+    private <U> List<U> aggregate(Map params, Class<U> resultClass) throws Exception {
+        //对2个 match ，分开与不分开结果一样。
+        return mongoConfiguration.mongoTemplate().aggregate(newAggregation(resultClass,
+                match(parseCriteria(params.get("match"))),
+                unwind(params.get("unwind").toString()),
+                match(parseCriteria(params.get("match"))),
+                group("_id").addToSet(params.get("group")).as("_id")
+        ), collectionName(resultClass.getName()), resultClass).getMappedResults();
+    }
+
+    /**
+     * 如果 key 是 Map, 默认是 Criteria.is
+     * 当设置 addCriteria 时，返回的文档中包含子文档的所有数据
+     * 当设置 fields 时，返回的文档中只有子文档数据
+     */
     private Criteria parseCriteria(Object value, Object... keys) {
         Criteria criteria = null;
         String key = keys.length > 0 ? keys[0].toString() : null;
@@ -245,5 +286,5 @@ public class MongoWorkspace extends AbstractWorkspace {
     }
 
     @Autowired
-    MongoConfiguration mongoConfiguration;
+    private MongoConfiguration mongoConfiguration;
 }
