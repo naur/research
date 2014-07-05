@@ -92,20 +92,22 @@ public class MongoDBTest extends UnitTestBase {
     @Test
     public void testGetSubCollectionRange() throws Exception {
         List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
-            put(Type.Sort.name(), new Tree<String>(Type.Sort, "quotes.date"));
-            put("type", "test");
-            put("code", "600005");
-//            put("quotes", new Tree(Type.Field, new HashMap<String, Object>() {{
-//                put("date", new Tree(Type.Between)
-//                        .setLeft(new Tree(dateFormat.parse("2014-05-02")))
-//                        .setRight(new Tree(dateFormat.parse("2014-05-04"))));
-//            }}));
+            //put(Type.Sort.name(), new Tree<String>(Type.Sort, "quotes.date"));
+            put("match", new HashMap<String, Object>() {{
+                put("type", "test");
+                put("code", "600005");
+                put("quotes.date", new Tree(Type.Between)
+                        .setLeft(new Tree(dateFormat.parse("2014-05-02")))
+                        .setRight(new Tree(dateFormat.parse("2014-05-04"))));
+            }});
+            put("unwind", "quotes");
+            put("group", "quotes");
         }}, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
-        Assert.assertEquals(6, result.get(0).getQuotes().size());
-        Assert.assertEquals("2014-07-02", dateFormat.format(result.get(0).getQuotes().get(0).getDate()));
-        Assert.assertEquals("2014-07-04", dateFormat.format(result.get(0).getQuotes().get(2).getDate()));
+        Assert.assertEquals(3, result.get(0).getQuotes().size());
+        //Assert.assertEquals("2014-07-02", dateFormat.format(result.get(0).getQuotes().get(0).getDate()));
+        //Assert.assertEquals("2014-07-04", dateFormat.format(result.get(0).getQuotes().get(2).getDate()));
     }
 
     //查询：分页数据

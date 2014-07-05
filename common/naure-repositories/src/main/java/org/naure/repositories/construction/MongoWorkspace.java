@@ -229,12 +229,17 @@ public class MongoWorkspace extends AbstractWorkspace {
      * 采用【聚合】查询
      */
     private <U> List<U> aggregate(Map params, Class<U> resultClass) throws Exception {
+        Criteria criteria = new Criteria();
         //对2个 match ，分开与不分开结果一样。
+        Map<String, Object> matchParams = (Map) params.get("match");
+        for (Map.Entry<String, Object> entry : matchParams.entrySet()) {
+            criteria.elemMatch(parseCriteria(entry.getValue(), entry.getKey()));
+        }
         return mongoConfiguration.mongoTemplate().aggregate(newAggregation(resultClass,
-                match(parseCriteria(params.get("match"))),
+                match(criteria),
                 unwind(params.get("unwind").toString()),
-                match(parseCriteria(params.get("match"))),
-                group("_id").addToSet(params.get("group")).as("_id")
+                match(criteria),
+                group("id").addToSet(params.get("group").toString()).as(params.get("group").toString())
         ), collectionName(resultClass.getName()), resultClass).getMappedResults();
     }
 

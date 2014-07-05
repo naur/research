@@ -38,7 +38,6 @@
         <jackson.version>1.9.3</jackson.version>
 
         <spring-data-mongodb.version>1.5.1.RELEASE</spring-data-mongodb.version>
-        <spring-data-commons-core.version>1.4.1.RELEASE</spring-data-commons-core.version>
 
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <!--3.0.5-->
@@ -357,11 +356,6 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-mongodb</artifactId>
                 <version>${spring-data-mongodb.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-commons-core</artifactId>
-                <version>${spring-data-commons-core.version}</version>
             </dependency>
 
             <dependency>
