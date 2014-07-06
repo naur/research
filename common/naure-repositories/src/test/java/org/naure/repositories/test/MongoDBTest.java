@@ -121,8 +121,8 @@ public class MongoDBTest extends UnitTestBase {
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(3, result.get(0).getQuotes().size());
-        Assert.assertEquals("2014-07-02", dateFormat.format(result.get(0).getQuotes().get(0).getDate()));
-        Assert.assertEquals("2014-07-04", dateFormat.format(result.get(0).getQuotes().get(2).getDate()));
+        Assert.assertEquals("2014-05-02", dateFormat.format(result.get(0).getQuotes().get(0).getDate()));
+        Assert.assertEquals("2014-05-04", dateFormat.format(result.get(0).getQuotes().get(2).getDate()));
     }
 
     //查询：分页数据
