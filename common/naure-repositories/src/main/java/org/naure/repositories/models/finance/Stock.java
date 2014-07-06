@@ -20,9 +20,9 @@ public class Stock extends Security<StockQuote> {
     //type
     private String type;
     //总股本
-    private Double totalcapital;
+    private Double totalCapital;
     //流通股本
-    private Double currcapital;
+    private Double currCapital;
 
     public String getName() {
         return name;
@@ -40,20 +40,20 @@ public class Stock extends Security<StockQuote> {
         this.code = code;
     }
 
-    public Double getTotalcapital() {
-        return totalcapital;
+    public Double getTotalCapital() {
+        return totalCapital;
     }
 
-    public void setTotalcapital(Double totalcapital) {
-        this.totalcapital = totalcapital;
+    public void setTotalCapital(Double totalCapital) {
+        this.totalCapital = totalCapital;
     }
 
-    public Double getCurrcapital() {
-        return currcapital;
+    public Double getCurrCapital() {
+        return currCapital;
     }
 
-    public void setCurrcapital(Double currcapital) {
-        this.currcapital = currcapital;
+    public void setCurrCapital(Double currCapital) {
+        this.currCapital = currCapital;
     }
 
     public String getType() {

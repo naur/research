@@ -30,23 +30,82 @@ public class StockRepository extends Repository {
         return this.exists(identifier(stock));
     }
 
+    /**
+     * 包含 【Update 文档】和【Update 子文档，只支持更新一行子文档】
+     */
     public boolean update(final Stock stock) throws Exception {
         Map<String, Object> query = identifier(stock);
 
         Map<String, Object> update = new HashMap<String, Object>();
         update.put("query", query);
         update.put("update", new HashMap<String, Object>() {{
+            if (null != stock.getName()) put("name", stock.getName());
+            if (null != stock.getTotalCapital()) put("totalCapital", stock.getTotalCapital());
+            if (null != stock.getCurrCapital()) put("currCapital", stock.getCurrCapital());
+            if (null != stock.getQuotes() && 0 < stock.getQuotes().size()) {
+                if (null != stock.getQuotes().get(0).getOpen())
+                    put("quotes.open", stock.getQuotes().get(0).getOpen());
+                if (null != stock.getQuotes().get(0).getHigh())
+                    put("quotes.high", stock.getQuotes().get(0).getHigh());
+                if (null != stock.getQuotes().get(0).getLow())
+                    put("quotes.low", stock.getQuotes().get(0).getLow());
+                if (null != stock.getQuotes().get(0).getClose())
+                    put("quotes.close", stock.getQuotes().get(0).getClose());
+                if (null != stock.getQuotes().get(0).getVolume())
+                    put("quotes.volume", stock.getQuotes().get(0).getVolume());
+                if (null != stock.getQuotes().get(0).getSettle())
+                    put("quotes.settle", stock.getQuotes().get(0).getSettle());
+                if (null != stock.getQuotes().get(0).getOpenInterest())
+                    put("quotes.openInterest", stock.getQuotes().get(0).getOpenInterest());
+                if (null != stock.getQuotes().get(0).getTurnover())
+                    put("quotes.turnover", stock.getQuotes().get(0).getTurnover());
+            }
             put("updated", Calendar.getInstance().getTime());
-            put("quotes", stock.getQuotes());
         }});
         update.put("class", stock.getClass());
         return update(update);
     }
 
+    /**
+     * 包含 【Add 文档】和【Update 文档】【Add 子文档，只支持Add一行子文档，因为包含范围的查询条件也只能返回是否存在，精确度不够】
+     */
     public boolean add(final Stock stock) throws Exception {
-        stock.setCreated(Calendar.getInstance().getTime());
-        stock.setUpdated(stock.getCreated());
-        return workspace.add(stock);
+        boolean result = false;
+
+        //没有 quotes 时表示增加文档
+        //TODO 多的这一步是因为每次都去判断 exists 太耗性能
+        if (null == stock.getQuotes() || 0 >= stock.getQuotes().size()) {
+            stock.setCreated(Calendar.getInstance().getTime());
+            stock.setUpdated(stock.getCreated());
+            result = workspace.add(stock);
+        } else {
+            //有quotes时，表示【增加子文档并且更新文档】
+            Stock temp = new Stock();
+            temp.setCode(stock.getCode());
+            temp.setType(stock.getType());
+            //先判断文档是否存在
+            if (!exists(temp)) {
+                stock.setCreated(Calendar.getInstance().getTime());
+                stock.setUpdated(stock.getCreated());
+                result = workspace.add(stock);
+            } else {
+                //否则添加子文档
+                Map<String, Object> query = identifier(stock);
+                Map<String, Object> update = new HashMap<String, Object>();
+                update.put("query", query);
+                update.put("update", new HashMap<String, Object>() {{
+                    if (null != stock.getName()) put("name", stock.getName());
+                    if (null != stock.getTotalCapital()) put("totalCapital", stock.getTotalCapital());
+                    if (null != stock.getCurrCapital()) put("currCapital", stock.getCurrCapital());
+                    put("updated", Calendar.getInstance().getTime());
+                    put("quotes", stock.getQuotes());
+
+                }});
+                update.put("class", stock.getClass());
+                return update(update);
+            }
+        }
+        return result;
     }
 
     /**

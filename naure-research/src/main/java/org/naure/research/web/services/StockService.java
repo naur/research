@@ -21,6 +21,7 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -37,7 +38,18 @@ public class StockService {
     @Autowired
     private StockRepository stockRepository;
 
-    public List<Stock> get(Stock stock) throws Exception {
-        return stockRepository.get(stock, Stock.class);
+    public List<Stock> get(Map<String, Object> params) throws Exception {
+        return stockRepository.get(params);
+    }
+
+    public boolean edit(Stock stock) throws Exception {
+        boolean result = false;
+
+        if (stockRepository.exists(stock)) {
+            result = stockRepository.update(stock);
+        } else {
+            result = stockRepository.add(stock);
+        }
+        return result;
     }
 }
