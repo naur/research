@@ -73,10 +73,10 @@ public class MongoDBEditTest extends MongoDBTest {
             put("class", Stock.class);
         }});
 
-        query.put("quotes.date", dateFormat.parse("2014-04-15"));
         query.put(Type.Sort.name(), new Tree(Type.Sort, "desc quotes.date"));
         result = mongoWorkspace.get(query, Stock.class);
         Assert.assertEquals(1, result.size());
+        Assert.assertEquals(100d, result.get(0).getCurrcapital());
         Assert.assertEquals(7, result.get(0).getQuotes().size());
         Assert.assertEquals(1d, result.get(0).getQuotes().get(0).getOpen());
     }

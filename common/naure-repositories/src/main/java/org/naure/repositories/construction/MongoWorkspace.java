@@ -43,10 +43,12 @@ public class MongoWorkspace extends AbstractWorkspace {
         }
 
         List<U> result = null;
-
-
         Map<String, Object> params = (Map) t;
-        String dotKey = hasDot(params.keySet());
+
+        //STEP1: 如果查询添加里的 kye 有【.】表示要进行子文档的查询，这个时候需要用到 【aggregate】才成对嵌入的子文档查询
+        //STEP2: 如果【sort】里有【.】表示要进行子文档的排序，这个时候需要用到 【aggregate】才成对嵌入的子文档排序
+        //dotKey 作为 【aggregate】时的 unwind
+        String dotKey = hasDot(params);
         if (null != dotKey) {
             Map<String, Object> tempParams = new HashMap<String, Object>();
             tempParams.put("match", params);
@@ -103,7 +105,9 @@ public class MongoWorkspace extends AbstractWorkspace {
         if (params.containsKey("query")) {
             subMap = (Map) params.get("query");
             for (Object key1 : subMap.keySet()) {
-                query.addCriteria(Criteria.where(key1.toString()).is(subMap.get(key1)));
+                query.addCriteria(
+                        parseCriteria(subMap.get(key1), key1)
+                );
             }
         }
 
@@ -362,11 +366,29 @@ public class MongoWorkspace extends AbstractWorkspace {
     }
 
     /**
-     * 对 map 验证是否含有 【.】
+     * 对 map 的 【key 以及 key 为 sort 的value】 验证是否含有 【.】
      */
-    private String hasDot(Set<String> keys) {
-        for (String key : keys) {
-            if (key.contains(".")) return key.split("\\.")[0];
+    private String hasDot(Map<String, Object> map) {
+
+        for (String key : map.keySet()) {
+            if (key.contains(".")) {
+                return key.split("\\.")[0];
+            }
+            if (Type.Sort.name().equals(key)) {
+                String temp = ((Tree) map.get(Type.Sort.name())).getInfo().toString();
+                if (temp.contains(".")) {
+                    StringBuilder str = new StringBuilder();
+                    //从【.】开始往前搜索字符串
+                    for (int i = temp.indexOf(".") - 1; i >= 0; i--) {
+                        char tmpChar = temp.charAt(i);
+                        if (tmpChar == ' ' || tmpChar == ',') {
+                            return str.reverse().toString();
+                        } else {
+                            str.append(tmpChar);
+                        }
+                    }
+                }
+            }
         }
         return null;
     }
