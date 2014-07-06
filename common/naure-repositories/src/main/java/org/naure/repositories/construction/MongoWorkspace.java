@@ -20,9 +20,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,9 +44,19 @@ public class MongoWorkspace extends AbstractWorkspace {
 
         List<U> result = null;
 
+
+        Map<String, Object> params = (Map) t;
+        String dotKey = hasDot(params.keySet());
+        if (null != dotKey) {
+            Map<String, Object> tempParams = new HashMap<String, Object>();
+            tempParams.put("match", params);
+            tempParams.put("unwind", dotKey);
+            tempParams.put("group", dotKey);
+            params = tempParams;
+        }
+
         //如果 t 包含【match, unwind】 那么采用【聚合】查询
-        Map params = (Map) t;
-        if (params.containsKey("match") && params.containsKey("unwind")) {
+        if (params.containsKey("match") && params.containsKey("unwind") && params.containsKey("group")) {
             result = aggregate(params, resultClass);
         } else {
             result = find(params, resultClass);
@@ -260,7 +268,7 @@ public class MongoWorkspace extends AbstractWorkspace {
             if (entry.getKey().contains(".")) {
                 subMatchs.add(match(parseCriteria(entry.getValue(), entry.getKey())));
             } else if (Type.Sort.name().equals(entry.getKey())) {
-                //TODO key == Sort 是子集合的 sort 查询条件
+                //TODO key == Sort 是子集合的 sort 条件
                 sort = parseSort((Tree) entry.getValue());
             } else {
                 matchs.add(match(parseCriteria(entry.getValue(), entry.getKey())));
@@ -271,7 +279,7 @@ public class MongoWorkspace extends AbstractWorkspace {
         operations.addAll(subMatchs);
         if (null != sort)
             operations.add(sort(sort));
-        operations.add(group(params.get("fields").toString().split(",")).push(params.get("unwind").toString()).as(params.get("unwind").toString()));
+        operations.add(group(params.get("fields").toString().split(",")).push(params.get("group").toString()).as(params.get("group").toString()));
 
         return mongoConfiguration.mongoTemplate().aggregate(newAggregation(resultClass,
                 operations
@@ -336,7 +344,7 @@ public class MongoWorkspace extends AbstractWorkspace {
             if (null == sort) {
                 sort = temp;
             } else {
-                sort.and(temp);
+                sort = sort.and(temp);
             }
         }
         return sort;
@@ -351,6 +359,16 @@ public class MongoWorkspace extends AbstractWorkspace {
         return classFullName.substring(
                 classFullName.indexOf("models.") + 7
         ).toLowerCase();
+    }
+
+    /**
+     * 对 map 验证是否含有 【.】
+     */
+    private String hasDot(Set<String> keys) {
+        for (String key : keys) {
+            if (key.contains(".")) return key.split("\\.")[0];
+        }
+        return null;
     }
 
     @Autowired

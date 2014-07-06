@@ -50,19 +50,17 @@ public class StockRepository extends Repository {
         return workspace.add(stock);
     }
 
+    /**
+     * 即判断 文档，也判断嵌入文档
+     */
     private Map identifier(final Stock stock) {
-        return new HashMap<String, Object>() {{
-            put("code", stock.getCode());
-            put("type", stock.getType());
-            put("class", stock.getClass());
-        }};
-    }
-
-    private Map identifierQuote(final Stock stock) {
-        return new HashMap<String, Object>() {{
-            put("code", stock.getCode());
-            put("type", stock.getType());
-            put("class", stock.getClass());
-        }};
+        Map<String, Object> identifier = new HashMap<String, Object>();
+        identifier.put("code", stock.getCode());
+        identifier.put("type", stock.getType());
+        identifier.put("class", stock.getClass());
+        if (stock.getQuotes().size() > 0 && null != stock.getQuotes().get(0).getDate()) {
+            identifier.put("quotes.date", stock.getQuotes().get(0).getDate());
+        }
+        return identifier;
     }
 }
