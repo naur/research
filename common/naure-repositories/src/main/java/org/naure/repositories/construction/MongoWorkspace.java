@@ -94,17 +94,21 @@ public class MongoWorkspace extends AbstractWorkspace {
         return true;
     }
 
+    /**
+     * 只支持符合查询条件的嵌入子数组的第一条记录的更新
+     * 插入一条记录到子文档集合里时，不验证是否已经存在
+     */
     @Override
     public <T> boolean update(T t) throws Exception {
-        Map params = (Map) t;
+        Map<String, Object> params = (Map) t;
         Query query = new Query();
         Update update = new Update();
 
         //STEP 1: 获取查询条件
-        Map subMap = null;
+        Map<String, Object> subMap = null;
         if (params.containsKey("query")) {
             subMap = (Map) params.get("query");
-            for (Object key1 : subMap.keySet()) {
+            for (String key1 : subMap.keySet()) {
                 query.addCriteria(
                         parseCriteria(subMap.get(key1), key1)
                 );
@@ -112,20 +116,22 @@ public class MongoWorkspace extends AbstractWorkspace {
         }
 
         //STEP 2: 获取更新信息
-        Object array = null;
+        Object newValue = null;
         if (params.containsKey("update")) {
             subMap = (Map) params.get("update");
-            for (Object key2 : subMap.keySet()) {
-                array = subMap.get(key2);
-                if (null == array) continue;
+            for (String key2 : subMap.keySet()) {
+                newValue = subMap.get(key2);
+                if (null == newValue) continue;
                 //文档参考：http://hi.baidu.com/farmerluo/item/15ba88579b8bbb9409be17bb
                 //todo 对 pushAll 支持有问题 【can't serialize class org.naure.common.location.GeoPosition】
-                if (array instanceof Object[]) {
-                    update.addToSet(key2.toString(), ((Object[]) array)[0]);
-                } else if (array instanceof List && ((List) array).size() > 0) {
-                    update.addToSet(key2.toString(), ((List) array).get(0));
+                if (newValue instanceof Object[]) {
+                    update.pushAll(key2, ((Object[]) newValue));
+                } else if (newValue instanceof List && ((List) newValue).size() > 0) {
+                    update.pushAll(key2, ((List) newValue).toArray());
                 } else {
-                    update.set(key2.toString(), array);
+                    //对包含【.】的情况，是对子文档的字段进行更新，而且是只更新符合条件的第一行记录
+                    if (key2.contains(".")) key2 = key2.replace(".", ".$.");
+                    update.set(key2, newValue);
                 }
             }
         }

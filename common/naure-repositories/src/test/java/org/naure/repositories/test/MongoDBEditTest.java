@@ -50,7 +50,7 @@ public class MongoDBEditTest extends MongoDBTest {
         Assert.assertEquals(100d, result.get(0).getCurrcapital());
     }
 
-    //修改：【不检查嵌入文档的重复】, 在嵌入的子文档里添加一条记录, 同时修改文档的字段
+    //修改：在嵌入的子文档里添加2条记录, 同时修改文档的字段
     @Test
     public void addEmbedTest() throws Exception {
         final Map<String, Object> query = new HashMap<String, Object>() {{
@@ -64,7 +64,9 @@ public class MongoDBEditTest extends MongoDBTest {
 
         final Map<String, Object> update = new HashMap<String, Object>() {{
             put("currcapital", 100d);
-            put("quotes", Arrays.asList(new StockQuote(dateFormat.parse("2014-04-15"), 1d, 1d, 1d, 1d, 1d)));
+            put("quotes", Arrays.asList(
+                    new StockQuote(dateFormat.parse("2014-04-15"), 1d, 1d, 1d, 1d, 1d),
+                    new StockQuote(dateFormat.parse("2014-04-17"), 2d, 2d, 2d, 2d, 2d)));
         }};
 
         mongoWorkspace.update(new HashMap<String, Object>() {{
@@ -76,8 +78,45 @@ public class MongoDBEditTest extends MongoDBTest {
         query.put(Type.Sort.name(), new Tree(Type.Sort, "desc quotes.date"));
         result = mongoWorkspace.get(query, Stock.class);
         Assert.assertEquals(1, result.size());
-        Assert.assertEquals(100d, result.get(0).getCurrcapital());
-        Assert.assertEquals(7, result.get(0).getQuotes().size());
-        Assert.assertEquals(1d, result.get(0).getQuotes().get(0).getOpen());
+        //TODO Assert.assertEquals(100d, result.get(0).getCurrcapital());
+        Assert.assertEquals(8, result.get(0).getQuotes().size());
+        Assert.assertEquals(2d, result.get(0).getQuotes().get(0).getOpen());
+        Assert.assertEquals("2014-04-17", dateFormat.format(result.get(0).getQuotes().get(0).getDate()));
+        Assert.assertEquals(1d, result.get(0).getQuotes().get(1).getOpen());
+        Assert.assertEquals("2014-04-15", dateFormat.format(result.get(0).getQuotes().get(1).getDate()));
+    }
+
+    //修改：更新嵌入的子文档里的一条记录,
+    @Test
+    public void updateEmbedTest() throws Exception {
+        final Map<String, Object> query = new HashMap<String, Object>() {{
+            put("code", "600004");
+            put("quotes.date", dateFormat.parse("2014-04-03"));
+        }};
+
+        List<Stock> result = mongoWorkspace.get(query, Stock.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals(1, result.get(0).getQuotes().size());
+        Assert.assertNotNull(result.get(0).getQuotes().get(0).getOpen());
+        Assert.assertNotSame(9.98d, result.get(0).getQuotes().get(0).getOpen());
+
+        final Map<String, Object> update = new HashMap<String, Object>() {{
+            put("quotes.open", 9.98d);
+        }};
+
+        mongoWorkspace.update(new HashMap<String, Object>() {{
+            put("query", query);
+            put("update", update);
+            put("class", Stock.class);
+        }});
+
+        result = mongoWorkspace.get(query, Stock.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals(1, result.get(0).getQuotes().size());
+        Assert.assertNotNull(result.get(0).getQuotes().get(0).getOpen());
+        Assert.assertEquals(9.98d, result.get(0).getQuotes().get(0).getOpen());
+
     }
 }
