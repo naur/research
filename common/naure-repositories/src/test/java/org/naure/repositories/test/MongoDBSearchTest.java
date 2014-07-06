@@ -29,6 +29,18 @@ public class MongoDBSearchTest extends MongoDBTest {
         Assert.assertEquals(6, result.get(0).getQuotes().size());
     }
 
+    //查询：所有数据, Exclude 嵌入的子文档
+    @Test
+    public void testGetAllExcludeEmbedded() throws Exception {
+        List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
+            put("type", "test");
+            put(Type.Exclude.name(), new Tree(Type.Exclude, "quotes"));
+        }}, Stock.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(5, result.size());
+        Assert.assertEquals(0, result.get(0).getQuotes().size());
+    }
+
     //查询：所有数据, 嵌入文档比较
     @Test
     public void testGetAllEmbedded() throws Exception {
