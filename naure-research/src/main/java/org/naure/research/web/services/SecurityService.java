@@ -1,4 +1,4 @@
-package org.naure.services;
+package org.naure.research.web.services;
 
 import org.naure.repositories.SecurityRepository;
 import org.naure.repositories.models.finance.Security;

@@ -1,7 +1,5 @@
-package org.naure.services;
+package org.naure.research.web.services;
 
-import org.naure.common.location.GeoCoordinate;
-import org.naure.common.location.GeoPosition;
 import org.naure.common.location.GeoTrace;
 import org.naure.repositories.GeoTraceRepository;
 import org.springframework.beans.factory.annotation.Autowired;

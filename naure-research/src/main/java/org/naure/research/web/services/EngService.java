@@ -1,11 +1,12 @@
-package org.naure.services;
+package org.naure.research.web.services;
 
 import org.naure.repositories.EngRepository;
 import org.naure.repositories.models.learn.Eng;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
