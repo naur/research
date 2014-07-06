@@ -119,4 +119,43 @@ public class MongoDBEditTest extends MongoDBTest {
         Assert.assertEquals(9.98d, result.get(0).getQuotes().get(0).getOpen());
 
     }
+
+    //删除：文档
+    @Test
+    public void deleteTest() throws Exception {
+        final Map<String, Object> query = new HashMap<String, Object>() {{
+            put("code", "600004");
+        }};
+
+        List<Stock> result = mongoWorkspace.get(query, Stock.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
+        Assert.assertNull(result.get(0).getCurrcapital());
+        Assert.assertEquals(6, result.get(0).getQuotes().size());
+
+
+        query.put("class", Stock.class);
+        mongoWorkspace.delete(query);
+
+        query.remove("class");
+        result = mongoWorkspace.get(query, Stock.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0, result.size());
+    }
+
+    //删除：移除子文档的某几项
+    @Test
+    public void deleteEmbedTest() throws Exception {
+        final Map<String, Object> query = new HashMap<String, Object>() {{
+            put("code", "600004");
+        }};
+
+        List<Stock> result = mongoWorkspace.get(query, Stock.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
+        Assert.assertNull(result.get(0).getCurrcapital());
+        Assert.assertEquals(6, result.get(0).getQuotes().size());
+
+        //TODO
+    }
 }

@@ -78,8 +78,18 @@ public class MongoWorkspace extends AbstractWorkspace {
         return true;
     }
 
+    /**
+     * 提供删除文档以及移除之文档里的某一项
+     */
     @Override
     public <T> boolean delete(T t) throws Exception {
+        if (!(t instanceof Map)) {
+            throw new Exception("t not is Map");
+        }
+        if (!(((Map) t).containsKey("class"))) {
+            throw new Exception("t has map not contains class");
+        }
+
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
         Map params = (Map) t;
