@@ -3,6 +3,7 @@ package org.naure.repositories.construction;
 import org.apache.commons.lang3.StringUtils;
 import org.naure.common.entities.Entity;
 import org.naure.common.patterns.Tree;
+import org.naure.common.patterns.Type;
 import org.naure.repositories.config.MongoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -12,7 +13,9 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
@@ -202,8 +205,7 @@ public class MongoWorkspace extends AbstractWorkspace {
                             }
                             break;
                         case Sort:
-                            //TODO 暂时处理
-                            query.with(new Sort(tree.getInfo().toString().split(",")));
+                            query.with(parseSort(tree));
                             break;
                         default:
                             query.addCriteria(parseCriteria(tree, key));
@@ -212,7 +214,6 @@ public class MongoWorkspace extends AbstractWorkspace {
                 } else {
                     query.addCriteria(Criteria.where(key.toString()).is(value));
                 }
-
             }
         }
 
@@ -230,6 +231,7 @@ public class MongoWorkspace extends AbstractWorkspace {
 
     /**
      * 采用【聚合】查询
+     * 子集合查询条件必须是 【key.subkey】 的类型，不支持【Type.Field】
      * Usage:
      * <pre>
      *      put("type", "test");
@@ -244,6 +246,7 @@ public class MongoWorkspace extends AbstractWorkspace {
     private <U> List<U> aggregate(Map params, Class<U> resultClass) throws Exception {
         List<AggregationOperation> operations = new ArrayList<AggregationOperation>();
 
+        //TODO fields 设置可能会报错
         //对文档，设置需要返回的字段
         if (!params.containsKey("fields")) params.put("fields", "id");
 
@@ -251,17 +254,25 @@ public class MongoWorkspace extends AbstractWorkspace {
         Map<String, Object> matchParams = (Map) params.get("match");
         List<MatchOperation> matchs = new ArrayList<MatchOperation>();
         List<MatchOperation> subMatchs = new ArrayList<MatchOperation>();
+        Sort sort = null;
         for (Map.Entry<String, Object> entry : matchParams.entrySet()) {
             //TODO 包含【.】的是子集合的查询条件
-            if (entry.getKey().contains("."))
+            if (entry.getKey().contains(".")) {
                 subMatchs.add(match(parseCriteria(entry.getValue(), entry.getKey())));
-            else
+            } else if (Type.Sort.name().equals(entry.getKey())) {
+                //TODO key == Sort 是子集合的 sort 查询条件
+                sort = parseSort((Tree) entry.getValue());
+            } else {
                 matchs.add(match(parseCriteria(entry.getValue(), entry.getKey())));
+            }
         }
         operations.addAll(matchs);
         operations.add(unwind(params.get("unwind").toString()));
         operations.addAll(subMatchs);
-        operations.add(group(params.get("fields").toString().split(",")).addToSet(params.get("unwind").toString()).as(params.get("unwind").toString()));
+        if (null != sort)
+            operations.add(sort(sort));
+        operations.add(group(params.get("fields").toString().split(",")).push(params.get("unwind").toString()).as(params.get("unwind").toString()));
+
         return mongoConfiguration.mongoTemplate().aggregate(newAggregation(resultClass,
                 operations
         ), collectionName(resultClass.getName()), resultClass).getMappedResults();
@@ -301,6 +312,34 @@ public class MongoWorkspace extends AbstractWorkspace {
             criteria = Criteria.where(key.toString()).is(value);
         }
         return criteria;
+    }
+
+    /**
+     * Sort
+     * <pre>
+     *     USAGE:
+     *          put(Type.Sort.name(), new Tree<String>(Type.Sort, "asc id, code"));
+     * </pre>
+     */
+    private Sort parseSort(Tree tree) {
+        Sort sort = null;
+        String[] sortArray = tree.getInfo().toString().split(",");
+        String[] subSortArray = null;
+        for (String item : sortArray) {
+            subSortArray = item.split(" ");
+            Sort temp;
+            if (2 <= subSortArray.length) {
+                temp = new Sort(Sort.Direction.fromString(subSortArray[0].trim()), subSortArray[1].trim());
+            } else {
+                temp = new Sort(subSortArray[0].trim());
+            }
+            if (null == sort) {
+                sort = temp;
+            } else {
+                sort.and(temp);
+            }
+        }
+        return sort;
     }
 
     /**

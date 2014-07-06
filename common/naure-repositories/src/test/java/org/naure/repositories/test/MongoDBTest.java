@@ -1,5 +1,6 @@
 package org.naure.repositories.test;
 
+import com.mongodb.util.JSON;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -60,8 +61,7 @@ public class MongoDBTest extends UnitTestBase {
         Assert.assertEquals(6, result.get(0).getQuotes().size());
     }
 
-    //TODO 查询：排序 代码未完成
-    @Ignore
+    //查询：排序
     @Test
     public void testSort() throws Exception {
         List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
@@ -71,6 +71,22 @@ public class MongoDBTest extends UnitTestBase {
         Assert.assertNotNull(result);
         Assert.assertEquals(5, result.size());
         Assert.assertEquals(6, result.get(0).getQuotes().size());
+        Assert.assertEquals("600001", result.get(0).getCode());
+        Assert.assertEquals("600005", result.get(4).getCode());
+    }
+
+    //查询：指定DESC排序
+    @Test
+    public void testSortDesc() throws Exception {
+        List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
+            put("type", "test");
+            put(Type.Sort.name(), new Tree<String>(Type.Sort, "desc code"));
+        }}, Stock.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(5, result.size());
+        Assert.assertEquals(6, result.get(0).getQuotes().size());
+        Assert.assertEquals("600005", result.get(0).getCode());
+        Assert.assertEquals("600001", result.get(4).getCode());
     }
 
     //查询：子集合数据-相等查询
@@ -92,7 +108,6 @@ public class MongoDBTest extends UnitTestBase {
     @Test
     public void testGetSubCollectionRange() throws Exception {
         List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
-            //put(Type.Sort.name(), new Tree<String>(Type.Sort, "quotes.date"));
             put("match", new HashMap<String, Object>() {{
                 put("type", "test");
                 put("code", "600005");
@@ -101,13 +116,13 @@ public class MongoDBTest extends UnitTestBase {
                         .setRight(new Tree(dateFormat.parse("2014-05-04"))));
             }});
             put("unwind", "quotes");
-            put("fields", "id,type,code,name,totalcapital,currcapital");
+            put(Type.Sort.name(), new Tree<String>(Type.Sort, "id,type,code,name,totalcapital,currcapital,quotes.date"));
         }}, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(3, result.get(0).getQuotes().size());
-        //Assert.assertEquals("2014-07-02", dateFormat.format(result.get(0).getQuotes().get(0).getDate()));
-        //Assert.assertEquals("2014-07-04", dateFormat.format(result.get(0).getQuotes().get(2).getDate()));
+        Assert.assertEquals("2014-07-02", dateFormat.format(result.get(0).getQuotes().get(0).getDate()));
+        Assert.assertEquals("2014-07-04", dateFormat.format(result.get(0).getQuotes().get(2).getDate()));
     }
 
     //查询：分页数据
