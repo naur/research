@@ -24,7 +24,7 @@ var global = {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['loading'], function (NAURE) {
+require(['loading', 'research-template'], function (NAURE) {
     $(function () {
     });
 });
