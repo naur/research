@@ -6,6 +6,7 @@
 
 package org.naure.research.web.controllers.finance;
 
+import org.naure.common.entities.Information;
 import org.naure.web.ControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "finance/stock")
 public class StockController extends ControllerBase {
 
+    /**
+     * 页面
+     */
     @RequestMapping
     public String view() {
         return view("stock-view");
+    }
+
+    @RequestMapping("query")
+    public Information query() {
+        //TODO
+        return new Information();
     }
 
     {
