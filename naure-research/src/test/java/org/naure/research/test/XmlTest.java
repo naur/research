@@ -8,17 +8,12 @@ package org.naure.research.test;
 import org.junit.Assert;
 import org.junit.Test;
 import org.naure.common.test.UnitTestBase;
-import org.naure.common.util.RequestClient;
 import org.naure.repositories.models.finance.Stock;
-import org.naure.research.config.SecurityConfiguration;
-import org.naure.research.web.services.StockService;
+import org.naure.research.services.StockService;
+import org.naure.research.services.StockWebService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.oxm.castor.CastorMarshaller;
 
-import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
-import java.io.StringReader;
-import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -36,7 +31,7 @@ import java.text.SimpleDateFormat;
 public class XmlTest extends UnitTestBase {
 
     @Autowired
-    private StockService stockService;
+    private StockWebService stockWebService;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
     private String stock = "sz300197";
@@ -45,7 +40,7 @@ public class XmlTest extends UnitTestBase {
 
     @Test
     public void test() throws IOException, ParseException {
-        Stock result = stockService.getHistory(
+        Stock result = stockWebService.getHistory(
                 stock,
                 dateFormat.parse(beginDate),
                 dateFormat.parse(endDate));

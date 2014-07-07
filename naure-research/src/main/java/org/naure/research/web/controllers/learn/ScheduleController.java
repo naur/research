@@ -8,7 +8,7 @@ import org.naure.common.patterns.Tree;
 import org.naure.common.patterns.Type;
 import org.naure.common.patterns.exception.Sub;
 import org.naure.repositories.models.learn.Schedule;
-import org.naure.services.ScheduleService;
+import org.naure.research.services.ScheduleService;
 import org.naure.web.ControllerBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

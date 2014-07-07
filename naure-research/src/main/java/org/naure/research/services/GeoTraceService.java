@@ -1,4 +1,4 @@
-package org.naure.research.web.services;
+package org.naure.research.services;
 
 import org.naure.common.location.GeoTrace;
 import org.naure.repositories.GeoTraceRepository;

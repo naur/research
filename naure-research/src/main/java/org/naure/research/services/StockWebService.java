@@ -4,7 +4,7 @@
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.research.web.services;
+package org.naure.research.services;
 
 import org.naure.common.util.RequestClient;
 import org.naure.repositories.models.finance.Stock;

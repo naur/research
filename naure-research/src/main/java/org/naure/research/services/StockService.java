@@ -3,23 +3,13 @@
  * 
  * Copy Right@ 纽海信息技术有限公司
  */
-package org.naure.research.web.services;
+package org.naure.research.services;
 
-import org.exolab.castor.mapping.GeneralizedFieldHandler;
-import org.naure.common.util.RequestClient;
 import org.naure.repositories.StockRepository;
-import org.naure.research.config.SecurityConfiguration;
 import org.naure.repositories.models.finance.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.oxm.castor.CastorMarshaller;
 import org.springframework.stereotype.Service;
 
-import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
-import java.io.StringReader;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

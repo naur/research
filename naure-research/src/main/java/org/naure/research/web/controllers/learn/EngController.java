@@ -4,7 +4,7 @@ import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.repositories.models.learn.Eng;
 import org.naure.web.ControllerBase;
-import org.naure.services.EngService;
+import org.naure.research.services.EngService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
