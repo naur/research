@@ -79,10 +79,9 @@ public class EngController extends ControllerBase {
         return information;
     }
 
-    public EngController() {
+    {
         viewPath = "learn";
     }
-
 
     @Autowired
     private EngService engService;

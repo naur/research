@@ -36,7 +36,7 @@ public class DemoController extends ControllerBase {
     }
 
     @RequestMapping(value = "analysis")
-    public String analysis () {
+    public String analysis() {
         return view("analysis");
     }
 
@@ -86,7 +86,7 @@ public class DemoController extends ControllerBase {
         System.out.println("------------");
     }
 
-    public DemoController(){
+    {
         viewPath = "algorithms";
     }
 }
