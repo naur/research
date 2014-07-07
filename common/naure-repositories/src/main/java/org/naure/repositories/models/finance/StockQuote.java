@@ -7,6 +7,10 @@ import java.util.Date;
  */
 public class StockQuote extends Quote {
 
+    public StockQuote() {
+
+    }
+
     public StockQuote(Date date, double open, double close, double high, double low, double volume) {
         this.date = date;
         this.open = open;
