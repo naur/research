@@ -6,14 +6,14 @@ import java.util.Date;
 
 /**
  * 报价
- * <p/>
+ * <p>
  * Created with IntelliJ IDEA.
  * User: Administrator
  * Date: 8/1/12
  * Time: 4:31 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class Quote {
+public abstract class Quote extends Entity {
     //日期
     protected Date date;
     //今开盘

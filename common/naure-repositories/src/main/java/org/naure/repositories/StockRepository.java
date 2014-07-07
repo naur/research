@@ -1,9 +1,12 @@
 package org.naure.repositories;
 
+import org.apache.commons.lang3.StringUtils;
 import org.naure.common.patterns.Tree;
 import org.naure.common.patterns.Type;
 import org.naure.repositories.construction.Repository;
 import org.naure.repositories.models.finance.Stock;
+import org.naure.repositories.models.finance.StockQuote;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
@@ -17,93 +20,97 @@ import java.util.Map;
 @Component
 public class StockRepository extends Repository {
 
+    @Autowired
+    private StockQuoteRepository stockQuoteRepository;
+
+    /**
+     * 查询文档以及子文档，子文档的入参必须是这种格式【quotes.date】
+     */
     public List<Stock> get(Map<String, Object> params) throws Exception {
-        //TODO 如果不是按时间条件查询数据，那么就排除　quotes 的值。
-        if (!params.containsKey("quotes.data")) {
-            params.put(Type.Exclude.name(), new Tree(Type.Exclude, "quotes"));
+        Map<String, Object> stocksParams = new HashMap<String, Object>();
+        Map<String, Object> quotesParams = new HashMap<String, Object>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            if (entry.getKey().contains(".")) {
+                quotesParams.put(StringUtils.substringAfter(entry.getKey(), "."), entry.getValue());
+            } else {
+                quotesParams.put(entry.getKey(), entry.getValue());
+                stocksParams.put(entry.getKey(), entry.getValue());
+            }
         }
-
-        return this.get(params, Stock.class);
-    }
-
-    public boolean exists(final Stock stock) throws Exception {
-        return this.exists(identifier(stock));
+        List<Stock> stocks = this.get(stocksParams, Stock.class);
+        List<StockQuote> quotes = this.get(quotesParams, StockQuote.class);
+        return stocks;
     }
 
     /**
-     * 包含 【Update 文档】和【Update 子文档，只支持更新一行子文档】
+     * 如果 stock 存在，就要判断 quotes 是否存在，quotes 只要有一个不存在，就返回不存在
+     */
+    public boolean exists(final Stock stock) throws Exception {
+        boolean result = true;
+        if (result = this.exists(identifier(stock))) {
+            for (StockQuote quote : stock.getQuotes()) {
+                if (!(result = stockQuoteRepository.exists(quote))) break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 包含 【Update 文档】和【Update 子文档】
      */
     public boolean update(final Stock stock) throws Exception {
-        Map<String, Object> query = identifier(stock);
+        return this.updateStock(stock) && this.updateQuotes(stock);
+    }
 
+    /**
+     * 包含 【Add 文档】和【Update 文档】【Add 子文档】
+     */
+    public boolean add(final Stock stock) throws Exception {
+        boolean result = true;
+
+        //【Add 文档】
+        if (!this.exists(identifier(stock))) {
+            stock.setCreated(Calendar.getInstance().getTime());
+            stock.setUpdated(stock.getCreated());
+            result = workspace.add(stock);
+        } else {
+            result = this.updateStock(stock);
+        }
+
+        //【Add 子文档】
+        for (StockQuote quote : stock.getQuotes()) {
+            if (result && !stockQuoteRepository.exists(quote))
+                result = stockQuoteRepository.add(quote);
+        }
+
+        return result;
+    }
+
+    //只更新文档
+    private boolean updateStock(final Stock stock) throws Exception {
+        //【Update 文档】
+        Map<String, Object> query = identifier(stock);
         Map<String, Object> update = new HashMap<String, Object>();
         update.put("query", query);
         update.put("update", new HashMap<String, Object>() {{
             if (null != stock.getName()) put("name", stock.getName());
             if (null != stock.getTotalCapital()) put("totalCapital", stock.getTotalCapital());
             if (null != stock.getCurrCapital()) put("currCapital", stock.getCurrCapital());
-            if (null != stock.getQuotes() && 0 < stock.getQuotes().size()) {
-                if (null != stock.getQuotes().get(0).getOpen())
-                    put("quotes.open", stock.getQuotes().get(0).getOpen());
-                if (null != stock.getQuotes().get(0).getHigh())
-                    put("quotes.high", stock.getQuotes().get(0).getHigh());
-                if (null != stock.getQuotes().get(0).getLow())
-                    put("quotes.low", stock.getQuotes().get(0).getLow());
-                if (null != stock.getQuotes().get(0).getClose())
-                    put("quotes.close", stock.getQuotes().get(0).getClose());
-                if (null != stock.getQuotes().get(0).getVolume())
-                    put("quotes.volume", stock.getQuotes().get(0).getVolume());
-                if (null != stock.getQuotes().get(0).getSettle())
-                    put("quotes.settle", stock.getQuotes().get(0).getSettle());
-                if (null != stock.getQuotes().get(0).getOpenInterest())
-                    put("quotes.openInterest", stock.getQuotes().get(0).getOpenInterest());
-                if (null != stock.getQuotes().get(0).getTurnover())
-                    put("quotes.turnover", stock.getQuotes().get(0).getTurnover());
-            }
             put("updated", Calendar.getInstance().getTime());
         }});
         update.put("class", stock.getClass());
         return update(update);
     }
 
-    /**
-     * 包含 【Add 文档】和【Update 文档】【Add 子文档，只支持Add一行子文档，因为包含范围的查询条件也只能返回是否存在，精确度不够】
-     */
-    public boolean add(final Stock stock) throws Exception {
-        boolean result = false;
-
-        //没有 quotes 时表示增加文档
-        //TODO 多的这一步是因为每次都去判断 exists 太耗性能
-        if (null == stock.getQuotes() || 0 >= stock.getQuotes().size()) {
-            stock.setCreated(Calendar.getInstance().getTime());
-            stock.setUpdated(stock.getCreated());
-            result = workspace.add(stock);
-        } else {
-            //有quotes时，表示【增加子文档并且更新文档】
-            Stock temp = new Stock();
-            temp.setCode(stock.getCode());
-            temp.setType(stock.getType());
-            //先判断文档是否存在
-            if (!exists(temp)) {
-                stock.setCreated(Calendar.getInstance().getTime());
-                stock.setUpdated(stock.getCreated());
-                result = workspace.add(stock);
-            } else {
-                //否则添加子文档
-                Map<String, Object> query = identifier(stock);
-                Map<String, Object> update = new HashMap<String, Object>();
-                update.put("query", query);
-                update.put("update", new HashMap<String, Object>() {{
-                    if (null != stock.getName()) put("name", stock.getName());
-                    if (null != stock.getTotalCapital()) put("totalCapital", stock.getTotalCapital());
-                    if (null != stock.getCurrCapital()) put("currCapital", stock.getCurrCapital());
-                    put("updated", Calendar.getInstance().getTime());
-                    put("quotes", stock.getQuotes());
-
-                }});
-                update.put("class", stock.getClass());
-                return update(update);
-            }
+    //只更新子文档
+    private boolean updateQuotes(final Stock stock) throws Exception {
+        boolean result = true;
+        //【Update 子文档】
+        for (StockQuote quote : stock.getQuotes()) {
+            if (!result) break;
+            quote.setCode(stock.getCode());
+            quote.setType(stock.getType());
+            result = stockQuoteRepository.update(quote);
         }
         return result;
     }
@@ -116,9 +123,6 @@ public class StockRepository extends Repository {
         identifier.put("code", stock.getCode());
         identifier.put("type", stock.getType());
         identifier.put("class", stock.getClass());
-        if (stock.getQuotes().size() > 0 && null != stock.getQuotes().get(0).getDate()) {
-            identifier.put("quotes.date", stock.getQuotes().get(0).getDate());
-        }
         return identifier;
     }
 }

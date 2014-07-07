@@ -268,7 +268,7 @@ public class MongoWorkspace extends AbstractWorkspace {
      *      put("quotes.date", new Tree(Type.Between)
      *          .setLeft(new Tree(dateFormat.parse("2014-05-02")))
      *          setRight(new Tree(dateFormat.parse("2014-05-04"))));
-     *      put("fields", "id,type,code,name,totalcapital,currcapital");
+     *      put("fields", "id,type,code,name,totalcapital,currCapital");
      * </pre>
      */
     private <U> List<U> aggregate(Map params, Class<U> resultClass) throws Exception {
@@ -385,7 +385,6 @@ public class MongoWorkspace extends AbstractWorkspace {
      * 对 map 的 【key 以及 key 为 sort 的value】 验证是否含有 【.】
      */
     private String hasDot(Map<String, Object> map) {
-
         for (String key : map.keySet()) {
             if (key.contains(".")) {
                 return key.split("\\.")[0];

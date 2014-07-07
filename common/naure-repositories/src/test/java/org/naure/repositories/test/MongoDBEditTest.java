@@ -32,10 +32,10 @@ public class MongoDBEditTest extends MongoDBTest {
         List<Stock> result = mongoWorkspace.get(query, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
-        Assert.assertNull(result.get(0).getCurrcapital());
+        Assert.assertNull(result.get(0).getCurrCapital());
 
         final Map<String, Object> update = new HashMap<String, Object>() {{
-            put("currcapital", 100d);
+            put("currCapital", 100d);
         }};
 
         mongoWorkspace.update(new HashMap<String, Object>() {{
@@ -47,7 +47,7 @@ public class MongoDBEditTest extends MongoDBTest {
         result = mongoWorkspace.get(query, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
-        Assert.assertEquals(100d, result.get(0).getCurrcapital());
+        Assert.assertEquals(100d, result.get(0).getCurrCapital());
     }
 
     //修改：在嵌入的子文档里添加2条记录, 同时修改文档的字段
@@ -60,10 +60,10 @@ public class MongoDBEditTest extends MongoDBTest {
         List<Stock> result = mongoWorkspace.get(query, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
-        Assert.assertNull(result.get(0).getCurrcapital());
+        Assert.assertNull(result.get(0).getCurrCapital());
 
         final Map<String, Object> update = new HashMap<String, Object>() {{
-            put("currcapital", 100d);
+            put("currCapital", 100d);
             put("quotes", Arrays.asList(
                     new StockQuote(dateFormat.parse("2014-04-15"), 1d, 1d, 1d, 1d, 1d),
                     new StockQuote(dateFormat.parse("2014-04-17"), 2d, 2d, 2d, 2d, 2d)));
@@ -78,7 +78,7 @@ public class MongoDBEditTest extends MongoDBTest {
         query.put(Type.Sort.name(), new Tree(Type.Sort, "desc quotes.date"));
         result = mongoWorkspace.get(query, Stock.class);
         Assert.assertEquals(1, result.size());
-        //TODO Assert.assertEquals(100d, result.get(0).getCurrcapital());
+        //TODO Assert.assertEquals(100d, result.get(0).getCurrCapital());
         Assert.assertEquals(8, result.get(0).getQuotes().size());
         Assert.assertEquals(2d, result.get(0).getQuotes().get(0).getOpen());
         Assert.assertEquals("2014-04-17", dateFormat.format(result.get(0).getQuotes().get(0).getDate()));
@@ -130,7 +130,7 @@ public class MongoDBEditTest extends MongoDBTest {
         List<Stock> result = mongoWorkspace.get(query, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
-        Assert.assertNull(result.get(0).getCurrcapital());
+        Assert.assertNull(result.get(0).getCurrCapital());
         Assert.assertEquals(6, result.get(0).getQuotes().size());
 
 
@@ -153,7 +153,7 @@ public class MongoDBEditTest extends MongoDBTest {
         List<Stock> result = mongoWorkspace.get(query, Stock.class);
         Assert.assertNotNull(result);
         Assert.assertEquals(1, result.size());
-        Assert.assertNull(result.get(0).getCurrcapital());
+        Assert.assertNull(result.get(0).getCurrCapital());
         Assert.assertEquals(6, result.get(0).getQuotes().size());
 
         //TODO

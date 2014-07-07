@@ -123,7 +123,7 @@ public class MongoDBSearchTest extends MongoDBTest {
     @Test
     public void testGetSubCollectionRange() throws Exception {
         List<Stock> result = mongoWorkspace.get(new HashMap<String, Object>() {{
-            put(Type.Sort.name(), new Tree<String>(Type.Sort, "id,type,code,name,totalcapital,currcapital,desc quotes.date"));
+            put(Type.Sort.name(), new Tree<String>(Type.Sort, "id,type,code,name,totalCapital,currCapital,desc quotes.date"));
             put("type", "test");
             put("code", "600005");
             put("quotes.date", new Tree(Type.Between)
