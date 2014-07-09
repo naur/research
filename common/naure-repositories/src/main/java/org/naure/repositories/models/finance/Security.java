@@ -17,6 +17,11 @@ import java.util.Map;
  */
 public abstract class Security<T extends Quote> extends Entity {
 
+    //价格信息
+    private List<T> quotes;
+    //统计指标
+    private Stat stat;
+
     public List<T> getQuotes() {
         if (quotes == null)
             quotes = new ArrayList<T>();
@@ -27,5 +32,11 @@ public abstract class Security<T extends Quote> extends Entity {
         this.quotes = quotes;
     }
 
-    private List<T> quotes;
+    public Stat getStat() {
+        return stat;
+    }
+
+    public void setStat(Stat stat) {
+        this.stat = stat;
+    }
 }

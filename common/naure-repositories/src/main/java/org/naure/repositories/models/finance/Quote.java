@@ -32,6 +32,8 @@ public abstract class Quote extends Entity {
     protected Double openInterest;
     // 成交金额：万元（按单边计算）
     protected Double turnover;
+    //统计指标
+    protected Stat stat;
 
     public Date getDate() {
         return date;
@@ -103,5 +105,13 @@ public abstract class Quote extends Entity {
 
     public void setTurnover(Double turnover) {
         this.turnover = turnover;
+    }
+
+    public Stat getStat() {
+        return stat;
+    }
+
+    public void setStat(Stat stat) {
+        this.stat = stat;
     }
 }

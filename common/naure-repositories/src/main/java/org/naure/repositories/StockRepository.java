@@ -24,13 +24,18 @@ public class StockRepository extends Repository {
     private StockQuoteRepository stockQuoteRepository;
 
     /**
-     * 查询文档以及子文档，子文档的入参必须是这种格式【quotes.date】
+     * 查询文档以及子文档：
+     * <pre>
+     *     TODO stat 的功能未实现
+     *      查询价格子文档的入参必须是这种格式【quotes.date】或【quotes.stat.xxx】
+     *      查询统计指标的入参必须是【stat.xxx】
+     * </pre>
      */
     public List<Stock> get(Map<String, Object> params) throws Exception {
         Map<String, Object> stocksParams = new HashMap<String, Object>();
         Map<String, Object> quotesParams = new HashMap<String, Object>();
         for (Map.Entry<String, Object> entry : params.entrySet()) {
-            if (entry.getKey().contains(".")) {
+            if (entry.getKey().contains("quotes.")) {
                 quotesParams.put(StringUtils.substringAfter(entry.getKey(), "."), entry.getValue());
             } else {
                 quotesParams.put(entry.getKey(), entry.getValue());

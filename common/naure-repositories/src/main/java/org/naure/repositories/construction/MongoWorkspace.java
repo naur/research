@@ -32,6 +32,8 @@ import java.util.*;
 @Component
 public class MongoWorkspace extends AbstractWorkspace {
 
+    private static final String DOT = ".";
+
     /**
      * 支持分页查询，分页参数【Paging:   put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(3), new Tree<Integer>(1)))】
      * 支持返回的字段和排除的字段【include, exclude】, 以逗号分割
@@ -45,7 +47,8 @@ public class MongoWorkspace extends AbstractWorkspace {
         List<U> result = null;
         Map<String, Object> params = (Map) t;
 
-        //STEP1: 如果查询添加里的 kye 有【.】表示要进行子文档的查询，这个时候需要用到 【aggregate】才成对嵌入的子文档查询
+        //TODO: 未考虑到子文档不是数组的情况
+        //STEP1: 如果查询添加里的 kye 有【.】表示要进行子文档的查询，这个时候需要用到 【aggregate】才能对嵌入的子文档查询
         //STEP2: 如果【sort】里有【.】表示要进行子文档的排序，这个时候需要用到 【aggregate】才成对嵌入的子文档排序
         //dotKey 作为 【aggregate】时的 unwind
         String dotKey = hasDot(params);
@@ -140,7 +143,7 @@ public class MongoWorkspace extends AbstractWorkspace {
                     update.pushAll(key2, ((List) newValue).toArray());
                 } else {
                     //对包含【.】的情况，是对子文档的字段进行更新，而且是只更新符合条件的第一行记录
-                    if (key2.contains(".")) key2 = key2.replace(".", ".$.");
+                    if (key2.contains(DOT)) key2 = key2.replace(DOT, ".$.");
                     update.set(key2, newValue);
                 }
             }
@@ -285,7 +288,7 @@ public class MongoWorkspace extends AbstractWorkspace {
         Sort sort = null;
         for (Map.Entry<String, Object> entry : matchParams.entrySet()) {
             //TODO 包含【.】的是子集合的查询条件
-            if (entry.getKey().contains(".")) {
+            if (entry.getKey().contains(DOT)) {
                 subMatchs.add(match(parseCriteria(entry.getValue(), entry.getKey())));
             } else if (Type.Sort.name().equals(entry.getKey())) {
                 //TODO key == Sort 是子集合的 sort 条件
@@ -386,15 +389,15 @@ public class MongoWorkspace extends AbstractWorkspace {
      */
     private String hasDot(Map<String, Object> map) {
         for (String key : map.keySet()) {
-            if (key.contains(".")) {
+            if (key.contains(DOT)) {
                 return key.split("\\.")[0];
             }
             if (Type.Sort.name().equals(key)) {
                 String temp = ((Tree) map.get(Type.Sort.name())).getInfo().toString();
-                if (temp.contains(".")) {
+                if (temp.contains(DOT)) {
                     StringBuilder str = new StringBuilder();
                     //从【.】开始往前搜索字符串
-                    for (int i = temp.indexOf(".") - 1; i >= 0; i--) {
+                    for (int i = temp.indexOf(DOT) - 1; i >= 0; i--) {
                         char tmpChar = temp.charAt(i);
                         if (tmpChar == ' ' || tmpChar == ',') {
                             return str.reverse().toString();
