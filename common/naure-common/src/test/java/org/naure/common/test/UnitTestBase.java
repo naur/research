@@ -20,7 +20,7 @@ import java.util.List;
  */
 //@RunWith(value = Parameterized.class)
 @ContextConfiguration(locations = {
-        "classpath*:spring/applicationContext*.xml"
+        "classpath*:/spring/applicationContext*.xml"
 })
 public class UnitTestBase extends AbstractJUnit4SpringContextTests {
     @Test

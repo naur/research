@@ -72,6 +72,9 @@ public class RequestClient {
                 .asString();
     }
 
+    /**
+     * TODO 方法未测试，还需改进
+     */
     public Document getXml(String uri) throws IOException {
         return executor
                 .execute(Request.Get(uri)).handleResponse(new ResponseHandler<Document>() {

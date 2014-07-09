@@ -4,14 +4,13 @@
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.research.test;
+package org.naure.common.test;
 
 import it.sauronsoftware.cron4j.Scheduler;
 import org.junit.Test;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
