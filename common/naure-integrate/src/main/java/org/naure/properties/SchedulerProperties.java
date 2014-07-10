@@ -51,6 +51,5 @@ public class SchedulerProperties {
         } catch (IOException ex) {
             LOGGER.equals(ex);
         }
-        this.schedulers = new ArrayList<Scheduler>();
     }
 }
