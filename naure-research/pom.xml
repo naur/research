@@ -31,24 +31,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-common</artifactId>
-            <type>test-jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-utility</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-repositories</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.agilewiki.jactor</groupId>
             <artifactId>jactor</artifactId>
         </dependency>

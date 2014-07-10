@@ -7,6 +7,7 @@
 package org.naure.services;
 
 import org.naure.repositories.models.Scheduler;
+import org.naure.properties.SchedulerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,23 @@ import java.util.List;
 @Service
 public class SchedulerService {
     @Autowired
-    private
+    private SchedulerProperties schedulerProperties;
 
-    public List<Scheduler> query() {
+    /**
+     * 获取定时任务信息
+     */
+    public List<Scheduler> get() {
+        return schedulerProperties.schedulers;
+    }
 
+    /**
+     * 运行定时任务
+     */
+    public boolean run(String taskName) {
+        for (Scheduler scheduler : get()) {
+
+        }
+
+        return true;
     }
 }

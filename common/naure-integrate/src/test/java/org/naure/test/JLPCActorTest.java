@@ -5,7 +5,9 @@ import org.agilewiki.jactor.lpc.JLPCActor;
 import org.agilewiki.jactor.lpc.Request;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.naure.common.test.UnitTestBase;
 import org.naure.test.test1.Hello;
 import org.naure.test.test1.HelloActor;
 import org.naure.test.test1.Multiply;
@@ -22,6 +24,7 @@ import java.util.Collection;
  * Time: 2:59 PM
  * To change this template use File | Settings | File Templates.
  */
+@RunWith(value = Parameterized.class)
 public class JLPCActorTest extends UnitTestBase {
 
     public JLPCActorTest(Object obj1, Object obj2) {

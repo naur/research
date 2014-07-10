@@ -7,8 +7,14 @@
 package org.naure.test;
 
 import it.sauronsoftware.cron4j.Scheduler;
+import org.junit.Assert;
 import org.junit.Test;
+import org.naure.common.test.UnitTestBase;
+import org.naure.properties.SchedulerProperties;
+import org.naure.services.SchedulerService;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,7 +29,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 评审人 ：
  * </pre>
  */
-public class SchedulerTest {
+public class SchedulerTest extends UnitTestBase {
+
+    @Autowired
+    private SchedulerService schedulers;
+
+    @Test
+    public void SchedulerProperties() {
+        List<org.naure.repositories.models.Scheduler> result =  schedulers.get();
+        Assert.assertEquals(2, result.size());
+    }
 
     @Test
     public void cron4jTest() {

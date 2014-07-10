@@ -21,6 +21,11 @@
         </dependency>
         <dependency>
             <groupId>org.naure</groupId>
+            <artifactId>naure-common</artifactId>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.naure</groupId>
             <artifactId>naure-utility</artifactId>
         </dependency>
         <dependency>

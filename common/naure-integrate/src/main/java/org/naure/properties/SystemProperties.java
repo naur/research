@@ -1,4 +1,4 @@
-package org.naure.web.properties;
+package org.naure.properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
