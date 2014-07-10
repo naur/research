@@ -7,6 +7,8 @@
 package org.naure.repositories.models;
 
 import org.naure.common.entities.Entity;
+import org.naure.common.patterns.Context;
+import org.naure.common.patterns.exception.Action;
 
 import java.util.Date;
 
@@ -28,7 +30,7 @@ public class Scheduler extends Entity {
     //定时任务 cron 表达式
     private String cron;
     //可执行的任务单元
-    private Object task;
+    private Action<Context> task;
     //最近运行时间
     private Date recent;
 
@@ -48,11 +50,11 @@ public class Scheduler extends Entity {
         this.cron = cron;
     }
 
-    public Object getTask() {
+    public Action<Context> getTask() {
         return task;
     }
 
-    public void setTask(Object task) {
+    public void setTask(Action<Context> task) {
         this.task = task;
     }
 

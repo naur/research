@@ -15,6 +15,7 @@ import org.naure.services.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,7 +37,7 @@ public class SchedulerTest extends UnitTestBase {
 
     @Test
     public void SchedulerProperties() {
-        List<org.naure.repositories.models.Scheduler> result =  schedulers.get();
+        Map<String, org.naure.repositories.models.Scheduler> result =  schedulers.get();
         Assert.assertEquals(2, result.size());
     }
 

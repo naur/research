@@ -6,12 +6,16 @@
 
 package org.naure.services;
 
+import org.naure.common.patterns.exception.Action;
+import org.naure.common.patterns.Context;
 import org.naure.repositories.models.Scheduler;
 import org.naure.properties.SchedulerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -29,22 +33,37 @@ import java.util.List;
 public class SchedulerService {
     @Autowired
     private SchedulerProperties schedulerProperties;
+    it.sauronsoftware.cron4j.Scheduler scheduler = new it.sauronsoftware.cron4j.Scheduler();
 
     /**
      * 获取定时任务信息
      */
-    public List<Scheduler> get() {
+    public Map<String, Scheduler> get() {
         return schedulerProperties.schedulers;
     }
 
     /**
-     * 运行定时任务
+     * 手动运行定时任务
      */
-    public boolean run(String taskName) {
-        for (Scheduler scheduler : get()) {
-
+    public void run(String taskName, Context context) throws Exception {
+        if (get().containsKey(taskName)) {
+            get().get(taskName).getTask().execute(context);
         }
+    }
 
-        return true;
+    /**
+     * 停止定时任务
+     * @param taskName
+     */
+    public void stop(String taskName) {
+
+    }
+
+    /**
+     * 初始化定时任务
+     */
+    @PostConstruct
+    public void init() {
+
     }
 }

@@ -10,15 +10,17 @@ import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.naure.common.patterns.exception.Action;
 import org.naure.repositories.models.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <pre>
@@ -34,21 +36,27 @@ import java.util.List;
  */
 @Configuration
 public class SchedulerProperties {
-    public List<Scheduler> schedulers;
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    public Map<String, Scheduler> schedulers;
     private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerProperties.class);
 
     @Value("${schedulers}")
     public void schedulers(String schedluers) {
-        schedulers = new ArrayList<Scheduler>();
+        schedulers = new HashMap<String, Scheduler>();
 
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonParser jp = new JsonFactory().createJsonParser(schedluers);
             jp.nextToken();
             while (jp.nextToken() == JsonToken.START_OBJECT) {
-                schedulers.add(mapper.readValue(jp, Scheduler.class));
+                Scheduler scheduler = mapper.readValue(jp, Scheduler.class);
+                scheduler.setTask((Action)applicationContext.getBean(scheduler.getTask().toString()));
+                schedulers.put(scheduler.getId(), scheduler);
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             LOGGER.equals(ex);
         }
     }
