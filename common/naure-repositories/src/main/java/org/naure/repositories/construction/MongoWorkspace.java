@@ -13,9 +13,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
-import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Order;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
@@ -32,7 +30,7 @@ import java.util.*;
 @Component
 public class MongoWorkspace extends AbstractWorkspace {
 
-    private static final String DOT = ".";
+    private static final String DOT = "s.";
 
     /**
      * 支持分页查询，分页参数【Paging:   put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(3), new Tree<Integer>(1)))】
@@ -143,7 +141,7 @@ public class MongoWorkspace extends AbstractWorkspace {
                     update.pushAll(key2, ((List) newValue).toArray());
                 } else {
                     //对包含【.】的情况，是对子文档的字段进行更新，而且是只更新符合条件的第一行记录
-                    if (key2.contains(DOT)) key2 = key2.replace(DOT, ".$.");
+                    if (key2.contains(DOT)) key2 = key2.replace(DOT, DOT + "$.");
                     update.set(key2, newValue);
                 }
             }
