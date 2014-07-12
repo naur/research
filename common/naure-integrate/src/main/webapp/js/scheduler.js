@@ -36,7 +36,6 @@ function search() {
         success: function (obj) {
             if (0 == obj.output.information.level) {
                 $(global.dom.container + "tbody").html($.render.scheduler(obj.output.information.data));
-                $(global.dom.container + "tbody").html('<tr><td colspan="100">' + global.message.text.loading + '</td></tr>');
             } else {
                 //TODO
             }
