@@ -53,7 +53,12 @@ public class SchedulerProperties {
             jp.nextToken();
             while (jp.nextToken() == JsonToken.START_OBJECT) {
                 Scheduler scheduler = mapper.readValue(jp, Scheduler.class);
-                scheduler.setTask((Action)applicationContext.getBean(scheduler.getTask().toString()));
+                if (applicationContext.containsBean(scheduler.getTask().toString())) {
+                    scheduler.setTask(applicationContext.getBean(scheduler.getTask().toString()));
+                } else {
+                    //TODO
+                    LOGGER.error("Task:" + scheduler.getTask() + "no exists.");
+                }
                 schedulers.put(scheduler.getId(), scheduler);
             }
         } catch (Exception ex) {

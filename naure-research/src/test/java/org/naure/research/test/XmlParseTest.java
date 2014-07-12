@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
  * 评审人 ：
  * </pre>
  */
-public class XmlTest extends UnitTestBase {
+public class XmlParseTest extends UnitTestBase {
 
     @Autowired
     private StockWebService stockWebService;

@@ -30,7 +30,7 @@ public class Scheduler extends Entity {
     //定时任务 cron 表达式
     private String cron;
     //可执行的任务单元
-    private Action<Context> task;
+    private Object task;
     //最近运行时间
     private Date recent;
 
@@ -50,11 +50,11 @@ public class Scheduler extends Entity {
         this.cron = cron;
     }
 
-    public Action<Context> getTask() {
+    public Object getTask() {
         return task;
     }
 
-    public void setTask(Action<Context> task) {
+    public void setTask(Object task) {
         this.task = task;
     }
 

@@ -6,6 +6,9 @@
 
 package org.naure.services;
 
+import it.sauronsoftware.cron4j.SchedulerListener;
+import it.sauronsoftware.cron4j.Task;
+import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.naure.common.patterns.exception.Action;
 import org.naure.common.patterns.Context;
 import org.naure.repositories.models.Scheduler;
@@ -46,19 +49,32 @@ public class SchedulerService {
     /**
      * 手动运行定时任务
      */
-    public void run(String taskName, Context context) throws Exception {
+    public void run(String taskName, TaskExecutionContext context) throws Exception {
         if (get().containsKey(taskName)) {
-            get().get(taskName).getTask().execute(context);
+            //TODO
+            ((Task)get().get(taskName).getTask()).execute(context);
         }
     }
 
     /**
      * 停止定时任务
-     *
-     * @param taskName
      */
     public void stop(String taskName) {
+        //scheduler.addSchedulerListener();
+    }
 
+    /**
+     * attach listener
+     */
+    public void attachListener(SchedulerListener listener) {
+        scheduler.addSchedulerListener(listener);
+    }
+
+    /**
+     * remove listener
+     */
+    public void removeListener(SchedulerListener listener) {
+        scheduler.removeSchedulerListener(listener);
     }
 
     /**
@@ -67,7 +83,7 @@ public class SchedulerService {
     @PostConstruct
     public void init() {
         for (Map.Entry<String, Scheduler> entry : get().entrySet()) {
-            //scheduler.schedule(entry.getValue().getCron(), );
+            scheduler.schedule(entry.getValue().getCron(), (Task) entry.getValue().getTask());
         }
     }
 }

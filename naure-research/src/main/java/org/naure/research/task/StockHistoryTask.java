@@ -8,6 +8,7 @@ package org.naure.research.task;
 import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.apache.commons.lang3.time.DateUtils;
+import org.naure.common.patterns.exception.Action;
 import org.naure.common.util.DateUtil;
 import org.naure.repositories.models.finance.Stock;
 import org.naure.repositories.models.finance.StockRange;
@@ -35,8 +36,8 @@ import java.util.Date;
  * </pre>
  */
 @Service
-public class StockTask extends Task {
-    private final static Logger LOGGER = LoggerFactory.getLogger(StockTask.class);
+public class StockHistoryTask extends Task  implements Action<TaskExecutionContext> {
+    private final static Logger LOGGER = LoggerFactory.getLogger(StockHistoryTask.class);
 
     @Autowired
     private StockWebService stockWebService;
