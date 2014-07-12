@@ -4,7 +4,7 @@
 
 
 define(['jquery', 'bootstrap', 'jquery.template',
-    'naure.analytics', 'naure.utility', 'naure.ui', 'naure.pattern.ajax'],
+        'naure.analytics', 'naure.utility', 'naure.ui', 'naure.message', 'naure.pattern.ajax'],
     function ($, $1, $2, naure) {
         //TODO 导航菜单
 //        $.get("/templates/navigation.html", function (value) {

@@ -37,6 +37,11 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
 
     NAURE.Message = (function () {
 
+        var text = {
+            loading: '<span class="naure_loading">正在努力获取数据，请稍候......</span>',
+            error: '<span class="naure_error">获取数据错误，请稍后重试！</span>'
+        };
+
         var isInit = false;
 
         var message = {
@@ -266,6 +271,8 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
             }
             $(options.element).prev().children('p').fadeIn(1000).fadeOut(1500, opt.domHandle);
         };
+
+        message.text = text;
 
         return message;
 

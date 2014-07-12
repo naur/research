@@ -45,8 +45,6 @@ public class SchedulerProperties {
     private Map<String, Scheduler> tasks = new HashMap<String, Scheduler>();
     //定时任务Name ：Map<taskId, scheduler>
     private Map<String, Scheduler> schedulers;
-    @Autowired
-    private ApplicationContext applicationContext;
 
     /**
      * 根据 taskName 获取 taskId
@@ -120,12 +118,6 @@ public class SchedulerProperties {
             jp.nextToken();
             while (jp.nextToken() == JsonToken.START_OBJECT) {
                 Scheduler scheduler = mapper.readValue(jp, Scheduler.class);
-                if (applicationContext.containsBean(scheduler.getTask().toString())) {
-                    scheduler.setTask(applicationContext.getBean(scheduler.getTask().toString()));
-                } else {
-                    //TODO
-                    LOGGER.error("Task:" + scheduler.getTask() + "no exists.");
-                }
                 schedulers.put(scheduler.getId(), scheduler);
             }
         } catch (Exception ex) {

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -36,7 +37,7 @@ import java.util.Date;
  * </pre>
  */
 @Service
-public class StockHistoryTask extends Task  implements Action<TaskExecutionContext> {
+public class StockHistoryTask extends Task implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockHistoryTask.class);
 
     @Autowired

@@ -15,6 +15,7 @@ import org.naure.repositories.models.SchedulerStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -38,6 +39,8 @@ public class SchedulerService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(SchedulerService.class);
 
+    @Autowired
+    private ApplicationContext applicationContext;
     @Autowired
     private TaskSchedulerListener taskSchedulerListener;
     @Autowired
@@ -129,7 +132,15 @@ public class SchedulerService {
     @PostConstruct
     public void init() {
         for (Scheduler item : schedulerProperties.getSchedulers()) {
-            String taskId = scheduler.schedule(item.getCron(), (Task) item.getTask());
+            if (!applicationContext.containsBean(item.getTask().toString())) {
+                //TODO
+                LOGGER.error("Task:" + item.getTask() + "no exists.");
+                continue;
+            }
+            String taskId = scheduler.schedule(
+                    item.getCron(),
+                    //解析配置文件配置的 task 对应的 bean
+                    (Task) applicationContext.getBean(item.getTask().toString()));
             schedulerProperties.updateTask(item.getName(), taskId);
         }
         scheduler.addSchedulerListener(taskSchedulerListener);

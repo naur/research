@@ -12,10 +12,10 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var global = {
-    uri: '/scheduler/task',
+    uri: '/scheduler/task.json',
     dom: {
         container: '#scheduler-container ',
-        query: '#search'
+        search: '#search'
     }
 }
 
@@ -27,7 +27,21 @@ function initContainerHead() {
     $(global.dom.container + "thead").html($.render.schedulerHead());
 }
 
-function query() {
+function search() {
+    $(global.dom.container + "tbody").html('<tr><td colspan="100">' + global.message.text.loading + '</td></tr>');
+    global.http.acquire({
+        uri: global.uri,
+        error: function (err) {
+        },
+        success: function (obj) {
+            if (0 == obj.output.information.level) {
+                $(global.dom.container + "tbody").html($.render.scheduler(obj.output.information.data));
+                $(global.dom.container + "tbody").html('<tr><td colspan="100">' + global.message.text.loading + '</td></tr>');
+            } else {
+                //TODO
+            }
+        }
+    });
 }
 
 /*-------------------- 函数 END ----------------------*/
@@ -36,7 +50,7 @@ function query() {
 
 function initEvelt() {
     $(global.dom.search).on('click', function () {
-        query();
+        search();
     });
 }
 
@@ -46,6 +60,7 @@ function initEvelt() {
 
 require(['loading', 'integrate-template'], function (mod) {
     global.http = mod.naure.HTTP;
+    global.message = mod.naure.Message;
     $(function () {
         initEvelt();
         initContainerHead();

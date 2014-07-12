@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -34,7 +35,7 @@ import java.util.Date;
  * </pre>
  */
 @Service
-public class StockCapitalTask extends Task  implements Action<TaskExecutionContext> {
+public class StockCapitalTask extends Task implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockCapitalTask.class);
 
     @Autowired
