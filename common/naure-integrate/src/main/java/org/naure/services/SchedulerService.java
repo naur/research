@@ -6,19 +6,20 @@
 
 package org.naure.services;
 
-import it.sauronsoftware.cron4j.SchedulerListener;
-import it.sauronsoftware.cron4j.Task;
-import it.sauronsoftware.cron4j.TaskExecutionContext;
+import it.sauronsoftware.cron4j.*;
 import org.naure.common.patterns.exception.Action;
 import org.naure.common.patterns.Context;
 import org.naure.repositories.models.Scheduler;
 import org.naure.properties.SchedulerProperties;
+import org.naure.repositories.models.SchedulerStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * <pre>
@@ -34,33 +35,75 @@ import java.util.Map;
  */
 @Service
 public class SchedulerService {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(SchedulerService.class);
+
+    @Autowired
+    private TaskSchedulerListener taskSchedulerListener;
     @Autowired
     private SchedulerProperties schedulerProperties;
-
+    //任务调度
     private it.sauronsoftware.cron4j.Scheduler scheduler = new it.sauronsoftware.cron4j.Scheduler();
-
-    /**
-     * 获取定时任务信息
-     */
-    public Map<String, Scheduler> get() {
-        return schedulerProperties.schedulers;
-    }
 
     /**
      * 手动运行定时任务
      */
     public void run(String taskName, TaskExecutionContext context) throws Exception {
-        if (get().containsKey(taskName)) {
-            //TODO
-            ((Task)get().get(taskName).getTask()).execute(context);
+        String taskId = schedulerProperties.getTaskId(taskName);
+        if (null != taskId) {
+            scheduler.getTask(taskId).execute(context);
+        }
+    }
+
+    /**
+     * 获取定时任务运行信息
+     */
+    public List<Scheduler> getTasks(boolean realtime) {
+        if (realtime) {
+            TaskExecutor[] list = scheduler.getExecutingTasks();
+            String taskId = null;
+            for (TaskExecutor executor : list) {
+                taskId = executor.getGuid();
+                SchedulerStatus temp = new SchedulerStatus();
+                temp.setStartTime(new Date(executor.getStartTime()));
+                temp.setMessage(executor.getStatusMessage());
+                temp.setDuration(executor.getCompleteness());
+                temp.setCanStopped(executor.canBeStopped());
+                temp.setCanStopped(executor.canBeStopped());
+                schedulerProperties.updateStatus(taskId, temp);
+            }
+        }
+        return schedulerProperties.getTasks();
+    }
+
+    /**
+     * 开启定时任务
+     */
+    public void start(String... taskIds) {
+        //如果没有传值，那么开始所有的定时任务
+        if (0 >= taskIds.length) {
+            scheduler.start();
+        } else {
+            for (String id : taskIds) {
+                //TODO 不支持开启单独的定时任务
+                //scheduler.deschedule(id);
+            }
         }
     }
 
     /**
      * 停止定时任务
      */
-    public void stop(String taskName) {
-        //scheduler.addSchedulerListener();
+    public void stop(String... taskIds) {
+        //如果没有传值，那么停止所有的定时任务
+        if (0 >= taskIds.length) {
+            scheduler.stop();
+        } else {
+            for (String id : taskIds) {
+                //TODO 停止了的定时任务就不能重新开启了
+                scheduler.deschedule(id);
+            }
+        }
     }
 
     /**
@@ -82,8 +125,10 @@ public class SchedulerService {
      */
     @PostConstruct
     public void init() {
-        for (Map.Entry<String, Scheduler> entry : get().entrySet()) {
-            scheduler.schedule(entry.getValue().getCron(), (Task) entry.getValue().getTask());
+        for (Scheduler item : schedulerProperties.getSchedulers()) {
+            String taskId = scheduler.schedule(item.getCron(), (Task) item.getTask());
+            schedulerProperties.updateTask(item.getName(), taskId);
         }
+        scheduler.addSchedulerListener(taskSchedulerListener);
     }
 }

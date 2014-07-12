@@ -9,6 +9,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.naure.common.test.UnitTestBase;
 import org.naure.repositories.models.Scheduler;
+import org.naure.research.task.TaskSchedulerListener;
 import org.naure.services.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,8 +30,12 @@ public class StockTaskTest extends UnitTestBase {
     @Autowired
     private SchedulerService schedulerService;
 
+    @Autowired
+    private TaskSchedulerListener taskSchedulerListener;
+
     @Test
     public void schedulerTest() {
+        schedulerService.attachListener(taskSchedulerListener);
         Map<String, Scheduler> stockTask = schedulerService.get();
         Assert.assertNotNull(stockTask);
         Assert.assertEquals(2, stockTask.size());

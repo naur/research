@@ -10,7 +10,6 @@ import it.sauronsoftware.cron4j.Scheduler;
 import org.junit.Assert;
 import org.junit.Test;
 import org.naure.common.test.UnitTestBase;
-import org.naure.properties.SchedulerProperties;
 import org.naure.services.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,7 +36,7 @@ public class SchedulerTest extends UnitTestBase {
 
     @Test
     public void SchedulerProperties() {
-        Map<String, org.naure.repositories.models.Scheduler> result =  schedulers.get();
+        List<org.naure.repositories.models.Scheduler> result = schedulers.getTasks(false);
         Assert.assertEquals(2, result.size());
     }
 
