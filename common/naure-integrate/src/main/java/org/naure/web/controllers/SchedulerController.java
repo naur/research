@@ -7,13 +7,23 @@
 package org.naure.web.controllers;
 
 import it.sauronsoftware.cron4j.SchedulerListener;
+import org.apache.http.HttpRequest;
 import org.naure.common.entities.Information;
+import org.naure.common.entities.InformationLevel;
 import org.naure.common.patterns.exception.Func;
 import org.naure.repositories.models.Scheduler;
+import org.naure.services.SchedulerService;
 import org.naure.web.ControllerBase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.ServletRequest;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -30,6 +40,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(value = "scheduler", method = {RequestMethod.GET, RequestMethod.POST})
 public class SchedulerController extends ControllerBase {
+
+    @Autowired
+    private SchedulerService schedulerService;
+
     @RequestMapping()
     public String view() {
         return "scheduler";
@@ -38,11 +52,34 @@ public class SchedulerController extends ControllerBase {
     /**
      * 获取定时任务信息
      */
+    @RequestMapping("task")
     public Information task() {
-        return handler(new Information<Scheduler>(), new Func<Information, Information>() {
+        return handler(new Information<List<Scheduler>>(), new Func<Information, Information>() {
             @Override
             public Information execute(Information information) throws Exception {
-                return null;
+                information.setData(schedulerService.getTasks(false));
+                information.setLevel(InformationLevel.SUCCESS.value());
+                return information;
+            }
+        });
+    }
+
+    /**
+     * 运行定时任务
+     */
+    @RequestMapping("task/run/{name}")
+    public Information run(
+            @PathVariable final String name,
+            ServletRequest request) {
+        //获取定时任务参数
+        final Map params = request.getParameterMap();
+
+        return handler(new Information<List<Scheduler>>(), new Func<Information, Information>() {
+            @Override
+            public Information execute(Information information) throws Exception {
+                schedulerService.run(name, params);
+                information.setLevel(InformationLevel.SUCCESS.value());
+                return information;
             }
         });
     }

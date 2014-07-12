@@ -116,6 +116,8 @@ require.config({
         'math': jsresearch + '/js/math/math',
         'math.matrix': jslocalpath + '/js/math/math.matrix',
 
+        //Integrate template
+        'integrate-template': jslocalpath + '/templates/integrate-template',
         //Research template
         'research-template': jslocalpath + '/templates/research-template',
         //Shoping template

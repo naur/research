@@ -47,8 +47,11 @@ public class SchedulerService {
 
     /**
      * 手动运行定时任务
+     * params 包含【startDate, endSate】
      */
-    public void run(String taskName, TaskExecutionContext context) throws Exception {
+    public void run(String taskName, Map params) throws Exception {
+        //TODO 解析 params
+        TaskExecutionContext context = null;
         String taskId = schedulerProperties.getTaskId(taskName);
         if (null != taskId) {
             scheduler.getTask(taskId).execute(context);
