@@ -48,11 +48,13 @@ public class StockWebService {
     /**
      * 获取股票历史数据
      *
-     * @param stock     [sz000010]
-     * @param beginDate [19950802]
-     * @param endDate   [20120723]
+     * @param stock [sz000010]
+     * @param dates beginDate: [19950802], endDate: [20120723]
      */
-    public Stock getHistory(String stock, Date beginDate, Date endDate) throws IOException {
+    public Stock getHistory(String stock, Date... dates) throws IOException {
+        Date beginDate = dates[0];
+        Date endDate = dates.length > 1 ? dates[1] : beginDate;
+
         String xml = RequestClient.getInstance().get(
                 MessageFormat.format(
                         securityConfiguration.stockHistoryUri,

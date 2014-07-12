@@ -33,7 +33,8 @@ import java.util.Map;
 public class SchedulerService {
     @Autowired
     private SchedulerProperties schedulerProperties;
-    it.sauronsoftware.cron4j.Scheduler scheduler = new it.sauronsoftware.cron4j.Scheduler();
+
+    private it.sauronsoftware.cron4j.Scheduler scheduler = new it.sauronsoftware.cron4j.Scheduler();
 
     /**
      * 获取定时任务信息
@@ -53,6 +54,7 @@ public class SchedulerService {
 
     /**
      * 停止定时任务
+     *
      * @param taskName
      */
     public void stop(String taskName) {
@@ -64,6 +66,8 @@ public class SchedulerService {
      */
     @PostConstruct
     public void init() {
-
+        for (Map.Entry<String, Scheduler> entry : get().entrySet()) {
+            //scheduler.schedule(entry.getValue().getCron(), );
+        }
     }
 }
