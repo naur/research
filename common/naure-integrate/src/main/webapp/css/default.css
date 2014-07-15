@@ -156,6 +156,7 @@ table thead th, table tfoot th, table tbody th {
     border: 1px solid #b3d8ea;
     background: #e0e8f8 4px 50%;
     /*height: 20px;*/
+    font: bold 12px arial, sans-serif;
     vertical-align: middle;
     color: #05539b;
     font-weight: normal;
