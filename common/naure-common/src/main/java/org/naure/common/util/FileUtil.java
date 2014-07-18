@@ -20,11 +20,13 @@ public class FileUtil {
     //private final static Log log = LogFactory.getLog(FileUtil.class);
     public static final String coding = "UTF-8";
 
-    //保存到文件
-    public static void toFile(InputStream inputStream, File file) throws IOException {
+    /**
+     * 保存到文件
+     */
+    public static void toFile(InputStream inputStream, File outputFile) throws IOException {
         OutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(file, false);
+            outputStream = new FileOutputStream(outputFile, false);
             int readLength;
             byte[] buf = new byte[4096];
             while (((readLength = inputStream.read(buf)) != -1)) {
@@ -44,13 +46,15 @@ public class FileUtil {
         }
     }
 
-    //保存到文件
-    public static void toFile(InputStream inputStream, String filePath, String fileName) throws IOException {
-        File file = new File(filePath);
+    /**
+     * 保存到文件
+     */
+    public static void toFile(InputStream inputStream, String outputFilePath, String outputFileName) throws IOException {
+        File file = new File(outputFilePath);
         if (!file.exists()) {
             file.mkdirs();
         }
-        FileUtil.toFile(inputStream, new File(filePath + fileName));
+        FileUtil.toFile(inputStream, new File(outputFilePath + outputFileName));
     }
 
     //删除文件
