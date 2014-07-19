@@ -9,7 +9,7 @@ define(['jquery', 'jquery.template'],
         $.templates("scheduler", '<tr><td>{{:#index+1}}</td><td>{{>id}}</td><td>{{>name}}</td><td>{{>cron}}</td><td>{{>task}}</td>' +
             '<td>' +
             '   <div class="row">' +
-            '        <div class="col-md-12">' +
+            '        <div class="col-md-10 col-md-offset-1">' +
             '            <div class="input-group input-group-sm">' +
             '                <input type="text"  class="form-control">' +
             '                <span class="input-group-btn">' +
