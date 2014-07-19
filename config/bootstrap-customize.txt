@@ -1,0 +1,20 @@
+﻿
+Typography
+        @font-family-sans-serif
+                "Microsoft YaHei", "Lucida Grande", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif
+        @font-size-base
+                12px
+
+Components
+        @line-height-small
+                1
+
+Navbar
+        @navbar-height
+                40px
+        @navbar-default-color
+                #FFF
+        @navbar-default-bg
+                #1ba1e2
+        @navbar-border-radius
+                1px
