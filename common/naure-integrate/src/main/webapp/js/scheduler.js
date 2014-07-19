@@ -63,6 +63,7 @@ require(['loading', 'integrate-template'], function (mod) {
     $(function () {
         initEvelt();
         initContainerHead();
+        $(global.dom.search).click();
     });
 });
 
