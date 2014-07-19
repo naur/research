@@ -12,6 +12,7 @@ define(['jquery', 'jquery.template'],
             '        <div class="col-md-10 col-md-offset-1">' +
             '            <div class="input-group input-group-sm">' +
             '                <input type="text"  class="form-control">' +
+            '           &nbsp;&nbsp;' +
             '                <span class="input-group-btn">' +
             '                    <button class="btn btn-default"  type="button">Execute!</button>' +
             '                </span>' +

@@ -333,7 +333,7 @@ function initEvent() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics',
+require(['jquery', 'naure.message', 'naure.ui.overlay', 'naure.analytics',
     'naure.http.xsl', 'naure.chart.gantt',
     'swfobject',
     'jquery.uploadify'], function ($, NAURE) {

@@ -250,7 +250,7 @@ function initEvent() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.http.xsl', 'naure.math.statistics.finance',
+require(['jquery', 'naure.message', 'naure.ui.overlay', 'naure.http.xsl', 'naure.math.statistics.finance',
     'naure.graphics.equation',
     'naure.graphics.finance'], function ($, NAURE) {
     global.naure = NAURE;

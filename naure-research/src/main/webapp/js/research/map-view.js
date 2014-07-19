@@ -195,7 +195,7 @@ function initialize() {
 
 require(['http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN&callback=initialize']);
 
-require(['jquery', 'naure.location', 'naure.message', 'naure.overlay', 'naure.analytics'], function ($, NAURE) {
+require(['jquery', 'naure.location', 'naure.message', 'naure.ui.overlay', 'naure.analytics'], function ($, NAURE) {
 
     this.NAURE = NAURE;
 

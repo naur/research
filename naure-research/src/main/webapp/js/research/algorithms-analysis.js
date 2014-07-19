@@ -12,9 +12,9 @@
 var naure, message, http, graphics, lines;
 
 var overlayNodes = {
-    'Dynamic Programming':function () {
+    'Dynamic Programming': function () {
         message.empty();
-        message.show({content:'Dynamic Programming', color:'silver'});
+        message.show({content: 'Dynamic Programming', color: 'silver'});
         var matrixChain = new MatrixChain(
             '30 x 35',
             '35 x 15',
@@ -25,29 +25,29 @@ var overlayNodes = {
         );
 
         matrixChain.inorderWalk(matrixChain.p, function (item) {
-            message.show({content:JSON.stringify($.toJSON(item))});
+            message.show({content: JSON.stringify($.toJSON(item))});
         });
 
         matrixChain.order(matrixChain.p);
 
         matrixChain.inorderWalk(matrixChain.m, function (item) {
-            message.show({content:JSON.stringify($.toJSON(item)), color:'blue'});
+            message.show({content: JSON.stringify($.toJSON(item)), color: 'blue'});
         });
         matrixChain.inorderWalk(matrixChain.s, function (item) {
-            message.show({content:JSON.stringify($.toJSON(item)), color:'red'});
+            message.show({content: JSON.stringify($.toJSON(item)), color: 'red'});
         });
 
-        message.show({content:'memoized', color:'silver'});
+        message.show({content: 'memoized', color: 'silver'});
 
         matrixChain.memoized(matrixChain.p);
         matrixChain.inorderWalk(matrixChain.m, function (item) {
-            message.show({content:JSON.stringify($.toJSON(item)), color:'yellow'});
+            message.show({content: JSON.stringify($.toJSON(item)), color: 'yellow'});
         });
     },
-    'Longest Common Subsequence':function () {
+    'Longest Common Subsequence': function () {
         message.empty();
     },
-    'Greedy Algorithms':function () {
+    'Greedy Algorithms': function () {
         message.empty();
     },
     'Amortized Analysis': function () {
@@ -61,9 +61,9 @@ var overlayNodes = {
 
 function print(obj, color) {
     if (color)
-        message.show({content:JSON.stringify($.toJSON(obj)), color:color});
+        message.show({content: JSON.stringify($.toJSON(obj)), color: color});
     else
-        message.show({content:JSON.stringify($.toJSON(obj))});
+        message.show({content: JSON.stringify($.toJSON(obj))});
 }
 
 /*-------------------- 函数 END --------------------*/
@@ -74,14 +74,15 @@ function print(obj, color) {
 
 /*-------------------- 初始化 START --------------------*/
 
-require(['jquery', 'naure.message', 'naure.overlay', 'naure.analytics'], function ($, NAURE) {
+require(['loading', 'research-template', 'naure.ui.overlay'], function ($, NAURE) {
+//require(['jquery', 'naure.message', 'naure.ui.overlay', 'naure.analytics'], function ($, NAURE) {
     naure = NAURE;
     message = NAURE.Message;
 
     $(function () {
         $('article section:eq(0)').message();
         $('body').overlay({
-            nodes:overlayNodes
+            nodes: overlayNodes
         });
     });
 });
