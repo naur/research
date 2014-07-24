@@ -22,6 +22,9 @@ define(['jquery', 'jquery.template'],
             '</td>' +
             '</tr>');
 
+        //Session
+        $.templates();
+
         return {
             jquery: $
         }

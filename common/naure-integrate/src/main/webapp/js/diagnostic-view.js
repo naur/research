@@ -10,30 +10,37 @@
  */
 
 /*-------------------- 全局变量 START ----------------*/
-var naure, message;
+var global = {
+    http: null,
+    message: null,
+    sessionUri: '/diagnostic/session.xml',
+    dom: {
+        session: 'article section:eq(1)'
+    }
+};
 
 var overlayNodes = {
-    'Session':function () {
+    'Session': function () {
         $(this).attr('disabled', true);
-        $('article section:eq(1)').empty();
-        message.show({content:'正在获取数据...'});
+        $(global.dom.session).empty();
+        global.message.show({content: '正在获取数据...'});
 
-        $('article section:eq(1)').NAURE_HTTP_Acquire({
-            xmlUrl:'/diagnostic/session.xml',
-            xslUrl:'/xsl/table.xsl',
-            context:this,
-            error:function (ex) {
-                message.show({content:'获取数据结束！'});
-                message.show({content:'获取数据错误，请稍后重试！', color:'red'});
-                $(obj.context).attr('disabled', false);
+        global.http.acquire({
+            uri: global.sessionUri,
+            container: global.dom.session,
+            context: this,
+            error: function (opt) {
+                global.message.show({content: '获取数据结束！'});
+                global.message.show({content: '获取数据错误，请稍后重试！', color: 'red'});
+                $(opt.context).attr('disabled', false);
             },
-            success:function (obj) {
-                $(obj.context).attr('disabled', false);
-                message.empty();
+            success: function (opt) {
+                $(opt.context).attr('disabled', false);
+                global.message.empty();
             }
         });
     },
-    'Analysis':function () {
+    'Analysis': function () {
         $(this).attr('disabled', true);
         alert("A Analysis");
         $(this).attr('disabled', false);
@@ -43,13 +50,13 @@ var overlayNodes = {
 /*-------------------- 初始化 START --------------------*/
 
 require(['jquery', 'naure.message', 'naure.ui.overlay', 'naure.http.xsl', 'naure.analytics'], function ($, NAURE) {
-    naure = NAURE;
-    message = NAURE.Message;
+    global.message = NAURE.Message;
+    global.http = NAURE.HTTP;
 
     $(function () {
         $('article section:eq(0)').message();
         $('body').overlay({
-            nodes:overlayNodes
+            nodes: overlayNodes
         });
     });
 });
