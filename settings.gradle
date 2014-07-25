@@ -1,4 +1,5 @@
 rootProject.name = 'naure'
+include ':naure-parent'
 include ':naure-parent:naure-common'
 include ':naure-parent:naure-utility'
 include ':naure-parent:naure-repositories'
@@ -7,6 +8,7 @@ include ':naure-parent:naure-home'
 include ':naure-parent:naure-research'
 include ':naure-parent:naure-shoping'
 
+project(':naure-parent').projectDir = "$rootDir/common/naure-parent" as File
 project(':naure-parent:naure-common').projectDir = "$rootDir/common/naure-common" as File
 project(':naure-parent:naure-utility').projectDir = "$rootDir/common/naure-utility" as File
 project(':naure-parent:naure-repositories').projectDir = "$rootDir/common/naure-repositories" as File
