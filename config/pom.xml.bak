@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.naure</groupId>
+    <artifactId>naure</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <modules>
+        <module>common/naure-parent</module>
+        <module>common/naure-common</module>
+        <module>common/naure-utility</module>
+        <module>common/naure-repositories</module>
+        <module>common/naure-integrate</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>publish</id>
+            <properties>
+                <naure.log.file.path>/data/web/logs</naure.log.file.path>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>home</id>
+            <modules>
+                <module>naure-home</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>research</id>
+            <modules>
+                <module>naure-research</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>shoping</id>
+            <modules>
+                <module>naure-shoping</module>
+            </modules>
+        </profile>
+
+    </profiles>
+
+</project>

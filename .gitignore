@@ -4,3 +4,7 @@ target/*
 *.iml
 overlays/
 overlays/*
+.gradle
+gradle
+gradlew
+gradlew.bat
