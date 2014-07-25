@@ -1,0 +1,16 @@
+rootProject.name = 'naure'
+include ':naure-parent:naure-common'
+include ':naure-parent:naure-utility'
+include ':naure-parent:naure-repositories'
+include ':naure-parent:naure-integrate'
+include ':naure-parent:naure-home'
+include ':naure-parent:naure-research'
+include ':naure-parent:naure-shoping'
+
+project(':naure-parent:naure-common').projectDir = "$rootDir/common/naure-common" as File
+project(':naure-parent:naure-utility').projectDir = "$rootDir/common/naure-utility" as File
+project(':naure-parent:naure-repositories').projectDir = "$rootDir/common/naure-repositories" as File
+project(':naure-parent:naure-integrate').projectDir = "$rootDir/common/naure-integrate" as File
+project(':naure-parent:naure-home').projectDir = "$rootDir/naure-home" as File
+project(':naure-parent:naure-research').projectDir = "$rootDir/naure-research" as File
+project(':naure-parent:naure-shoping').projectDir = "$rootDir/naure-shoping" as File

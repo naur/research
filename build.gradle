@@ -1,0 +1,22 @@
+allprojects {
+    apply plugin: 'maven'
+
+    group = 'org.naure'
+    version = '1.0'
+}
+
+subprojects {
+    apply plugin: 'java'
+    sourceCompatibility = 1.5
+    targetCompatibility = 1.5
+
+    repositories {
+        mavenLocal()
+
+        maven { url "http://repo.maven.apache.org/maven2" }
+        maven { url "http://download.oracle.com/maven" }
+        maven { url "http://repo2.maven.org/maven2" }
+        maven { url "http://repo.springsource.org/libs-release" }
+        maven { url "http://download.java.net/maven/2/" }
+    }
+}
