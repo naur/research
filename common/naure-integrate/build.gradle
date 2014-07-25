@@ -1,24 +1,26 @@
-
 apply plugin: 'war'
 
 jar.enabled = true
 description = ''
 dependencies {
-  compile project(':naure-parent:naure-common')
-  compile project(':naure-parent:naure-common')
-  compile project(':naure-parent:naure-utility')
-  compile project(':naure-parent:naure-repositories')
-    compile group: 'org.agilewiki.jactor', name: 'jactor', version:'4.2.0'
-    compile group: 'com.github.httl', name: 'httl-springmvc', version:'1.0.11'
-    compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version:'1.9.13'
-    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version:'1.9.13'
-    compile group: 'org.springframework', name: 'spring-webmvc', version:'4.0.5.RELEASE'
-    compile group: 'javax.servlet', name: 'jstl', version:'1.2'
-    compile group: 'org.springframework', name: 'spring-oxm', version:'4.0.5.RELEASE'
-    compile group: 'org.codehaus.castor', name: 'castor', version:'1.2'
-    compile group: 'xerces', name: 'xercesImpl', version:'2.8.1'
-    compile group: 'rome', name: 'rome', version:'1.0'
-    compile group: 'org.simpleframework', name: 'simple-xml', version:'2.6.4'
-    runtime group: 'commons-fileupload', name: 'commons-fileupload', version:'1.2.2'
-    providedCompile group: 'javax.servlet', name: 'servlet-api', version:'3.0-alpha-1'
+    compile project(':naure-common')
+    compile project(':naure-common')
+    compile project(':naure-utility')
+    compile project(':naure-repositories')
+
+    compile group: 'org.agilewiki.jactor', name: 'jactor', version: '4.2.0'
+    compile group: 'com.github.httl', name: 'httl-springmvc', version: '1.0.11'
+    compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: '1.9.13'
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '4.0.5.RELEASE'
+    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+    compile group: 'org.springframework', name: 'spring-oxm', version: '4.0.5.RELEASE'
+    compile group: 'org.codehaus.castor', name: 'castor', version: '1.2'
+    compile group: 'xerces', name: 'xercesImpl', version: '2.8.1'
+    compile group: 'rome', name: 'rome', version: '1.0'
+    compile group: 'org.simpleframework', name: 'simple-xml', version: '2.6.4'
+
+    runtime group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2.2'
+    
+    providedCompile group: 'javax.servlet', name: 'servlet-api', version: '3.0-alpha-1'
 }

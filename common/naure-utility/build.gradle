@@ -1,8 +1,9 @@
-
 description = ''
+
 dependencies {
-  compile project(':naure-parent:naure-common')
-    compile group: 'org.apache.poi', name: 'poi', version:'3.7'
-    compile group: 'org.apache.poi', name: 'poi-ooxml', version:'3.7'
-    compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version:'3.7'
+    compile project(':naure-common')
+    
+    compile group: 'org.apache.poi', name: 'poi', version: '3.7'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.7'
+    compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '3.7'
 }
