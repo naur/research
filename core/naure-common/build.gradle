@@ -1,7 +1,5 @@
 description = ''
 dependencies {
-    compile project(':naure-parent')
-
     compile group: 'com.google.guava', name: 'guava', version: '17.0'
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
     compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.4-alpha1'

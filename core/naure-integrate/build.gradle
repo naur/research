@@ -4,7 +4,6 @@ jar.enabled = true
 description = ''
 dependencies {
     compile project(':naure-common')
-    compile project(':naure-common')
     compile project(':naure-utility')
     compile project(':naure-repositories')
 
