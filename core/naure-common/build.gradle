@@ -1,4 +1,5 @@
 description = ''
+
 dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '17.0'
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
@@ -11,4 +12,5 @@ task packageTests(type: Jar) {
     from sourceSets.test.output
     classifier = 'tests'
 }
+
 artifacts.archives packageTests

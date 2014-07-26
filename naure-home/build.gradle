@@ -3,7 +3,7 @@ apply plugin: 'war'
 
 description = ''
 dependencies {
-  compile project(':naure-integrate')
+  compile project(':core:naure-integrate')
 
-  providedCompile project(':naure-integrate')
+  providedCompile project(':core:naure-integrate')
 }

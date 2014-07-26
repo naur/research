@@ -3,10 +3,10 @@ apply plugin: 'war'
 description = ''
 
 dependencies {
-    compile project(':naure-integrate')
-    compile project(':naure-common')
-    compile project(':naure-utility')
-    compile project(':naure-repositories')
+    compile project(':core:naure-integrate')
+    compile project(':core:naure-common')
+    compile project(':core:naure-utility')
+    compile project(':core:naure-repositories')
 
     compile group: 'org.agilewiki.jactor', name: 'jactor', version: '4.2.0'
     compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: '1.9.13'
@@ -22,6 +22,6 @@ dependencies {
 
     runtime group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2.2'
 
-    providedCompile project(':naure-integrate')
+    providedCompile project(':core:naure-integrate')
     providedCompile group: 'javax.servlet', name: 'servlet-api', version: '3.0-alpha-1'
 }

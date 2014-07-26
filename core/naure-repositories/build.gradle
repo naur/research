@@ -1,7 +1,8 @@
 description = ''
 
 dependencies {
-    compile project(':naure-common')
+    compile project(':core:naure-common')
+    testCompile project(':core:naure-common')
 
     compile group: 'com.sleepycat', name: 'je', version: '5.0.103'
     compile(group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.5.1.RELEASE') {
@@ -14,6 +15,4 @@ dependencies {
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
     compile group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.4.5'
     compile group: 'redis.clients', name: 'jedis', version: '2.0.0'
-
-    testCompile project(':naure-common')
 }
