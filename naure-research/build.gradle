@@ -20,7 +20,7 @@ dependencies {
 
     runtime group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2.2'
 
-    providedCompile project(':core:naure-integrate')
+    //providedCompile project(':core:naure-integrate')
     providedCompile group: 'javax.servlet', name: 'servlet-api', version: '3.0-alpha-1'
 }
 
@@ -32,6 +32,7 @@ dependencies {
 //}
 
 war {
-//    from project(":core:naure-integrate").fileTree("src/main/webapp")
-    from project(":core:naure-integrate").fileTree("src/main/java")
+    from project(":core:naure-integrate").fileTree("src/main/webapp")
+    //classpath configurations.compile
+    //from project(":core:naure-integrate").fileTree("src/main/java")
 }
