@@ -9,6 +9,8 @@ dependencies {
     compile project(':core:naure-utility')
     compile project(':core:naure-repositories')
 
+    testCompile project(':core:naure-common')
+
     compile group: 'org.agilewiki.jactor', name: 'jactor', version: '4.2.0'
     compile group: 'com.github.httl', name: 'httl-springmvc', version: '1.0.11'
     compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: '1.9.13'

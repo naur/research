@@ -4,6 +4,7 @@ description = ''
 
 dependencies {
     compile project(':core:naure-integrate')
+    testCompile project(':core:naure-common')
 
     compile group: 'org.agilewiki.jactor', name: 'jactor', version: '4.2.0'
     compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: '1.9.13'
@@ -21,4 +22,16 @@ dependencies {
 
     providedCompile project(':core:naure-integrate')
     providedCompile group: 'javax.servlet', name: 'servlet-api', version: '3.0-alpha-1'
+}
+
+//war {
+//    into("/") {
+//        exclude 'META-INF/MANIFEST.MF' // or whatever
+//        with project(':core:naure-integrate').war
+//    }
+//}
+
+war {
+//    from project(":core:naure-integrate").fileTree("src/main/webapp")
+    from project(":core:naure-integrate").fileTree("src/main/java")
 }

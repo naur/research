@@ -35,7 +35,7 @@ public class JadeRepository extends Repository {
         Map<String, Object> query = new HashMap<String, Object>() {{
             put("name", jade.getName());
             put("classify", jade.getClassify());
-            put("class", jade.collectionName());
+            put("class", jade.getClass());
         }};
 
         return this.exists(query);
@@ -55,7 +55,7 @@ public class JadeRepository extends Repository {
             put("description", jade.getDescription());
             put("uri", jade.getUri());
         }});
-        update.put("class", jade.collectionName());
+        update.put("class", jade.getClass());
 
         return update(update);
     }
