@@ -7,10 +7,6 @@
 package org.naure.repositories.models;
 
 import org.naure.common.entities.Entity;
-import org.naure.common.patterns.Context;
-import org.naure.common.patterns.exception.Action;
-
-import java.util.Date;
 
 /**
  * <pre>
