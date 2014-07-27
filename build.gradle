@@ -1,8 +1,12 @@
+import com.sun.org.apache.xalan.internal.xsltc.cmdline.Compile
+
 allprojects {
     apply plugin: 'maven'
-
     group = 'org.naure'
     version = '1.0'
+    compileJava {
+        options.encoding = "UTF-8"
+    }
 }
 
 subprojects {
