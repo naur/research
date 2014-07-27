@@ -4,7 +4,7 @@ description = ''
 
 dependencies {
     compile project(':core:naure-integrate')
-    testCompile project(':core:naure-common')
+//    testCompile project(path: ':core:naure-common', classifier: 'tests')
 
     compile group: 'org.agilewiki.jactor', name: 'jactor', version: '4.2.0'
     compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: '1.9.13'
@@ -35,4 +35,12 @@ war {
     from project(":core:naure-integrate").fileTree("src/main/webapp")
     //classpath configurations.compile
     //from project(":core:naure-integrate").fileTree("src/main/java")
+}
+
+war.doLast {
+    explodedWar.execute()
+}
+task explodedWar(type: Copy) {
+    into "$buildDir/exploded"
+    with war
 }
