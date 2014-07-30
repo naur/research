@@ -1,5 +1,15 @@
 description = ''
 
+ext {
+    mongodb_host = '127.0.0.1'
+    mongodb_port = '27017'
+    mongodb_dbname = 'naure'
+    mongodb_username = 'admin'
+    mongodb_password = 'admin'
+
+    berkeley_file = '/var/db/naure'
+}
+
 dependencies {
     compile project(':core:naure-common')
 //    testCompile project(path: ':core:naure-common', classifier: 'tests')

@@ -1,13 +1,21 @@
+import com.sun.org.apache.xalan.internal.xsltc.cmdline.Compile
+
 allprojects {
     apply plugin: 'maven'
     apply plugin: 'idea'
     group = 'org.naure'
     version = '1.0'
-}
+//    tasks.withType(Compile) {
+//        options.encoding = 'UTF-8'
+//    }
 
-//tasks.withType(Compile) {
-//    options.encoding = "UTF-8"
-//}
+    task show << {
+        println version
+        println project.description
+        println relativePath(compileJava.destinationDir)
+        println relativePath(processResources.destinationDir)
+    }
+}
 
 subprojects {
     apply plugin: 'java'
@@ -21,6 +29,8 @@ subprojects {
     }
 
     ext {
+        naure_log_file_path = '/var/web/logs'
+
         slf4jVersion = '1.6.4'
         commonsCodecVersion = '1.3'
         commonsLang3Version = '3.3.2'
@@ -53,6 +63,14 @@ subprojects {
         testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
     }
 
+//    processResources {
+//        from(sourceSets.main.resources.srcDirs) {
+//            filter(org.apache.tools.ant.filters.ReplaceTokens,
+//                    tokens: loadGroovyConfig()
+//            )
+//        }
+//    }
+
     repositories {
         mavenLocal()
 
@@ -62,9 +80,11 @@ subprojects {
         maven { url 'http://repo.springsource.org/libs-release' }
         maven { url 'http://download.java.net/maven/2/' }
     }
-}
 
-task showProjectProperties << {
-    println version
-    println project.description
+//    def installer = install.repositories.mavenInstaller
+//    def deployer = uploadArchives.repositories.mavenDeployer
+//
+//    [installer, deployer]*.pom*.whenConfigured { pom ->
+//        pom.dependencies.find { dep -> dep.groupId == 'group3' && dep.artifactId == 'runtime' }.optional = true
+//    }
 }
