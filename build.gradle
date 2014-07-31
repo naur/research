@@ -27,6 +27,13 @@ subprojects {
     compileTestJava {
         options.encoding = 'UTF-8'
     }
+//    processResources {
+//        from(sourceSets.main.resources.srcDirs) {
+//            filter(org.apache.tools.ant.filters.ReplaceTokens,
+//                    tokens: loadGroovyConfig()
+//            )
+//        }
+//    }
 
     ext {
         naure_log_file_path = '/var/web/logs'
@@ -62,14 +69,6 @@ subprojects {
         testCompile group: 'junit', name: 'junit', version: junitVersion
         testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
     }
-
-//    processResources {
-//        from(sourceSets.main.resources.srcDirs) {
-//            filter(org.apache.tools.ant.filters.ReplaceTokens,
-//                    tokens: loadGroovyConfig()
-//            )
-//        }
-//    }
 
     repositories {
         mavenLocal()

@@ -1,13 +1,7 @@
 description = ''
 
 ext {
-    mongodb_host = '127.0.0.1'
-    mongodb_port = '27017'
-    mongodb_dbname = 'naure'
-    mongodb_username = 'admin'
-    mongodb_password = 'admin'
-
-    berkeley_file = '/var/db/naure'
+    profile = project['profile']
 }
 
 dependencies {
@@ -26,4 +20,17 @@ dependencies {
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
     compile group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.4.5'
     compile group: 'redis.clients', name: 'jedis', version: '2.0.0'
+}
+
+def loadGroovyConfig() {
+    def configFile = file('config.groovy')
+    new ConfigSlurper(profile).parse(configFile.toURL()).toProperties()
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter(org.apache.tools.ant.filters.ReplaceTokens,
+                tokens: loadGroovyConfig()
+        )
+    }
 }
