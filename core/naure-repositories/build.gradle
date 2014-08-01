@@ -1,9 +1,5 @@
 description = ''
 
-ext {
-    profile = project['profile']
-}
-
 dependencies {
     compile project(':core:naure-common')
 //    testCompile project(path: ':core:naure-common', classifier: 'tests')
