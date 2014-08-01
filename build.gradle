@@ -42,17 +42,38 @@ subprojects {
     compileTestJava {
         options.encoding = 'UTF-8'
     }
+
     processResources {
         from(sourceSets.main.resources.srcDirs) {
             def config = new ConfigSlurper().parse(configFile);
-//            if (null != project['profile'] && !(project['profile'].equals(""))) {
-//                config = config.merge(new ConfigSlurper(project['profile']).parse(configFile));
+//            if (null != ext.profile && !(ext.profile.equals(""))) {
+//                config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
 //            }
             filter(org.apache.tools.ant.filters.ReplaceTokens,
                     tokens: config.toProperties()
             )
         }
     }
+
+    processTestResources {
+        from(sourceSets.main.resources.srcDirs) {
+            def config = new ConfigSlurper().parse(configFile);
+//            if (null != ext.profile && !(ext.profile.equals(""))) {
+//                config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
+//            }
+            filter(org.apache.tools.ant.filters.ReplaceTokens,
+                    tokens: config.toProperties()
+            )
+        }
+    }
+
+//    gradle.taskGraph.whenReady { taskGraph ->
+//        if (taskGraph.hasTask(release)) {
+//            ext.profile = 'production'
+//        } else {
+//            ext.profile = ''
+//        }
+//    }
 
     dependencies {
         compile group: 'commons-codec', name: 'commons-codec', version: commonsCodecVersion

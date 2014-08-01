@@ -5,6 +5,7 @@
  */
 package org.naure.common.util;
 
+import com.google.common.base.Charsets;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -17,7 +18,6 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.protocol.HTTP;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -100,7 +100,8 @@ public class RequestClient {
                             }
                             String charset = contentType.getMimeType(); //TODO .getCharset();
                             if (charset == null) {
-                                charset = HTTP.DEFAULT_CONTENT_CHARSET;
+                                //charset = HTTP.DEFAULT_CONTENT_CHARSET;
+                                charset = Charsets.ISO_8859_1.name();
                             }
                             return docBuilder.parse(entity.getContent(), charset);
                         } catch (ParserConfigurationException ex) {

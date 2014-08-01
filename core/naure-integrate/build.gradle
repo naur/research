@@ -9,7 +9,7 @@ dependencies {
     compile project(':core:naure-utility')
     compile project(':core:naure-repositories')
 
-    testCompile project(':core:naure-common')
+    testCompile project(':core:naure-common').sourceSets.test.output
 
     compile group: 'org.agilewiki.jactor', name: 'jactor', version: '4.2.0'
     compile group: 'com.github.httl', name: 'httl-springmvc', version: '1.0.11'

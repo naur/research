@@ -4,7 +4,7 @@ description = ''
 
 dependencies {
     compile project(':core:naure-integrate')
-//    testCompile project(path: ':core:naure-common', classifier: 'tests')
+    testCompile project(':core:naure-common').sourceSets.test.output
 
     compile group: 'org.agilewiki.jactor', name: 'jactor', version: '4.2.0'
     compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: '1.9.13'

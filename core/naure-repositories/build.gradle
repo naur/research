@@ -2,8 +2,7 @@ description = ''
 
 dependencies {
     compile project(':core:naure-common')
-//    testCompile project(path: ':core:naure-common', classifier: 'tests')
-    testCompile project(':core:naure-common')
+    testCompile project(':core:naure-common').sourceSets.test.output
 
     compile group: 'com.sleepycat', name: 'je', version: '5.0.103'
     compile(group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.5.1.RELEASE') {

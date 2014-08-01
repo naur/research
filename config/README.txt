@@ -18,3 +18,7 @@
             )
         }
     }
+
+
+    testCompile project(path: ':core:naure-common', type: 'tests')
+    D:/Research/projects/res/naure-research/build/reports/tests/index.html

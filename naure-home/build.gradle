@@ -1,9 +1,9 @@
-
 apply plugin: 'war'
 
 description = ''
 dependencies {
-  compile project(':core:naure-integrate')
+    compile project(':core:naure-integrate')
+    testCompile project(':core:naure-common').sourceSets.test.output
 
-  providedCompile project(':core:naure-integrate')
+    providedCompile project(':core:naure-integrate')
 }
