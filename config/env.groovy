@@ -1,4 +1,11 @@
 environments {
+    naure {
+        log {
+            file {
+                path: '/var/web/logs'
+            }
+        }
+    }
     development {
         mongodb {
             host = '127.0.0.1'
