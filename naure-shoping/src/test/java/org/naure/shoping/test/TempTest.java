@@ -23,7 +23,5 @@ import org.naure.shoping.models.Jade;
 public class TempTest {
     @Test
     public void test() {
-        Jade jade = new Jade();
-        Assert.assertNotNull(jade.collectionName());
     }
 }

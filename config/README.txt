@@ -20,5 +20,37 @@
     }
 
 
+    gradle.taskGraph.whenReady { taskGraph ->
+        if (taskGraph.hasTask(release)) {
+            ext.profile = 'production'
+        } else {
+            ext.profile = ''
+        }
+    }
+
+
+if (null != ext.profile && !(ext.profile.equals(""))) {
+                config = config.merge(new ConfigSlurper(project['profile']).parse(configFile));
+            }
+
+
     testCompile project(path: ':core:naure-common', type: 'tests')
     D:/Research/projects/res/naure-research/build/reports/tests/index.html
+
+    dependencies {
+        testCompile project(':modules:bam-ae').sourceSets.test.classes
+        groovy localGroovy()
+    }
+
+
+configurations {
+    testArtifacts
+}
+task testJar (type: Jar) {
+    baseName = "${project.name}-test"
+    from sourceSets.test.output
+}
+artifacts {
+    testArtifacts testJar
+}
+testCompile project (path: ":some-project", configuration: 'testArtifacts')

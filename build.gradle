@@ -3,10 +3,19 @@ import com.sun.org.apache.xalan.internal.xsltc.cmdline.Compile
 allprojects {
     apply plugin: 'maven'
     apply plugin: 'idea'
+//    apply plugin: 'checkstyle'
+//    apply plugin: 'findbugs'
+//    apply plugin: 'pmd'
+//    apply plugin: 'jdepend'
     group = 'org.naure'
     version = '1.0'
 //    tasks.withType(Compile) {
 //        options.encoding = 'UTF-8'
+//    }
+
+//    checkstyle {
+//        //configFile = new File("${rootProject.projectDir}/config/checkstyle.xml").toURL()
+//        configFile = file(rootDir + '/config/checkstyle.xml')
 //    }
 
     task show << {
@@ -23,7 +32,7 @@ subprojects {
     targetCompatibility = 1.7
     ext {
 //        profile = project['profile']
-        configFile = new File("${rootProject.projectDir}/config/env.groovy").toURL()
+        configFile = file("${rootDir}/config/env.groovy").toURL()
 
         slf4jVersion = '1.6.4'
         commonsCodecVersion = '1.3'
@@ -46,34 +55,15 @@ subprojects {
     processResources {
         from(sourceSets.main.resources.srcDirs) {
             def config = new ConfigSlurper().parse(configFile);
-//            if (null != ext.profile && !(ext.profile.equals(""))) {
-//                config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
-//            }
+            if (hasProperty('profile')) {
+                ext.profile = project['profile']
+                config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
+            }
             filter(org.apache.tools.ant.filters.ReplaceTokens,
                     tokens: config.toProperties()
             )
         }
     }
-
-    processTestResources {
-        from(sourceSets.main.resources.srcDirs) {
-            def config = new ConfigSlurper().parse(configFile);
-//            if (null != ext.profile && !(ext.profile.equals(""))) {
-//                config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
-//            }
-            filter(org.apache.tools.ant.filters.ReplaceTokens,
-                    tokens: config.toProperties()
-            )
-        }
-    }
-
-//    gradle.taskGraph.whenReady { taskGraph ->
-//        if (taskGraph.hasTask(release)) {
-//            ext.profile = 'production'
-//        } else {
-//            ext.profile = ''
-//        }
-//    }
 
     dependencies {
         compile group: 'commons-codec', name: 'commons-codec', version: commonsCodecVersion
