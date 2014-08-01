@@ -21,16 +21,3 @@ dependencies {
     compile group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.4.5'
     compile group: 'redis.clients', name: 'jedis', version: '2.0.0'
 }
-
-def loadGroovyConfig() {
-    def configFile = file('config.groovy')
-    new ConfigSlurper(profile).parse(configFile.toURL()).toProperties()
-}
-
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        filter(org.apache.tools.ant.filters.ReplaceTokens,
-                tokens: loadGroovyConfig()
-        )
-    }
-}

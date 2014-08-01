@@ -27,13 +27,6 @@ subprojects {
     compileTestJava {
         options.encoding = 'UTF-8'
     }
-//    processResources {
-//        from(sourceSets.main.resources.srcDirs) {
-//            filter(org.apache.tools.ant.filters.ReplaceTokens,
-//                    tokens: loadGroovyConfig()
-//            )
-//        }
-//    }
 
     ext {
         naure_log_file_path = '/var/web/logs'
@@ -47,6 +40,16 @@ subprojects {
         cglibVersion = '3.1'
         xstreamVersion = '1.4.2'
         junitVersion = '4.7'
+
+        config = new ConfigSlurper(profile).parse(new File("${rootProject.projectDir}/config/config.groovy").toURL())
+    }
+
+    processResources {
+        from(sourceSets.main.resources.srcDirs) {
+            filter(org.apache.tools.ant.filters.ReplaceTokens,
+                    tokens: config.toProperties()
+            )
+        }
     }
 
     dependencies {
@@ -79,11 +82,4 @@ subprojects {
         maven { url 'http://repo.springsource.org/libs-release' }
         maven { url 'http://download.java.net/maven/2/' }
     }
-
-//    def installer = install.repositories.mavenInstaller
-//    def deployer = uploadArchives.repositories.mavenDeployer
-//
-//    [installer, deployer]*.pom*.whenConfigured { pom ->
-//        pom.dependencies.find { dep -> dep.groupId == 'group3' && dep.artifactId == 'runtime' }.optional = true
-//    }
 }
