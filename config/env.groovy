@@ -1,9 +1,5 @@
 naure {
-    log {
-        file {
-            path: '/var/web/logs'
-        }
-    }
+    log.file.path = '/var/web/logs'
 }
 
 mongodb {

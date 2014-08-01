@@ -21,7 +21,7 @@
         </property>
     </bean>
 
-    <!-- 注册aspectj -->
+    <!-- Regist aspectj -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <!-- Configures the @Controller programming model -->
     <mvc:annotation-driven/>
@@ -80,9 +80,9 @@
     </bean>
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
 
-    <!--视图-->
+    <!-- View -->
     <bean id="marshallingView" class="org.springframework.web.servlet.view.xml.MarshallingView">
-        <!--DOTO 改为使用castorMarshaller -->
+        <!--DOTO castorMarshaller -->
         <constructor-arg ref="xStreamMarshaller"/>
         <property name="modelKey" value="information"/>
         <!--<constructor-arg ref="castorMarshaller"/>-->
@@ -107,7 +107,7 @@
         <property name="supportedMediaTypes" value="application/atom+xml"/>
     </bean>
 
-    <!--序列化工具-->
+    <!-- Serialize -->
     <bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
         <property name="aliases">
             <props>
