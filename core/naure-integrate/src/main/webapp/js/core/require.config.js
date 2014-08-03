@@ -58,6 +58,10 @@ require.config({
         //'swfobject': jslocalpath + '/js/core/uploadify/swfobject',
         'jquery.uploadify': jslocalpath + '/js/core/uploadify/jquery.uploadify.min',
 
+        //google map
+        'google.maps': 'http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN',
+        'google.maplabel': 'http://cdn.naure.org/maplabel-compiled.js',
+
         'arbor-etc': jsresearch + '/js/arbor/etc',
         'arbor-kernel': jsresearch + '/js/arbor/kernel',
         'arbor-graphics-colors': jsresearch + '/js/arbor/graphics/colors',
@@ -138,6 +142,7 @@ require.config({
         'jquery.uploadify': ['jquery'],
         'metro': ['jquery', 'jquery.widget', 'jquery.mousewheel'],
         'bootstrap': ['jquery'],
-        'modern.calendar': ['moment']
+        'modern.calendar': ['moment'],
+        'google.maps': ['google.maplabel']
     }
 });
