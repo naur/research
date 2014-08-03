@@ -37,10 +37,10 @@ war {
     //from project(":core:naure-integrate").fileTree("src/main/java")
 }
 
-war.doLast {
-    explodedWar.execute()
-}
-task explodedWar(type: Copy) {
-    into "$buildDir/exploded"
-    with war
-}
+//war.doLast {
+//    explodedWar.execute()
+//}
+//task explodedWar(type: Copy) {
+//    into "$buildDir/exploded"
+//    with war
+//}
