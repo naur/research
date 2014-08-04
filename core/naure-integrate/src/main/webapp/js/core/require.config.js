@@ -59,11 +59,12 @@ require.config({
         'jquery.uploadify': jslocalpath + '/js/core/uploadify/jquery.uploadify.min',
 
         //google map
-        'google.maps': 'http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN',
+        //'google.maps': 'http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN',
         //'google.maps': jsresearch + '/js/core/google.maps',
+        'google.maps': 'http://maps.googleapis.com/maps/api/js?key=AIzaSyCFq_f1XYnmyUiG7SHj9u1guoq7DInfp_g&sensor=false&region=zh-CN&language=zh-CN',
         'google.maplabel': jsresearch + '/js/core/maplabel-compiled',
         //baidu maps
-        'baidu.maps' : 'http://api.map.baidu.com/api?v=2.0&ak=D69d79d3237709943f2c2e06cc1db20a',
+        'baidu.maps': 'http://api.map.baidu.com/api?v=2.0&ak=D69d79d3237709943f2c2e06cc1db20a',
 
         'arbor-etc': jsresearch + '/js/arbor/etc',
         'arbor-kernel': jsresearch + '/js/arbor/kernel',
