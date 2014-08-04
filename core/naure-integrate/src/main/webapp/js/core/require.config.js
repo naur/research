@@ -60,7 +60,7 @@ require.config({
 
         //google map
         'google.maps': 'http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN',
-        'google.maplabel': 'http://cdn.naure.org/maplabel-compiled.js',
+        'google.maplabel': jsresearch + '/js/core/maplabel-compiled',
 
         'arbor-etc': jsresearch + '/js/arbor/etc',
         'arbor-kernel': jsresearch + '/js/arbor/kernel',
