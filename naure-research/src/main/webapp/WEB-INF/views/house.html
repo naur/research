@@ -17,25 +17,13 @@ $!{extends("/layout.html")}
         geocoder: null,
         //经度：114.38484,  维度：30.478435
         // 北京：39.904214, 116.40741300000002);
-        center: new google.maps.LatLng(13.72789, 100.52412),
+        center: [13.72789, 100.52412],
         points: [
-            {point: new google.maps.LatLng(13.74998, 100.49199), name: '大皇宫'},
-            {point: new google.maps.LatLng(13.74706, 100.49313), name: '卧佛寺'},
-            {point: new google.maps.LatLng(13.75129, 100.49256), name: '玉佛寺'},
-            {point: new google.maps.LatLng(13.74354, 100.48738), name: '郑王庙'},
-            {point: new google.maps.LatLng(13.70405, 100.50341), name: 'Asiatique河边夜市'},
-//                    {point: new google.maps.LatLng(13.478435, 100.38484), name: 'maeKong美攻铁路市场'},
-//                    {point: new google.maps.LatLng(13.478435, 100.38484), name: '安帕瓦水上市场'},
-//                    {point: new google.maps.LatLng(13.478435, 100.38484), name: 'chatuchak周末市场'},
-//                    {point: new google.maps.LatLng(13.478435, 100.38484), name: 'lifemuseum死体博物馆'},
-            {point: new google.maps.LatLng(18.81639, 98.89195), name: '素贴山'},
-            {point: new google.maps.LatLng(18.80554, 98.95308), name: '清迈大学'},
-//                    {point: new google.maps.LatLng(13.478435, 100.38484), name: '宁曼路'},
-//                    {point: new google.maps.LatLng(13.478435, 100.38484), name: '契迪龙寺'}
+            {point: [13.74998, 100.49199], name: '大皇宫'}
         ]
     };
 
-    function init() {
+    function loadPoint() {
         var myOptions = {
             zoom: 14,
             center: global.center,
@@ -61,9 +49,16 @@ $!{extends("/layout.html")}
         global.geocoder = new google.maps.Geocoder();
     }
 
-    require(['loading', 'research-template', 'google.maps'], function (NAURE) {
-        google.maps.event.addDomListener(window, 'load', init);
+    function init() {
+        for (var index in global.points) {
+            global.points[index].point = new google.maps.LatLng(global.points[index].point[0], global.points[index].point[1]);
+        }
+        global.center = new google.maps.LatLng(global.center[0], global.center[1]);
+    }
 
+    require(['loading', 'research-template', 'google.maps', 'google.maplabel'], function (NAURE) {
+        init();
+        google.maps.event.addDomListener(window, 'load', loadPoint);
         $(function () {
         });
     });

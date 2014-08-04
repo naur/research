@@ -9,7 +9,7 @@
  *
  */
 
-var jslocalpath = '/Research/projects/research/naure-integrate/src/main/webapp';
+var jslocalpath = '/Research/projects/res/core/naure-integrate/src/main/webapp';
 jslocalpath = '';
 var jsresearch = jslocalpath.replace('naure-integrate', 'naure-research');
 
@@ -142,7 +142,6 @@ require.config({
         'jquery.uploadify': ['jquery'],
         'metro': ['jquery', 'jquery.widget', 'jquery.mousewheel'],
         'bootstrap': ['jquery'],
-        'modern.calendar': ['moment'],
-        'google.maps': ['google.maplabel']
+        'modern.calendar': ['moment']
     }
 });
