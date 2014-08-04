@@ -62,6 +62,8 @@ require.config({
         'google.maps': 'http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN',
         //'google.maps': jsresearch + '/js/core/google.maps',
         'google.maplabel': jsresearch + '/js/core/maplabel-compiled',
+        //baidu maps
+        'baidu.maps' : 'http://api.map.baidu.com/api?v=2.0&ak=D69d79d3237709943f2c2e06cc1db20a',
 
         'arbor-etc': jsresearch + '/js/arbor/etc',
         'arbor-kernel': jsresearch + '/js/arbor/kernel',

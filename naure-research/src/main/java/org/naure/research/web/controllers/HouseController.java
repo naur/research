@@ -27,4 +27,9 @@ public class HouseController extends ControllerBase {
     public String view(){
         return view("house");
     }
+
+    @RequestMapping("google")
+    public String viewGoogle(){
+        return view("house-google");
+    }
 }
