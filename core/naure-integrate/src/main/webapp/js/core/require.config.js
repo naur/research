@@ -59,7 +59,8 @@ require.config({
         'jquery.uploadify': jslocalpath + '/js/core/uploadify/jquery.uploadify.min',
 
         //google map
-        'google.maps': 'http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN',
+        //'google.maps': 'http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN',
+        'google.maps': jsresearch + '/js/core/google.maps',
         'google.maplabel': jsresearch + '/js/core/maplabel-compiled',
 
         'arbor-etc': jsresearch + '/js/arbor/etc',
