@@ -8,13 +8,13 @@ var global = {
     geocoder: null,
     //经度：114.38484,  维度：30.478435
     //北京：39.904214, 116.40741300000002);
-    center: [30.47856, 114.40844],
+    center: {coordinate: [30.47856, 114.40844], name: ''},
     points: [
-        {point: [30.47856, 114.40844], name: '工作地方', addr: '武汉市东湖高新技术开发区关山大道1号 光谷软件园F6栋6楼'},
-        {point: [30.40364, 114.41549], name: '保利清能西海岸', addr: ''},
-        {point: [30.43973, 114.43742], name: '平安光谷春天', addr: ''},
-        {point: [30.48021, 114.51558], name: '朗诗里程', addr: ''},
-        {point: [30.49713, 114.53742], name: '光谷北大资源.山水年华', addr: ''}
+        {coordinate: [30.47856, 114.40844], name: '工作地方', addr: '光谷软件园', city: '武汉市'},
+        {coordinate: [30.40364, 114.41549], name: '保利清能西海岸', addr: '', city: '武汉市'},
+        {coordinate: [30.43973, 114.43742], name: '平安光谷春天', addr: '', city: '武汉市'},
+        {coordinate: [30.48021, 114.51558], name: '朗诗里程', addr: '', city: '武汉市'},
+        {coordinate: [30.49713, 114.53742], name: '光谷北大资源.山水年华', addr: '', city: '武汉市'}
     ],
     maps: {
         google: {
@@ -28,29 +28,50 @@ var global = {
                     }
                 );
             },
-            marker: function (map, mark) {
+            marker: function (map, point) {
                 var mapLabel = new MapLabel({
-                    text: mark.name,
+                    text: point.name,
                     map: map,
-                    position: mark.point,
+                    position: point.coordinate,
                     fontSize: global.font.size,
                     fontColor: global.font.color,
                     align: 'right',
-                    title: '您当前所在的位置\r\n经度：' + mark.point.lng() + '\r\n维度： ' + mark.point.lat()
+                    title: '您当前所在的位置\r\n经度：' + point.coordinate.lng() + '\r\n维度： ' + point.coordinate.lat()
                 });
                 var marker = new google.maps.Marker();
                 marker.bindTo('map', mapLabel);
                 marker.bindTo('position', mapLabel);
             },
             parsePoint: function (point) {
-                return new google.maps.LatLng(point[0], point[1]);
+                return new google.maps.LatLng(point.coordinate[0], point.coordinate[1]);
             }
         },
         baidu: {
             zoom: 15,
+            getCoordinate: function (point) {
+                // 创建地址解析器实例
+                var myGeo = new BMap.Geocoder();
+                // 将地址解析结果显示在地图上，并调整地图视野
+                myGeo.getPoint(point.attr, function (coord) {
+                    if (coord) {
+                        console.log(JSON.stringify(coord));
+                        point.coordinate = coord;
+                    }
+                }, point.city);
+            },
+            getLocation: function (point) {
+                // 创建地理编码实例
+                var myGeo = new BMap.Geocoder();
+                // 根据坐标得到地址描述
+                myGeo.getLocation(point.coordinate, function (result) {
+                    if (result) {
+                        point.attr = result.address;
+                    }
+                });
+            },
             parsePoint: function (point) {
                 //Point(lng 经度:Number, lat 纬度:Number)
-                return new BMap.Point(point[1], point[0]);
+                return new BMap.Point(point.coordinate[1], point.coordinate[0]);
             },
             create: function (container, center, zoom) {
                 var map = new BMap.Map(container);
@@ -64,20 +85,20 @@ var global = {
                 map.enableScrollWheelZoom();                            //启用滚轮放大缩小
                 return map;
             },
-            marker: function (map, mark) {
-                map.addOverlay(new BMap.Marker(mark.point));
-                var label = new BMap.Label(mark.name, {
+            marker: function (map, point) {
+                map.addOverlay(new BMap.Marker(point.coordinate));
+                var label = new BMap.Label(point.name, {
                     offset: 0,
-                    position: mark.point
+                    position: point.coordinate
                 });
                 label.setStyle({color: global.font.color, fontSize: global.font.size});
-                label.setTitle(mark.name);
+                label.setTitle(point.name);
                 map.addOverlay(label);
             },
             line: function (map, points) {
                 var array = [];
                 for (var index in points) {
-                    array.push(points[index].point);
+                    array.push(points[index].coordinate);
                 }
                 var polyline = new BMap.Polyline(array,
                     {strokeColor: "blue", strokeWeight: 6, strokeOpacity: 0.5}
@@ -90,7 +111,7 @@ var global = {
 
 function init(map) {
     for (var index in global.points) {
-        global.points[index].point = map.parsePoint(global.points[index].point);
+        global.points[index].point = map.parsePoint(global.points[index]);
     }
     global.center = map.parsePoint(global.center);
 
