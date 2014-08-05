@@ -7,10 +7,12 @@ $!{extends("/layout.html")}
 <style type="text/css">
     #map {
         width: 100%;
-        height: 500px;
+        height: 550px;
     }
-
 </style>
+
+<script type="application/javascript"
+        src="http://api.map.baidu.com/api?v=2.0&ak=D69d79d3237709943f2c2e06cc1db20a"></script>
 
 <div class="row">
     <div class="col-md-12">
@@ -18,118 +20,34 @@ $!{extends("/layout.html")}
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <a target="_blank" href="http://guangguchuntianpa.fang.com"><h4><span class="label label-danger">保利清能西海岸</span>
-        </h4></a>
-    </div>
-</div>
+<!--<div class="row">-->
+<!--<div class="col-md-12">-->
+<!--<a target="_blank" href="http://guangguchuntianpa.fang.com"><h4><span class="label label-danger">保利清能西海岸</span>-->
+<!--</h4></a>-->
+<!--</div>-->
+<!--</div>-->
 
-<div class="row">
-    <div class="col-md-12">
-        <a target="_blank" href="http://guangguchuntianpa.fang.com"><h4><span
-                class="label label-danger">光谷北大资源.山水年华</span></h4></a>
-    </div>
-</div>
+<!--<div class="row">-->
+<!--<div class="col-md-12">-->
+<!--<a target="_blank" href="http://guangguchuntianpa.fang.com"><h4><span-->
+<!--class="label label-danger">光谷北大资源.山水年华</span></h4></a>-->
+<!--</div>-->
+<!--</div>-->
 
-<div class="row">
-    <div class="col-md-12">
-        <a target="_blank" href="http://langshilicheng.fang.com"><h4><span class="label label-danger">朗诗里程</span></h4>
-        </a>
-    </div>
-</div>
+<!--<div class="row">-->
+<!--<div class="col-md-12">-->
+<!--<a target="_blank" href="http://langshilicheng.fang.com"><h4><span class="label label-danger">朗诗里程</span></h4>-->
+<!--</a>-->
+<!--</div>-->
+<!--</div>-->
 
-<div class="row">
-    <div class="col-md-12">
-        <a target="_blank" href="http://guangguchuntianpa.fang.com"><h4><span class="label label-danger">平安光谷春天</span>
-        </h4></a>
-    </div>
-</div>
+<!--<div class="row">-->
+<!--<div class="col-md-12">-->
+<!--<a target="_blank" href="http://guangguchuntianpa.fang.com"><h4><span class="label label-danger">平安光谷春天</span>-->
+<!--</h4></a>-->
+<!--</div>-->
+<!--</div>-->
 
-<script type="text/javascript">
-    var global = {
-        font: {
-            size: 12,
-            color: 'red'
-        },
-        map: null,
-        marker: null,
-        geocoder: null,
-        //经度：114.38484,  维度：30.478435
-        //北京：39.904214, 116.40741300000002);
-        center: [30.47856, 114.40844],
-        points: [
-            {point: [30.47856, 114.40844], name: '工作地方'},
-            {point: [30.40364, 114.41549], name: '保利清能西海岸'},
-            {point: [30.43973, 114.43742], name: '平安光谷春天'},
-            {point: [30.48021, 114.51558], name: '朗诗里程'},
-            {point: [30.49713, 114.53742], name: '光谷北大资源.山水年华'}
-        ],
-        maps: {
-            google: {
-                zoom: 14,
-                create: function (container, center, zoom) {
-                    return new google.maps.Map(
-                            document.getElementById(container), {
-                                zoom: zoom,
-                                center: center,
-                                mapTypeId: google.maps.MapTypeId.ROADMAP
-                            }
-                    );
-                },
-                marker: function (map, point) {
-//                    var mapLabel = new MapLabel({
-//                        text: global.points[index].name,
-//                        map: global.map,
-//                        position: global.points[index].point,
-//                        fontSize: global.font.size,
-//                        fontColor: global.font.color,
-//                        align: 'right',
-//                        title: '您当前所在的位置\r\n经度：' + global.points[index].point.lng() + '\r\n维度： ' + global.points[index].point.lat()
-//                    });
-//                    var marker = new google.maps.Marker;
-//                    marker.bindTo('map', mapLabel);
-//                    marker.bindTo('position', mapLabel);
-                },
-                parsePoint: function (point) {
-                    return new google.maps.LatLng(point[0], point[1]);
-                }
-            },
-            baidu: {
-                zoom: 15,
-                create: function (container, center, zoom) {
-                    var map = new BMap.Map(container);
-                    map.centerAndZoom(center, zoom);
-                    return map;
-                },
-                marker: function (map, point) {
-                    map.addOverlay(new BMap.Marker(point));
-                },
-                parsePoint: function (point) {
-                    return new BMap.Point(point[0], point[1]);
-                }
-            }
-        }
-    };
-
-    function init(map) {
-        for (var index in global.points) {
-            global.points[index].point = map.parsePoint(global.points[index].point);
-        }
-        global.center = map.parsePoint(global.center);
-
-        global.map = map.create('map', global.center, map.zoom);
-        for (var index in global.points) {
-            map.marker(global.map, global.points[index]);
-        }
-    }
-
-    //require(['loading', 'research-template', 'google.maps', 'google.maplabel'], function (NAURE) {
-    require(['loading', 'research-template', 'baidu.maps'], function (NAURE) {
-        $(function () {
-            init(global.maps.baidu);
-        });
-    });
-</script>
+<script type="text/javascript" src="/js/research/house.js"></script>
 
 #end
