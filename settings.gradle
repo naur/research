@@ -15,3 +15,5 @@ project(':core:naure-integrate').projectDir = "$rootDir/core/naure-integrate" as
 project(':naure-home').projectDir = "$rootDir/naure-home" as File
 project(':naure-research').projectDir = "$rootDir/naure-research" as File
 project(':naure-shoping').projectDir = "$rootDir/naure-shoping" as File
+include 'naure-web'
+

@@ -5,9 +5,7 @@
  */
 package org.naure.shoping.test;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.naure.shoping.models.Jade;
 
 /**
  * <pre>

@@ -5,7 +5,6 @@ import org.naure.common.patterns.Tree;
 import org.naure.common.patterns.Type;
 import org.naure.repositories.construction.Repository;
 import org.naure.shoping.models.Jade;
-import org.springframework.data.repository.query.parser.Part;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
