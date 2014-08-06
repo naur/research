@@ -3,11 +3,11 @@
  * 
  * Copy Right@ 纽海信息技术有限公司
  */
-package org.naure.services;
+package org.naure.web.services;
 
 import it.sauronsoftware.cron4j.SchedulerListener;
 import it.sauronsoftware.cron4j.TaskExecutor;
-import org.naure.properties.SchedulerProperties;
+import org.naure.web.properties.SchedulerProperties;
 import org.naure.repositories.models.SchedulerStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

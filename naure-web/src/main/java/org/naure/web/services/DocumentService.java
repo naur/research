@@ -1,4 +1,4 @@
-package org.naure.services;
+package org.naure.web.services;
 
 /**
  * Created with IntelliJ IDEA.

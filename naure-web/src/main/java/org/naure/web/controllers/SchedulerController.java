@@ -6,20 +6,17 @@
 
 package org.naure.web.controllers;
 
-import it.sauronsoftware.cron4j.SchedulerListener;
-import org.apache.http.HttpRequest;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.patterns.exception.Func;
 import org.naure.repositories.models.Scheduler;
-import org.naure.services.SchedulerService;
+import org.naure.web.services.SchedulerService;
 import org.naure.web.ControllerBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletRequest;
 import java.util.List;

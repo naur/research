@@ -1,8 +1,8 @@
-package org.naure.services;
+package org.naure.web.services;
 
 import org.naure.repositories.SessionRepository;
 import org.naure.repositories.models.Session;
-import org.naure.properties.SystemProperties;
+import org.naure.web.properties.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

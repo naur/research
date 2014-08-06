@@ -1,7 +1,7 @@
 package org.naure.web;
 
 import org.aspectj.lang.annotation.*;
-import org.naure.services.SessionService;
+import org.naure.web.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

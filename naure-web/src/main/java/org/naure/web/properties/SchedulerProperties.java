@@ -4,20 +4,17 @@
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.properties;
+package org.naure.web.properties;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.JsonToken;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.naure.common.patterns.exception.Action;
 import org.naure.repositories.models.Scheduler;
 import org.naure.repositories.models.SchedulerStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.*;

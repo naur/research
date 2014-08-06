@@ -1,4 +1,4 @@
-package org.naure.services;
+package org.naure.web.services;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,5 +7,5 @@ package org.naure.services;
  * Time: 3:33 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LoggerService {
+public class MailService {
 }

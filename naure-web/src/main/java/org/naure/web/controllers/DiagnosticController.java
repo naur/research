@@ -6,7 +6,7 @@ import org.naure.common.entities.TraceEventType;
 import org.naure.common.patterns.exception.Func;
 import org.naure.repositories.models.Session;
 import org.naure.repositories.models.SessionLog;
-import org.naure.services.SessionService;
+import org.naure.web.services.SessionService;
 import org.naure.web.ControllerBase;
 import org.naure.web.HttpSessionFilter;
 import org.naure.web.HttpUtility;

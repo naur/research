@@ -4,13 +4,11 @@
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.services;
+package org.naure.web.services;
 
 import it.sauronsoftware.cron4j.*;
-import org.naure.common.patterns.exception.Action;
-import org.naure.common.patterns.Context;
 import org.naure.repositories.models.Scheduler;
-import org.naure.properties.SchedulerProperties;
+import org.naure.web.properties.SchedulerProperties;
 import org.naure.repositories.models.SchedulerStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +17,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
