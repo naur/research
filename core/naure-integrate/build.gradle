@@ -1,8 +1,6 @@
-apply plugin: 'war'
-
-jar.enabled = true
-
 description = ''
+
+configurations { providedCompile }
 
 dependencies {
     compile project(':core:naure-common')

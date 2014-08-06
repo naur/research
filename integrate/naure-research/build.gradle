@@ -1,5 +1,3 @@
-apply plugin: 'war'
-
 description = ''
 
 dependencies {
@@ -19,28 +17,4 @@ dependencies {
     compile group: 'org.jrobin', name: 'jrobin', version: '1.5.9'
 
     runtime group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2.2'
-
-    //providedCompile project(':core:naure-integrate')
-    providedCompile group: 'javax.servlet', name: 'servlet-api', version: '3.0-alpha-1'
-}
-
-//war {
-//    into("/") {
-//        exclude 'META-INF/MANIFEST.MF' // or whatever
-//        with project(':core:naure-integrate').war
-//    }
-//}
-
-war {
-    from project(":core:naure-integrate").fileTree("src/main/webapp")
-    //classpath configurations.compile
-    //from project(":core:naure-integrate").fileTree("src/main/java")
-}
-
-war.doLast {
-    explodedWar.execute()
-}
-task explodedWar(type: Copy) {
-    into "$buildDir/exploded"
-    with war
 }

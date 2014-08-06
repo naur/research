@@ -11,6 +11,14 @@
 //        new ConfigSlurper(profile).parse(configFile.toURL()).toProperties()
 //    }
 
+
+
+apply plugin: 'war'
+
+jar.enabled = true
+
+
+
     processResources {
         from(sourceSets.main.resources.srcDirs) {
             filter(org.apache.tools.ant.filters.ReplaceTokens,
