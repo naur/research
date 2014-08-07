@@ -32,7 +32,16 @@ dependencies {
 //}
 
 war {
-    from project(":core:naure-integrate").fileTree("src/main/webapp")
+    if (hasProperty('home')) {
+        from project(":integrate:naure-home").fileTree("src/main/webapp")
+    } else if (hasProperty('research')) {
+        from project(":integrate:naure-research").fileTree("src/main/webapp")
+    } else if (hasProperty('shoping')) {
+        from project(":integrate:naure-shoping").fileTree("src/main/webapp")
+    } else {
+        //默认 research
+        from project(":integrate:naure-research").fileTree("src/main/webapp")
+    }
     //classpath configurations.compile
     //from project(":core:naure-integrate").fileTree("src/main/java")
 }

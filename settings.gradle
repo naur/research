@@ -5,9 +5,9 @@ include ':core:naure-utility'
 include ':core:naure-repositories'
 include ':core:naure-integrate'
 
-include ':naure-home'
-include ':naure-research'
-include ':naure-shoping'
+include ':integrate:naure-home'
+include ':integrate:naure-research'
+include ':integrate:naure-shoping'
 include ':naure-web'
 
 project(':core:naure-common').projectDir = "$rootDir/core/naure-common" as File
@@ -15,7 +15,7 @@ project(':core:naure-utility').projectDir = "$rootDir/core/naure-utility" as Fil
 project(':core:naure-repositories').projectDir = "$rootDir/core/naure-repositories" as File
 project(':core:naure-integrate').projectDir = "$rootDir/core/naure-integrate" as File
 
-project(':naure-home').projectDir = "$rootDir/integrate/naure-home" as File
-project(':naure-research').projectDir = "$rootDir/integrate/naure-research" as File
-project(':naure-shoping').projectDir = "$rootDir/integrate/naure-shoping" as File
+project(':integrate:naure-home').projectDir = "$rootDir/integrate/naure-home" as File
+project(':integrate:naure-research').projectDir = "$rootDir/integrate/naure-research" as File
+project(':integrate:naure-shoping').projectDir = "$rootDir/integrate/naure-shoping" as File
 project(':naure-web').projectDir = "$rootDir/naure-web" as File
