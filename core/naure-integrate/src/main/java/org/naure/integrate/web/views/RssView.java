@@ -1,4 +1,4 @@
-package org.naure.web.views;
+package org.naure.integrate.web.views;
 
 import com.sun.syndication.feed.rss.Item;
 import org.naure.common.entities.Information;

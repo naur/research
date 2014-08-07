@@ -6,12 +6,9 @@
 
 package org.naure.research.properties;
 
-import org.naure.services.core.scheduler.SchedulerProperty;
+import org.naure.integrate.services.core.scheduler.SchedulerProperty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * <pre>

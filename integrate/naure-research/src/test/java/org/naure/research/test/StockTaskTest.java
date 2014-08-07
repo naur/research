@@ -9,7 +9,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.naure.common.test.UnitTestBase;
 import org.naure.repositories.models.Scheduler;
-import org.naure.services.core.scheduler.SchedulerService;
+import org.naure.integrate.services.core.scheduler.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

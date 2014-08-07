@@ -4,7 +4,7 @@
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.services.core.scheduler;
+package org.naure.integrate.services.core.scheduler;
 
 import it.sauronsoftware.cron4j.*;
 import org.naure.repositories.models.Scheduler;

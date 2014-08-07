@@ -1,13 +1,8 @@
 package org.naure.research.web.controllers.algorithms;
 
-import org.naure.common.entities.OffsetInfo;
-import org.naure.web.ControllerBase;
+import org.naure.integrate.web.ControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.

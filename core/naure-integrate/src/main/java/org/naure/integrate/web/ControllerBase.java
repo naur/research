@@ -1,4 +1,4 @@
-package org.naure.web;
+package org.naure.integrate.web;
 
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;

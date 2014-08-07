@@ -10,7 +10,7 @@ import it.sauronsoftware.cron4j.Scheduler;
 import org.junit.Assert;
 import org.junit.Test;
 import org.naure.common.test.UnitTestBase;
-import org.naure.services.core.scheduler.SchedulerService;
+import org.naure.integrate.services.core.scheduler.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

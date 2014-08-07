@@ -3,7 +3,7 @@
  * 
  * Copy Right@ 纽海信息技术有限公司
  */
-package org.naure.services.core.scheduler;
+package org.naure.integrate.services.core.scheduler;
 
 import it.sauronsoftware.cron4j.SchedulerListener;
 import it.sauronsoftware.cron4j.TaskExecutor;

@@ -4,7 +4,7 @@
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.services.core.scheduler;
+package org.naure.integrate.services.core.scheduler;
 
 import org.naure.repositories.models.Scheduler;
 import org.naure.repositories.models.SchedulerStatus;

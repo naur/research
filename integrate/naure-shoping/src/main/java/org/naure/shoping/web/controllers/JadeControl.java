@@ -10,7 +10,7 @@ import org.naure.common.entities.InformationLevel;
 import org.naure.common.patterns.exception.Sub;
 import org.naure.shoping.models.Jade;
 import org.naure.shoping.services.JadeService;
-import org.naure.web.ControllerBase;
+import org.naure.integrate.web.ControllerBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

@@ -5,7 +5,7 @@
  */
 package org.naure.research.web.controllers;
 
-import org.naure.web.ControllerBase;
+import org.naure.integrate.web.ControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

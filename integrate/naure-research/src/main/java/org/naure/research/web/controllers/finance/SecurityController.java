@@ -10,7 +10,7 @@ import org.naure.repositories.models.finance.Future;
 import org.naure.repositories.models.finance.Quote;
 import org.naure.repositories.models.finance.Security;
 import org.naure.research.services.SecurityService;
-import org.naure.web.ControllerBase;
+import org.naure.integrate.web.ControllerBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

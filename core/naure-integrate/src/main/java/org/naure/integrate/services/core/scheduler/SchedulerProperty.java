@@ -4,7 +4,7 @@
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.services.core.scheduler;
+package org.naure.integrate.services.core.scheduler;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;

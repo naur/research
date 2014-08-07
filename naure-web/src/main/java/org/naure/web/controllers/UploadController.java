@@ -4,7 +4,7 @@ import httl.util.StringUtils;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.patterns.exception.Func;
-import org.naure.web.ControllerBase;
+import org.naure.integrate.web.ControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

@@ -99,8 +99,8 @@
         <!--<constructor-arg ref="castorMarshaller"/>-->
     </bean>
     <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
-    <bean id="atomView" class="org.naure.web.views.AtomView"/>
-    <bean id="rssView" class="org.naure.web.views.RssView"/>
+    <bean id="atomView" class="org.naure.integrate.web.views.AtomView"/>
+    <bean id="rssView" class="org.naure.integrate.web.views.RssView"/>
 
     <!--转换程序-->
     <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
