@@ -3,11 +3,10 @@
  * 
  * Copy Right@ 纽海信息技术有限公司
  */
-package org.naure.web.services;
+package org.naure.services.core.scheduler;
 
 import it.sauronsoftware.cron4j.SchedulerListener;
 import it.sauronsoftware.cron4j.TaskExecutor;
-import org.naure.web.properties.SchedulerProperties;
 import org.naure.repositories.models.SchedulerStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +35,7 @@ public class TaskSchedulerListener implements SchedulerListener {
     private final static Logger LOGGER = LoggerFactory.getLogger(TaskSchedulerListener.class);
 
     @Autowired
-    private SchedulerProperties schedulerProperties;
+    private SchedulerContext schedulerContext;
 
     @Override
     public void taskLaunching(TaskExecutor executor) {
@@ -63,6 +62,6 @@ public class TaskSchedulerListener implements SchedulerListener {
         SchedulerStatus status = new SchedulerStatus();
         status.setRecent(recent);
         status.setMessage(message);
-        schedulerProperties.updateStatus(taskId, status);
+        schedulerContext.updateStatus(taskId, status);
     }
 }

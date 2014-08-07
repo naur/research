@@ -4,11 +4,10 @@
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.web.services;
+package org.naure.services.core.scheduler;
 
 import it.sauronsoftware.cron4j.*;
 import org.naure.repositories.models.Scheduler;
-import org.naure.web.properties.SchedulerProperties;
 import org.naure.repositories.models.SchedulerStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,7 @@ public class SchedulerService {
     @Autowired
     private TaskSchedulerListener taskSchedulerListener;
     @Autowired
-    private SchedulerProperties schedulerProperties;
+    private SchedulerContext schedulerContext;
     //任务调度
     private it.sauronsoftware.cron4j.Scheduler scheduler = new it.sauronsoftware.cron4j.Scheduler();
 
@@ -52,7 +51,7 @@ public class SchedulerService {
     public void run(String taskName, Map params) throws Exception {
         //TODO 解析 params
         TaskExecutionContext context = null;
-        String taskId = schedulerProperties.getTaskId(taskName);
+        String taskId = schedulerContext.getTaskId(taskName);
         if (null != taskId) {
             scheduler.getTask(taskId).execute(context);
         }
@@ -73,10 +72,10 @@ public class SchedulerService {
                 temp.setDuration(executor.getCompleteness());
                 temp.setCanStopped(executor.canBeStopped());
                 temp.setCanStopped(executor.canBeStopped());
-                schedulerProperties.updateStatus(taskId, temp);
+                schedulerContext.updateStatus(taskId, temp);
             }
         }
-        return schedulerProperties.getTasks();
+        return schedulerContext.getTasks();
     }
 
     /**
@@ -128,7 +127,7 @@ public class SchedulerService {
      */
     @PostConstruct
     public void init() {
-        for (Scheduler item : schedulerProperties.getSchedulers()) {
+        for (Scheduler item : schedulerContext.getSchedulers()) {
             if (!applicationContext.containsBean(item.getTask().toString())) {
                 //TODO
                 LOGGER.error("Task:" + item.getTask() + "no exists.");
@@ -138,7 +137,7 @@ public class SchedulerService {
                     item.getCron(),
                     //解析配置文件配置的 task 对应的 bean
                     (Task) applicationContext.getBean(item.getTask().toString()));
-            schedulerProperties.updateTask(item.getName(), taskId);
+            schedulerContext.updateTask(item.getName(), taskId);
         }
         scheduler.addSchedulerListener(taskSchedulerListener);
     }

@@ -4,6 +4,16 @@ description = ''
 
 dependencies {
     compile project(':core:naure-integrate')
+    if (hasProperty('home')) {
+        compile project(':integrate:naure-home')
+    } else if (hasProperty('research')) {
+        compile project(':integrate:naure-research')
+    } else if (hasProperty('shoping')) {
+        compile project(':integrate:naure-shoping')
+    } else {
+        //默认 research
+        compile project(':integrate:naure-research')
+    }
 
     testCompile project(':core:naure-common').sourceSets.test.output
 

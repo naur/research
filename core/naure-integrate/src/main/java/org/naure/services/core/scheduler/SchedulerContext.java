@@ -1,23 +1,23 @@
 /*
- * @(#) ScheduleService.java 2014-01-09
+ * @(#) SchedulerContext.java 2014-27-07
  *
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.web.properties;
+package org.naure.services.core.scheduler;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.naure.repositories.models.Scheduler;
 import org.naure.repositories.models.SchedulerStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -25,16 +25,19 @@ import java.util.*;
  *
  * 定时任务管理服务
  *
- * 创建日期: 2014-01-09
+ * 创建日期: 2014-27-07
  * 修改人 :
  * 修改说明:
  * 评审人 ：
  * </pre>
  */
-@Configuration
-public class SchedulerProperties {
+@Service
+public class SchedulerContext {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerProperties.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerContext.class);
+
+    @Autowired
+    private List<SchedulerProperty> properties;
 
     private Object lock = new Object();
 
@@ -105,20 +108,15 @@ public class SchedulerProperties {
         }
     }
 
-    @Value("${schedulers}")
-    public void schedulers(String schedluers) {
+    /**
+     * 初始化定时任务，合并所有 SchedulerProperty 到当前的 schedulers 里
+     */
+    @PostConstruct
+    public void init() {
         schedulers = new HashMap<String, Scheduler>();
-
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            JsonParser jp = new JsonFactory().createJsonParser(schedluers);
-            jp.nextToken();
-            while (jp.nextToken() == JsonToken.START_OBJECT) {
-                Scheduler scheduler = mapper.readValue(jp, Scheduler.class);
-                schedulers.put(scheduler.getId(), scheduler);
-            }
-        } catch (Exception ex) {
-            LOGGER.equals(ex);
+        //TODO 空判断
+        for (SchedulerProperty property : properties) {
+            schedulers.putAll(property.getSchedulers());
         }
     }
 
