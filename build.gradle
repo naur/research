@@ -102,7 +102,7 @@ subprojects {
         }
     }
 
-//    task resources {
+//    task placeholderResources {
 //        from(sourceSets.main.resources.srcDirs) {
 //            def config = new ConfigSlurper().parse(configFile);
 //            if (hasProperty('profile')) {

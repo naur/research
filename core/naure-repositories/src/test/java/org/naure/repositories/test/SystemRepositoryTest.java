@@ -3,6 +3,7 @@ package org.naure.repositories.test;
 import org.junit.Assert;
 import org.junit.Test;
 import org.naure.common.entities.Entity;
+import org.naure.common.test.UnitTestBase;
 import org.naure.repositories.SystemRepository;
 import org.naure.repositories.models.Menu;
 import org.naure.repositories.models.Session;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Administrator on 5/11/14.
  */
-public class SystemRepositoryTest {
+public class SystemRepositoryTest  extends UnitTestBase {
 
     @Test
     public void test_add() {
