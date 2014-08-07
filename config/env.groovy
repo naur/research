@@ -21,4 +21,16 @@ environments {
             password = '19830618'
         }
     }
+    home {
+        application.name = 'home'
+        log.file.name = 'naure-home-web.log'
+    }
+    research {
+        application.name = 'research'
+        log.file.name = 'naure-research-web.log'
+    }
+    shoping {
+        application.name = 'shoping'
+        log.file.name = 'naure-shoping-web.log'
+    }
 }

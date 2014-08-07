@@ -11,7 +11,7 @@
 //        new ConfigSlurper(profile).parse(configFile.toURL()).toProperties()
 //    }
 
-
+gradle clean build -x test -Pshoping
 
 apply plugin: 'war'
 

@@ -63,6 +63,16 @@ subprojects {
                 ext.profile = project['profile']
                 config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
             }
+            if (hasProperty('home')) {
+                config = config.merge(new ConfigSlurper('home').parse(configFile));
+            } else if (hasProperty('research')) {
+                config = config.merge(new ConfigSlurper('research').parse(configFile));
+            } else if (hasProperty('shoping')) {
+                config = config.merge(new ConfigSlurper('shoping').parse(configFile));
+            } else {
+                //默认 research
+                config = config.merge(new ConfigSlurper('research').parse(configFile));
+            }
             filter(org.apache.tools.ant.filters.ReplaceTokens,
                     tokens: config.toProperties()
             )
