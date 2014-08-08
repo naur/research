@@ -70,6 +70,7 @@ class BllUnitTestContextAdapter implements BllUnitTestContext {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T extends ApplicationContext> T getConfigContext(Class<T> clazz) {
         if (!this.applicationContexts.containsKey(clazz)) {
             try {

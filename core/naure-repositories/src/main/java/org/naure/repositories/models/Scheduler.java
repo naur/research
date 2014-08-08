@@ -20,6 +20,7 @@ import org.naure.common.entities.Entity;
  * 评审人 ：
  * </pre>
  */
+@SuppressWarnings("unchecked")
 public class Scheduler extends Entity {
     //定时任务名字
     private String name;

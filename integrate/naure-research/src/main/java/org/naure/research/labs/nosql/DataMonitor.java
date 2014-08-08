@@ -78,6 +78,7 @@ public class DataMonitor implements Watcher, AsyncCallback.StatCallback {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void processResult(int rc, String path, Object ctx, Stat stat) {
         boolean exists;
         switch (rc) {

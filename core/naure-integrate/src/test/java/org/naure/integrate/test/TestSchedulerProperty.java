@@ -1,5 +1,5 @@
 /*
- * @(#) TestSchedulerProperty.java 2014-59-08
+ * @(#) TestSchedulerProperty.java 2014-58-08
  *
  * Copy Right@ NAURE.ORG
  */
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * <pre>
  * author Administrator
  *
- * 创建日期: 2014-59-08
+ * 创建日期: 2014-58-08
  * 修改人 :
  * 修改说明:
  * 评审人 ：

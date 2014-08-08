@@ -26,12 +26,13 @@ import java.util.List;
  * </pre>
  */
 public class StockTaskTest extends UnitTestBase {
+
     @Autowired
-    private SchedulerService schedulerService;
+    private SchedulerService schedulers;
 
     @Test
     public void schedulerTest() {
-        List<Scheduler> tasks = schedulerService.getTasks(false);
+        List<Scheduler> tasks = schedulers.getTasks(false);
         Assert.assertNotNull(tasks);
         Assert.assertEquals(2, tasks.size());
     }

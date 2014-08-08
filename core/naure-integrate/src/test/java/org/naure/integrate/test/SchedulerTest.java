@@ -36,7 +36,7 @@ public class SchedulerTest extends UnitTestBase {
     @Test
     public void SchedulerProperties() {
         List<org.naure.repositories.models.Scheduler> result = schedulers.getTasks(false);
-        Assert.assertEquals(2, result.size());
+        junit.framework.Assert.assertEquals(2, result.size());
     }
 
     @Test
