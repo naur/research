@@ -21,11 +21,18 @@ import java.util.Map;
 public class AtomView extends AbstractAtomFeedView {
     @Override
     protected List<Entry> buildFeedEntries(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Information<List> information = (Information<List>) model.get("information");
         List<Entry> atomList = new ArrayList<Entry>();
+
+        Object info = model.get("information");
+        if (!(info instanceof Information) || !(((Information) info).getData() instanceof List)) {
+            return atomList;
+        }
+
+        List list = (List) (((Information) info).getData());
+
         Entry entry = new Entry();
         List<Content> contents = new ArrayList<Content>();
-        for (Object item : information.getData()) {
+        for (Object item : list) {
             Content content = new Content();
             content.setType(Content.TEXT);
             content.setValue(item.toString());

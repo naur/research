@@ -1,4 +1,4 @@
-package org.naure.test.test2;
+package org.naure.integrate.test.test2;
 
 import org.agilewiki.jactor.Mailbox;
 import org.agilewiki.jactor.RP;

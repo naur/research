@@ -1,0 +1,29 @@
+/*
+ * @(#) TestSchedulerProperty.java 2014-59-08
+ *
+ * Copy Right@ NAURE.ORG
+ */
+
+package org.naure.integrate.test;
+
+import org.naure.integrate.services.core.scheduler.SchedulerProperty;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+/**
+ * <pre>
+ * author Administrator
+ *
+ * 创建日期: 2014-59-08
+ * 修改人 :
+ * 修改说明:
+ * 评审人 ：
+ * </pre>
+ */
+@Service
+public class TestSchedulerProperty extends SchedulerProperty {
+    @Value("${schedulers}")
+    public void schedulers(String schedluers) {
+        super.schedulers(schedluers);
+    }
+}

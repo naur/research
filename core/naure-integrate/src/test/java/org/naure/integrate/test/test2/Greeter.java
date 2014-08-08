@@ -1,4 +1,4 @@
-package org.naure.test.test2;
+package org.naure.integrate.test.test2;
 
 import org.agilewiki.jactor.RP;
 import org.agilewiki.jactor.lpc.TargetActor;

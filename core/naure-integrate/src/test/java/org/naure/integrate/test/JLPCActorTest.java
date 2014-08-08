@@ -1,18 +1,16 @@
-package org.naure.test;
+package org.naure.integrate.test;
 
 import org.agilewiki.jactor.*;
-import org.agilewiki.jactor.lpc.JLPCActor;
-import org.agilewiki.jactor.lpc.Request;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.naure.common.test.UnitTestBase;
-import org.naure.test.test1.Hello;
-import org.naure.test.test1.HelloActor;
-import org.naure.test.test1.Multiply;
-import org.naure.test.test2.Actor1;
-import org.naure.test.test2.Actor2;
+import org.naure.integrate.test.test1.Hello;
+import org.naure.integrate.test.test1.HelloActor;
+import org.naure.integrate.test.test1.Multiply;
+import org.naure.integrate.test.test2.Actor1;
+import org.naure.integrate.test.test2.Actor2;
 
 import java.util.Arrays;
 import java.util.Collection;

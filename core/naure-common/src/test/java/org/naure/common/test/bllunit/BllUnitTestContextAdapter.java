@@ -75,6 +75,7 @@ class BllUnitTestContextAdapter implements BllUnitTestContext {
             try {
                 this.applicationContexts.put(clazz, (ApplicationContext) Class.forName(clazz.getName()).newInstance());
             } catch (Exception ex) {
+                //TODO
             }
         }
         return (T) this.applicationContexts.get(clazz);

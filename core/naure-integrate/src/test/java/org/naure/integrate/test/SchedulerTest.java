@@ -4,7 +4,7 @@
  * Copy Right@ NAURE.ORG
  */
 
-package org.naure.web.test;
+package org.naure.integrate.test;
 
 import it.sauronsoftware.cron4j.Scheduler;
 import org.junit.Assert;

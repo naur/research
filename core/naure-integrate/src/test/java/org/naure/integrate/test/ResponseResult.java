@@ -1,4 +1,4 @@
-package org.naure.test;
+package org.naure.integrate.test;
 
 /**
  * Created with IntelliJ IDEA.
