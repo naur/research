@@ -8,16 +8,19 @@
     <!--<context:property-placeholder location="classpath:jdbc.properties"/>-->
     <context:component-scan base-package="org.naure"/>
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
-        <property name="ignoreResourceNotFound" value="true"/>
-        <property name="locations">
-            <list>
-                <value>classpath:application.properties</value>
-                <value>classpath:httl.properties</value>
-            </list>
-        </property>
-    </bean>
+    <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="true"/>
+    <context:property-placeholder location="classpath:httl.properties" ignore-unresolvable="true"/>
+
+    <!--<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+    <!--<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>-->
+    <!--<property name="ignoreResourceNotFound" value="true"/>-->
+    <!--<property name="locations">-->
+    <!--<list>-->
+    <!--<value>classpath:application.properties</value>-->
+    <!--<value>classpath:httl.properties</value>-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--</bean>-->
 
     <!-- Regist aspectj -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
@@ -64,10 +67,10 @@
             </list>
         </property>
         <!--<property name="viewResolvers">-->
-            <!--<list>-->
-                <!--<ref bean="viewResolver"/>-->
-                <!--<ref bean="multipartResolver"/>-->
-            <!--</list>-->
+        <!--<list>-->
+        <!--<ref bean="viewResolver"/>-->
+        <!--<ref bean="multipartResolver"/>-->
+        <!--</list>-->
         <!--</property>-->
     </bean>
 
