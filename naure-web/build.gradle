@@ -42,11 +42,11 @@ dependencies {
 //}
 
 war {
-    if (hasProperty('home')) {
+    if (project.hasProperty('home')) {
         from project(":integrate:naure-home").fileTree("src/main/webapp")
-    } else if (hasProperty('research')) {
+    } else if (project.hasProperty('research')) {
         from project(":integrate:naure-research").fileTree("src/main/webapp")
-    } else if (hasProperty('shoping')) {
+    } else if (project.hasProperty('shoping')) {
         from project(":integrate:naure-shoping").fileTree("src/main/webapp")
     } else {
         //默认 research

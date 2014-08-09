@@ -59,15 +59,15 @@ subprojects {
     processResources {
         from(sourceSets.main.resources.srcDirs) {
             def config = new ConfigSlurper().parse(configFile);
-            if (hasProperty('profile')) {
+            if (project.hasProperty('profile')) {
                 ext.profile = project['profile']
                 config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
             }
-            if (hasProperty('home')) {
+            if (project.hasProperty('home')) {
                 config = config.merge(new ConfigSlurper('home').parse(configFile));
-            } else if (hasProperty('research')) {
+            } else if (project.hasProperty('research')) {
                 config = config.merge(new ConfigSlurper('research').parse(configFile));
-            } else if (hasProperty('shoping')) {
+            } else if (project.hasProperty('shoping')) {
                 config = config.merge(new ConfigSlurper('shoping').parse(configFile));
             } else {
                 //默认 research
@@ -82,15 +82,15 @@ subprojects {
     processTestResources {
         from(sourceSets.main.resources.srcDirs) {
             def config = new ConfigSlurper().parse(configFile);
-            if (hasProperty('profile')) {
+            if (project.hasProperty('profile')) {
                 ext.profile = project['profile']
                 config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
             }
-            if (hasProperty('home')) {
+            if (project.hasProperty('home')) {
                 config = config.merge(new ConfigSlurper('home').parse(configFile));
-            } else if (hasProperty('research')) {
+            } else if (project.hasProperty('research')) {
                 config = config.merge(new ConfigSlurper('research').parse(configFile));
-            } else if (hasProperty('shoping')) {
+            } else if (project.hasProperty('shoping')) {
                 config = config.merge(new ConfigSlurper('shoping').parse(configFile));
             } else {
                 //默认 research
