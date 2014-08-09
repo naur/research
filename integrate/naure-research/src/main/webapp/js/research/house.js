@@ -59,7 +59,9 @@ var global = {
                 map.addControl(new BMap.NavigationControl());   //地图平移缩放控件，PC端默认位于地图左上方，它包含控制地图的平移和缩放的功能。移动端提供缩放控件，默认位于地图右下方。
                 map.addControl(new BMap.ScaleControl());        //比例尺控件，默认位于地图左下方，显示地图的比例关系。
                 map.addControl(new BMap.OverviewMapControl());  //缩略地图控件，默认位于地图右下方，是一个可折叠的缩略地图。
-                map.addControl(new BMap.PanoramaControl());  //全景控件
+                var stCtrl = new BMap.PanoramaControl();
+                stCtrl.setOffset(new BMap.Size(10, 40));
+                map.addControl(stCtrl);                                 //全景控件
                 //map.addControl(new BMap.GeolocationControl());  //定位控件，针对移动端开发，默认位于地图左下方。
                 map.addControl(new BMap.MapTypeControl());      //地图类型控件，默认位于地图右上方。
                 map.setCurrentCity("武汉"); // 仅当设置城市信息时，MapTypeControl的切换功能才能可用
