@@ -15,11 +15,13 @@ var global = {
 //        {point: [30.43973, 114.43742], name: '平安光谷春天', addr: ''},
 //        {point: [30.48021, 114.51558], name: '朗诗里程', addr: ''},
 //        {point: [30.49713, 114.53742], name: '光谷北大资源.山水年华', addr: ''}
-        {coordinate: [114.412589, 30.485188], name: '工作地方', addr: '武汉市东湖高新技术开发区关山大道1号 光谷软件园F6栋6楼', city: '武汉市'},
-        {coordinate: [114.421697, 30.409536], name: '保利清能西海岸', addr: '江夏杨桥湖大道与栗庙路交汇处', city: '武汉市'},
-        {coordinate: [114.44384, 30.446165], name: '平安光谷春天', addr: '东湖高新开发区 高新六路15号', city: '武汉市'},
-        {coordinate: [114.521633, 30.488825], name: '朗诗里程', addr: '东湖高新 高新大道光谷六路与神墩二路交汇处', city: '武汉市'},
-        {coordinate: [114.544468, 30.502159], name: '光谷北大资源.山水年华', addr: '武汉市东湖高新区珊瑚北路与九峰二路交汇处', city: '武汉市'}
+        {coordinate: [114.412589, 30.485188], name: '工作地方', addr: '武汉市东湖高新技术开发区关山大道1号 光谷软件园F6栋6楼', city: '武汉市', uri: '/house'},
+        {coordinate: [114.316892, 30.424641], name: ' 三姐家', addr: '武汉市东湖高新技术开发区关山大道1号 光谷软件园F6栋6楼', city: '武汉市', uri: '/house'},
+        {coordinate: [114.386277, 30.463497], name: '名湖豪庭', house: ['34层 102.67平 第16层7500 15年12月入住 2梯3户 容积率2.5'], addr: '武汉市东湖高新技术开发区关山大道1号 光谷软件园F6栋6楼', city: '武汉市', uri: 'http://minghuhaoting.fang.com'},
+        {coordinate: [114.421697, 30.409536], name: '保利清能西海岸', house: ['11层第3层 91平 6551 容积率1.93', '8层第3层 108平 6650'], addr: '江夏杨桥湖大道与栗庙路交汇处', city: '武汉市', uri: 'http://xihaianblqn.fang.com'},
+        {coordinate: [114.44384, 30.446165], name: '平安光谷春天', house: ['精装 8千 34层 容积率3.1'], addr: '东湖高新开发区 高新六路15号', city: '武汉市', uri: 'http://guangguchuntianpa.fang.com'},
+        {coordinate: [114.521633, 30.488825], name: '朗诗里程', house: ['公摊19% 均价6500 2梯4户 容积率2.80'], addr: '东湖高新 高新大道光谷六路与神墩二路交汇处', city: '武汉市', uri: 'http://langshilicheng.fang.com'},
+        {coordinate: [114.544468, 30.502159], name: '光谷北大资源.山水年华', house: ['9层 104.85平 大概8千 容积率1.80'], addr: '武汉市东湖高新区珊瑚北路与九峰二路交汇处', city: '武汉市', uri: 'http://shanshuinianhuabdzy.fang.com'}
     ],
     maps: {
         google: {
@@ -52,7 +54,7 @@ var global = {
             }
         },
         baidu: {    //http://api.map.baidu.com/lbsapi/getpoint/index.html
-            zoom: 15,
+            zoom: 19,
             create: function (container, center, zoom) {
                 var map = new BMap.Map(container);
                 map.centerAndZoom(center, zoom);
@@ -100,7 +102,14 @@ var global = {
                     position: point.coordinate
                 });
                 label.setStyle({color: global.font.color, fontSize: global.font.size});
-                label.setTitle(point.name);
+                var str = '<a target="_blank" href="' + point.uri + '">' + point.name + '</a>'
+                if (point.house) {
+                    for (var index in point.house) {
+                        str += '<br />' + point.house[index];
+                    }
+                }
+                label.setContent(str);
+
                 map.addOverlay(label);
             },
             line: function (map, points) {
@@ -114,7 +123,7 @@ var global = {
                 map.addOverlay(polyline);
             },
             navigation: function (map, src, dst) {
-                var driving = new BMap.TransitRoute(map, {
+                var driving = new BMap.DrivingRoute(map, {
                     renderOptions: {
                         map: map,
                         autoViewport: true
