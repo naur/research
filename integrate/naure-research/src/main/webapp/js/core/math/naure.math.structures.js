@@ -9,7 +9,7 @@
  *
  */
 
-define(['jquery', 'naure', 'naure.math'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math.js'], function ($, NAURE) {
 
     NAURE.Math.Structures = (function () {
         var structures = {

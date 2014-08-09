@@ -9,7 +9,7 @@
  *
  */
 
-define(['naure.math'], function (NAURE) {
+define(['naure.math.js'], function (NAURE) {
 
     NAURE.Math.Number = (function () {
         var number = {

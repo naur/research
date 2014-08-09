@@ -9,7 +9,7 @@
  *
  */
 
-define(['jquery', 'naure', 'naure.math.probability'], function ($, NAURE) {
+define(['jquery', 'naure', 'naure.math.probability.js'], function ($, NAURE) {
 
     NAURE.Math.Probability.Stochastic = (function () {
 

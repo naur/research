@@ -8,6 +8,7 @@ package org.naure.integrate.test;
 
 import org.naure.integrate.services.core.scheduler.SchedulerProperty;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,10 +21,12 @@ import org.springframework.stereotype.Service;
  * 评审人 ：
  * </pre>
  */
-@Service
+@Configuration
 public class TestSchedulerProperty extends SchedulerProperty {
+
     @Value("${schedulers}")
     public void schedulers(String schedluers) {
         super.schedulers(schedluers);
     }
+
 }
