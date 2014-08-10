@@ -6,6 +6,8 @@
 
     <context:component-scan base-package="org.naure.research"/>
 
+    <context:property-placeholder location="classpath:research.properties" ignore-unresolvable="true"/>
+
     <bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller">
         <property name="mappingLocations">
             <list>

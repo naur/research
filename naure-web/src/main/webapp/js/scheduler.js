@@ -16,7 +16,8 @@ var global = {
     dom: {
         container: '#scheduler-container ',
         search: '#search'
-    }
+    },
+    tableMessage: '<tr><td colspan="100">{0}</td></tr>'
 }
 
 /*-------------------- 全局变量 END ------------------*/
@@ -28,16 +29,17 @@ function initContainerHead() {
 }
 
 function search() {
-    $(global.dom.container + "tbody").html('<tr><td colspan="100">' + global.message.text.loading + '</td></tr>');
+    $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, global.message.text.loading));
     global.http.acquire({
         uri: global.uri,
         error: function (err) {
+            $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, err));
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
                 $(global.dom.container + "tbody").html($.render.scheduler(obj.output.information.data));
             } else {
-                //TODO
+                $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, obj.output.information.keywords));
             }
         }
     });
@@ -60,6 +62,7 @@ function initEvelt() {
 require(['loading', 'integrate-template'], function (mod) {
     global.http = mod.naure.HTTP;
     global.message = mod.naure.Message;
+    global.utility = mod.naure.Utility;
     $(function () {
         initEvelt();
         initContainerHead();

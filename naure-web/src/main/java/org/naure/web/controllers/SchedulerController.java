@@ -80,4 +80,24 @@ public class SchedulerController extends ControllerBase {
             }
         });
     }
+
+    /**
+     * 开启定时任务
+     */
+    @RequestMapping("task/start")
+    public Information start(
+            @PathVariable final String name,
+            ServletRequest request) {
+        //获取定时任务参数
+        final Map params = request.getParameterMap();
+
+        return handler(new Information<List<Scheduler>>(), new Func<Information, Information>() {
+            @Override
+            public Information execute(Information information) throws Exception {
+                schedulerService.run(name, params);
+                information.setLevel(InformationLevel.SUCCESS.value());
+                return information;
+            }
+        });
+    }
 }
