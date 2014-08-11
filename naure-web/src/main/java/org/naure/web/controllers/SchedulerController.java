@@ -84,17 +84,12 @@ public class SchedulerController extends ControllerBase {
     /**
      * 开启定时任务
      */
-    @RequestMapping("task/start/{name}")
-    public Information start(
-            @PathVariable final String name,
-            ServletRequest request) {
-        //获取定时任务参数
-        final Map params = request.getParameterMap();
-
+    @RequestMapping("task/start")
+    public Information start() {
         return handler(new Information<List<Scheduler>>(), new Func<Information, Information>() {
             @Override
             public Information execute(Information information) throws Exception {
-                schedulerService.start(name);
+                schedulerService.start();
                 information.setLevel(InformationLevel.SUCCESS.value());
                 return information;
             }

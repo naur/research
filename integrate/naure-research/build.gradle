@@ -18,3 +18,10 @@ dependencies {
 
     runtime group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2.2'
 }
+
+testClasses.doFirst {
+    println "Test classpath is:- "
+    sourceSets.test.runtimeClasspath.getFiles().each { file ->
+        println "file: \"" + file + "\""
+    }
+}

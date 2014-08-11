@@ -79,18 +79,41 @@ subprojects {
         }
     }
 
-    processTestResources {
+//    processTestResources {
+//        from(sourceSets.main.resources.srcDirs) {
+//            def config = new ConfigSlurper().parse(configFile);
+//            if (project.hasProperty('profile')) {
+//                ext.profile = project['profile']
+//                config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
+//            }
+//            if (project.hasProperty('home')) {
+//                config = config.merge(new ConfigSlurper('home').parse(configFile));
+//            } else if (project.hasProperty('research')) {
+//                config = config.merge(new ConfigSlurper('research').parse(configFile));
+//            } else if (project.hasProperty('shoping')) {
+//                config = config.merge(new ConfigSlurper('shoping').parse(configFile));
+//            } else {
+//                //默认 research
+//                config = config.merge(new ConfigSlurper('research').parse(configFile));
+//            }
+//            filter(org.apache.tools.ant.filters.ReplaceTokens,
+//                    tokens: config.toProperties()
+//            )
+//        }
+//    }
+
+    task placeholderResources(type: Copy) {
         from(sourceSets.main.resources.srcDirs) {
             def config = new ConfigSlurper().parse(configFile);
-            if (project.hasProperty('profile')) {
+            if (hasProperty('profile')) {
                 ext.profile = project['profile']
                 config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
             }
-            if (project.hasProperty('home')) {
+            if (hasProperty('home')) {
                 config = config.merge(new ConfigSlurper('home').parse(configFile));
-            } else if (project.hasProperty('research')) {
+            } else if (hasProperty('research')) {
                 config = config.merge(new ConfigSlurper('research').parse(configFile));
-            } else if (project.hasProperty('shoping')) {
+            } else if (hasProperty('shoping')) {
                 config = config.merge(new ConfigSlurper('shoping').parse(configFile));
             } else {
                 //默认 research
@@ -102,28 +125,7 @@ subprojects {
         }
     }
 
-//    task placeholderResources {
-//        from(sourceSets.main.resources.srcDirs) {
-//            def config = new ConfigSlurper().parse(configFile);
-//            if (hasProperty('profile')) {
-//                ext.profile = project['profile']
-//                config = config.merge(new ConfigSlurper(ext.profile).parse(configFile));
-//            }
-//            if (hasProperty('home')) {
-//                config = config.merge(new ConfigSlurper('home').parse(configFile));
-//            } else if (hasProperty('research')) {
-//                config = config.merge(new ConfigSlurper('research').parse(configFile));
-//            } else if (hasProperty('shoping')) {
-//                config = config.merge(new ConfigSlurper('shoping').parse(configFile));
-//            } else {
-//                //默认 research
-//                config = config.merge(new ConfigSlurper('research').parse(configFile));
-//            }
-//            filter(org.apache.tools.ant.filters.ReplaceTokens,
-//                    tokens: config.toProperties()
-//            )
-//        }
-//    }
+    //compileJava.dependsOn placeholderResources
 
     dependencies {
         compile group: 'commons-codec', name: 'commons-codec', version: commonsCodecVersion
