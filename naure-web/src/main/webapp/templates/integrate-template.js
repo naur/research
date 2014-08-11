@@ -8,13 +8,12 @@ define(['jquery', 'jquery.template'],
         $.templates("schedulerHead", "<tr><th>INDEX</th><th>NAME</th><th>CRON</th><th>TASK</th>" +
             "<th>RECENT</th><th>STARTTIME</th><th>COMPLETED</th><th>MESSAGE</th><th>DURATION</th>" +
             "<th>OPTIONS</th></tr>");
-        $.templates("scheduler", '<tr tag="{{>id}}"><td>{{:#index+1}}</td><td>{{>name}}</td><td>{{>cron}}</td>' +
-            '{{#if status}}' +
+        $.templates("scheduler", '<tr tag="{{>id}}"><td>{{:#index+1}}</td><td>{{>name}}</td><td>{{>cron}}</td><td>{{>task}}</td>' +
+            '{{if status}}' +
             '<td>{{>status.recent}}</td><td>{{>status.startTime}}</td><td>{{>status.completed}}</td><td>{{>status.message}}</td><td>{{>status.duration}}</td>' +
             '{{else}}' +
             '<td></td><td></td><td></td><td></td><td></td>' +
             '{{/if}}' +
-            '<td>{{>task}}</td>' +
             '<td>' +
             '   <div class="row">' +
             '        <div class="col-md-10 col-md-offset-1">' +
