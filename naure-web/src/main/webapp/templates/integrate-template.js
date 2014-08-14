@@ -21,7 +21,7 @@ define(['jquery', 'jquery.template'],
             '                <input type="text"  class="form-control">' +
             '           &nbsp;&nbsp;' +
             '                <span class="input-group-btn">' +
-            '                    <button class="btn btn-default"  type="button">Execute!</button>' +
+            '                    <button class="btn btn-default run"  type="button">RUN!</button>' +
             '                </span>' +
             '          </div>' +
             '        </div>' +

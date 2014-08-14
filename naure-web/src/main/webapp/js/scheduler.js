@@ -18,7 +18,8 @@ var global = {
     dom: {
         container: '#scheduler-container ',
         search: '#search',
-        start: '#start'
+        start: '#start',
+        run: '.run'
     },
     tableMessage: '<tr><td colspan="100">{0}</td></tr>'
 }
@@ -26,10 +27,6 @@ var global = {
 /*-------------------- 全局变量 END ------------------*/
 
 /*-------------------- 函数 START --------------------*/
-
-function initContainerHead() {
-    $(global.dom.container + "thead").html($.render.schedulerHead());
-}
 
 function search() {
     $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, global.message.text.loading));
@@ -49,20 +46,48 @@ function search() {
 }
 
 function start() {
-    $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, global.message.text.loading));
+    global.message.show({content: 'Task Starting......', clear: true});
     global.http.acquire({
         uri: global.startUri,
         error: function (err) {
-            $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, err));
+            global.message.show({content: 'Task Start Error!'});
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
-                $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, "Start OK."));
+                global.message.show({content: 'Task Start OK.'});
             } else {
-                $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, obj.output.information.keywords));
+                global.message.show({content: 'Task Start Error,' + obj.output.information.keywords + '.'});
             }
         }
     });
+}
+
+function run(self) {
+    //TODO 解析参数
+    var stock = $(self).parent().prev().val();
+    global.message.show({content: 'Task Running......', clear: true});
+    global.http.acquire({
+        uri: global.runUri,
+        data: {
+            startDate: '2014-07-14',
+            endDate: '2014-07-14',
+            stock: 'SH000711'
+        },
+        error: function (err) {
+            global.message.show({content: 'Task Run Error!'});
+        },
+        success: function (obj) {
+            if (0 == obj.output.information.level) {
+                global.message.show({content: 'Task Run OK.'});
+            } else {
+                global.message.show({content: 'Task Run Error,' + obj.output.information.keywords + '.'});
+            }
+        }
+    });
+}
+
+function initContainerHead() {
+    $(global.dom.container + "thead").html($.render.schedulerHead());
 }
 
 /*-------------------- 函数 END ----------------------*/
@@ -76,6 +101,9 @@ function initEvelt() {
     $(global.dom.start).on('click', function () {
         start();
     });
+    $(global.dom.run).on('click', function () {
+        run(this);
+    });
 }
 
 /*-------------------- 事件 END ----------------------*/
@@ -87,9 +115,12 @@ require(['loading', 'integrate-template'], function (mod) {
     global.message = mod.naure.Message;
     global.utility = mod.naure.Utility;
     $(function () {
+        global.message.defaults.global.transparent = true;
+        $('body').message({overlay: 'left-bottom'});
         initEvelt();
         initContainerHead();
         $(global.dom.search).click();
+        $(global.dom.run).parent().prev().val(new Date().format('yyyy-MM-dd'));
     });
 });
 

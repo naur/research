@@ -48,7 +48,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
             defaults: {
                 global: {
                     multiple: true,
-                    transparent: false,
+                    transparent: false, //透明度
                     overlay: null //'left-top'
                 },
                 content: '',
@@ -188,7 +188,14 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                 if (opt.fade) {
                     opt.domElement = '<div class="naure-message-fade"><p>' + opt.content + '</p></div>';
                 } else {
-                    opt.domElement = $.format('<div class="naure-message {0}"><span class="naure-title">' + (opt.title.length > 0 ? opt.title + '：' : '') + '</span><span id="naure-prompt"></span><div class="naure-show"><span class="naure-comment">' + opt.comment + '：</span><span id="naure-information"></span></div></div>', opt.overlay ? 'naure-message-' + opt.overlay : '');
+                    opt.domElement = $.format(
+                            '<div class="naure-message {0}"><span class="naure-title">' +
+                            (opt.title.length > 0 ? opt.title + '：' : '') +
+                            '</span><span id="naure-prompt"></span><div class="naure-show"><span class="naure-comment">' +
+                            opt.comment +
+                            '：</span><span id="naure-information"></span></div></div>',
+                        opt.overlay ? 'naure-message-' + opt.overlay : ''
+                    );
                 }
 
                 switch (opt.placement) {
@@ -211,11 +218,11 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
 
                 $('.naure-message>.naure-title').on('click', function () {
                     message.defaults.global.transparent = !message.defaults.global.transparent;
-                    if (message.defaults.global.transparent) $('.naure-message').addClass('message-transparent');
-                    else $('.naure-message').removeClass('message-transparent');
+                    if (message.defaults.global.transparent) $('.naure-message').addClass('naure-message-transparent');
+                    else $('.naure-message').removeClass('naure-message-transparent');
                 });
 
-                if (message.defaults.global.transparent) $('.naure-message').addClass('message-transparent');
+                if (message.defaults.global.transparent) $('.naure-message').addClass('naure-message-transparent');
 
                 isInit = true;
             },

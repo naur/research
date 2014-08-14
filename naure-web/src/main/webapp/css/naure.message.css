@@ -38,21 +38,21 @@ body {
     text-align: left;
 }
 
-.message-relative{
+.naure-message-relative{
     position: relative;
 }
 
-.message-transparent {
+.naure-message-transparent {
     opacity: 0.3;
 }
 
-.message-left-bottom {
+.naure-message-left-bottom {
     left: 0;
     bottom: 0;
     position: fixed;
 }
 
-.message-left-top {
+.naure-message-left-top {
     left: 0;
     top: 0;
     position: fixed;
