@@ -38,6 +38,7 @@ function search() {
         success: function (obj) {
             if (0 == obj.output.information.level) {
                 $(global.dom.container + "tbody").html($.render.scheduler(obj.output.information.data));
+                $(global.dom.run).parent().prev().val(new Date().format('yyyy-MM-dd') + '  ');
             } else {
                 $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, obj.output.information.keywords));
             }
@@ -50,13 +51,13 @@ function start() {
     global.http.acquire({
         uri: global.startUri,
         error: function (err) {
-            global.message.show({content: 'Task Start Error!'});
+            global.message.show({content: 'Task Start Error!', color: 'red'});
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
                 global.message.show({content: 'Task Start OK.'});
             } else {
-                global.message.show({content: 'Task Start Error,' + obj.output.information.keywords + '.'});
+                global.message.show({content: 'Task Start Error,' + obj.output.information.keywords + '.', color: 'red'});
             }
         }
     });
@@ -64,7 +65,11 @@ function start() {
 
 function run(self) {
     //TODO 解析参数
-    var stock = $(self).parent().prev().val();
+    var stock = $(self).parent().prev().val().split(' ');
+    if (stock.length != 2) {
+        global.message.show({content: 'Task Params Error: ' + stock.toString(), clear: true, color: 'red'});
+    }
+
     global.message.show({content: 'Task Running......', clear: true});
     global.http.acquire({
         uri: global.runUri,
@@ -74,13 +79,13 @@ function run(self) {
             stock: 'SH000711'
         },
         error: function (err) {
-            global.message.show({content: 'Task Run Error!'});
+            global.message.show({content: 'Task Run Error!', color: 'red'});
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
                 global.message.show({content: 'Task Run OK.'});
             } else {
-                global.message.show({content: 'Task Run Error,' + obj.output.information.keywords + '.'});
+                global.message.show({content: 'Task Run Error,' + obj.output.information.keywords + '.', color: 'red'});
             }
         }
     });
@@ -101,7 +106,8 @@ function initEvelt() {
     $(global.dom.start).on('click', function () {
         start();
     });
-    $(global.dom.run).on('click', function () {
+    $(global.dom.run).on('click', 'td', function () {
+        alert('OK');
         run(this);
     });
 }
@@ -115,12 +121,10 @@ require(['loading', 'integrate-template'], function (mod) {
     global.message = mod.naure.Message;
     global.utility = mod.naure.Utility;
     $(function () {
-        global.message.defaults.global.transparent = true;
         $('body').message({overlay: 'left-bottom'});
         initEvelt();
         initContainerHead();
         $(global.dom.search).click();
-        $(global.dom.run).parent().prev().val(new Date().format('yyyy-MM-dd'));
     });
 });
 
