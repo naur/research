@@ -1,5 +1,8 @@
 package org.naure.common.entities;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,6 +14,16 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class Entity implements Serializable {
+
+    private String id;
+    private Date created; // createDate;
+    private Date updated; //updatedDate;
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
+    }
+
     public String getId() {
         return id;
     }
@@ -34,8 +47,4 @@ public abstract class Entity implements Serializable {
     public void setUpdated(Date updated) {
         this.updated = updated;
     }
-
-    private String id;
-    private Date created; // createDate;
-    private Date updated; //updatedDate;
 }

@@ -45,16 +45,24 @@ public class SchedulerService {
     private it.sauronsoftware.cron4j.Scheduler scheduler = new it.sauronsoftware.cron4j.Scheduler();
 
     /**
+     * scheduling，返回 TaskId
+     */
+    public String scheduling(String cron, Task task) {
+        return scheduler.schedule(cron, task);
+    }
+
+    /**
      * 手动运行定时任务
-     * params 包含【startDate, endSate】
      */
     public void run(String taskName, Map params) throws Exception {
-        //TODO 解析 params
-        TaskExecutionContext context = null;
+        Task task = null;
         String taskId = schedulerContext.getTaskId(taskName);
-        if (null != taskId) {
-            scheduler.getTask(taskId).execute(context);
+        if (null == taskId || (task = scheduler.getTask(taskId)) == null) {
+            return;
         }
+
+        TaskExecutionContext context = new MyTaskExecutionContext(scheduler, params);
+        task.execute(context);
     }
 
     /**
@@ -130,15 +138,17 @@ public class SchedulerService {
         for (Scheduler item : schedulerContext.getSchedulers()) {
             if (!applicationContext.containsBean(item.getTask().toString())) {
                 //TODO
-                LOGGER.error("Task:" + item.getTask() + "no exists.");
+                LOGGER.error("Task: " + item.getTask() + " no exists.");
                 continue;
             }
-            String taskId = scheduler.schedule(
-                    item.getCron(),
-                    //解析配置文件配置的 task 对应的 bean
-                    (Task) applicationContext.getBean(item.getTask().toString()));
-            schedulerContext.updateTask(item.getName(), taskId);
+            schedulerContext.updateTask(
+                    item.getName(),
+                    scheduling(
+                            item.getCron(),
+                            //解析配置文件配置的 task 对应的 bean
+                            (Task) applicationContext.getBean(item.getTask().toString())
+                    ));
         }
-        scheduler.addSchedulerListener(taskSchedulerListener);
+        attachListener(taskSchedulerListener);
     }
 }

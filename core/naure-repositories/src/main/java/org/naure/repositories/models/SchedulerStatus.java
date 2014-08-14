@@ -6,6 +6,7 @@
 package org.naure.repositories.models;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.naure.common.entities.Entity;
 
 import java.util.Date;
 
@@ -20,7 +21,7 @@ import java.util.Date;
  * 评审人 ：
  * </pre>
  */
-public class SchedulerStatus {
+public class SchedulerStatus extends Entity {
     //最近运行时间
     private Date recent;
     //正在运行的开始时间

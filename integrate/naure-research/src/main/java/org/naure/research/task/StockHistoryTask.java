@@ -10,8 +10,10 @@ import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.apache.commons.lang3.time.DateUtils;
 import org.naure.common.patterns.exception.Action;
 import org.naure.common.util.DateUtil;
+import org.naure.integrate.services.core.scheduler.MyTaskExecutionContext;
 import org.naure.repositories.models.finance.Stock;
 import org.naure.repositories.models.finance.StockRange;
+import org.naure.repositories.models.finance.StockType;
 import org.naure.research.config.SecurityConfiguration;
 import org.naure.research.services.StockService;
 import org.naure.research.services.StockWebService;
@@ -23,8 +25,10 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * <pre>
@@ -39,6 +43,7 @@ import java.util.Date;
 @Service
 public class StockHistoryTask extends Task implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockHistoryTask.class);
+    private static String datePatterns = "yyyy-MM-dd";
 
     @Autowired
     private StockWebService stockWebService;
@@ -47,9 +52,45 @@ public class StockHistoryTask extends Task implements Serializable {
     @Autowired
     private SecurityConfiguration securityConfiguration;
 
+
     @Override
     public void execute(TaskExecutionContext context) throws RuntimeException {
-        Date date = DateUtil.getPrevWeekDay(Calendar.getInstance().getTime());
+        //默认当天的前一个工作日
+        Date startDate = DateUtil.getPrevWeekDay(Calendar.getInstance().getTime());
+        Date endDate = startDate;
+        StockRange stockRange = null;
+        //TODO 解析 params, 包含【startDate, endDate, stock】
+        if (context instanceof MyTaskExecutionContext) {
+            Map params = ((MyTaskExecutionContext) context).getParams();
+            try {
+                if (params.containsKey("startDate")) {
+                    startDate = DateUtils.parseDate(params.get("startDate").toString(), datePatterns);
+                }
+                if (params.containsKey("endDate")) {
+                    endDate = DateUtils.parseDate(params.get("endDate").toString(), datePatterns);
+                }
+                //TODO 暂时只支持指定单独一个 stock: SH000711
+                if (params.containsKey("stock")) {
+                    String stock = params.get("stock").toString();
+                    String stockType = stock.substring(0, 2).toUpperCase();
+                    int stockCode = Integer.parseInt(stock.substring(2));
+                    stockRange = new StockRange(StockType.valueOf(stockType), stockCode, stockCode);
+                }
+            } catch (ParseException e) {
+                LOGGER.error("Task: StockCapitalTask", e);
+            }
+        }
+
+        if (null != stockRange) {
+            acquireStock(stockRange, startDate, endDate);
+        } else {
+            for (StockRange range : securityConfiguration.getStockRanges()) {
+                acquireStock(range, startDate, endDate);
+            }
+        }
+    }
+
+    private void acquireStock(StockRange stockRange, Date... date) {
         Stock stock = null;
         String id = null;
         for (StockRange range : securityConfiguration.getStockRanges()) {
@@ -61,11 +102,11 @@ public class StockHistoryTask extends Task implements Serializable {
                     if (!CollectionUtils.isEmpty(stock.getQuotes())) {
                         stockService.edit(stock);
                     } else {
-                        LOGGER.info("Stock: " + id + ", Quotes: NULL");
+                        LOGGER.info("Task: Stock: " + id + ", Quotes: NULL");
                     }
 
                 } catch (Exception e) {
-                    LOGGER.error("Stock: " + id + ", Date: " + date, e);
+                    LOGGER.error("Task: Stock: " + id + ", Date: " + date, e);
                 }
             }
         }

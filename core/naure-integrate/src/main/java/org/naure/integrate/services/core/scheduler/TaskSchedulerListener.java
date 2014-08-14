@@ -39,22 +39,17 @@ public class TaskSchedulerListener implements SchedulerListener {
 
     @Override
     public void taskLaunching(TaskExecutor executor) {
-        //TODO
-        this.updateStatus(executor.getGuid(), null, "Launching");
-        LOGGER.info(executor.getStatusMessage());
+        this.updateStatus(executor.getGuid(), Calendar.getInstance().getTime(), executor.getStatusMessage());
     }
 
     @Override
     public void taskSucceeded(TaskExecutor executor) {
-        //TODO
-        this.updateStatus(executor.getGuid(), Calendar.getInstance().getTime(), "Succeeded");
-        LOGGER.info(executor.getStatusMessage());
+        this.updateStatus(executor.getGuid(), Calendar.getInstance().getTime(), executor.getStatusMessage());
     }
 
     @Override
     public void taskFailed(TaskExecutor executor, Throwable exception) {
-        //TODO
-        this.updateStatus(executor.getGuid(), Calendar.getInstance().getTime(), "Failed");
+        this.updateStatus(executor.getGuid(), Calendar.getInstance().getTime(), executor.getStatusMessage());
         LOGGER.info(executor.getStatusMessage());
     }
 
@@ -63,5 +58,6 @@ public class TaskSchedulerListener implements SchedulerListener {
         status.setRecent(recent);
         status.setMessage(message);
         schedulerContext.updateStatus(taskId, status);
+        LOGGER.info("Task: " + schedulerContext.getTaskName(taskId) + ", " + status.toString());
     }
 }

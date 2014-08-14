@@ -47,14 +47,15 @@ public class SecurityConfiguration {
             return ranges;
         }
 
+        //格式【000001--002725,300001--300383】
         String[] arrs = null;
         for (String item : sh.split(",")) {
             arrs = item.split("--");
-            ranges.add(new StockRange(StockType.SH, Integer.parseInt(arrs[0]), Integer.parseInt(arrs[0])));
+            ranges.add(new StockRange(StockType.SH, Integer.parseInt(arrs[0]), Integer.parseInt(arrs[1])));
         }
         for (String item : sz.split(",")) {
             arrs = item.split("--");
-            ranges.add(new StockRange(StockType.SZ, Integer.parseInt(arrs[0]), Integer.parseInt(arrs[0])));
+            ranges.add(new StockRange(StockType.SZ, Integer.parseInt(arrs[0]), Integer.parseInt(arrs[1])));
         }
         return ranges;
     }

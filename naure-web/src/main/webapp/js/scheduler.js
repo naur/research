@@ -12,10 +12,13 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var global = {
-    uri: '/scheduler/task.json',
+    searchUri: '/scheduler/task.json',
+    startUri: '/scheduler/task/start.json',
+    runUri: '/scheduler/task/run/{0}.json',
     dom: {
         container: '#scheduler-container ',
-        search: '#search'
+        search: '#search',
+        start: '#start'
     },
     tableMessage: '<tr><td colspan="100">{0}</td></tr>'
 }
@@ -31,13 +34,30 @@ function initContainerHead() {
 function search() {
     $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, global.message.text.loading));
     global.http.acquire({
-        uri: global.uri,
+        uri: global.searchUri,
         error: function (err) {
             $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, err));
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
                 $(global.dom.container + "tbody").html($.render.scheduler(obj.output.information.data));
+            } else {
+                $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, obj.output.information.keywords));
+            }
+        }
+    });
+}
+
+function start() {
+    $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, global.message.text.loading));
+    global.http.acquire({
+        uri: global.startUri,
+        error: function (err) {
+            $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, err));
+        },
+        success: function (obj) {
+            if (0 == obj.output.information.level) {
+                $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, "Start OK."));
             } else {
                 $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, obj.output.information.keywords));
             }
@@ -52,6 +72,9 @@ function search() {
 function initEvelt() {
     $(global.dom.search).on('click', function () {
         search();
+    });
+    $(global.dom.start).on('click', function () {
+        start();
     });
 }
 

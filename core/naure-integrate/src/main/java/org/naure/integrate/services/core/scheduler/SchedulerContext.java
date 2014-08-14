@@ -58,6 +58,17 @@ public class SchedulerContext {
     }
 
     /**
+     * 根据 taskId 获取 taskName
+     */
+    public String getTaskName(String taskId) {
+        String taskName = null;
+        if (tasks.containsKey(taskId)) {
+            taskName = tasks.get(taskId).getName();
+        }
+        return taskName;
+    }
+
+    /**
      * 更新定时任务的 ID 号，并放到 tasks 里
      */
     public void updateTask(String taskName, String taskId) {
