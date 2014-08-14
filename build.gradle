@@ -102,7 +102,7 @@ subprojects {
         }
     }
 
-    //compileJava.dependsOn placeholderResources
+    test.dependsOn processResources
 
     dependencies {
         compile group: 'commons-codec', name: 'commons-codec', version: commonsCodecVersion
