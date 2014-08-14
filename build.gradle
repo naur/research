@@ -104,6 +104,12 @@ subprojects {
 
     testClasses.dependsOn processResources
     test.dependsOn testClasses
+    test.doFirst {
+        println "Test classpath is:- "
+        sourceSets.test.runtimeClasspath.getFiles().each { file ->
+            println "file: \"" + file + "\""
+        }
+    }
 
     dependencies {
         compile group: 'commons-codec', name: 'commons-codec', version: commonsCodecVersion
