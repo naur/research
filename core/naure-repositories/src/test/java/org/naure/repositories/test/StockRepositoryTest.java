@@ -1,5 +1,6 @@
 package org.naure.repositories.test;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.naure.common.test.UnitTestBase;
 import org.naure.repositories.StockRepository;
@@ -14,6 +15,8 @@ public class StockRepositoryTest extends UnitTestBase {
     @Autowired
     private StockRepository stockRepository;
 
+    //TODO 数据量太大，不执行
+    @Ignore
     @Test
     public void initStockInfo_SH() throws Exception {
         //sh: 600000 -- 603993
@@ -22,6 +25,8 @@ public class StockRepositoryTest extends UnitTestBase {
         }
     }
 
+    //TODO 数据量太大，不执行
+    @Ignore
     @Test
     public void initStockInfo_SZ() throws Exception {
         //sz:  000001 -- 002725

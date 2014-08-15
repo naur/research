@@ -61,7 +61,8 @@ public class StockRepository extends Repository {
     }
 
     /**
-     * 包含 【Update 文档】和【Update 子文档】
+     * 新版本：包含 【Update Stock 文档】和【Update Quotes文档】
+     * 旧版本：包含 【Update 文档】和【Update 子文档】
      */
     public boolean update(final Stock stock) throws Exception {
         return this.updateStock(stock) && this.updateQuotes(stock);
