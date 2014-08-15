@@ -37,30 +37,28 @@ var global = {
         ['000001', 0, 0, 'sh'],
 
         ['600271', 0, 0, 'sh'],
-
-        ['601888', 0, 0, 'sh'],
-
         ['000803', 0, 0, 'sz'],
-        ['600768', 0, 0, 'sh'],
         ['002425', 0, 0, 'sz'],
-        ['000509', 0, 0, 'sz'],
-        ['600444', 0, 0, 'sh'],
-        ['600455', 0, 0, 'sh'],
-        ['000020', 0, 0, 'sz'],
-        ['601989', 0, 0, 'sh'],
-        ['000673', 0, 0, 'sz'],
-        ['601225', 0, 0, 'sh'],
-        ['000990', 0, 0, 'sz'],
-        ['002579', 0, 0, 'sz'],
-        ['600733', 0, 0, 'sh'],
-        ['600836', 0, 0, 'sh'],
-        ['000762', 0, 0, 'sz'],
-        ['000751', 0, 0, 'sz'],
-        ['000960', 0, 0, 'sz'],
         ['600182', 0, 0, 'sh'],
         ['600689', 0, 0, 'sh'],
-        ['601877', 0, 0, 'sh'],
-   ],
+        ['000509', 0, 0, 'sz'],
+//        ['601888', 0, 0, 'sh'],
+//        ['600768', 0, 0, 'sh'],
+//        ['600444', 0, 0, 'sh'],
+//        ['600455', 0, 0, 'sh'],
+//        ['000020', 0, 0, 'sz'],
+//        ['601989', 0, 0, 'sh'],
+//        ['000673', 0, 0, 'sz'],
+//        ['601225', 0, 0, 'sh'],
+//        ['000990', 0, 0, 'sz'],
+//        ['002579', 0, 0, 'sz'],
+//        ['600733', 0, 0, 'sh'],
+//        ['600836', 0, 0, 'sh'],
+//        ['000762', 0, 0, 'sz'],
+//        ['000751', 0, 0, 'sz'],
+//        ['000960', 0, 0, 'sz'],
+//        ['601877', 0, 0, 'sh'],
+    ],
     stockHtmlTemplate: '<tr stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">' +
             '<td class="name"></td><td class="code">{1}</td><td class="number">{2}</td>' +
             '<td class="cost">{3}</td><td class="curr"></td>' +
@@ -100,7 +98,7 @@ var global = {
         }}
     },
     currStockUri: 'sina',
-    messageTemplate: 'clock: {0}, cost: {1}, curr: {2}, {3}, {4} {5}',
+    messageTemplate: 'clock: {0}, cost: {1}, curr: {2}, profit: {3} {4}',
     dom: {
         result: '#result',
         calc: '#calc',
@@ -136,14 +134,19 @@ function getRealtimeInfo(codes, refresh) {
                 parent.find('.open').html(stockRealtime.open);
                 parent.find('.high').html(stockRealtime.high);
                 parent.find('.low').html(stockRealtime.low);
-                parent.find('.priceLimitAmount').html(stockRealtime.priceLimitAmount);
                 parent.find('.priceLimit').html(stockRealtime.priceLimit);
+                parent.find('.priceLimitAmount').html(stockRealtime.priceLimitAmount);
             }
-            global.message.show({content: $.format(global.messageTemplate, global.clock, global.totalAmount.toFixed(2), global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), stockRealtime[stockRealtime.length - 3], stockRealtime[stockRealtime.length - 2])});
+            global.message.show({content: $.format(global.messageTemplate, global.clock,
+                    global.totalAmount.toFixed(2),
+                    global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), '')});
             if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', global.interval);
         }, error: function (err) {
             delete err.http;
-            global.message.show({content: $.format(global.messageTemplate, global.clock, global.totalAmount.toFixed(2), global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), JSON.stringify(err))});
+            global.message.show({content: $.format(global.messageTemplate, global.clock,
+                    global.totalAmount.toFixed(2),
+                    global.currAmount, (global.currAmount - global.totalAmount).toFixed(2),
+                    JSON.stringify(err))});
             if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', global.interval);
         }, changed: function (obj) {
             //window.console.log(JSON.stringify({clock: global.clock, state: obj.state}));
@@ -171,7 +174,10 @@ function init(stocks) {
     var html = '';
     for (var index in stocks) {
         if (!stocks.hasOwnProperty(index)) continue;
-        global.totalAmount += stocks[index][2];
+        //计算总成本
+        if (0 != stocks[index][1]) {
+            global.totalAmount += stocks[index][2];
+        }
         html += $.format(global.stockHtmlTemplate,
                 stocks[index][3], stocks[index][0],
                         0 != stocks[index][1] ? stocks[index][1] : '',
