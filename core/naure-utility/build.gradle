@@ -3,8 +3,8 @@ description = ''
 dependencies {
     compile project(':core:naure-common')
     testCompile project(':core:naure-common').sourceSets.test.output
-    
-    compile group: 'org.apache.poi', name: 'poi', version: '3.7'
-    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.7'
-    compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '3.7'
+
+    compile group: 'org.apache.poi', name: 'poi', version: poi_version
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: poi_version
+    compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: poi_version
 }

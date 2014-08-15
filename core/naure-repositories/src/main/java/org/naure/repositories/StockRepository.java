@@ -85,8 +85,11 @@ public class StockRepository extends Repository {
 
         //【Add 子文档】
         for (StockQuote quote : stock.getQuotes()) {
-            if (result && !stockQuoteRepository.exists(quote))
+            if (null == quote.getCode()) quote.setCode(stock.getCode());
+            if (null == quote.getType()) quote.setType(stock.getType());
+            if (result && !stockQuoteRepository.exists(quote)) {
                 result = stockQuoteRepository.add(quote);
+            }
         }
 
         return result;
@@ -108,7 +111,8 @@ public class StockRepository extends Repository {
         return update(update);
     }
 
-    //只更新子文档
+    //新版本：只更新 Quotes
+    //旧版本：只更新子文档
     private boolean updateQuotes(final Stock stock) throws Exception {
         boolean result = true;
         //【Update 子文档】
@@ -122,9 +126,13 @@ public class StockRepository extends Repository {
     }
 
     /**
-     * 即判断 文档，也判断嵌入文档
+     * 新版本：只判断 文档，嵌入文档或者 Quotes 在 StockQuoteRepository 里判断
+     * 旧版本：即判断 文档，也判断嵌入文档
      */
-    private Map identifier(final Stock stock) {
+    private Map identifier(final Stock stock) throws Exception {
+        if (null == stock.getCode() || null == stock.getType()) {
+            throw new Exception("stock.code 或 stock.type 不能为空, " + stock.toString());
+        }
         Map<String, Object> identifier = new HashMap<String, Object>();
         identifier.put("code", stock.getCode());
         identifier.put("type", stock.getType());

@@ -379,7 +379,7 @@ public class MongoWorkspace extends AbstractWorkspace {
     private String collectionName(String classFullName) {
         return classFullName.substring(
                 classFullName.indexOf("models.") + 7
-        ).toLowerCase();
+        ).replaceAll("([a-z])([A-Z])", "$1.$2").toLowerCase();
     }
 
     /**

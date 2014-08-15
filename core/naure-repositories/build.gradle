@@ -4,15 +4,15 @@ dependencies {
     compile project(':core:naure-common')
     testCompile project(':core:naure-common').sourceSets.test.output
 
-    compile group: 'com.sleepycat', name: 'je', version: '5.0.103'
-    compile(group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.5.1.RELEASE') {
+    compile group: 'com.sleepycat', name: 'je', version: sleepycat_version
+    compile(group: 'org.springframework.data', name: 'spring-data-mongodb', version: spring_data_mongodb_version) {
         exclude(module: 'spring-beams')
         exclude(module: 'spring-expression')
         exclude(module: 'spring-data-common-core')
     }
-    compile group: 'org.springframework', name: 'spring-tx', version: '4.0.5.RELEASE'
-    compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: '1.9.13'
-    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
-    compile group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.4.5'
-    compile group: 'redis.clients', name: 'jedis', version: '2.0.0'
+    compile group: 'org.springframework', name: 'spring-tx', version: spring_version
+    compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: jackson_version
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: jackson_version
+    compile group: 'org.apache.zookeeper', name: 'zookeeper', version: zookeeper_version
+    compile group: 'redis.clients', name: 'jedis', version: jedis_version
 }

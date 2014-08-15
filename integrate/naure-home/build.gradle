@@ -3,4 +3,6 @@ description = ''
 dependencies {
     compile project(':core:naure-integrate')
     testCompile project(':core:naure-common').sourceSets.test.output
+
+    compile group: 'javax.servlet', name: 'servlet-api', version: servlet_api_version
 }

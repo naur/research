@@ -5,7 +5,11 @@ import org.junit.Test;
 import org.naure.common.test.UnitTestBase;
 import org.naure.repositories.StockRepository;
 import org.naure.repositories.models.finance.Stock;
+import org.naure.repositories.models.finance.StockQuote;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Administrator on 6/17/14.
@@ -16,7 +20,7 @@ public class StockRepositoryTest extends UnitTestBase {
     private StockRepository stockRepository;
 
     //TODO 数据量太大，不执行
-    @Ignore
+    //@Ignore
     @Test
     public void initStockInfo_SH() throws Exception {
         //sh: 600000 -- 603993
@@ -44,6 +48,9 @@ public class StockRepositoryTest extends UnitTestBase {
         Stock stock = new Stock();
         stock.setType(type);
         stock.setCode(String.valueOf(code));
+        stock.getQuotes().add(new StockQuote(
+                Calendar.getInstance().getTime(), 1d, 2d, 3d, 4d, 5d
+        ));
         return stock;
     }
 }

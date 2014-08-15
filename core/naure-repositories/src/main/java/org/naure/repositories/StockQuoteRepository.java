@@ -65,7 +65,11 @@ public class StockQuoteRepository extends Repository {
     /**
      * 即判断 文档，也判断嵌入文档
      */
-    private Map identifier(final StockQuote quote) {
+    private Map identifier(final StockQuote quote) throws Exception {
+        if (null == quote.getCode() || null == quote.getType() || null == quote.getDate()) {
+            throw new Exception("quote.code, quote.type 或 quote.date 不能为空, " + quote.toString());
+        }
+
         Map<String, Object> identifier = new HashMap<String, Object>();
         identifier.put("code", quote.getCode());
         identifier.put("type", quote.getType());
