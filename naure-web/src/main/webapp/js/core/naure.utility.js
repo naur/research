@@ -47,6 +47,8 @@ define(['jquery', 'naure'], function ($, NAURE) {
             },
 
             encodeHTML: function (data) {
+                if (!(data instanceof String))
+                    data = JSON.stringify(data);
                 return data.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, '&');
             },
 

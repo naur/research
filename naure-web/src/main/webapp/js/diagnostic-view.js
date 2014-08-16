@@ -10,51 +10,63 @@
  */
 
 /*-------------------- 全局变量 START ----------------*/
+
 var global = {
     http: null,
     message: null,
-    sessionUri: '/diagnostic/session.xml',
+    sessionUri: '/diagnostic/session.json',
     dom: {
-        session: 'article section:eq(1)'
+        area: ['.row:eq(0) div', '.row:eq(0) div'],
+        session: '#session',
+        analysis: '#analysis'
     }
 };
 
-var overlayNodes = {
-    'Session': function () {
-        $(this).attr('disabled', true);
-        $(global.dom.session).empty();
-        global.message.show({content: '正在获取数据...'});
+function session(self) {
+    $(self).attr('disabled', true);
+    $(global.dom.area[0]).empty();
+    global.message.show({content: '正在获取数据...'});
 
-        global.http.acquire({
-            uri: global.sessionUri,
-            container: global.dom.session,
-            context: this,
-            error: function (opt) {
-                global.message.show({content: '获取数据结束！'});
-                global.message.show({content: '获取数据错误，请稍后重试！', color: 'red'});
-                $(opt.context).attr('disabled', false);
-            },
-            success: function (opt) {
-                $(opt.context).attr('disabled', false);
-                global.message.empty();
-            }
-        });
-    },
-    'Analysis': function () {
-        $(this).attr('disabled', true);
-        alert("A Analysis");
-        $(this).attr('disabled', false);
-    }
+    global.http.acquire({
+        uri: global.sessionUri,
+        container: global.dom.area[0],
+        context: self,
+        error: function (opt) {
+            global.message.show({content: '获取数据结束！'});
+            global.message.show({content: '获取数据错误，请稍后重试！', color: 'red'});
+            $(opt.context).attr('disabled', false);
+        },
+        success: function (opt) {
+            $(opt.context).attr('disabled', false);
+            global.message.empty();
+        }
+    });
+}
+
+function analysis(self) {
+    $(self).attr('disabled', true);
+    alert("A Analysis");
+    $(self).attr('disabled', false);
+}
+
+function init() {
+    $(global.dom.session).on('click', function () {
+        session(this);
+    });
+    $(global.dom.analysis).on('click', function () {
+        analysis(this);
+    });
 }
 
 /*-------------------- 初始化 START --------------------*/
 
-require(['loading', 'integrate-template'], function ($, NAURE) {
-    global.message = NAURE.Message;
-    global.http = NAURE.HTTP;
+require(['loading', 'integrate-template'], function (mod) {
+    global.message = mod.naure.Message;
+    global.http = mod.naure.HTTP;
 
     $(function () {
-        $('article section:eq(0)').message();
+        init();
+        $(global.dom.area[1]).message();
     });
 });
 
