@@ -37,7 +37,7 @@ function session(self) {
             $(tbody).html(global.utility.format(global.message.tableTemplate, err));
         },
         success: function (obj) {
-            if (0 == obj.output.information.data.level) {
+            if (0 == obj.output.information.level) {
                 $(tbody).html($.render.table(obj.output.information.data));
             } else {
                 $(tbody).html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
