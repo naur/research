@@ -107,6 +107,7 @@ public class DiagnosticController extends ControllerBase {
                 Information<List<Session>> info = (Information<List<Session>>) information;
                 Map<String, String> params = new HashMap<String, String>();
                 info.setData(sessionService.get(params));
+                info.setLevel(InformationLevel.SUCCESS.value());
                 return info;
             }
         });

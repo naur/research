@@ -26,7 +26,7 @@ function session(self) {
     $(self).attr('disabled', true);
     $(global.dom.area[0]).html($.render.table());
     var thread = global.dom.area[0] + ' table thead';
-    var tbody = global.dom.area[0] + ' table thead';
+    var tbody = global.dom.area[0] + ' table tbody';
     $(thread).html($.render.sessionHead());
     $(tbody).html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
 
