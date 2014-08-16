@@ -49,15 +49,12 @@ var overlayNodes = {
 
 /*-------------------- 初始化 START --------------------*/
 
-require(['jquery', 'naure.message', 'naure.ui.overlay', 'naure.http.xsl', 'naure.analytics'], function ($, NAURE) {
+require(['loading', 'integrate-template'], function ($, NAURE) {
     global.message = NAURE.Message;
     global.http = NAURE.HTTP;
 
     $(function () {
         $('article section:eq(0)').message();
-        $('body').overlay({
-            nodes: overlayNodes
-        });
     });
 });
 

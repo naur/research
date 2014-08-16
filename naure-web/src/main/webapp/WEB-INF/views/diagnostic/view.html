@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title> Diagnostic </title>
+$!{extends("/layout.html")}
 
-    <link href="/css/naure.message.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/naure.ui.overlay.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/default.css" rel="stylesheet" type="text/css"/>
+#macro(title) Diagnostic #end
 
-    <script type="text/javascript" src="/js/core/require.js"></script>
-    <script type="text/javascript" src="/js/core/require.config.js"></script>
+#macro(content)
 
-    <script type="text/javascript" src="/js/diagnostic-view.js"></script>
+<div class="row">
+    <div class="col-md-12">
+        <article>
+            <section></section>
+            <section></section>
+        </article>
+    </div>
+</div>
 
-</head>
-<body>
-<article>
-    <section></section>
-    <section></section>
-</article>
-</body>
-</html>
+<script type="text/javascript" src="/js/diagnostic-view.js"></script>
+
+#end
+

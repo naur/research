@@ -24,6 +24,13 @@
  *</section>
  *
  * Usage:
+ *      var overlayNodes = {
+ *          Session: function() {},
+ *          Analysis: function() {}
+ *      };
+ *      $('body').overlay({
+ *           nodes: overlayNodes
+ *      });
  */
 
 define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, NAURE) {
@@ -99,14 +106,14 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
 
                 opt.navHtml =
                     '<nav class="overlay overlay-right-bottom">' +
-                        '   <section></section>' +
-                        '   <section class="buttons">' +
-                        '       <input type="button" class="overlay-clean" title="Clean" />' +
-                        '       <input style="display: none;" title="Reset Graph" type="button" />' +
-                        '       <a class="help_button" title="Help Page" href="about/" target="_blank" />&nbsp;</a>' +
-                        '       <input type="button" class="overlay-minimize" title="Minimize"/>' +
-                        '   </section>' +
-                        '</nav>';
+                    '   <section></section>' +
+                    '   <section class="buttons">' +
+                    '       <input type="button" class="overlay-clean" title="Clean" />' +
+                    '       <input style="display: none;" title="Reset Graph" type="button" />' +
+                    '       <a class="help_button" title="Help Page" href="about/" target="_blank" />&nbsp;</a>' +
+                    '       <input type="button" class="overlay-minimize" title="Minimize"/>' +
+                    '   </section>' +
+                    '</nav>';
 
                 $(opt.container).append(opt.navHtml);
                 $(dom.overlaySection).empty();
@@ -121,9 +128,9 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
                         (opt.layout.indexOf('left') != -1 || isRichNode) ? '' : 'panel-left-hide',
                         isRichNode ? 'transparent' : '#07C',
                         isRichNode ? NAURE.JSON.toHtml(opt.nodes[key].input) : 'type=checkbox',
-                        opt.layout.indexOf('right') != -1 ? '' : 'panel-right-hide',
+                            opt.layout.indexOf('right') != -1 ? '' : 'panel-right-hide',
                         key,
-                        isRichNode || opt.nodes[key].html ? opt.nodes[key].html : key,
+                            isRichNode || opt.nodes[key].html ? opt.nodes[key].html : key,
                         isRichNode ? 'margin-left: -36px;' : '',
                         ''
                     ));
