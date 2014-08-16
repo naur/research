@@ -9,18 +9,13 @@ package org.naure.repositories.models;
 import org.naure.common.entities.Entity;
 
 /**
- * <pre>
- * author Administrator
- *
  * 定时任务
- *
+ * <p/>
  * 创建日期: 2014-07-09
  * 修改人 :
  * 修改说明:
  * 评审人 ：
- * </pre>
  */
-@SuppressWarnings("unchecked")
 public class Scheduler extends Entity {
     //定时任务名字
     private String name;

@@ -19,7 +19,7 @@ import java.util.Map;
 public class JadeRepository extends Repository {
 
     public List<Jade> get(Jade jade) throws Exception {
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<String, Object>();
         if (StringUtils.isNotEmpty(jade.getName())) {
             //name 模糊查询
             params.put("name", new Tree<String>(Type.Regex, jade.getName()));

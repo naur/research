@@ -23,24 +23,15 @@ import java.util.Map;
 public class SessionRepository extends Repository {
 
     public boolean exists(final Session session) throws Exception {
-        Map<String, Object> query = new HashMap<String, Object>() {{
-            put("application", session.getApplication());
-            put("sessionId", session.getSessionId());
-            put("class", session.getClass());
-        }};
-
-        return this.exists(query);
+        return this.exists(identifier(session));
     }
 
     public boolean update(final Session session) throws Exception {
-        Map<String, Object> query = new HashMap<String, Object>() {{
-            put("application", session.getApplication());
-            put("sessionId", session.getSessionId());
-            put("class", session.getClass());
-        }};
+        Map<String, Object> query = identifier(session);
 
         Map<String, Object> update = new HashMap<String, Object>();
         update.put("query", query);
+        update.put("updated", Calendar.getInstance().getTime());
         update.put("update", new HashMap<String, Object>() {{
             put("updated", Calendar.getInstance().getTime());
             put("logs", session.getLogs());
@@ -111,4 +102,15 @@ public class SessionRepository extends Repository {
 //            return workspace.add(session);
 //        }
 //    }
+
+    /**
+     * identifier
+     */
+    private Map identifier(final Session session) throws Exception {
+        return new HashMap<String, Object>() {{
+            put("application", session.getApplication());
+            put("sessionId", session.getSessionId());
+            put("class", session.getClass());
+        }};
+    }
 }
