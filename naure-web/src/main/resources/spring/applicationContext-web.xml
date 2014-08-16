@@ -44,8 +44,7 @@
         </property>
     </bean>
 
-    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-        <property name="order" value="100"/>
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
         <property name="defaultContentType" value="text/html"/>
         <property name="favorPathExtension" value="true"/>
         <property name="favorParameter" value="false"/>
@@ -58,6 +57,11 @@
                 <entry key="rss" value="application/rss+xml"/>
             </map>
         </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="order" value="100"/>
+        <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
         <property name="defaultViews">
             <list>
                 <ref bean="marshallingView"/>
@@ -101,12 +105,12 @@
         <property name="modelKey" value="information"/>
         <!--<constructor-arg ref="castorMarshaller"/>-->
     </bean>
-    <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+    <bean id="mappingJacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
     <bean id="atomView" class="org.naure.integrate.web.views.AtomView"/>
     <bean id="rssView" class="org.naure.integrate.web.views.RssView"/>
 
     <!--转换程序-->
-    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
         <property name="supportedMediaTypes" value="application/json"/>
     </bean>
     <bean id="marshallingConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">

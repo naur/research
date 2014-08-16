@@ -16,7 +16,7 @@ define(['jquery', 'jquery.template'],
                 '{{if logs}}' +
                 '   {{for logs}}' +
                 '      <tr>' +
-                '       {{if #index==0}}' +
+                '       {{if #index===0}}' +
                 '               <td rowspan="{{>#parent.parent.data.logs.length}}">{{>#parent.parent.data.application}}</td><td rowspan="{{>#parent.parent.data.logs.length}}">{{>#parent.parent.data.sessionId}}</td>' +
                 '       {{/if}}' +
                 '           <td>{{>ipAddress}}</td><td>{{>hostName}}</td><td>{{>cpu}}</td><td>{{>user}}</td><td>{{>language}}</td><td>{{>platform}}</td><td>{{>severity}}</td>' +

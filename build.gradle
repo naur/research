@@ -45,6 +45,7 @@ subprojects {
         servlet_api_version = '3.0-alpha-1'
         jrobin_version = '1.5.9'
         fluent_hc_version = '4.4-alpha1'
+        fasterxml_jackson_version = '2.4.2'
         jackson_version = '1.9.13'
         servlet_jstl_version = '1.2'
         castor_version = '1.2'

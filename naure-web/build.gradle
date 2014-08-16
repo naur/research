@@ -15,7 +15,11 @@ dependencies {
         //默认 research
         compile project(':integrate:naure-research')
     }
-    
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: fasterxml_jackson_version
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: fasterxml_jackson_version
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: fasterxml_jackson_version
+
     runtime group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2.2'
 
     providedCompile group: 'javax.servlet', name: 'servlet-api', version: '3.0-alpha-1'
