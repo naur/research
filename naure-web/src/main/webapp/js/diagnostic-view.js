@@ -38,7 +38,7 @@ function session(self) {
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
-                $(tbody).html($.render.table(obj.output.information.data));
+                $(tbody).html($.render.session(obj.output.information.data));
             } else {
                 $(tbody).html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
             }

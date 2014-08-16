@@ -18,7 +18,7 @@ require.config({
     //baseUrl: '',
     paths: {
         'loading': '/js/loading',
-        jquery: jslocalpath + '/js/core/jquery-1.9.1.min',
+        jquery: jslocalpath + '/js/core/jquery-2.1.1.min',
         'jquery.widget': jslocalpath + '/js/core/jquery.widget.min',
         'jquery.mousewheel': jslocalpath + '/js/core/jquery.mousewheel',
         'jquery.strings': jslocalpath + '/js/core/jquery.strings',

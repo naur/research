@@ -9,21 +9,23 @@ define(['jquery', 'jquery.template'],
 
         //session
         $.templates('sessionHead', '<tr>' +
-            '<th>sessionId</th><th>application</th>' +
+            '<th>application</th><th>sessionId</th>' +
             '<th>ipAddress</th><th>hostName</th><th>cpu</th><th>user</th><th>language</th><th>platform</th><th>severity</th>' +
-            '<th>userAgent</th><th>requestType</th><th>timestamp</th><th>requestHost</th><th>statusCode></th><th>requestPath</th><th>refererUrl</th></tr>');
+            '<th>userAgent</th><th>requestType</th><th>timestamp</th><th>requestHost</th><th>statusCode</th><th>requestPath</th><th>refererUrl</th></tr>');
         $.templates('session',
-                '#if (logs) ' +
-                '   #for (log : logs) ' +
-                '       <tr>' +
-                '           <td>{{>application}}</td><td>{{>sessionId}}</td>' +
-                '           <td>{{>log.ipAddress}}</td><td>{{>log.hostName}}</td><td>{{>log.cpu}}</td><td>{{>log.user}}</td><td>{{>log.language}}</td><td>{{>log.platform}}</td><td>{{>log.severity}}</td>' +
-                '           <td>{{>log.userAgent}}</td><td>{{>log.requestType}}</td><td>{{>log.timestamp}}</td><td>{{>log.requestdost}}</td><td>{{>log.statusCode>}}</td><td>{{>log.requestPatd}}</td><td>{{>log.refererUrl}}</td>' +
-                '       </tr>' +
-                '   #end ' +
-                '#else ' +
-                '<tr><td>{{>application}}</td><td>{{>sessionId}}</td><td colspan="14"></td></tr>' +
-                '#end ');
+                '{{if logs}}' +
+                '   {{for logs}}' +
+                '      <tr>' +
+                '       {{if #index==0}}' +
+                '               <td rowspan="{{>#parent.parent.data.logs.length}}">{{>#parent.parent.data.application}}</td><td rowspan="{{>#parent.parent.data.logs.length}}">{{>#parent.parent.data.sessionId}}</td>' +
+                '       {{/if}}' +
+                '           <td>{{>ipAddress}}</td><td>{{>hostName}}</td><td>{{>cpu}}</td><td>{{>user}}</td><td>{{>language}}</td><td>{{>platform}}</td><td>{{>severity}}</td>' +
+                '           <td>{{>userAgent}}</td><td>{{>requestType}}</td><td>{{>timestamp}}</td><td>{{>requestdost}}</td><td>{{>statusCode>}}</td><td>{{>requestPatd}}</td><td>{{>refererUrl}}</td>' +
+                '      </tr>' +
+                '   {{/for}} ' +
+                '{{else}}' +
+                '   <tr><td>{{>application}}</td><td>{{>sessionId}}</td><td colspan="14"></td></tr>' +
+                '{{/if}} ');
 
         //scheduler
         $.templates('schedulerHead', '<tr><th>INDEX</th><th>NAME</th><th>CRON</th><th>TASK</th>' +
