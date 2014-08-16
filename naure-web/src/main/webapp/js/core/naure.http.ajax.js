@@ -24,7 +24,9 @@ define(['jquery', 'naure', 'naure.utility'], function ($, NAURE) {
             container: null,
 
             context: null,
-            domState: null,
+            domState: function (state) {
+                if (opt.context) $(opt.context).attr('disabled', state.disabled);
+            },
 
             error: null,
             success: null,

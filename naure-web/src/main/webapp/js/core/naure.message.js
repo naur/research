@@ -280,6 +280,7 @@ define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, 
         };
 
         message.text = text;
+        message.tableTemplate = '<tr><td colspan="100">{0}</td></tr>'
 
         return message;
 

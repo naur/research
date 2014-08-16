@@ -20,8 +20,7 @@ var global = {
         search: '#search',
         start: '#start',
         run: '.run'
-    },
-    tableMessage: '<tr><td colspan="100">{0}</td></tr>'
+    }
 }
 
 /*-------------------- 全局变量 END ------------------*/
@@ -29,18 +28,18 @@ var global = {
 /*-------------------- 函数 START --------------------*/
 
 function search() {
-    $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, global.message.text.loading));
+    $(global.dom.container + "tbody").html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
     global.http.acquire({
         uri: global.searchUri,
         error: function (err) {
-            $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, err));
+            $(global.dom.container + "tbody").html(global.utility.format(global.message.tableTemplate, err));
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
                 $(global.dom.container + "tbody").html($.render.scheduler(obj.output.information.data));
                 $(global.dom.run).parent().prev().val(new Date().format('yyyy-MM-dd') + '  ');
             } else {
-                $(global.dom.container + "tbody").html(global.utility.format(global.tableMessage, obj.output.information.keywords));
+                $(global.dom.container + "tbody").html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
             }
         }
     });

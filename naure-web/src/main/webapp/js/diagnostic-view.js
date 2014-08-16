@@ -24,21 +24,24 @@ var global = {
 
 function session(self) {
     $(self).attr('disabled', true);
-    $(global.dom.area[0]).empty();
-    global.message.show({content: '正在获取数据...'});
+    $(global.dom.area[0]).html($.render.table());
+    var thread = global.dom.area[0] + ' table thead';
+    var tbody = global.dom.area[0] + ' table thead';
+    $(thread).html($.render.sessionHead());
+    $(tbody).html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
 
     global.http.acquire({
         uri: global.sessionUri,
-        container: global.dom.area[0],
         context: self,
-        error: function (opt) {
-            global.message.show({content: '获取数据结束！'});
-            global.message.show({content: '获取数据错误，请稍后重试！', color: 'red'});
-            $(opt.context).attr('disabled', false);
+        error: function (err) {
+            $(tbody).html(global.utility.format(global.message.tableTemplate, err));
         },
-        success: function (opt) {
-            $(opt.context).attr('disabled', false);
-            global.message.empty();
+        success: function (obj) {
+            if (0 == obj.output.information.data.level) {
+                $(tbody).html($.render.table(obj.output.information.data));
+            } else {
+                $(tbody).html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
+            }
         }
     });
 }
@@ -63,6 +66,7 @@ function init() {
 require(['loading', 'integrate-template'], function (mod) {
     global.message = mod.naure.Message;
     global.http = mod.naure.HTTP;
+    global.utility = mod.naure.Utility;
 
     $(function () {
         init();
