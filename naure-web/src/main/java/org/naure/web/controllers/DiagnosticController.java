@@ -3,6 +3,8 @@ package org.naure.web.controllers;
 import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.entities.TraceEventType;
+import org.naure.common.patterns.Tree;
+import org.naure.common.patterns.Type;
 import org.naure.common.patterns.exception.Func;
 import org.naure.repositories.models.Session;
 import org.naure.repositories.models.SessionLog;
@@ -105,7 +107,9 @@ public class DiagnosticController extends ControllerBase {
             @Override
             public Information execute(Information information) throws Exception {
                 Information<List<Session>> info = (Information<List<Session>>) information;
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, Object> params = new HashMap<String, Object>();
+                params.put(Type.Sort.name(), new Tree<String>(Type.Sort, "desc updated"));
+                //params.put(Type.Sort.name(), new Tree<String>(Type.Sort, "desc updated,logs.timestamp"));
                 info.setData(sessionService.get(params));
                 info.setLevel(InformationLevel.SUCCESS.value());
                 return info;

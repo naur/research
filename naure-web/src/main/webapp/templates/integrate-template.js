@@ -4,23 +4,36 @@
 
 define(['jquery', 'jquery.template'],
     function ($, $1, echarts, event) {
+        //TODO http://msdn.microsoft.com/zh-cn/magazine/hh975379.aspx
+        //TODO http://msdn.microsoft.com/zh-cn/magazine/hh882454.aspx
+        //转换器
+        $.views.converters({
+            //毫秒转换
+            millisFormat: function (value) {
+                return new Date(value).toString();
+            }
+        });
+
         //table
         $.templates('table', '<table><thead></thead> <tbody></tbody></table>');
 
         //session
         $.templates('sessionHead', '<tr>' +
             '<th>application</th><th>sessionId</th>' +
-            '<th>ipAddress</th><th>hostName</th><th>cpu</th><th>user</th><th>language</th><th>platform</th><th>severity</th>' +
-            '<th>userAgent</th><th>requestType</th><th>timestamp</th><th>requestHost</th><th>statusCode</th><th>requestPath</th><th>refererUrl</th></tr>');
+            '<th>ipAddress</th><th>timestamp</th><th>hostName</th><th>cpu</th><th>user</th><th>language</th><th>platform</th><th>severity</th>' +
+            '<th>userAgent</th><th>requestType</th><th>requestHost</th><th>statusCode</th><th>requestPath</th><th>refererUrl</th></tr>');
         $.templates('session',
                 '{{if logs}}' +
                 '   {{for logs}}' +
                 '      <tr>' +
-                '       {{if #index===0}}' +
-                '               <td rowspan="{{>#parent.parent.data.logs.length}}">{{>#parent.parent.data.application}}</td><td rowspan="{{>#parent.parent.data.logs.length}}">{{>#parent.parent.data.sessionId}}</td>' +
+                '       {{if #index === 0}}' +
+                //TODO https://github.com/BorisMoore/jsrender/issues/96
+                //TODO https://github.com/BorisMoore/jsrender/issues/97
+                //TODO {{:#index}} returns the index of the view it is in. Any block tag renders its content as a new child view, and that includes the {{if}} tag. So {{:#index}} is not finding the index of the same view if it is in the content of the {{if}} tag. {{:#parent.index}} will find you the index of the parent view, outside the {{if}} block.
+                '               <td rowspan="{{>#parent.parent.parent.data.logs.length}}">{{>#parent.parent.parent.data.application}}</td><td rowspan="{{>#parent.parent.parent.data.logs.length}}">{{>#parent.parent.parent.data.sessionId}}</td>' +
                 '       {{/if}}' +
-                '           <td>{{>ipAddress}}</td><td>{{>hostName}}</td><td>{{>cpu}}</td><td>{{>user}}</td><td>{{>language}}</td><td>{{>platform}}</td><td>{{>severity}}</td>' +
-                '           <td>{{>userAgent}}</td><td>{{>requestType}}</td><td>{{>timestamp}}</td><td>{{>requestdost}}</td><td>{{>statusCode>}}</td><td>{{>requestPatd}}</td><td>{{>refererUrl}}</td>' +
+                '           <td>{{>ipAddress}}</td><td>{{millisFormat:timestamp}}</td><td>{{>hostName}}</td><td>{{>cpu}}</td><td>{{>user}}</td><td>{{>language}}</td><td>{{>platform}}</td><td>{{>severity}}</td>' +
+                '           <td>{{>userAgent}}</td><td>{{>requestType}}</td><td>{{>requestdost}}</td><td>{{>statusCode>}}</td><td>{{>requestPatd}}</td><td>{{>refererUrl}}</td>' +
                 '      </tr>' +
                 '   {{/for}} ' +
                 '{{else}}' +
