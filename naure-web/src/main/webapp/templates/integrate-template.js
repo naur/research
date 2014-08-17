@@ -32,7 +32,7 @@ define(['jquery', 'jquery.template'],
                 //TODO {{:#index}} returns the index of the view it is in. Any block tag renders its content as a new child view, and that includes the {{if}} tag. So {{:#index}} is not finding the index of the same view if it is in the content of the {{if}} tag. {{:#parent.index}} will find you the index of the parent view, outside the {{if}} block.
                 '               <td rowspan="{{>#parent.parent.parent.data.logs.length}}">{{>#parent.parent.parent.data.application}}</td><td rowspan="{{>#parent.parent.parent.data.logs.length}}">{{>#parent.parent.parent.data.sessionId}}</td>' +
                 '       {{/if}}' +
-                '           <td>{{>ipAddress}}</td><td>{{>timestamp}}</td><td>{{>requestType}}</td><td>{{>hostName}}</td><td>{{>requestPath}}</td><td>{{>platform}}</td>' +
+                '           <td>{{>ipAddress}}</td><td>{{millisFormat:timestamp}}</td><td>{{>requestType}}</td><td>{{>hostName}}</td><td>{{>requestPath}}</td><td>{{>platform}}</td>' +
                 '           <td>{{>cpu}}</td><td>{{>user}}</td><td>{{>language}}</td><td>{{>userAgent}}</td><td>{{>statusCode}}</td><td>{{>severity}}</td><td>{{>refererUrl}}</td><td>{{>requestHost}}</td>' +
                 '      </tr>' +
                 '   {{/for}} ' +
