@@ -20,8 +20,8 @@ define(['jquery', 'jquery.template'],
         //session
         $.templates('sessionHead', '<tr>' +
             '<th>application</th><th>sessionId</th>' +
-            '<th>ipAddress</th><th>timestamp</th><th>hostName</th><th>cpu</th><th>user</th><th>language</th><th>platform</th><th>severity</th>' +
-            '<th>userAgent</th><th>requestType</th><th>requestHost</th><th>statusCode</th><th>requestPath</th><th>refererUrl</th></tr>');
+            '<th>ipAddress</th><th>timestamp</th><th>requestType</th><th>hostName</th><th>requestPath</th><th>platform</th>' +
+            '<th>cpu</th><th>user</th><th>language</th><th>userAgent</th><th>statusCode</th><th>severity</th><th>refererUrl</th><th>requestHost</th></tr>');
         $.templates('session',
                 '{{if logs}}' +
                 '   {{for logs}}' +
@@ -32,8 +32,8 @@ define(['jquery', 'jquery.template'],
                 //TODO {{:#index}} returns the index of the view it is in. Any block tag renders its content as a new child view, and that includes the {{if}} tag. So {{:#index}} is not finding the index of the same view if it is in the content of the {{if}} tag. {{:#parent.index}} will find you the index of the parent view, outside the {{if}} block.
                 '               <td rowspan="{{>#parent.parent.parent.data.logs.length}}">{{>#parent.parent.parent.data.application}}</td><td rowspan="{{>#parent.parent.parent.data.logs.length}}">{{>#parent.parent.parent.data.sessionId}}</td>' +
                 '       {{/if}}' +
-                '           <td>{{>ipAddress}}</td><td>{{millisFormat:timestamp}}</td><td>{{>hostName}}</td><td>{{>cpu}}</td><td>{{>user}}</td><td>{{>language}}</td><td>{{>platform}}</td><td>{{>severity}}</td>' +
-                '           <td>{{>userAgent}}</td><td>{{>requestType}}</td><td>{{>requestdost}}</td><td>{{>statusCode>}}</td><td>{{>requestPatd}}</td><td>{{>refererUrl}}</td>' +
+                '           <td>{{>ipAddress}}</td><td>{{>timestamp}}</td><td>{{>requestType}}</td><td>{{>hostName}}</td><td>{{>requestPath}}</td><td>{{>platform}}</td>' +
+                '           <td>{{>cpu}}</td><td>{{>user}}</td><td>{{>language}}</td><td>{{>userAgent}}</td><td>{{>statusCode}}</td><td>{{>severity}}</td><td>{{>refererUrl}}</td><td>{{>requestHost}}</td>' +
                 '      </tr>' +
                 '   {{/for}} ' +
                 '{{else}}' +

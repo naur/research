@@ -20,7 +20,7 @@ public class StockRepositoryTest extends UnitTestBase {
     private StockRepository stockRepository;
 
     //TODO 数据量太大，不执行
-    //@Ignore
+    @Ignore
     @Test
     public void initStockInfo_SH() throws Exception {
         //sh: 600000 -- 603993

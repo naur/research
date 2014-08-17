@@ -64,9 +64,10 @@ function start() {
 
 function run(self) {
     //TODO 解析参数
-    var stock = $(self).parent().prev().val().split(' ');
+    var stock = $(self).parent().prev().val().replace(/\s+/, ' ').replace(/\s$/, '').split(' ');
     if (stock.length != 2) {
         global.message.show({content: 'Task Params Error: ' + stock.toString(), clear: true, color: 'red'});
+        return;
     }
 
     global.message.show({content: 'Task Running......', clear: true});
@@ -105,8 +106,7 @@ function initEvelt() {
     $(global.dom.start).on('click', function () {
         start();
     });
-    $(global.dom.run).on('click', 'td', function () {
-        alert('OK');
+    $(global.dom.container).on('click', global.dom.run, function () {
         run(this);
     });
 }
