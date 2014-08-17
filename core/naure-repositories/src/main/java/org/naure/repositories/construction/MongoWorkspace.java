@@ -119,6 +119,7 @@ public class MongoWorkspace extends AbstractWorkspace {
         Map<String, Object> subMap = null;
         if (params.containsKey("query")) {
             subMap = (Map) params.get("query");
+            subMap.remove("class");
             for (String key1 : subMap.keySet()) {
                 query.addCriteria(
                         parseCriteria(subMap.get(key1), key1)
