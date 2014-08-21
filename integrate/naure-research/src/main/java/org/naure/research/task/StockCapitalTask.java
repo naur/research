@@ -68,4 +68,9 @@ public class StockCapitalTask extends Task implements Serializable {
             }
         }
     }
+
+    @Override
+    public boolean supportsStatusTracking() {
+        return true;
+    }
 }

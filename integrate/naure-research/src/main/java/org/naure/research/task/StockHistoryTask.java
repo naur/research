@@ -90,25 +90,30 @@ public class StockHistoryTask extends Task implements Serializable {
         }
     }
 
-    private void acquireStock(StockRange stockRange, Date... date) {
+    private void acquireStock(StockRange range, Date... date) {
         Stock stock = null;
         String id = null;
-        for (StockRange range : securityConfiguration.getStockRanges()) {
-            for (int i = range.start; i <= range.end; i++) {
-                id = range.getCode(i);
-                try {
-                    stock = stockWebService.getHistory(id, date);
-                    //验证
-                    if (!CollectionUtils.isEmpty(stock.getQuotes())) {
-                        stockService.edit(stock);
-                    } else {
-                        LOGGER.info("Task: Stock: " + id + ", Quotes: NULL");
-                    }
-
-                } catch (Exception e) {
-                    LOGGER.error("Task: Stock: " + id + ", Date: " + date, e);
+        for (int i = range.start; i <= range.end; i++) {
+            id = range.getCode(i);
+            try {
+                stock = stockWebService.getHistory(id, date);
+                //验证
+                if (!CollectionUtils.isEmpty(stock.getQuotes())) {
+                    stock.setType(range.type.name());
+                    stock.setCode(id.substring(2));
+                    stockService.edit(stock);
+                } else {
+                    LOGGER.info("Task: Stock: " + id + ", Quotes: NULL");
                 }
+
+            } catch (Exception e) {
+                LOGGER.error("Task: Stock: " + id + ", Date: " + date, e);
             }
         }
+    }
+
+    @Override
+    public boolean supportsStatusTracking() {
+        return true;
     }
 }
