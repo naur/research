@@ -39,6 +39,10 @@
     <!--<listener>-->
         <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
     <!--</listener>-->
+
+    <listener>
+        <listener-class>org.naure.web.MyServletContextListener</listener-class>
+    </listener>
     
     <!-- Handles all requests into the application -->
     <servlet>
