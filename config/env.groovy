@@ -6,8 +6,6 @@ mongodb {
     host = '127.0.0.1'
     port = '27017'
     dbname = 'naure'
-    username = 'admin'
-    password = 'admin'
 }
 
 berkeley {
@@ -15,6 +13,12 @@ berkeley {
 }
 
 environments {
+    dev {
+        mongodb {
+            username = 'admin'
+            password = 'admin'
+        }
+    }
     production {
         mongodb {
             username = 'dbuser'
