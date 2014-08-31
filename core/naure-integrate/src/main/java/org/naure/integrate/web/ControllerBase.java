@@ -21,6 +21,12 @@ public abstract class ControllerBase {
         return viewPath + "/" + name;
     }
 
+    /**
+     * Inout: Information, Output: Func<Information, Information>
+     * @param information
+     * @param func
+     * @return
+     */
     protected Information handler(Information information, Func<Information, Information> func) {
         try {
             information = func.execute(information);
@@ -31,6 +37,12 @@ public abstract class ControllerBase {
         return information;
     }
 
+    /**
+     * Inout: Map, Output: Func<Map, Information>
+     * @param params
+     * @param func
+     * @return
+     */
     protected Information handler(Map params, Func<Map, Information> func) {
         Information information = null;
         try {
@@ -44,6 +56,11 @@ public abstract class ControllerBase {
         return information;
     }
 
+    /**
+     * Inout: Non, Output: Sub<Information>
+     * @param func
+     * @return
+     */
     protected Information handler(Sub<Information> func) {
         Information information = null;
         try {
@@ -83,6 +100,9 @@ public abstract class ControllerBase {
 //    //<U, T> List<T> query(U params, Class<T> tClass);
 
 
+    /**
+     * 设置响应编码
+     */
     protected void responseEncoding() {
         this.responseEncoding(null);
     }
@@ -98,6 +118,12 @@ public abstract class ControllerBase {
 //            response.setContentType(contentType + ";charset=utf-8");
     }
 
+    /**
+     * 解析 Map 参数
+     * @param map
+     * @param key
+     * @return
+     */
     protected String getMapValue(Map map, String key) {
         String[] array = null;
         if (map.containsKey(key) && (array = (String[]) map.get(key)) != null && array.length > 0)

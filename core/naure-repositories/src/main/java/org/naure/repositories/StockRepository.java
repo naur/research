@@ -74,7 +74,7 @@ public class StockRepository extends Repository {
     public boolean add(final Stock stock) throws Exception {
         boolean result = true;
 
-        //【Add 文档】
+        //【Add 文档】【Update 文档】
         if (!this.exists(identifier(stock))) {
             stock.setCreated(Calendar.getInstance().getTime());
             stock.setUpdated(stock.getCreated());

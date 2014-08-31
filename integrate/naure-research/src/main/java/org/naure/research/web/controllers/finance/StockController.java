@@ -7,9 +7,17 @@
 package org.naure.research.web.controllers.finance;
 
 import org.naure.common.entities.Information;
+import org.naure.common.patterns.exception.Func;
 import org.naure.integrate.web.ControllerBase;
+import org.naure.repositories.models.finance.Stock;
+import org.naure.research.services.StockService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -25,6 +33,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "finance/stock")
 public class StockController extends ControllerBase {
 
+    @Autowired
+    private StockService stockService;
+
     /**
      * 页面
      */
@@ -35,8 +46,14 @@ public class StockController extends ControllerBase {
 
     @RequestMapping("query")
     public Information query() {
-        //TODO
-        return new Information();
+        final Map<String, Object> params = new HashMap<String, Object>();
+        return handler(params, new Func<Map, Information>() {
+            @Override
+            public Information execute(Map map) throws Exception {
+
+                List<Stock> result= stockService.get(params);
+            }
+        });
     }
 
     {
