@@ -47,11 +47,13 @@ public class StockController extends ControllerBase {
     @RequestMapping("query")
     public Information query() {
         final Map<String, Object> params = new HashMap<String, Object>();
+        //TODO 参数验证
         return handler(params, new Func<Map, Information>() {
             @Override
             public Information execute(Map map) throws Exception {
-
-                List<Stock> result= stockService.get(params);
+                Information<List<Stock>> info = new Information<List<Stock>>();
+                info.setData(stockService.get(params));
+                return info;
             }
         });
     }

@@ -78,7 +78,11 @@ public class StockRepository extends Repository {
         if (!this.exists(identifier(stock))) {
             stock.setCreated(Calendar.getInstance().getTime());
             stock.setUpdated(stock.getCreated());
+            //TODO stock 需要去掉 Quotes
+            List<StockQuote> temp = stock.getQuotes();
+            stock.setQuotes(null);
             result = workspace.add(stock);
+            stock.setQuotes(temp);
         } else {
             result = this.updateStock(stock);
         }
