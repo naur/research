@@ -24,7 +24,7 @@ public class StockRepository extends Repository {
     private StockQuoteRepository stockQuoteRepository;
 
     /**
-     * 查询文档以及子文档：
+     * 查询文档以及子文档：分别查询 stock 和 quotes ，然后组合。
      * <pre>
      *     TODO stat 的功能未实现
      *      查询价格子文档的入参必须是这种格式【quotes.date】或【quotes.stat.xxx】
@@ -42,8 +42,17 @@ public class StockRepository extends Repository {
                 stocksParams.put(entry.getKey(), entry.getValue());
             }
         }
+
         List<Stock> stocks = this.get(stocksParams, Stock.class);
         List<StockQuote> quotes = this.get(quotesParams, StockQuote.class);
+        for (Stock stock : stocks) {
+            for (StockQuote quote : quotes) {
+                if (quote.getCode().equals(stock.getCode()) &&
+                        quote.getType().equals(stock.getType())) {
+                    stock.getQuotes().add(quote);
+                }
+            }
+        }
         return stocks;
     }
 

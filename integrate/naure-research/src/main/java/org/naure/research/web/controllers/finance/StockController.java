@@ -7,14 +7,18 @@
 package org.naure.research.web.controllers.finance;
 
 import org.naure.common.entities.Information;
+import org.naure.common.patterns.Tree;
+import org.naure.common.patterns.Type;
 import org.naure.common.patterns.exception.Func;
 import org.naure.integrate.web.ControllerBase;
 import org.naure.repositories.models.finance.Stock;
 import org.naure.research.services.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,15 +48,22 @@ public class StockController extends ControllerBase {
         return view("stock-view");
     }
 
-    @RequestMapping("query")
-    public Information query() {
+    @RequestMapping("/{type}/{code}/{start}/{end}")
+    public Information query(@PathVariable final String type, @PathVariable final String code, @PathVariable final Date start, @PathVariable final Date end) {
         final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("type", type);
         //TODO 参数验证
-        return handler(params, new Func<Map, Information>() {
+        return handler(new HashMap<String, Object>() {{
+            put("type", type);
+            put("code", code);
+            put("quotes.date", new Tree(Type.Between)
+                    .setLeft(new Tree(start))
+                    .setRight(new Tree(end)));
+        }}, new Func<Map, Information>() {
             @Override
             public Information execute(Map map) throws Exception {
                 Information<List<Stock>> info = new Information<List<Stock>>();
-                info.setData(stockService.get(params));
+                info.setData(stockService.get(map));
                 return info;
             }
         });
