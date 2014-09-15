@@ -138,5 +138,4 @@ public class RequestClient {
         }
         return instance;
     }
-
 }
