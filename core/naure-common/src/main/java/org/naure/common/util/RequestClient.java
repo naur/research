@@ -18,6 +18,8 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -39,6 +41,9 @@ import java.io.IOException;
  * </pre>
  */
 public class RequestClient {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(RequestClient.class);
+
     /**
      * 最大连接数
      */
@@ -66,6 +71,7 @@ public class RequestClient {
     private static Executor executor;
 
     public String get(String uri) throws IOException {
+        LOGGER.info("URI: " + uri);
         return executor
                 .execute(Request.Get(uri))
                 .returnContent()

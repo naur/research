@@ -8,8 +8,10 @@ package org.naure.research.task;
 import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.apache.commons.lang3.time.DateUtils;
+import org.naure.common.patterns.Func;
 import org.naure.common.patterns.exception.Action;
 import org.naure.common.util.DateUtil;
+import org.naure.common.util.EnumerableUtils;
 import org.naure.integrate.services.core.scheduler.MyTaskExecutionContext;
 import org.naure.repositories.models.finance.Stock;
 import org.naure.repositories.models.finance.StockRange;
@@ -25,7 +27,9 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -43,7 +47,7 @@ import java.util.Map;
 @Service
 public class StockHistoryTask extends Task implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockHistoryTask.class);
-    private static String datePatterns = "yyyy-MM-dd";
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
     private StockWebService stockWebService;
@@ -64,10 +68,10 @@ public class StockHistoryTask extends Task implements Serializable {
             Map params = ((MyTaskExecutionContext) context).getParams();
             try {
                 if (params.containsKey("startDate")) {
-                    startDate = DateUtils.parseDate(params.get("startDate").toString(), datePatterns);
+                    startDate = dateFormat.parse(params.get("startDate").toString());
                 }
                 if (params.containsKey("endDate")) {
-                    endDate = DateUtils.parseDate(params.get("endDate").toString(), datePatterns);
+                    endDate = dateFormat.parse(params.get("endDate").toString());
                 }
                 //TODO 暂时只支持指定单独一个 stock: SH000711
                 if (params.containsKey("stock")) {
@@ -82,8 +86,10 @@ public class StockHistoryTask extends Task implements Serializable {
         }
 
         if (null != stockRange) {
+            //页面传值
             acquireStock(stockRange, startDate, endDate);
         } else {
+            //定时任务
             for (StockRange range : securityConfiguration.getStockRanges()) {
                 acquireStock(range, startDate, endDate);
             }
@@ -103,11 +109,11 @@ public class StockHistoryTask extends Task implements Serializable {
                     stock.setCode(id.substring(2));
                     stockService.edit(stock);
                 } else {
-                    LOGGER.info("Task: Stock: " + id + ", Quotes: NULL");
+                    LOGGER.info("Task: Date=" + EnumerableUtils.select(date, func).toArray() + ", Stock=" + id + ", Quotes=NULL");
                 }
 
             } catch (Exception e) {
-                LOGGER.error("Task: Stock: " + id + ", Date: " + date, e);
+                LOGGER.error("Task: Date=" + EnumerableUtils.select(date, func).toArray() + ", Stock=" + id, e);
             }
         }
     }
@@ -116,4 +122,11 @@ public class StockHistoryTask extends Task implements Serializable {
     public boolean supportsStatusTracking() {
         return true;
     }
+
+    private Func<Date, String> func = new Func<Date, String>() {
+        @Override
+        public String execute(Date date) {
+            return dateFormat.format(date);
+        }
+    };
 }
