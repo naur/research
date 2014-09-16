@@ -32,8 +32,8 @@ public class DateUtil {
         int week;
         do {
             calendar.add(Calendar.DATE, -1);
-            week = calendar.get(Calendar.DAY_OF_MONTH);
-        } while (week != Calendar.MONDAY && week != Calendar.SATURDAY);
+            week = calendar.get(Calendar.DAY_OF_WEEK);
+        } while (week == Calendar.SUNDAY || week == Calendar.SATURDAY);
         return calendar.getTime();
     }
 
