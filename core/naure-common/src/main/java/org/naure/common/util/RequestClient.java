@@ -71,7 +71,6 @@ public class RequestClient {
     private static Executor executor;
 
     public String get(String uri) throws IOException {
-        LOGGER.info("URI: " + uri);
         return executor
                 .execute(Request.Get(uri))
                 .returnContent()

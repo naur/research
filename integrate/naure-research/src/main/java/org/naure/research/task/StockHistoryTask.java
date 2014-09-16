@@ -109,11 +109,11 @@ public class StockHistoryTask extends Task implements Serializable {
                     stock.setCode(id.substring(2));
                     stockService.edit(stock);
                 } else {
-                    LOGGER.info("Task: Date=" + EnumerableUtils.select(date, func).toArray() + ", Stock=" + id + ", Quotes=NULL");
+                    LOGGER.info("Task: Date=" + EnumerableUtils.select(date, func) + ", Stock=" + id + ", Quotes=NULL");
                 }
 
             } catch (Exception e) {
-                LOGGER.error("Task: Date=" + EnumerableUtils.select(date, func).toArray() + ", Stock=" + id, e);
+                LOGGER.error("Task: Date=" + EnumerableUtils.select(date, func) + ", Stock=" + id, e);
             }
         }
     }
