@@ -95,20 +95,20 @@ require.config({
         'naure.message': jslocalpath + '/js/core/naure.message',
         'naure.ui.overlay': jslocalpath + '/js/core/naure.ui.overlay',
 
-        'naure.math': jsresearch + '/js/math/naure.math',
-        'naure.math.number': jsresearch + '/js/math/naure.math.number',
-        'naure.math.symbol': jsresearch + '/js/math/naure.math.symbol',
-        'naure.math.structures': jsresearch + '/js/math/naure.math.structures',
+        'naure.math': jsresearch + '/js/core/math/naure.math',
+        'naure.math.number': jsresearch + '/js/core/math/naure.math.number',
+        'naure.math.symbol': jsresearch + '/js/core/math/naure.math.symbol',
+        'naure.math.structures': jsresearch + '/js/core/math/naure.math.structures',
 
-        'naure.math.probability': jsresearch + '/js/math/probability/naure.math.probability',
-        'naure.math.probability.stochastic': jsresearch + '/js/math/probability/naure.math.probability.stochastic',
+        'naure.math.probability': jsresearch + '/js/core/math/probability/naure.math.probability',
+        'naure.math.probability.stochastic': jsresearch + '/js/core/math/probability/naure.math.probability.stochastic',
 
-        'naure.math.matrixes': jsresearch + '/js/math/matrixes/naure.math.matrixes',
-        'naure.math.sets': jsresearch + '/js/math/sets/naure.math.sets',
-        'naure.math.sets.tree': jsresearch + '/js/math/sets/naure.math.sets.tree',
-        'naure.math.sets.tree.augmenting': jsresearch + '/js/math/sets/naure.math.sets.tree.augmenting',
-        'naure.math.statistics': jsresearch + '/js/math/statistics/naure.math.statistics',
-        'naure.math.statistics.finance': jsresearch + '/js/math/statistics/naure.math.statistics.finance',
+        'naure.math.matrixes': jsresearch + '/js/core/math/matrixes/naure.math.matrixes',
+        'naure.math.sets': jsresearch + '/js/core/math/sets/naure.math.sets',
+        'naure.math.sets.tree': jsresearch + '/js/core/math/sets/naure.math.sets.tree',
+        'naure.math.sets.tree.augmenting': jsresearch + '/js/core/math/sets/naure.math.sets.tree.augmenting',
+        'naure.math.statistics': jsresearch + '/js/core/math/statistics/naure.math.statistics',
+        'naure.math.statistics.finance': jsresearch + '/js/core/math/statistics/naure.math.statistics.finance',
 
         'naure.chart.gantt': jsresearch + '/js/core/chart/naure.chart.gantt',
 
@@ -121,8 +121,8 @@ require.config({
         'naure.graphics.finance': jsresearch + '/js/core/graphics/naure.graphics.finance',
         'naure.graphics.stochastic': jsresearch + '/js/core/graphics/naure.graphics.stochastic',
 
-        'math': jsresearch + '/js/math/math',
-        'math.matrix': jslocalpath + '/js/math/math.matrix',
+        'math': jsresearch + '/js/core/math',
+        'math.matrix': jslocalpath + '/js/core/math.matrix',
 
         //Integrate template
         'integrate-template': jslocalpath + '/templates/integrate-template',

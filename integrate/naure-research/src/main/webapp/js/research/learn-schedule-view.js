@@ -19,8 +19,8 @@ var global = {
         'scriptData': {
             'fileName': 'learning-schedule.txt'
         },
-        'uploader': '/js/uploadify/uploadify.swf',
-        'cancelImg': '/js/uploadify/cancel.png',
+        'uploader': '/js/core/uploadify/uploadify.swf',
+        'cancelImg': '/js/core/uploadify/cancel.png',
         'folder': '/learn/',
         uploadDisplay: false
     },
@@ -343,7 +343,7 @@ function initEvent() {
 /*-------------------- 初始化 START ------------------*/
 
 require([ 'loading', 'research-template', 'naure.chart.gantt',
-    'naure.ui.overlay', 'swfobject', 'jquery.uploadify'], function (mod, $1) {
+    'naure.ui.overlay', 'jquery.uploadify'], function (mod, $1) {
     global.message = mod.naure.Message;
     global.http = mod.naure.HTTP;
     global.utility = mod.naure.Utility;
