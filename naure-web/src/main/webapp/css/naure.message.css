@@ -22,7 +22,7 @@
 
 body {
     font-size: 12px;
-    font-family: 'Microsoft YaHei';
+    font-family: "Microsoft YaHei", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
 }
 
 .naure-message {
@@ -32,9 +32,9 @@ body {
     width: 95%;
     z-index: 2;
     display: none;
-    font-size: 13.5px;
-    font-family: 'Microsoft YaHei';
-    padding: 6px;
+    font-size: 13px;
+    font-family: "Microsoft YaHei", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+    padding: 6px 4px 0px 6px;
     text-align: left;
 }
 

@@ -154,7 +154,7 @@ function uploadify() {
             global.message.promptLine({content: "正在准备上传，请稍候... "});
         },
         onUploadProgress: function (file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
-            $('#progress').html(totalBytesUploaded + ' bytes uploaded of ' + totalBytesTotal + ' bytes.');
+            global.message.promptLine({content: totalBytesUploaded + ' bytes uploaded of ' + totalBytesTotal + ' bytes.'});
         },
         onUploadSuccess: function (file, data, response) {
             global.message.promptLine({content: "上传结束！ "});

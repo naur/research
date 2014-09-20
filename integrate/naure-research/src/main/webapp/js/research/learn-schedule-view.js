@@ -14,8 +14,9 @@ var global = {
     ONEDAY: 24 * 60 * 60 * 1000,
     startTime: null,
     endTime: null,
+    newFileName: null,
     uploadOpt: {
-        'uploader': '/upload/file.xml',
+        'uploader': '/upload/file.json',
         'scriptData': {
             'fileName': 'learning-schedule.txt'
         },
@@ -71,7 +72,8 @@ function uploadify() {
         fileTypeDesc: '学习计划书...', fileTypeExts: '*.txt',
         fileObjName: 'fileData', //设置一个名字，在服务器处理程序中根据该名字来取上传文件的数据。默认为 Filedata
         formData: {
-            folder: global.uploadOpt.folder
+            folder: global.uploadOpt.folder,
+            rename: true
         },
         buttonText: 'Schedule Test',
         swf: global.uploadOpt.swf,
@@ -90,11 +92,19 @@ function uploadify() {
             global.message.promptLine({content: "正在准备上传，请稍候... "});
         },
         onUploadProgress: function (file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
-            $('#progress').html(totalBytesUploaded + ' bytes uploaded of ' + totalBytesTotal + ' bytes.');
+            global.message.promptLine({content: totalBytesUploaded + ' bytes uploaded of ' + totalBytesTotal + ' bytes.'});
         },
         onUploadSuccess: function (file, data, response) {
-            global.message.promptLine({content: "上传结束！ "});
-            $(global.dom.uploadFileBtn).attr('disabled', false);
+            //"<information><level>0</level><data class=\"string\">Sony PRS T1 - PDF_20140920-222808-231.txt</data></information>"
+            var result = JSON.parse(data);
+            if (0 == result.information.level) {
+                global.message.promptLine({content: '上传结束, 文件：' + result.information.data + ' '});
+                $(global.dom.uploadFileBtn).attr('disabled', false);
+                $(global.dom.handleBtn).css('display', 'inline');
+            } else {
+                global.message.promptLine({content: result.information.keywords, color: 'red'});
+                $('#handle').css('display', 'none');
+            }
             //TODO 返回数据处理
 //            global.http.acquire({
 //                xml: response,
