@@ -33,7 +33,7 @@
  *      });
  */
 
-define(['jquery', 'jquery.strings', 'naure', 'naure.utility'], function ($, $1, NAURE) {
+define(['jquery', 'jquery.strings', 'naure', 'naure.utility', 'naure.ui'], function ($, $1, NAURE) {
 
     NAURE.UI.Overlay = (function () {
         var dom = {

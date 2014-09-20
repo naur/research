@@ -3,7 +3,7 @@
  */
 
 define(['jquery', 'integrate-template'],
-    function ($, $1, echarts, event) {
+    function ($) {
         //菜单
         $.templates("menu", "<div>{{:#index+1}}: <b>{{>name}}</b> ({{>releaseYear}})</div>");
         //检测对象【平台信息 + 仓库信息】选择列表

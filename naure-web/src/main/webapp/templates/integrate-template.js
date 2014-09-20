@@ -3,7 +3,7 @@
  */
 
 define(['jquery', 'jquery.template'],
-    function ($, $1, echarts, event) {
+    function ($) {
         //TODO http://msdn.microsoft.com/zh-cn/magazine/hh975379.aspx
         //TODO http://msdn.microsoft.com/zh-cn/magazine/hh882454.aspx
         //转换器

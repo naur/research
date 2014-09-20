@@ -1,0 +1,40 @@
+$!{extends("/layout.html")}
+
+#macro(title) Diagnostic #end
+
+#macro(css)
+<link rel="stylesheet" type="text/css" href="/js/uploadify/uploadify.css"/>
+<style type="text/css">
+    canvas {
+        width: 600px;
+        height: 15px;
+        padding: 0px;
+        vertical-align: middle;
+        /*position: absolute;*/
+    }
+</style>
+#end
+
+#macro(content)
+
+<div class="row">
+    <div class="col-md-12"></div>
+</div>
+<div class="row">
+    <div class="col-md-12"></div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+    <div class="container">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" id="session">Session</button>
+            <button type="button" class="btn btn-default" id="analysis">Analysis</button>
+        </div>
+    </div>
+</nav>
+
+#end
+
+#macro(js)
+<script type="text/javascript" src="/js/research/learn-schedule-view.js"></script>
+#end
