@@ -12,9 +12,11 @@
 /*-------------------- 全局变量 START ----------------*/
 var global = {
     ONEDAY: 24 * 60 * 60 * 1000,
+    fileUri: '/upload/learn/{0}',
+    getUri: '/learn/schedule/{0}.xml',    // /learn/schedule/1,2,3.xml
     startTime: null,
     endTime: null,
-    newFileName: null,
+    newFile: null,
     uploadOpt: {
         'uploader': '/upload/file.json',
         'scriptData': {
@@ -34,7 +36,7 @@ var global = {
         fileupload: '#fileupload'
     }
 };
-var overlay, overlayNodes, tableHead;
+var overlay, tableHead;
 
 
 /*-------------------- 全局变量 END ------------------*/
@@ -53,17 +55,6 @@ var overlay, overlayNodes, tableHead;
 //    Time: {
 //        html: '<input id="overlay-input-time" type="text" />'
 //    }
-
-function formatURI(schedule) {
-    var str = (schedule.id && schedule.id.length > 0 ? ',id=' + schedule.id : '') +
-        ( !isNaN(parseInt(schedule.number)) ? ',number=' + schedule.number : '') +
-        (!isNaN(parseInt(schedule.pages)) ? ',pages=' + schedule.pages : '') +
-        (!isNaN(parseInt(schedule.days)) ? ',days=' + schedule.days : '') +
-        (schedule.heading && schedule.heading.length > 0 ? ',heading=' + encodeURIComponent(schedule.heading) : '') +
-        (schedule.time && schedule.time.length > 0 ? ',time=' + schedule.time : '');
-
-    return str.substr(1);
-}
 
 function uploadify() {
     $(global.dom.fileupload).uploadify({
@@ -98,6 +89,7 @@ function uploadify() {
             //"<information><level>0</level><data class=\"string\">Sony PRS T1 - PDF_20140920-222808-231.txt</data></information>"
             var result = JSON.parse(data);
             if (0 == result.information.level) {
+                global.newFile = result.information.data;
                 global.message.promptLine({content: '上传结束, 文件：' + result.information.data + ' '});
                 $(global.dom.uploadFileBtn).attr('disabled', false);
                 $(global.dom.handleBtn).css('display', 'inline');
@@ -105,18 +97,6 @@ function uploadify() {
                 global.message.promptLine({content: result.information.keywords, color: 'red'});
                 $('#handle').css('display', 'none');
             }
-            //TODO 返回数据处理
-//            global.http.acquire({
-//                xml: response,
-//                //xslUrl:global.uploadOpt.uploadvalidXsl,
-//                error: function (ex) {
-//                    global.message.promptLine({content: JSON.stringify(ex.content), color: 'red'});
-//                    $('#handle').css('display', 'none');
-//                },
-//                success: function (obj) {
-//                    $('#handle').css('display', 'inline');
-//                }});
-//            $('#uploadfile').attr('disabled', false);
         },
         onUploadError: function (file, errorCode, errorMsg, errorString) {
             global.message.promptLine({content: '错误：' + errorString, color: 'red'});
@@ -128,6 +108,90 @@ function uploadify() {
         },
         onUploadComplete: function (file) {
             global.message.promptLine({content: "上传文件【" + file.name + "】完成！"});
+        }
+    });
+}
+
+function handleFile() {
+    global.dataAreaElement.empty();
+    global.message.empty();
+    if (global.newFile) {
+        global.message.show({content: '正在获取 ' + global.newFile + ' 数据...'});
+    } else {
+        global.message.show({content: 'newFile 为空.'});
+        return;
+    }
+    $(this).attr('disabled', true);
+
+    global.http.acquire({
+        uri: global.utility.format(global.fileUri, global.newFile), //'/upload/learn/learning-schedule.txt',
+        context: this,
+        dataType: 'text',
+        error: function (ex) {
+            $(ex.context).attr('disabled', false);
+        },
+        success: function (obj) {
+            $(obj.context).attr('disabled', false);
+
+            var text = obj.output.split(/[\r\n]+/i);
+            var schedule = null;
+            var timeStart = null, timeEnd = null;
+            for (var i = 0; i < text.length; i++) {
+                schedule = text[i].split('|');
+                if (schedule && schedule.length > 1) {
+                    schedule = {
+                        pages: schedule[0].trim(),
+                        days: schedule[1].trim(),
+                        time: schedule[2].trim(),
+                        path: schedule[3].trim(),
+                        heading: schedule[4].trim()
+                    };
+
+                    //todo
+                    if (!isNaN(parseInt(schedule.time))) {
+                        timeStart = new Date(schedule.time);
+                    }
+                    if (timeStart && !isNaN(parseInt(schedule.days))) {
+                        timeEnd = new Date(timeStart.getTime() + (parseInt(schedule.days) - 1) * global.ONEDAY)
+                        schedule.time = timeStart.format('yyyy-MM-dd') + " -> " + timeEnd.format('yyyy-MM-dd');
+                        timeStart = new Date(timeEnd.getTime() + global.ONEDAY);
+                    }
+
+                    AddLearningSchedule(schedule)
+                } else {
+                    global.message.show({content: JSON.stringify(schedule), color: 'red'});
+                }
+            }
+        }
+    });
+}
+
+function renderLearningSchedule(elem) {
+    $(elem).attr('disabled', true);
+    global.dataAreaElement.empty();
+    global.message.empty();
+    global.message.show({content: '正在获取数据...'});
+
+    //todo url:  /learn/schedule/1,2,3.xml
+    global.http.acquire({
+        xmlUrl: global.utility.format(global.getUri, location.search ? location.search.substr(1) : 1),  //'/learn/schedule/' + (location.search ? location.search.substr(1) : 1) + '.xml',
+//        xslUrl: '/xsl/learning-schedule.xsl',
+        context: elem,
+        error: function (ex) {
+            global.message.show({content: '获取数据结束！'});
+            global.message.show({content: '获取数据错误，请稍后重试！', color: 'red'});
+            $(ex.context).attr('disabled', false);
+        },
+        success: function (obj) {
+            tableHead = {};
+            $('table thead tr th').each(function (index, element) {
+                tableHead[index] = $(element).text();
+            });
+
+            $(obj.context).attr('disabled', false);
+            global.message.empty();
+
+            renderChart();
         }
     });
 }
@@ -175,14 +239,16 @@ function renderChart() {
 }
 
 function AddLearningSchedule(schedule, context) {
-    var xmlUrl;
+    var editUri;
     if (schedule.path && schedule.path.length > 0) {
-        xmlUrl = '/learn/schedule/edit/' + schedule.path + '/' + formatURI(schedule) + ".xml";
+        //update
+        editUri = '/learn/schedule/edit/' + schedule.path + '/' + formatURI(schedule) + ".json";
     } else if (schedule.id && schedule.id.length > 0) {
-        xmlUrl = '/learn/schedule/edit/' + formatURI(schedule) + ".xml";
+        //add
+        editUri = '/learn/schedule/edit/' + formatURI(schedule) + ".json";
     }
 
-    if (!xmlUrl) {
+    if (!editUri) {
         if (context)  global.message.show({content: 'Input is empty.'});
         $(context).attr('disabled', false);
         return;
@@ -190,8 +256,7 @@ function AddLearningSchedule(schedule, context) {
 
     if (context) global.message.show({content: 'Add Schedule ' + JSON.stringify(schedule)});
     global.http.acquire({
-        xmlUrl: xmlUrl,
-        //xslUrl:'/xsl/table.xsl',
+        uri: editUri,
         context: context,
         error: function (error) {
             if (error.context) $(error.context).attr('disabled', false);
@@ -204,37 +269,17 @@ function AddLearningSchedule(schedule, context) {
             global.message.show({content: JSON.stringify(schedule)});
         }
     });
-
 }
 
-function renderLearningSchedule(elem) {
-    $(elem).attr('disabled', true);
-    global.dataAreaElement.empty();
-    global.message.empty();
-    global.message.show({content: '正在获取数据...'});
+function formatURI(schedule) {
+    var str = (schedule.id && schedule.id.length > 0 ? ',id=' + schedule.id : '') +
+        ( !isNaN(parseInt(schedule.number)) ? ',number=' + schedule.number : '') +
+        (!isNaN(parseInt(schedule.pages)) ? ',pages=' + schedule.pages : '') +
+        (!isNaN(parseInt(schedule.days)) ? ',days=' + schedule.days : '') +
+        (schedule.heading && schedule.heading.length > 0 ? ',heading=' + encodeURIComponent(schedule.heading) : '') +
+        (schedule.time && schedule.time.length > 0 ? ',time=' + schedule.time : '');
 
-    //todo url:  /learn/schedule/1,2,3.xml
-    global.dataAreaElement.NAURE_HTTP_Acquire({
-        xmlUrl: '/learn/schedule/' + (location.search ? location.search.substr(1) : 1) + '.xml',
-        xslUrl: '/xsl/learning-schedule.xsl',
-        context: elem,
-        error: function (ex) {
-            global.message.show({content: '获取数据结束！'});
-            global.message.show({content: '获取数据错误，请稍后重试！', color: 'red'});
-            $(ex.context).attr('disabled', false);
-        },
-        success: function (obj) {
-            tableHead = {};
-            $('table thead tr th').each(function (index, element) {
-                tableHead[index] = $(element).text();
-            });
-
-            $(obj.context).attr('disabled', false);
-            global.message.empty();
-
-            renderChart();
-        }
-    });
+    return str.substr(1);
 }
 
 /*-------------------- 函数 END ----------------------*/
@@ -247,52 +292,22 @@ function initEvent() {
     });
 
     $(global.dom.handleBtn).on('click', function () {
-        global.dataAreaElement.empty();
-        global.message.empty();
-        global.message.show({content: '正在获取数据...'});
-        $(this).attr('disabled', true);
+        handleFile();
+    });
 
-        global.http.acquire({
-            xmlUrl: '/upload/learn/learning-schedule.txt',
-            context: this,
-            dataType: 'text',
-            error: function (ex) {
-                $(ex.context).attr('disabled', false);
-            },
-            success: function (obj) {
-                $(obj.context).attr('disabled', false);
+    $(global.dom.upload).on('click', function () {
+        if (global.uploadOpt.uploadDisplay) {
+            $('article section:eq(0)').css('display', 'none');
+            $('article section:eq(1)').css('display', 'none');
+        } else {
+            $('article section:eq(0)').css('display', 'block');
+            $('article section:eq(1)').css('display', 'block');
+        }
+        global.uploadOpt.uploadDisplay = !global.uploadOpt.uploadDisplay;
+    });
 
-                var text = obj.output.split(/[\r\n]+/i);
-                var schedule = null;
-                var timeStart = null, timeEnd = null;
-                for (var i = 0; i < text.length; i++) {
-                    schedule = text[i].split('|');
-                    if (schedule && schedule.length > 1) {
-                        schedule = {
-                            pages: schedule[0].trim(),
-                            days: schedule[1].trim(),
-                            time: schedule[2].trim(),
-                            path: schedule[3].trim(),
-                            heading: schedule[4].trim()
-                        };
-
-                        //todo
-                        if (!isNaN(parseInt(schedule.time))) {
-                            timeStart = new Date(schedule.time);
-                        }
-                        if (timeStart && !isNaN(parseInt(schedule.days))) {
-                            timeEnd = new Date(timeStart.getTime() + (parseInt(schedule.days) - 1) * global.ONEDAY)
-                            schedule.time = timeStart.format('yyyy-MM-dd') + " -> " + timeEnd.format('yyyy-MM-dd');
-                            timeStart = new Date(timeEnd.getTime() + global.ONEDAY);
-                        }
-
-                        AddLearningSchedule(schedule)
-                    } else {
-                        global.message.show({content: JSON.stringify(schedule), color: 'yellow'});
-                    }
-                }
-            }
-        });
+    $(global.dom.get).on('click', function () {
+        renderLearningSchedule(this);
     });
 
     $(document).on('dblclick', 'table tbody tr td', function () {
@@ -314,19 +329,6 @@ function initEvent() {
         }
     });
 
-    $(global.dom.upload).on('click', function () {
-        if (global.uploadOpt.uploadDisplay) {
-            $('article section:eq(0)').css('display', 'none');
-            $('article section:eq(1)').css('display', 'none');
-        } else {
-            $('article section:eq(0)').css('display', 'block');
-            $('article section:eq(1)').css('display', 'block');
-        }
-        global.uploadOpt.uploadDisplay = !global.uploadOpt.uploadDisplay;
-    });
-    $(global.dom.get).on('click', function () {
-        renderLearningSchedule(this);
-    });
     $(global.dom.add).on('click', function () {
         $(this).attr('disabled', true);
         $('article section').empty();
