@@ -100,7 +100,13 @@ public class StockHistoryTask extends Task implements Serializable {
         Stock stock = null;
         String id = null;
         for (int i = range.start; i <= range.end; i++) {
+
             id = range.getCode(i);
+
+            if (securityConfiguration.filter.contains(id)) {
+                continue;
+            }
+
             try {
                 stock = stockWebService.getHistory(id, date);
                 //验证

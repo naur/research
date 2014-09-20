@@ -1,66 +1,50 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title> Learning Schedule </title>
+﻿$!{extends("/layout.html")}
 
-    <link href="/css/naure.message.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/naure.ui.overlay.css" rel="stylesheet" type="text/css"/>
-    <link href="/css/default.css" rel="stylesheet" type="text/css"/>
+#macro(title) Learning Schedule #end
 
-    <link rel="stylesheet" type="text/css" href="/js/uploadify/uploadify.css"/>
+#macro(css)
+<link rel="stylesheet" type="text/css" href="/js/uploadify/uploadify.css"/>
+<style type="text/css">
+    canvas {
+        width: 600px;
+        height: 15px;
+        padding: 0px;
+        vertical-align: middle;
+        /*position: absolute;*/
+    }
+</style>
+#end
 
-    <script type="text/javascript" src="/js/core/require.js"></script>
-    <script type="text/javascript" src="/js/core/require.config.js"></script>
-    <script type="text/javascript" src="/js/research/learn-schedule-view.js"></script>
+#macro(content)
 
-    <style type="text/css">
+<div class="row">
+    <div class="col-md-12">
+        <article>
+            <section style="display: none;">
+                <input type="file" id="fileupload"/>
+            </section>
+            <section style="display: none;">
+                <a id="uploadfile">上传文件</a>
+                <a id="handle" style="display: none;">处理文件</a>
+            </section>
+            <section></section>
+            <section></section>
+        </article>
+    </div>
+</div>
 
-        article {
-            padding: 8px;
-        }
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+    <div class="container">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" id="session">Session</button>
+            <button type="button" class="btn btn-default" id="analysis">Analysis</button>
+        </div>
+    </div>
+</nav>
 
-        article section:first-child {
-            height: 40px;
-        }
+#end
 
-        article section:first-child + section a {
-            margin: 0px 30px 0px 0px;
-            cursor: pointer;
-            text-decoration: none;
-        }
+#macro(js)
+<script type="text/javascript" src="/js/research/learn-schedule-view.js"></script>
+#end
 
-        article section:first-child + section a:link, a:visited {
-            text-decoration: none;
-        }
-
-        article section:first-child + section a:hover {
-            color: red;
-            text-decoration: none;
-        }
-
-        canvas {
-            width: 600px;
-            height: 15px;
-            padding: 0px;
-            vertical-align: middle;
-            /*position: absolute;*/
-        }
-
-    </style>
-
-</head>
-<body>
-<article>
-    <section style="display: none;">
-        <input type="file" id="fileupload"/>
-    </section>
-    <section style="display: none;">
-        <a id="uploadfile">上传文件</a>
-        <a id="handle" style="display: none;">处理文件</a>
-    </section>
-    <section></section>
-    <section></section>
-</article>
-
-</body>
-</html>

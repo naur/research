@@ -62,6 +62,7 @@ public class SecurityConfiguration {
 
     @Value("${security.stock.sh}") public String sh;
     @Value("${security.stock.sz}") public String sz;
+    @Value("${security.stock.filter}")  public String filter;
     @Value("${security.stock.realtime.uri}") public String stockRealtimeUri;
     @Value("${security.stock.capital.uri}")  public String stockCapitalUri;
     @Value("${security.stock.history.uri}")  public String stockHistoryUri;
