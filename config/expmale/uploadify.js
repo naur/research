@@ -15,22 +15,19 @@ var global = {
     startTime: null,
     endTime: null,
     uploadOpt: {
-        'uploader': '/upload.xml',
+        'script': '/upload.xml',
         'scriptData': {
             'fileName': 'learning-schedule.txt'
         },
-        'swf': '/js/core/uploadify/uploadify.swf',
+        'uploader': '/js/core/uploadify/uploadify.swf',
         'cancelImg': '/js/core/uploadify/cancel.png',
         'folder': '/learn/',
         uploadDisplay: false
     },
     dom: {
-        uploadFileBtn: '#uploadfile',
-        handleBtn: '#handle',
         add: '#add',
         upload: '#upload',
-        get: '#get',
-        fileupload: '#fileupload'
+        get: '#get'
     }
 };
 var overlay, overlayNodes, tableHead;
@@ -40,6 +37,7 @@ var overlay, overlayNodes, tableHead;
 
 /*-------------------- 函数 START --------------------*/
 
+overlayNodes = {
 //    Heading: {
 //        html: '<input id="overlay-input-heading" type="text" />'
 //    },
@@ -52,6 +50,7 @@ var overlay, overlayNodes, tableHead;
 //    Time: {
 //        html: '<input id="overlay-input-time" type="text" />'
 //    }
+};
 
 function formatURI(schedule) {
     var str = (schedule.id && schedule.id.length > 0 ? ',id=' + schedule.id : '') +
@@ -63,6 +62,72 @@ function formatURI(schedule) {
 
     return str.substr(1);
 }
+
+function uploadify() {
+    $('#fileupload').uploadify({
+        'uploader': global.uploadOpt.uploader,
+        'script': global.uploadOpt.script,
+        'scriptData': global.uploadOpt.scriptData,
+        fileDataName: 'fileData', //设置一个名字，在服务器处理程序中根据该名字来取上传文件的数据。默认为Filedata
+        'cancelImg': global.uploadOpt.cancelImg,
+        'folder': global.uploadOpt.folder,
+        'removeCompleted': true,
+        'multi': true,
+        'auto': false, //选定文件后是否自动上传，默认false
+//        'fileExt':'*.xls;*.xlsx;*.csv',
+//        'fileDesc':'Excel Files (.xls, .xlsx, .csv)', //这个属性值必须设置fileExt属性后才有效，用来设置选择文件对话框中的提示文本，如设置fileDesc为“请选择rar doc pdf文件”
+        'onSelect': function (event, queueID, fileObj) { //选择上传文件时解发以下动作,   fileObj : 选择的文件对象，有name、size、creationDate、modificationDate、type 5个属性
+            global.dataAreaElement.empty();
+            global.message.empty();
+            global.message.promptLine({content: "选择文件【" + fileObj.name + "】"});
+        },
+        'onSelectOnce': function (event, data) {  //在单文件或多文件上传时，选择文件时触发。
+//            global.message.promptLine({content:
+//                "fileCount: " + data.fileCount + "\t" +
+//                    "filesReplaced:" + data.filesReplaced + "\t" +
+//                    "filesSelected:" + data.filesSelected
+//            });
+        },
+        'onOpen': function (event, queueId, fileObj) {
+            $('#uploadfile').attr('disabled', true);
+            global.message.promptLine({content: "正在准备上传，请稍候... "});
+        },
+        'onProgress': function (event, queueId, fileObj, data) {
+            global.message.promptLine({content: "上传结束！ "});
+            $('#uploadfile').attr('disabled', false);
+        },
+        'onComment': function (event, queueID, fileObj, response, data) {  //上传成功后动作
+            global.message.promptLine({content: 'onComment'});
+        },
+        'onCancel': function (event, queueId, fileObj, data) {
+            global.message.promptLine({content: "取消上传【" + fileObj.name + "】", color: 'red'});
+        },
+        'onComplete': function (even, queueId, fileObj, response, data) {
+            global.message.promptLine({content: "上传文件【" + fileObj.name + "】完成！"});
+            global.http.acquire({
+                xml: response,
+                //xslUrl:global.uploadOpt.uploadvalidXsl,
+                error: function (ex) {
+                    global.message.promptLine({content: JSON.stringify(ex.content), color: 'red'});
+                    $('#handle').css('display', 'none');
+                },
+                success: function (obj) {
+                    $('#handle').css('display', 'inline');
+                } });
+            $('#uploadfile').attr('disabled', false);
+        },
+        'onAllComplete': function (event, data) {
+            global.message.promptLine({content: data.filesUploaded + " files uploaded, " + data.errors + " errors."});
+            $('#uploadfile').attr('disabled', false);
+        },
+        'onError': function (event, queueId, fileObj, errorObj) {
+            global.message.promptLine({content: '错误：' + errorObj.info, color: 'red'});
+            $('#uploadfile').attr('disabled', false);
+        }
+    });
+}
+
+
 
 function uploadify() {
     $(global.dom.fileupload).uploadify({
@@ -120,6 +185,8 @@ function uploadify() {
         }
     });
 }
+
+
 
 function renderChart() {
     var regex = /([\d]{4}-[\d]{2}-[\d]{2})[^\d]+([\d]{4}-[\d]{2}-[\d]{2})/;
@@ -231,11 +298,11 @@ function renderLearningSchedule(elem) {
 /*-------------------- 事件 START --------------------*/
 
 function initEvent() {
-    $(global.dom.uploadFileBtn).on('click', function () {
-        $(global.dom.fileupload).uploadify("upload");
+    $('#uploadfile').on('click', function () {
+        $('#fileupload').uploadifyUpload();
     });
 
-    $(global.dom.handleBtn).on('click', function () {
+    $('#handle').on('click', function () {
         global.dataAreaElement.empty();
         global.message.empty();
         global.message.show({content: '正在获取数据...'});
@@ -336,7 +403,8 @@ function initEvent() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require([ 'loading', 'research-template', 'naure.chart.gantt', 'jquery.uploadify'], function (mod, $1) {
+require([ 'loading', 'research-template', 'naure.chart.gantt',
+    'naure.ui.overlay', 'jquery.uploadify'], function (mod, $1) {
     global.message = mod.naure.Message;
     global.http = mod.naure.HTTP;
     global.utility = mod.naure.Utility;
@@ -347,6 +415,9 @@ require([ 'loading', 'research-template', 'naure.chart.gantt', 'jquery.uploadify
 
     $(function () {
         global.messageElement.message();
+        $('body').overlay({
+            nodes: overlayNodes
+        });
     });
 
     initEvent();

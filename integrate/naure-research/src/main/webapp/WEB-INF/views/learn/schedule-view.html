@@ -5,6 +5,30 @@
 #macro(css)
 <link rel="stylesheet" type="text/css" href="/js/core/uploadify/uploadify.css"/>
 <style type="text/css">
+
+    article {
+        padding: 8px;
+    }
+
+    article section:first-child {
+        height: 40px;
+    }
+
+    article section:first-child + section a {
+        margin: 0px 30px 0px 0px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    article section:first-child + section a:link, a:visited {
+        text-decoration: none;
+    }
+
+    article section:first-child + section a:hover {
+        color: red;
+        text-decoration: none;
+    }
+
     canvas {
         width: 600px;
         height: 15px;
@@ -20,7 +44,7 @@
 <div class="row">
     <div class="col-md-12">
         <article>
-            <section style="display: none;">
+            <section style="display: block;">
                 <input type="file" id="fileupload"/>
             </section>
             <section style="display: none;">
