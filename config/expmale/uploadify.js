@@ -128,12 +128,12 @@ function uploadify() {
 }
 
 
-
 function uploadify() {
     $(global.dom.fileupload).uploadify({
-        height: 30, width: 120,
+        height: 30, width: 120, debug: false,
         auto: false, removeCompleted: true, multi: false,
         fileTypeDesc: '学习计划书...', fileTypeExts: '*.txt',
+        fileObjName: 'fileData', //设置一个名字，在服务器处理程序中根据该名字来取上传文件的数据。默认为 Filedata
         formData: {
             folder: global.uploadOpt.folder
         },
@@ -185,8 +185,6 @@ function uploadify() {
         }
     });
 }
-
-
 
 function renderChart() {
     var regex = /([\d]{4}-[\d]{2}-[\d]{2})[^\d]+([\d]{4}-[\d]{2}-[\d]{2})/;

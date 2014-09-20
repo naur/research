@@ -15,7 +15,7 @@ var global = {
     startTime: null,
     endTime: null,
     uploadOpt: {
-        'uploader': '/upload.xml',
+        'uploader': '/upload/file.xml',
         'scriptData': {
             'fileName': 'learning-schedule.txt'
         },
@@ -66,9 +66,10 @@ function formatURI(schedule) {
 
 function uploadify() {
     $(global.dom.fileupload).uploadify({
-        height: 30, width: 120,
+        height: 30, width: 120, debug: false,
         auto: false, removeCompleted: true, multi: false,
         fileTypeDesc: '学习计划书...', fileTypeExts: '*.txt',
+        fileObjName: 'fileData', //设置一个名字，在服务器处理程序中根据该名字来取上传文件的数据。默认为 Filedata
         formData: {
             folder: global.uploadOpt.folder
         },
