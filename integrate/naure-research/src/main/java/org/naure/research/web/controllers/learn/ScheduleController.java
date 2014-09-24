@@ -119,6 +119,7 @@ public class ScheduleController extends ControllerBase {
                 } else {
                     String jsonParams = String.format(
                             "{%0$s}",
+                            //替换 [pages=11,days=3,heading=XXX,time=2014] 为 [pages:11,days:3,heading:XXX,time:2014]
                             params.replaceAll("([^=^,]+)=([^=^,]+)", "\"$1\":\"$2\"")
                     );
                     Schedule schedule = new ObjectMapper().readValue(jsonParams, Schedule.class);

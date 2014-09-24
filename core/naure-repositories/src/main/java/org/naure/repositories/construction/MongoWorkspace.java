@@ -161,11 +161,11 @@ public class MongoWorkspace extends AbstractWorkspace {
 
         MongoOperations mongoOperations = mongoConfiguration.mongoTemplate();
         Query query = new Query();
-        Map params = (Map) t;
+        Map<String, Object> params = (Map) t;
         String collectionName = collectionName(params.get("class").toString());
         params.remove("class");
-        for (Object key : params.keySet()) {
-            query.addCriteria(Criteria.where(key.toString()).is(params.get(key)));
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            query.addCriteria(Criteria.where(entry.getKey()).is(entry.getValue()));
         }
         return mongoOperations.exists(query, collectionName);
     }
@@ -252,6 +252,10 @@ public class MongoWorkspace extends AbstractWorkspace {
         if (pageIndex == 0) pageIndex = 1;
         query.skip(pageSize * (pageIndex - 1));
         query.limit(pageSize);
+
+        //TODO dev
+        logger.info(query.toString());
+
         return mongoOperations.find(
                 query,
                 resultClass,

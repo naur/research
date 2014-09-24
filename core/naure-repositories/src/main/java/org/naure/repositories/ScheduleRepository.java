@@ -1,8 +1,10 @@
 package org.naure.repositories;
 
+import org.apache.commons.lang3.StringUtils;
 import org.naure.common.patterns.Tree;
 import org.naure.common.patterns.Type;
 import org.naure.repositories.construction.Repository;
+import org.naure.repositories.models.finance.Security;
 import org.naure.repositories.models.learn.Schedule;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +25,7 @@ public class ScheduleRepository extends Repository {
     //TODO 重构后未验证
     public boolean delete(Schedule schedule) throws Exception {
         String path = schedule.getPath();
-        Map<String, Object> params =  new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<String, Object>();
         if (path.isEmpty() || "all".equals(path))
             params.put("path", new Tree<String>(Type.Regex, "^\\d+,"));
         else {
@@ -31,37 +33,15 @@ public class ScheduleRepository extends Repository {
             params.put("path", new Tree<String>(Type.Regex, "^[" + path.replace(",", "|") + "]+,"));
         }
         params.put("class", schedule.getClass());
-        return delete(params);
+        return super.delete(params);
     }
 
     public boolean exists(final Schedule schedule) throws Exception {
-        Map<String, Object> query = new HashMap<String, Object>() {{
-            put("class", schedule.getClass());
-            if (null != schedule.getId() || "" != schedule.getId())
-                put("id", schedule.getId());
-            else {
-                if (null != schedule.getHeading() || "" != schedule.getHeading())
-                    put("heading", schedule.getHeading());
-                if (null != schedule.getPath() || "" != schedule.getPath())
-                    put("path", schedule.getPath());
-            }
-        }};
-
-        return this.exists(query);
+        return super.exists(identifier(schedule));
     }
 
     public boolean update(final Schedule schedule) throws Exception {
-        Map<String, Object> query = new HashMap<String, Object>() {{
-            put("class", schedule.getClass());
-            if (null != schedule.getId() || "" != schedule.getId())
-                put("id", schedule.getId());
-            else {
-                if (null != schedule.getHeading() || "" != schedule.getHeading())
-                    put("heading", schedule.getHeading());
-                if (null != schedule.getPath() || "" != schedule.getPath())
-                    put("path", schedule.getPath());
-            }
-        }};
+        Map<String, Object> query = identifier(schedule);
 
         Map<String, Object> update = new HashMap<String, Object>();
         update.put("query", query);
@@ -81,12 +61,29 @@ public class ScheduleRepository extends Repository {
             put("updated", Calendar.getInstance().getTime());
         }});
         update.put("class", schedule.getClass());
-        return update(update);
+        return super.update(update);
     }
 
     public boolean add(final Schedule schedule) throws Exception {
         schedule.setCreated(Calendar.getInstance().getTime());
         schedule.setUpdated(schedule.getCreated());
-        return workspace.add(schedule);
+        return super.add(schedule);
+    }
+
+    private Map identifier(final Schedule schedule) {
+        return new HashMap<String, Object>() {{
+            put("class", schedule.getClass());
+            //根据 id 主键来判断
+            if (StringUtils.isNotEmpty(schedule.getId())) {
+                put("id", schedule.getId());
+            }
+            //根据字段来判断
+            else {
+                if (StringUtils.isNotEmpty(schedule.getHeading()))
+                    put("heading", schedule.getHeading());
+                if (StringUtils.isNotEmpty(schedule.getPath()))
+                    put("path", schedule.getPath());
+            }
+        }};
     }
 }

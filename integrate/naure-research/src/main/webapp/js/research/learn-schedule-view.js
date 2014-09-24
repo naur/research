@@ -13,7 +13,7 @@
 var global = {
     ONEDAY: 24 * 60 * 60 * 1000,
     fileUri: '/upload/learn/{0}',
-    getUri: '/learn/schedule/{0}.xml',    // /learn/schedule/1,2,3.xml
+    getUri: '/learn/schedule/{0}.json',    // /learn/schedule/1,2,3.xml
     startTime: null,
     endTime: null,
     newFile: null,
@@ -174,8 +174,7 @@ function renderLearningSchedule(elem) {
 
     //todo url:  /learn/schedule/1,2,3.xml
     global.http.acquire({
-        xmlUrl: global.utility.format(global.getUri, location.search ? location.search.substr(1) : 1),  //'/learn/schedule/' + (location.search ? location.search.substr(1) : 1) + '.xml',
-//        xslUrl: '/xsl/learning-schedule.xsl',
+        uri: global.utility.format(global.getUri, location.search ? location.search.substr(1) : 1),  //'/learn/schedule/' + (location.search ? location.search.substr(1) : 1) + '.xml',
         context: elem,
         error: function (ex) {
             global.message.show({content: '获取数据结束！'});
