@@ -75,7 +75,7 @@ public class ScheduleController extends ControllerBase {
                     //map.put("path", new Tree<String>(Type.Regex, "^[" + params.replace(",", "|") + "]+,"));
                     map.put("path", new Tree<String>(Type.Regex, "^" + params));
                 }
-                map.put("pageSize", 100);
+                map.put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(100), new Tree<Integer>(1)));
 
                 info.setData(scheduleService.get(map));
                 info.setLevel(InformationLevel.SUCCESS.value());

@@ -207,6 +207,7 @@ public class MongoWorkspace extends AbstractWorkspace {
                     switch (tree.getType()) {
                         case Paging:
                             //Usage: put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(3), new Tree<Integer>(1)));
+                            // left = pageSize , right = pageIndex
                             pageSize = (Integer) tree.getLeft().getInfo();
                             pageIndex = (Integer) tree.getRight().getInfo();
                             break;
@@ -252,9 +253,6 @@ public class MongoWorkspace extends AbstractWorkspace {
         if (pageIndex == 0) pageIndex = 1;
         query.skip(pageSize * (pageIndex - 1));
         query.limit(pageSize);
-
-        //TODO dev
-        logger.info(query.toString());
 
         return mongoOperations.find(
                 query,
