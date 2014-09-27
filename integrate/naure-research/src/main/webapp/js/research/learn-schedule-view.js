@@ -25,9 +25,9 @@ var global = {
         path: 'path',
         heading: 'heading',
         chart: '图表',
-        id: 'id',
+//        id: 'id',
         created: 'created',
-        updated: 'updated'
+//        updated: 'updated'
     },
     uploadOpt: {
         'uploader': '/upload/file.json',
@@ -204,7 +204,26 @@ function renderLearningSchedule(elem) {
             $(obj.context).attr('disabled', false);
             global.message.empty();
 
-            $(global.dom.container + ' table tbody').html($.render.row(obj.output.information.data));
+            var result = obj.output.information.data;
+            if (result.length <= 0) return;
+            var list = [];
+            for (var i in result) {
+                if (!result.hasOwnProperty(i)) continue;
+                var tmp = {};
+                for (var j in global.schedule) {
+                    if (!global.schedule.hasOwnProperty(j)) continue;
+                    if ('chart' == j)
+                        tmp[j] = '<canvas class="chart"></canvas>';
+                    else if ('created' == j) {
+                        tmp[j] = new Date(result[i][j]).format('yyyy-MM-dd HH:mm:ss');
+                    }
+                    else
+                        tmp[j] = result[i][j];
+                }
+                list.push(tmp);
+            }
+
+            $(global.dom.container + ' table tbody').html($.render.row(list));
             renderChart();
         }
     });
