@@ -17,6 +17,19 @@ var global = {
     startTime: null,
     endTime: null,
     newFile: null,
+    schedule: {
+        number: 'number',
+        pages: 'pages',
+        days: 'days',
+        time: 'time',
+        path: 'path',
+        heading: 'heading',
+        comment: 'comment',
+        chart: '图表',
+        id: 'id',
+        created: 'created',
+        updated: 'updated'
+    },
     uploadOpt: {
         'uploader': '/upload/file.json',
         'scriptData': {
@@ -28,12 +41,14 @@ var global = {
         uploadDisplay: false
     },
     dom: {
+        table: '.row:eq(0) div',
         uploadFileBtn: '#uploadfile',
         handleBtn: '#handle',
         add: '#add',
         upload: '#upload',
         get: '#get',
-        fileupload: '#fileupload'
+        fileupload: '#fileupload',
+        chart: '.chart'
     }
 };
 var overlay, tableHead;
@@ -198,7 +213,7 @@ function renderLearningSchedule(elem) {
 function renderChart() {
     var regex = /([\d]{4}-[\d]{2}-[\d]{2})[^\d]+([\d]{4}-[\d]{2}-[\d]{2})/;
 
-    $('.chart').each(function () {
+    $(global.dom.chart).each(function () {
         var match = $(this).parent().parent().find('td:eq(4)').text().trim().match(regex);
         if (match) {
             if (!global.startTime || global.startTime.getTime() > new Date(match[1]).getTime())
@@ -215,7 +230,7 @@ function renderChart() {
     global.endTime.setDate(1);
     global.endTime = new Date(global.endTime - global.ONEDAY);
 
-    $('.chart').each(function () {
+    $(global.dom.chart).each(function () {
         var match = $(this).parent().parent().find('td:eq(4)').text().trim().match(regex);
         if (match &&
             new Date(match[1]) >= global.startTime &&
@@ -359,10 +374,10 @@ require([ 'loading', 'research-template', 'naure.chart.gantt', 'jquery.uploadify
 
     $(function () {
         global.messageElement.message();
+        $(global.dom.table).html($.render.table({head: global.schedule}));
+        initEvent();
+        uploadify();
     });
-
-    initEvent();
-    uploadify();
 });
 
 /*-------------------- 初始化 END --------------------*/

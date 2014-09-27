@@ -14,14 +14,13 @@ define(['jquery', 'jquery.template'],
             }
         });
 
-        //table
-        $.templates('table', '<table><thead></thead> <tbody></tbody></table>');
+        $.templates('table', '<table><thead><tr>' +
+            '{{props head}}' +
+            '   <th>{{>prop}}</th>' +
+            '{{/props}}' +
+            '</tr></thead><tfoot></tfoot><tbody></tbody></table>');
 
         //session
-        $.templates('sessionHead', '<tr>' +
-            '<th>application</th><th>sessionId</th>' +
-            '<th>ipAddress</th><th>timestamp</th><th>requestType</th><th>hostName</th><th>requestPath</th><th>platform</th>' +
-            '<th>cpu</th><th>user</th><th>language</th><th>userAgent</th><th>statusCode</th><th>severity</th><th>refererUrl</th><th>requestHost</th></tr>');
         $.templates('session',
                 '{{if logs}}' +
                 '   {{for logs}}' +

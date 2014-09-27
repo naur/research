@@ -15,8 +15,27 @@ var global = {
     http: null,
     message: null,
     sessionUri: '/diagnostic/session.json',
+    session: {
+        application: 'application',
+        sessionId: 'sessionId',
+        ipAddress: 'ipAddress',
+        timestamp: 'timestamp',
+        requestType: 'requestType',
+        hostName: 'hostName',
+        requestPath: 'requestPath',
+        platform: 'platform',
+        cpu: 'cpu',
+        user: 'user',
+        language: 'language',
+        userAgent: 'userAgent',
+        statusCode: 'statusCode',
+        severity: 'severity',
+        refererUrl: 'refererUrl',
+        requestHost: 'requestHost'
+    },
     dom: {
-        area: ['.row:eq(0) div', '.row:eq(0) div'],
+        table: '.row:eq(0) div',
+        message: '.row:eq(1) div',
         session: '#session',
         analysis: '#analysis'
     }
@@ -24,10 +43,9 @@ var global = {
 
 function session(self) {
     $(self).attr('disabled', true);
-    $(global.dom.area[0]).html($.render.table());
-    var thread = global.dom.area[0] + ' table thead';
-    var tbody = global.dom.area[0] + ' table tbody';
-    $(thread).html($.render.sessionHead());
+    $(global.dom.table).html($.render.table({head: global.session}));
+    var thread = global.dom.table + ' table thead';
+    var tbody = global.dom.table + ' table tbody';
     $(tbody).html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
 
     global.http.acquire({
@@ -70,7 +88,7 @@ require(['loading', 'integrate-template'], function (mod) {
 
     $(function () {
         init();
-        $(global.dom.area[1]).message();
+        $(global.dom.message).message();
     });
 });
 
