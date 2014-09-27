@@ -24,7 +24,6 @@ var global = {
         time: 'time',
         path: 'path',
         heading: 'heading',
-        comment: 'comment',
         chart: '图表',
         id: 'id',
         created: 'created',
