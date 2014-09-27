@@ -21,7 +21,7 @@ define(['jquery', 'jquery.template'],
             '</tr></thead><tfoot></tfoot><tbody></tbody></table>');
 
         $.templates('row', '<tr>' +
-            '{{props ~root}}' +
+            '{{props #data}}' +
             '   <td class="row_{{>key}}">{{>prop}}</td>' +
             '{{/props}}' +
             '</tr>');
