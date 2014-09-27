@@ -40,7 +40,7 @@ var global = {
         uploadDisplay: false
     },
     dom: {
-        table: '.row:eq(0) div',
+        container: '.row:eq(0) div',
         uploadFileBtn: '#uploadfile',
         handleBtn: '#handle',
         add: '#add',
@@ -204,6 +204,7 @@ function renderLearningSchedule(elem) {
             $(obj.context).attr('disabled', false);
             global.message.empty();
 
+            $(global.dom.container + ' table tbody').html($.render.row(obj.output.information.data));
             renderChart();
         }
     });
@@ -373,7 +374,7 @@ require([ 'loading', 'research-template', 'naure.chart.gantt', 'jquery.uploadify
 
     $(function () {
         global.messageElement.message();
-        $(global.dom.table).html($.render.table({head: global.schedule}));
+        $(global.dom.container).html($.render.table(global.schedule));
         initEvent();
         uploadify();
     });

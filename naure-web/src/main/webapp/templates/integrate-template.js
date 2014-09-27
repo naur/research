@@ -15,13 +15,13 @@ define(['jquery', 'jquery.template'],
         });
 
         $.templates('table', '<table><thead><tr>' +
-            '{{props head}}' +
+            '{{props ~root}}' +
             '   <th class="head_{{>key}}">{{>prop}}</th>' +
             '{{/props}}' +
             '</tr></thead><tfoot></tfoot><tbody></tbody></table>');
 
         $.templates('row', '<tr>' +
-            '{{props row}}' +
+            '{{props ~root}}' +
             '   <td class="row_{{>key}}">{{>prop}}</td>' +
             '{{/props}}' +
             '</tr>');

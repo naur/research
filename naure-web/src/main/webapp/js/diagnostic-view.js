@@ -43,7 +43,7 @@ var global = {
 
 function session(self) {
     $(self).attr('disabled', true);
-    $(global.dom.table).html($.render.table({head: global.session}));
+    $(global.dom.table).html($.render.table(global.session));
     var thread = global.dom.table + ' table thead';
     var tbody = global.dom.table + ' table tbody';
     $(tbody).html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
