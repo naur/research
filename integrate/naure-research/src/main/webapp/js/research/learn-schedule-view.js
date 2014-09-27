@@ -204,6 +204,7 @@ function renderLearningSchedule(elem) {
             $(obj.context).attr('disabled', false);
             global.message.empty();
 
+            //把结果集格式化，使顺序与 table 标题一致
             var result = obj.output.information.data;
             if (result.length <= 0) return;
             var list = [];
@@ -344,6 +345,9 @@ function initEvent() {
     });
 
     $(document).on('dblclick', 'table tbody tr td', function () {
+        //TODO
+        return;
+
         if ($(this).find('input').size() > 0) {
             $(this).html($(this).find('input').val().trim());
 
