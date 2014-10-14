@@ -7,8 +7,10 @@ package org.naure.research.services;
 
 import org.naure.repositories.StockRepository;
 import org.naure.repositories.models.finance.Stock;
+import org.naure.repositories.models.finance.StockQuote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,14 @@ public class StockService {
 
     public boolean edit(Stock stock) throws Exception {
         boolean result = false;
+
+        //补充完整信息
+        if (!CollectionUtils.isEmpty(stock.getQuotes())) {
+            for (StockQuote quote : stock.getQuotes()) {
+                quote.setCode(stock.getCode());
+                quote.setType(stock.getType());
+            }
+        }
 
         if (stockRepository.exists(stock)) {
             result = stockRepository.update(stock);

@@ -98,8 +98,6 @@ public class StockRepository extends Repository {
 
         //【Add 子文档】
         for (StockQuote quote : stock.getQuotes()) {
-            if (null == quote.getCode()) quote.setCode(stock.getCode());
-            if (null == quote.getType()) quote.setType(stock.getType());
             if (result && !stockQuoteRepository.exists(quote)) {
                 result = stockQuoteRepository.add(quote);
             }
@@ -131,8 +129,6 @@ public class StockRepository extends Repository {
         //【Update 子文档】
         for (StockQuote quote : stock.getQuotes()) {
             if (!result) break;
-            quote.setCode(stock.getCode());
-            quote.setType(stock.getType());
             result = stockQuoteRepository.update(quote);
         }
         return result;

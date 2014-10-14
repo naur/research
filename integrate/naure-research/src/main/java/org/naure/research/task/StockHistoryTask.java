@@ -7,9 +7,7 @@ package org.naure.research.task;
 
 import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;
-import org.apache.commons.lang3.time.DateUtils;
 import org.naure.common.patterns.Func;
-import org.naure.common.patterns.exception.Action;
 import org.naure.common.util.DateUtil;
 import org.naure.common.util.EnumerableUtils;
 import org.naure.integrate.services.core.scheduler.MyTaskExecutionContext;
@@ -25,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
