@@ -97,7 +97,7 @@ function start() {
 
 function run(self) {
     //解析参数: 格式【start, end, 000001】，如果没有 000001 ,那么遍历配置文件里的所有的
-    var stock = $(self).parent().prev().val().replace(/\s/, '').split(',');
+    var stock = $(self).parent().prev().val().replace(/\s/g, '').split(',');
     if (stock.length < 2) {
         global.message.show({content: 'Task Params Error: ' + stock.toString(), clear: true, color: 'red'});
         return;
@@ -105,7 +105,7 @@ function run(self) {
 
     global.message.show({content: 'Task Running......', clear: true});
     global.http.acquire({
-        //TODO uri: global.utility.format(global.runUri,),
+        uri: global.utility.format(global.runUri, $(self).parents('tr').children('.row_name').text()),
         data: {
             start: stock[0],
             end: stock[1],
