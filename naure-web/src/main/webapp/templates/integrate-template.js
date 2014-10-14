@@ -14,6 +14,22 @@ define(['jquery', 'jquery.template'],
             }
         });
 
+        $.views.toRow = function (rows, properties) {
+            var result = [];
+            if (rows || rows.length <= 0) return result;
+
+            for (var row in rows) {
+                if (!rows.hasOwnProperty(row)) continue;
+                var tmp = {};
+                for (var prop in properties) {
+                    tmp[prop] = result[row][prop];
+                }
+                result.push(tmp);
+            }
+
+            return result;
+        };
+
         $.templates('table', '<table><thead><tr>' +
             '{{props ~root}}' +
             '   <th class="head_{{>key}}">{{>prop}}</th>' +

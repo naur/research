@@ -15,8 +15,20 @@ var global = {
     searchUri: '/scheduler/task.json',
     startUri: '/scheduler/task/start.json',
     runUri: '/scheduler/task/run/{0}.json',
+    table: {
+        index: 'INDEX',
+        name: 'NAME',
+        cron: 'CRON',
+        task: 'TASK',
+        recent: 'RECENT',
+        startTime: 'STARTTIME',
+        completed: 'COMPLETED',
+        message: 'MESSAGE',
+        duration: 'DURATION',
+        options: 'OPTIONS'
+    },
     dom: {
-        table: '.row:eq(0) div:eq(0)',
+        container: '.row:eq(0) div:eq(0)',
         search: '#search',
         start: '#start',
         run: '.run'
@@ -28,8 +40,7 @@ var global = {
 /*-------------------- 函数 START --------------------*/
 
 function search() {
-    var thread = global.dom.table + ' table thead';
-    var tbody = global.dom.table + ' table tbody';
+    var tbody = global.dom.container + ' table tbody';
 
     $(tbody).html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
     global.http.acquire({
@@ -39,7 +50,8 @@ function search() {
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
-                $(tbody).html($.render.scheduler(obj.output.information.data));
+                //$(tbody).html($.render.scheduler(obj.output.information.data));
+                $(tbody).html($.render.row($.views.toRow(obj.output.information.data, global.table)));
                 $(global.dom.run).parent().prev().val(new Date().format('yyyy-MM-dd') + ', ' + new Date().format('yyyy-MM-dd') + ', ');
             } else {
                 $(tbody).html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
@@ -75,7 +87,7 @@ function run(self) {
 
     global.message.show({content: 'Task Running......', clear: true});
     global.http.acquire({
-        uri: global.utility.format(global.runUri, ),
+        uri: global.utility.format(global.runUri,),
         data: {
             start: stock[0],
             end: stock[1],
@@ -95,8 +107,8 @@ function run(self) {
 }
 
 function initContainerHead() {
-    $(global.dom.container + "thead").html($.render.schedulerHead());
-    $(global.dom.table).html($.render.table(global.session));
+    //$(global.dom.container + "thead").html($.render.schedulerHead());
+    $(global.dom.container).html($.render.table(global.table));
 }
 
 /*-------------------- 函数 END ----------------------*/
