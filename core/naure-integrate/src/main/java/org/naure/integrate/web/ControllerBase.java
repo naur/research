@@ -7,7 +7,10 @@ import org.naure.common.patterns.exception.Sub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,6 +30,7 @@ public abstract class ControllerBase {
 
     /**
      * Inout: Information, Output: Func<Information, Information>
+     *
      * @param information
      * @param func
      * @return
@@ -43,6 +47,7 @@ public abstract class ControllerBase {
 
     /**
      * Inout: Map, Output: Func<Map, Information>
+     *
      * @param params
      * @param func
      * @return
@@ -62,6 +67,7 @@ public abstract class ControllerBase {
 
     /**
      * Inout: Non, Output: Sub<Information>
+     *
      * @param func
      * @return
      */
@@ -124,6 +130,7 @@ public abstract class ControllerBase {
 
     /**
      * 解析 Map 参数
+     *
      * @param map
      * @param key
      * @return
@@ -133,6 +140,16 @@ public abstract class ControllerBase {
         if (map.containsKey(key) && (array = (String[]) map.get(key)) != null && array.length > 0)
             return array[0];
         return null;
+    }
+
+    protected Map<String, Object> getParameterMap(ServletRequest request) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        Enumeration paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String paramName = (String) paramNames.nextElement();
+            params.put(paramName, request.getParameter(paramName));
+        }
+        return params;
     }
 
     protected String viewPath = "";

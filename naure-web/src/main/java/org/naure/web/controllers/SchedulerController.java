@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +72,7 @@ public class SchedulerController extends ControllerBase {
             @PathVariable final String name,
             ServletRequest request) {
         //获取定时任务参数
-        final Map params = request.getParameterMap();
+        final Map params = getParameterMap(request);
 
         return handler(new Information<List<Scheduler>>(), new Func<Information, Information>() {
             @Override
