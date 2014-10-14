@@ -1,9 +1,29 @@
 /**
- * Created by Administrator on 3/8/14.
+ * Script:
+ *              贾睿之
+ * Email:
+ *              jiaruizhi@360buy.com
+ * Date:
+ *              7/25/12 5:11 PM
+ * Description:
+ *              NAURE Analytics Service
+ * Usage:
+ *
+ *      STEP1: global.table: {index: 'INDEX',name: 'NAME'};
+ *      STEP2: $(global.dom.container).html($.render.table(global.table));
+ *      STEP3: $(global.dom.container + ' table tbody').html(
+ *                      $.render.row(
+ *                              $.views.toRow(obj.output.information.data, global.table)
+ *                      )
+ *                  );
+ *      $('.link_className').flyout({prompt: '采购单号'});
  */
 
 define(['jquery', 'jquery.template'],
     function ($) {
+
+        var DOT = ".";
+
         //TODO http://msdn.microsoft.com/zh-cn/magazine/hh975379.aspx
         //TODO http://msdn.microsoft.com/zh-cn/magazine/hh882454.aspx
         //转换器
@@ -14,15 +34,42 @@ define(['jquery', 'jquery.template'],
             }
         });
 
-        $.views.toRow = function (rows, properties) {
+        $.views.toRow = function (properties, rows, parse) {
+            parse = $.extend({
+                before: null,
+                handle: function (data, prop, result) {
+                    var value = null;
+                    //当包含[.]时默认认为是子对象的属性
+                    if (prop.indexOf(DOT) == -1) {
+                        value = data[prop];
+                    } else {
+                        var props = prop.split(DOT);
+                        if (data[props[0]]) {
+                            value = data[props[0]][props[1]];
+                        }
+                    }
+                    result[prop] = value;
+                    return true;
+                },
+                after: null
+            }, parse);
+
             var result = [];
-            if (rows || rows.length <= 0) return result;
+            if (!rows || rows.length <= 0) return result;
 
             for (var row in rows) {
                 if (!rows.hasOwnProperty(row)) continue;
-                var tmp = {};
+                var tmp = {}, isBreak;
+                tmp['index'] = parseInt(row) + 1;
                 for (var prop in properties) {
-                    tmp[prop] = result[row][prop];
+                    if (!properties.hasOwnProperty(prop)) continue;
+                    isBreak = false;
+                    if (parse.before)
+                        isBreak = parse.before(rows[row], prop, tmp);
+                    if (parse.handle && !isBreak)
+                        isBreak = parse.handle(rows[row], prop, tmp);
+                    if (parse.after && !isBreak)
+                        parse.after(rows[row], prop, tmp);
                 }
                 result.push(tmp);
             }
@@ -30,7 +77,7 @@ define(['jquery', 'jquery.template'],
             return result;
         };
 
-        $.templates('table', '<table><thead><tr>' +
+        $.templates('table', '<table><thead><tr><th class="head_index">INDEX</th>' +
             '{{props ~root}}' +
             '   <th class="head_{{>key}}">{{>prop}}</th>' +
             '{{/props}}' +

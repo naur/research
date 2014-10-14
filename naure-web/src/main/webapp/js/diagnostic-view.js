@@ -34,7 +34,7 @@ var global = {
         requestHost: 'requestHost'
     },
     dom: {
-        table: '.row:eq(0) div',
+        container: '.row:eq(0) div',
         message: '.row:eq(1) div',
         session: '#session',
         analysis: '#analysis'
@@ -43,8 +43,8 @@ var global = {
 
 function session(self) {
     $(self).attr('disabled', true);
-    $(global.dom.table).html($.render.table(global.session));
-    var tbody = global.dom.table + ' table tbody';
+    $(global.dom.container).html($.render.table(global.session));
+    var tbody = global.dom.container + ' table tbody';
     $(tbody).html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
 
     global.http.acquire({

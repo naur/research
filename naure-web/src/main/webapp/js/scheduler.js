@@ -16,7 +16,6 @@ var global = {
     startUri: '/scheduler/task/start.json',
     runUri: '/scheduler/task/run/{0}.json',
     table: {
-        index: 'INDEX',
         name: 'NAME',
         cron: 'CRON',
         task: 'TASK',
@@ -51,7 +50,27 @@ function search() {
         success: function (obj) {
             if (0 == obj.output.information.level) {
                 //$(tbody).html($.render.scheduler(obj.output.information.data));
-                $(tbody).html($.render.row($.views.toRow(obj.output.information.data, global.table)));
+                $(tbody).html($.render.row(
+                        $.views.toRow(global.table, obj.output.information.data), {before: function (data, prop, result) {
+                            if ('options' == prop) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }})
+                );
+                $(tbody + " .row_options").html(
+                        '<div class="row">' +
+                        '        <div class="col-md-10 col-md-offset-1">' +
+                        '            <div class="input-group input-group-sm">' +
+                        '                <input type="text"  class="form-control" />' +
+                        '           &nbsp;&nbsp;' +
+                        '                <span class="input-group-btn">' +
+                        '                    <button class="btn btn-default run"  type="button">RUN!</button>' +
+                        '                </span>' +
+                        '          </div>' +
+                        '        </div>' +
+                        '    </div>');
                 $(global.dom.run).parent().prev().val(new Date().format('yyyy-MM-dd') + ', ' + new Date().format('yyyy-MM-dd') + ', ');
             } else {
                 $(tbody).html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
@@ -87,7 +106,7 @@ function run(self) {
 
     global.message.show({content: 'Task Running......', clear: true});
     global.http.acquire({
-        uri: global.utility.format(global.runUri,),
+        //TODO uri: global.utility.format(global.runUri,),
         data: {
             start: stock[0],
             end: stock[1],
@@ -107,7 +126,6 @@ function run(self) {
 }
 
 function initContainerHead() {
-    //$(global.dom.container + "thead").html($.render.schedulerHead());
     $(global.dom.container).html($.render.table(global.table));
 }
 
