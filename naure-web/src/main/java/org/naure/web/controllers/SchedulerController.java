@@ -74,6 +74,7 @@ public class SchedulerController extends ControllerBase {
         return handler(new Information<List<Scheduler>>(), new Func<Information, Information>() {
             @Override
             public Information execute(Information information) throws Exception {
+                LOGGER.info("Task: " + name + " run, params=" + params);
                 schedulerService.run(name, params);
                 information.setLevel(InformationLevel.SUCCESS.value());
                 return information;

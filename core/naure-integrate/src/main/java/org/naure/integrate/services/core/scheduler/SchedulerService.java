@@ -148,6 +148,7 @@ public class SchedulerService {
                             //解析配置文件配置的 task 对应的 bean
                             (Task) applicationContext.getBean(item.getTask().toString())
                     ));
+            LOGGER.info("Task: " + item.getTask() + " scheduling.");
         }
         attachListener(taskSchedulerListener);
     }

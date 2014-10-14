@@ -4,6 +4,8 @@ import org.naure.common.entities.Information;
 import org.naure.common.entities.InformationLevel;
 import org.naure.common.patterns.exception.Func;
 import org.naure.common.patterns.exception.Sub;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -16,6 +18,8 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class ControllerBase {
+
+    protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     public String view(String name) {
         return viewPath + "/" + name;

@@ -32,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -56,28 +57,33 @@ public class StockHistoryTask extends Task implements Serializable {
     @Autowired
     private SecurityConfiguration securityConfiguration;
 
+    private static final Map<String, String> stockTypeMap = new HashMap<String, String>() {{
+        put("0", "SZ");
+        put("3", "SZ");
+        put("6", "SH");
+    }};
 
     @Override
     public void execute(TaskExecutionContext context) throws RuntimeException {
         //默认当天的前一个工作日
-        Date startDate = DateUtil.getPrevWeekDay(Calendar.getInstance().getTime());
-        Date endDate = startDate;
+        Date start = DateUtil.getPrevWeekDay(Calendar.getInstance().getTime());
+        Date end = start;
         StockRange stockRange = null;
-        //TODO 解析 params, 包含【startDate, endDate, stock】
+        //TODO 解析 params, 包含【start, end, stock】，stock 不包含sh,sz
         if (context instanceof MyTaskExecutionContext) {
             Map params = ((MyTaskExecutionContext) context).getParams();
             try {
-                if (params.containsKey("startDate")) {
-                    startDate = dateFormat.parse(params.get("startDate").toString());
+                if (params.containsKey("start")) {
+                    start = dateFormat.parse(params.get("start").toString());
                 }
-                if (params.containsKey("endDate")) {
-                    endDate = dateFormat.parse(params.get("endDate").toString());
+                if (params.containsKey("end")) {
+                    end = dateFormat.parse(params.get("end").toString());
                 }
-                //TODO 暂时只支持指定单独一个 stock: SH000711
+                //TODO 暂时只支持指定单独一个 stock: 000711
                 if (params.containsKey("stock")) {
                     String stock = params.get("stock").toString();
-                    String stockType = stock.substring(0, 2).toUpperCase();
-                    int stockCode = Integer.parseInt(stock.substring(2));
+                    String stockType = stockTypeMap.get(stock.substring(0, 1));
+                    int stockCode = Integer.parseInt(stock);
                     stockRange = new StockRange(StockType.valueOf(stockType), stockCode, stockCode);
                 }
             } catch (ParseException e) {
@@ -87,11 +93,11 @@ public class StockHistoryTask extends Task implements Serializable {
 
         if (null != stockRange) {
             //页面传值
-            acquireStock(stockRange, startDate, endDate);
+            acquireStock(stockRange, start, end);
         } else {
             //定时任务
             for (StockRange range : securityConfiguration.getStockRanges()) {
-                acquireStock(range, startDate, endDate);
+                acquireStock(range, start, end);
             }
         }
     }
