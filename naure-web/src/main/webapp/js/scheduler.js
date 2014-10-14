@@ -16,7 +16,7 @@ var global = {
     startUri: '/scheduler/task/start.json',
     runUri: '/scheduler/task/run/{0}.json',
     dom: {
-        container: '#scheduler-container ',
+        table: '.row:eq(0) div:eq(0)',
         search: '#search',
         start: '#start',
         run: '.run'
@@ -28,18 +28,21 @@ var global = {
 /*-------------------- 函数 START --------------------*/
 
 function search() {
-    $(global.dom.container + "tbody").html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
+    var thread = global.dom.table + ' table thead';
+    var tbody = global.dom.table + ' table tbody';
+
+    $(tbody).html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
     global.http.acquire({
         uri: global.searchUri,
         error: function (err) {
-            $(global.dom.container + "tbody").html(global.utility.format(global.message.tableTemplate, err));
+            $(tbody).html(global.utility.format(global.message.tableTemplate, err));
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
-                $(global.dom.container + "tbody").html($.render.scheduler(obj.output.information.data));
+                $(tbody).html($.render.scheduler(obj.output.information.data));
                 $(global.dom.run).parent().prev().val(new Date().format('yyyy-MM-dd') + ', ' + new Date().format('yyyy-MM-dd') + ', ');
             } else {
-                $(global.dom.container + "tbody").html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
+                $(tbody).html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
             }
         }
     });
@@ -72,7 +75,7 @@ function run(self) {
 
     global.message.show({content: 'Task Running......', clear: true});
     global.http.acquire({
-        uri: global.runUri,
+        uri: global.utility.format(global.runUri, ),
         data: {
             start: stock[0],
             end: stock[1],
@@ -93,6 +96,7 @@ function run(self) {
 
 function initContainerHead() {
     $(global.dom.container + "thead").html($.render.schedulerHead());
+    $(global.dom.table).html($.render.table(global.session));
 }
 
 /*-------------------- 函数 END ----------------------*/

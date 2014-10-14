@@ -59,7 +59,7 @@ define(['jquery', 'jquery.template'],
             '   <div class="row">' +
             '        <div class="col-md-10 col-md-offset-1">' +
             '            <div class="input-group input-group-sm">' +
-            '                <input type="text"  class="form-control">' +
+            '                <input type="text"  class="form-control" />' +
             '           &nbsp;&nbsp;' +
             '                <span class="input-group-btn">' +
             '                    <button class="btn btn-default run"  type="button">RUN!</button>' +
