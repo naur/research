@@ -49,7 +49,6 @@ function search() {
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
-                //$(tbody).html($.render.scheduler(obj.output.information.data));
                 $(tbody).html($.render.row(
                         $.views.toRow(global.table, obj.output.information.data), {before: function (data, prop, result) {
                             if ('options' == prop) {
