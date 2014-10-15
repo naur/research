@@ -5,6 +5,7 @@
  */
 package org.naure.research.task;
 
+import org.apache.commons.lang3.StringUtils;
 import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.naure.common.patterns.Func;
@@ -79,9 +80,11 @@ public class StockHistoryTask extends Task implements Serializable {
                 //TODO 暂时只支持指定单独一个 stock: 000711
                 if (params.containsKey("stock")) {
                     String stock = params.get("stock").toString();
-                    String stockType = stockTypeMap.get(stock.substring(0, 1));
-                    int stockCode = Integer.parseInt(stock);
-                    stockRange = new StockRange(StockType.valueOf(stockType), stockCode, stockCode);
+                    if (StringUtils.isNotEmpty(stock)) {
+                        String stockType = stockTypeMap.get(stock.substring(0, 1));
+                        int stockCode = Integer.parseInt(stock);
+                        stockRange = new StockRange(StockType.valueOf(stockType), stockCode, stockCode);
+                    }
                 }
             } catch (ParseException e) {
                 LOGGER.error("Task: StockCapitalTask", e);

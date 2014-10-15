@@ -97,7 +97,7 @@ function start() {
 
 function run(self) {
     //解析参数: 格式【start, end, 000001】，如果没有 000001 ,那么遍历配置文件里的所有的
-    var stock = $(self).parent().prev().val().replace(/\s/g, '').split(',');
+    var stock = $(self).parent().prev().val().replace(/\s/g, '').replace(/,$/, '').split(',');
     if (stock.length < 2) {
         global.message.show({content: 'Task Params Error: ' + stock.toString(), clear: true, color: 'red'});
         return;
