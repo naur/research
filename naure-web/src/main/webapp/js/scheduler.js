@@ -50,26 +50,25 @@ function search() {
         success: function (obj) {
             if (0 == obj.output.information.level) {
                 $(tbody).html($.render.row(
-                        $.views.toRow(global.table, obj.output.information.data), {before: function (data, prop, result) {
-                            if ('options' == prop) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }})
-                );
-                $(tbody + " .row_options").html(
-                        '<div class="row">' +
-                        '        <div class="col-md-10 col-md-offset-1">' +
-                        '            <div class="input-group input-group-sm">' +
-                        '                <input type="text"  class="form-control" />' +
-                        '           &nbsp;&nbsp;' +
-                        '                <span class="input-group-btn">' +
-                        '                    <button class="btn btn-default run"  type="button">RUN!</button>' +
-                        '                </span>' +
-                        '          </div>' +
-                        '        </div>' +
-                        '    </div>');
+                    $.views.toRow(global.table, obj.output.information.data, {before: function (data, prop, result) {
+                        if ('options' == prop) {
+                            result[prop] = '<div class="row">' +
+                                '        <div class="col-md-10 col-md-offset-1">' +
+                                '            <div class="input-group input-group-sm">' +
+                                '                <input type="text"  class="form-control" />' +
+                                '           &nbsp;&nbsp;' +
+                                '                <span class="input-group-btn">' +
+                                '                    <button class="btn btn-default run"  type="button">RUN!</button>' +
+                                '                </span>' +
+                                '          </div>' +
+                                '        </div>' +
+                                '    </div>';
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }})
+                ));
                 $(global.dom.run).parent().prev().val(new Date().format('yyyy-MM-dd') + ', ' + new Date().format('yyyy-MM-dd') + ', ');
             } else {
                 $(tbody).html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));

@@ -17,7 +17,7 @@ var global = {
     startTime: null,
     endTime: null,
     newFile: null,
-    schedule: {
+    table: {
         number: 'number',
         pages: 'pages',
         days: 'days',
@@ -204,27 +204,20 @@ function renderLearningSchedule(elem) {
             $(obj.context).attr('disabled', false);
             global.message.empty();
 
-            //把结果集格式化，使顺序与 table 标题一致
-            var result = obj.output.information.data;
-            if (result.length <= 0) return;
-            var list = [];
-            for (var i in result) {
-                if (!result.hasOwnProperty(i)) continue;
-                var tmp = {};
-                for (var j in global.schedule) {
-                    if (!global.schedule.hasOwnProperty(j)) continue;
-                    if ('chart' == j)
-                        tmp[j] = '<canvas class="chart"></canvas>';
-                    else if ('created' == j) {
-                        tmp[j] = new Date(result[i][j]).format('yyyy-MM-dd HH:mm:ss');
+            $(global.dom.container + ' table tbody').html($.render.row(
+                $.views.toRow(global.table, obj.output.information.data, {before: function (data, prop, result) {
+                    if ('chart' == prop) {
+                        result['chart'] = '<canvas class="chart"></canvas>';
+                        return true;
+                    } else if ('created' == prop) {
+                        result[prop] = new Date(data[prop]).format('yyyy-MM-dd HH:mm:ss')
+                        return true;
+                    } else {
+                        return false;
                     }
-                    else
-                        tmp[j] = result[i][j];
-                }
-                list.push(tmp);
-            }
+                }})
+            ));
 
-            $(global.dom.container + ' table tbody').html($.render.row(list));
             renderChart();
         }
     });
@@ -397,7 +390,7 @@ require([ 'loading', 'research-template', 'naure.chart.gantt', 'jquery.uploadify
 
     $(function () {
         global.messageElement.message();
-        $(global.dom.container).html($.render.table(global.schedule));
+        $(global.dom.container).html($.render.table(global.table));
         initEvent();
         uploadify();
     });
