@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Script:
  *              贾睿之
  * Email:
@@ -18,7 +18,6 @@ var global = {
     endTime: null,
     newFile: null,
     table: {
-        number: 'number',
         pages: 'pages',
         days: 'days',
         time: 'time',
