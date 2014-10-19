@@ -165,9 +165,15 @@ function handleFile() {
                         timeStart = new Date(schedule.time);
                     }
                     if (timeStart && !isNaN(parseInt(schedule.days))) {
-                        timeEnd = new Date(timeStart.getTime() + (parseInt(schedule.days) - 1) * global.ONEDAY)
+			if (parseInt(schedule.days) > 0) {
+                            timeEnd = new Date(timeStart.getTime() + (parseInt(schedule.days) - 1) * global.ONEDAY);
+			} else {
+			    timeEnd = timeStart;
+			}
                         schedule.time = timeStart.format('yyyy-MM-dd') + " -> " + timeEnd.format('yyyy-MM-dd');
-                        timeStart = new Date(timeEnd.getTime() + global.ONEDAY);
+			if (parseInt(schedule.days) > 0) {
+                            timeStart = new Date(timeEnd.getTime() + global.ONEDAY);
+			}
                     }
 
                     AddLearningSchedule(schedule)
@@ -226,7 +232,7 @@ function renderChart() {
     var regex = /([\d]{4}-[\d]{2}-[\d]{2})[^\d]+([\d]{4}-[\d]{2}-[\d]{2})/;
 
     $(global.dom.chart).each(function () {
-        var match = $(this).parent().parent().find('td:eq(4)').text().trim().match(regex);
+        var match = $(this).parent().parent().find('td:eq(3)').text().trim().match(regex);
         if (match) {
             if (!global.startTime || global.startTime.getTime() > new Date(match[1]).getTime())
                 global.startTime = new Date(match[1]);
@@ -243,7 +249,7 @@ function renderChart() {
     global.endTime = new Date(global.endTime - global.ONEDAY);
 
     $(global.dom.chart).each(function () {
-        var match = $(this).parent().parent().find('td:eq(4)').text().trim().match(regex);
+        var match = $(this).parent().parent().find('td:eq(3)').text().trim().match(regex);
         if (match &&
             new Date(match[1]) >= global.startTime &&
             new Date(match[1]) <= global.endTime &&
