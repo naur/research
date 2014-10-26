@@ -12,6 +12,7 @@ import org.naure.research.config.SecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.castor.CastorMarshaller;
 import org.springframework.stereotype.Service;
+import org.springframework.util.PatternMatchUtils;
 
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
@@ -20,6 +21,8 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <pre>
@@ -70,13 +73,37 @@ public class StockWebService {
      * @param stock [sz300197]
      */
     public Stock getCapital(String stock) throws IOException {
-        String result = RequestClient.getInstance().get(
+        String data = RequestClient.getInstance().get(
                 MessageFormat.format(securityConfiguration.stockCapitalUri, stock)
         );
-        StreamSource stream = new StreamSource(result);
-        castorMarshaller.unmarshal(stream);
 
-        return null;
+        Stock result = null;
+        Double totalCapital = null;
+        Double currCapital = null;
+
+        //从数据里提取提取[总股本]和[流通股本]
+        //格式：
+        //      group0 = totalcapital = 16089.84; //×Ü¹É±¾\nvar currcapital = 5089.91;
+        //      group1 = 16089.84
+        //      group2 = .84
+        //      group3 = 5089.91
+        //      group4 = .91
+        Pattern p = Pattern.compile("totalcapital\\s=\\s(\\d+(\\D\\d+)?);[\\s\\S]+currcapital\\s=\\s(\\d+(\\D\\d+)?);");
+        Matcher m = p.matcher(data);
+        while (m.find()) {
+            totalCapital = Double.parseDouble(m.group(1));
+            currCapital = Double.parseDouble(m.group(3));
+        }
+
+        if (null != totalCapital && null != currCapital) {
+            result = new Stock();
+            result.setType(stock.substring(0, 2).toUpperCase());
+            result.setCode(stock.substring(2));
+            result.setTotalCapital(totalCapital);
+            result.setCurrCapital(currCapital);
+        }
+
+        return result;
     }
 
     /**

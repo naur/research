@@ -55,12 +55,6 @@ public class StockHistoryTask extends Task implements Serializable {
     @Autowired
     private SecurityConfiguration securityConfiguration;
 
-    private static final Map<String, String> stockTypeMap = new HashMap<String, String>() {{
-        put("0", "SZ");
-        put("3", "SZ");
-        put("6", "SH");
-    }};
-
     @Override
     public void execute(TaskExecutionContext context) throws RuntimeException {
         //默认当天的前一个工作日
@@ -81,7 +75,7 @@ public class StockHistoryTask extends Task implements Serializable {
                 if (params.containsKey("stock")) {
                     String stock = params.get("stock").toString();
                     if (StringUtils.isNotEmpty(stock)) {
-                        String stockType = stockTypeMap.get(stock.substring(0, 1));
+                        String stockType = securityConfiguration.stockTypePrefix.get(stock.substring(0, 1));
                         int stockCode = Integer.parseInt(stock);
                         stockRange = new StockRange(StockType.valueOf(stockType), stockCode, stockCode);
                     }

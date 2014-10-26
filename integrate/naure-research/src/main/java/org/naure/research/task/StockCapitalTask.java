@@ -59,12 +59,12 @@ public class StockCapitalTask extends Task implements Serializable {
                 }
 
                 try {
-                    stock = stockWebService.getHistory(id, date);
+                    stock = stockWebService.getCapital(id);
                     //验证
-                    if (!CollectionUtils.isEmpty(stock.getQuotes())) {
+                    if (null != stock) {
                         stockService.edit(stock);
                     } else {
-                        LOGGER.info("Stock: " + id + ", Quotes: NULL");
+                        LOGGER.info("Stock: " + id + ", NULL");
                     }
 
                 } catch (Exception e) {
