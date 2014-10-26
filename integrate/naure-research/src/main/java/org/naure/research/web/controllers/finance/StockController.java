@@ -50,15 +50,13 @@ public class StockController extends ControllerBase {
 
     @RequestMapping("/{type}/{code}/{start}/{end}")
     public Information query(@PathVariable final String type, @PathVariable final String code, @PathVariable final Date start, @PathVariable final Date end) {
-        final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("type", type);
         //TODO 参数验证
         return handler(new HashMap<String, Object>() {{
             put("type", type);
             put("code", code);
             put("quotes.date", new Tree(Type.Between)
-                    .setLeft(new Tree(start))
-                    .setRight(new Tree(end)));
+                    .setLeft(new Tree<Date>(start))
+                    .setRight(new Tree<Date>(end)));
         }}, new Func<Map, Information>() {
             @Override
             public Information execute(Map map) throws Exception {
