@@ -133,7 +133,9 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     //默认 add 天数
                     if (!add || 'day' == add)
                         time1.setDate(time1.getDate() + 1);
-                    else if ('month' == add) {
+                    else if ('week' == add) {
+                        time1.setDate(time1.getDate() + 7);
+                    } else if ('month' == add) {
                         time1.setDate(1);
                         time1.setMonth(time1.getMonth() + 1);
                     }
