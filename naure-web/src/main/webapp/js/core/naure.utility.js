@@ -301,7 +301,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     num = num.replace(re, "$1,$2");
                 num = num.replace(/,(\d\d)$/, ".$1");
                 //"￥"
-                return  (prefix ? prefix : "") + num.replace(/^\./, "0.")
+                return (prefix ? prefix : "") + num.replace(/^\./, "0.")
             },
 
             //----- TODO TR 状态改变事件 , 【过时】，通过CSS 来控制  -----------------------------------------------//
@@ -422,7 +422,8 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     if (parameters.handler != null) {
                         parameters.handler(newPageValue);
                     }
-                }});
+                }
+            });
         };
     })(jQuery);
 
@@ -520,6 +521,43 @@ define(['jquery', 'naure'], function ($, NAURE) {
             }
         }
         return format;
+    };
+
+    Date.prototype.getWeek = function (firstDayOfWeek) {
+        var dayMilSec = 24 * 60 * 60 * 1000;
+        var weekMilSec = 7 * dayMilSec;
+        if (!firstDayOfWeek) firstDayOfWeek = 1;
+
+        //去掉当前天的十分秒
+        var currDay = new Date(this.getTime());
+        currDay.setHours(0, 0, 0, 0);
+
+        //计算当前周的第1天和第7天
+        var weekStart, weekEnd, interval;
+        if (firstDayOfWeek <= currDay.getDay()) {
+            interval = currDay.getDay() - firstDayOfWeek;
+        } else {
+            interval = 7 - (firstDayOfWeek - currDay.getDay());
+        }
+        weekStart = new Date(currDay.getTime() - interval * dayMilSec);
+        weekEnd = new Date(weekStart.getTime() + weekMilSec - dayMilSec);
+
+        //计算当年的第一周第1天和第7天
+        var yearEnd, yearStart = new Date(weekEnd.getFullYear() + "-01-01T00:00:00+08:00");
+        if (firstDayOfWeek <= yearStart.getDay()) {
+            interval = yearStart.getDay() - firstDayOfWeek;
+        } else {
+            interval = 7 - (firstDayOfWeek - yearStart.getDay());
+        }
+        yearStart = new Date(yearStart.getTime() - interval * dayMilSec);
+        yearEnd = new Date(yearStart.getTime() + weekMilSec - dayMilSec);
+
+        return {
+            year: weekEnd.getFullYear(),
+            week: Math.abs((weekEnd.getTime() - yearEnd.getTime()) / weekMilSec) + 1,
+            start: weekStart,
+            end: weekEnd
+        };
     };
 
 //----- TABLE 列隐藏 | 显示 -----------------------------------------------------//

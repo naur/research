@@ -91,7 +91,7 @@ require.config({
         'naure.utility': jsprefix + 'js/core/naure.utility',
         'naure.analytics': jsprefix + 'js/core/naure.analytics',
         'naure.ui': jsprefix + 'js/core/naure.ui',
-        'naure.ui.echarts': jslocalpath + 'js/core/naure.ui.echarts',
+        'naure.ui.echarts': jsprefix + 'js/core/naure.ui.echarts',
         'naure.http': jsprefix + 'js/core/naure.http',
         'naure.http.xmlhttp': jsprefix + 'js/core/naure.http.xmlhttp',
         'naure.http.ajax': jsprefix + 'js/core/naure.http.ajax',
