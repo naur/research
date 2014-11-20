@@ -234,7 +234,9 @@ define(['naure.ui', 'naure.utility'], function (NAURE) {
             echarts.parsePoints = function (params) {
                 var x;
                 x = utility.getDays(params.start, params.end, function (date) {
-                    if ("month" == params.precision)
+                    if ("week" == params.precision) {
+                        return date.getWeek(params.firstDayOfWeek).weekOfYear;
+                    } else if ("month" == params.precision)
                         return date.format('yyyy-MM');
                     else
                         return date.format('yyyy-MM-dd');

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @(#) DateUtil.java 2014-38-12
  * 
  * Copy Right@ 纽海信息技术有限公司
@@ -39,6 +39,7 @@ public class DateUtil {
 
     /**
      * 返回时间跨越的周日期
+     * 星期一为第一周的开始
      */
     public static List<WeekRange> getWeeks(Date startDate, Date endDate) {
         LinkedList<WeekRange> list = new LinkedList<WeekRange>();
@@ -58,27 +59,40 @@ public class DateUtil {
 
     /**
      * 返回时间对应的周
+     * 星期一为第一周的开始
      */
     public static WeekRange getWeek(Date focus) {
+        return getWeek(focus, Calendar.MONDAY);
+    }
+
+    /**
+     * 返回时间对应的周
+     */
+    public static WeekRange getWeek(Date focus, int firstDayOfWeek) {
         WeekRange range = new WeekRange();
 
         // 计算周的起点和终点
         Calendar gval = DateUtils.toCalendar(focus);
         Calendar start = DateUtils.truncate(gval, Calendar.DATE);
         Calendar end = DateUtils.truncate(gval, Calendar.DATE);
-        int startCutoff = Calendar.MONDAY;
-        int endCutoff = Calendar.SUNDAY;
+        int startCutoff = firstDayOfWeek;
+        int endCutoff = firstDayOfWeek + 6 - 7;
+        if (0 == endCutoff) {
+            endCutoff = 7;
+        }
+
         while (start.get(Calendar.DAY_OF_WEEK) != startCutoff) {
             start.add(Calendar.DATE, -1);
         }
         while (end.get(Calendar.DAY_OF_WEEK) != endCutoff) {
             end.add(Calendar.DATE, 1);
         }
+
         range.setStart(start.getTime());
         range.setEnd(end.getTime());
 
         // 计算年和周
-        calendarWeekFormat(end);
+        calendarWeekFormat(end, firstDayOfWeek);
         range.setYear(end.get(Calendar.YEAR));
         range.setWeek(end.get(Calendar.WEEK_OF_YEAR));
 
@@ -87,14 +101,22 @@ public class DateUtil {
 
     /**
      * 根据年，周，返回周对应的周一和周日的日期
+     * 星期一为第一周的开始
      */
     public static WeekRange getWeek(int year, int week) {
+        return getWeek(year, week, Calendar.MONDAY);
+    }
+
+    /**
+     * 根据年，周，返回周对应的周一和周日的日期
+     */
+    public static WeekRange getWeek(int year, int week, int firstDayOfWeek) {
         WeekRange weekRange = new WeekRange();
         weekRange.setYear(year);
         weekRange.setWeek(week);
 
         Calendar cal = DateUtils.truncate(Calendar.getInstance(), Calendar.DATE);
-        calendarWeekFormat(cal);
+        calendarWeekFormat(cal, firstDayOfWeek);
 
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         cal.set(Calendar.YEAR, year);
@@ -112,8 +134,8 @@ public class DateUtil {
      * 一周有7天
      * 对于夸年的周，一周的最小天数是 1
      */
-    private static void calendarWeekFormat(Calendar calendar) {
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+    private static void calendarWeekFormat(Calendar calendar, int firstDayOfWeek) {
+        calendar.setFirstDayOfWeek(firstDayOfWeek);
         calendar.setMinimalDaysInFirstWeek(1);
     }
 }

@@ -134,7 +134,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     if (!add || 'day' == add)
                         time1.setDate(time1.getDate() + 1);
                     else if ('week' == add) {
-                        time1.setDate(time1.getDate() + 7);
+                        time1.setDate(time1.getDate() + 7 - time1.getDay() + 1);
                     } else if ('month' == add) {
                         time1.setDate(1);
                         time1.setMonth(time1.getMonth() + 1);
@@ -530,7 +530,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
         var weekMilSec = 7 * dayMilSec;
         if (!firstDayOfWeek) firstDayOfWeek = 1;
 
-        //去掉当前天的十分秒
+        //去掉当天的时分秒
         var currDay = new Date(this.getTime());
         currDay.setHours(0, 0, 0, 0);
 
@@ -554,11 +554,13 @@ define(['jquery', 'naure'], function ($, NAURE) {
         yearStart = new Date(yearStart.getTime() - interval * dayMilSec);
         yearEnd = new Date(yearStart.getTime() + weekMilSec - dayMilSec);
 
+        var week = Math.abs((weekEnd.getTime() - yearEnd.getTime()) / weekMilSec) + 1;
         return {
             year: weekEnd.getFullYear(),
-            week: Math.abs((weekEnd.getTime() - yearEnd.getTime()) / weekMilSec) + 1,
+            week: week,
             start: weekStart,
-            end: weekEnd
+            end: weekEnd,
+            weekOfYear: weekEnd.getFullYear() + '_' + (week > 9 ? week : '0' + week)
         };
     };
 
