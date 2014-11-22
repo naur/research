@@ -104,9 +104,9 @@
                             stocks[codes[index]].priceLimitAmount = (stocks[codes[index]].curr - stocks[codes[index]].yclose).toFixed(3);
                             stocks[codes[index]].priceLimit = (stocks[codes[index]].priceLimitAmount / stocks[codes[index]].yclose * 100).toFixed(2) + ' %';
                             stocks[codes[index]].biddenP1 = stock[11];
-                            stocks[codes[index]].biddenV1 = parseFloat(stock[10]) / 100;  //单位：手
+                            stocks[codes[index]].biddenV1 = Math.round(parseFloat(stock[10]) / 100);  //单位：手
                             stocks[codes[index]].sellerP1 = stock[21];
-                            stocks[codes[index]].sellerV1 = parseFloat(stock[20]) / 100;  //单位：手
+                            stocks[codes[index]].sellerV1 = Math.round(parseFloat(stock[20]) / 100);  //单位：手
                             stocks[codes[index]].turnoverVol = stock[8] / 100;  //单位：手
                             stocks[codes[index]].turnoverAmt = stock[9] / 1000; //单位：万元
                         }
@@ -170,11 +170,11 @@
                         parent.find('.low').html(stockRealtime.low);
                         parent.find('.priceLimit').html(stockRealtime.priceLimit);
                         parent.find('.priceLimitAmount').html(stockRealtime.priceLimitAmount);
-                        parent.find('.bidden').html(stockRealtime.biddenP1 + '/' + stockRealtime.biddenV1.thousandsSeparator() + '-' + (stockRealtime.biddenV1 / currcapital * 100).toFixed(2));
-                        parent.find('.seller').html(stockRealtime.sellerP1 + '/' + stockRealtime.sellerV1.thousandsSeparator() + '-' + (stockRealtime.sellerV1 / currcapital * 100).toFixed(2));
+                        parent.find('.bidden').html(stockRealtime.biddenP1 + '/' + stockRealtime.biddenV1.thousandsSeparator() + '-' + (stockRealtime.biddenV1 / currcapital * 100).toFixed(3));
+                        parent.find('.seller').html(stockRealtime.sellerP1 + '/' + stockRealtime.sellerV1.thousandsSeparator() + '-' + (stockRealtime.sellerV1 / currcapital * 100).toFixed(3));
                         parent.find('.turnover').html(
                                 //stockRealtime.turnoverAmt.toFixed(2).thousandsSeparator() + '/' +
-                                stockRealtime.turnoverVol + '-' + (stockRealtime.turnoverVol / currcapital * 100).toFixed(2));
+                                stockRealtime.turnoverVol + '-' + (stockRealtime.turnoverVol / currcapital * 100).toFixed(3));
                     }
                     global.message.show({
                         content: $.format(global.messageTemplate, global.clock,
