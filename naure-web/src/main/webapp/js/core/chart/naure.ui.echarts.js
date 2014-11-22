@@ -322,6 +322,10 @@ define(['naure.ui', 'naure.utility'], function (NAURE) {
                     ]
                 };
 
+                if (axis.grid) {
+                    opt.grid = axis.grid;
+                }
+
                 return $.extend(true, {}, global.charts.options.line, opt);
             };
 
@@ -343,6 +347,7 @@ define(['naure.ui', 'naure.utility'], function (NAURE) {
                     stack: null,
                     stackPrefix: null,
                     series: [],
+                    yAxisIndex: 0,
                     itemStyle: {
                         normal: {
 //                label: {
@@ -367,28 +372,29 @@ define(['naure.ui', 'naure.utility'], function (NAURE) {
                 for (var i in opt.lines) {
                     if (!opt.lines.hasOwnProperty(i)) continue;
 
-                    var points = $.extend(true, {}, opt.points.map);
+                    //如果没有数据，就不生成点
                     if (data && data[i]) {
+                        var points = $.extend(true, {}, opt.points.map);
                         line = data[i]; //取一条线段的数据集
                         for (var j in line) {
                             if (!line.hasOwnProperty(j)) continue;
                             if (null != points[line[j].key])
                                 points[line[j].key] = line[j].value;
                         }
+
+                        series.push({
+                            name: opt.lines[i],
+                            type: opt.type,
+                            stack: opt.stack ? opt.stack + (opt.stackPrefix ? opt.stackPrefix : '') : null,
+                            //tooltip: opt.tooltip,
+                            itemStyle: opt.itemStyle,
+                            barWidth: opt.barWidth,
+                            barMaxWidth: opt.barMaxWidth,
+                            data: utility.arraySplit(points).values,
+                            yAxisIndex: opt.yAxisIndex
+                        });
                     }
-
-                    series.push({
-                        name: opt.lines[i],
-                        type: opt.type,
-                        stack: opt.stack ? opt.stack + (opt.stackPrefix ? opt.stackPrefix : '') : null,
-                        //tooltip: opt.tooltip,
-                        itemStyle: opt.itemStyle,
-                        barWidth: opt.barWidth,
-                        barMaxWidth: opt.barMaxWidth,
-                        data: utility.arraySplit(points).values
-                    });
                 }
-
                 return series;
             };
 
