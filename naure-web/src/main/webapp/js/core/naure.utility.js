@@ -294,7 +294,8 @@ define(['jquery', 'naure'], function ($, NAURE) {
 
             //千位分隔符
             thousandsSeparator: function (num, prefix) {
-                if (/[^0-9\.]/.test(num)) return "invalid value";
+                if (num instanceof Number) num = num.toString();
+                else if (/[^0-9\.]/.test(num)) return "invalid value";
                 num = num.replace(/^(\d*)$/, "$1.");
                 num = (num + "00").replace(/(\d*\.\d\d)\d*/, "$1");
                 num = num.replace(".", ",");
@@ -318,7 +319,10 @@ define(['jquery', 'naure'], function ($, NAURE) {
         };
 
         //prototype
-        String.prototype.thousandsSeparator = function (num, prefix) {
+        String.prototype.thousandsSeparator = function (prefix) {
+            return utility.thousandsSeparator(this);
+        };
+        Number.prototype.thousandsSeparator = function (prefix) {
             return utility.thousandsSeparator(this);
         };
 
