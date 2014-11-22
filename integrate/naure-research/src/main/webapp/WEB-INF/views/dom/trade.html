@@ -171,8 +171,8 @@
                         parent.find('.priceLimit').html(stockRealtime.priceLimit);
                         parent.find('.priceLimitAmount').html(stockRealtime.priceLimitAmount);
                         if (0 != currcapital) {
-                            parent.find('.bidden').html(stockRealtime.biddenP1 + '/' + stockRealtime.biddenV1.thousandsSeparator() + '-' + (stockRealtime.biddenV1 / currcapital * 100).toFixed(3));
-                            parent.find('.seller').html(stockRealtime.sellerP1 + '/' + stockRealtime.sellerV1.thousandsSeparator() + '-' + (stockRealtime.sellerV1 / currcapital * 100).toFixed(3));
+                            parent.find('.bidden').html(stockRealtime.biddenP1 + '/' + stockRealtime.biddenV1.thousandsSeparator(0) + '-' + (stockRealtime.biddenV1 / currcapital * 100).toFixed(3));
+                            parent.find('.seller').html(stockRealtime.sellerP1 + '/' + stockRealtime.sellerV1.thousandsSeparator(0) + '-' + (stockRealtime.sellerV1 / currcapital * 100).toFixed(3));
                             parent.find('.turnover').html(
                                     //stockRealtime.turnoverAmt.toFixed(2).thousandsSeparator() + '/' +
                                     stockRealtime.turnoverVol + '-' + (stockRealtime.turnoverVol / currcapital * 100).toFixed(3));

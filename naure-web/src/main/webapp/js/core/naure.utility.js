@@ -292,19 +292,21 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 });
             },
 
-            //千位分隔符
-            thousandsSeparator: function (num, prefix) {
-                if (num instanceof Number) num = num.toString();
-                else if (/[^0-9\.]/.test(num)) return "invalid value";
-                num = num.replace(/^(\d*)$/, "$1.");
-                num = (num + "00").replace(/(\d*\.\d\d)\d*/, "$1");
-                num = num.replace(".", ",");
-                var re = /(\d)(\d{3},)/;
+            //千位分隔符, 默认保留2位小数
+            thousandsSeparator: function (num, fixed, prefix) {
+                if (typeof(fixed) === "undefined") fixed = 2;
+                if (!(num instanceof Number)) {
+                    if (/[^0-9\.]/.test(num)) return "invalid value";
+                    num = parseFloat(num);
+                }
+                num = num.toFixed(fixed);
+                if (0 === fixed)
+                    num = num + '.';    //没有小数，就补全一个.
+                var re = /(\d)(\d{3}[,.])/;
                 while (re.test(num))
                     num = num.replace(re, "$1,$2");
-                num = num.replace(/,(\d\d)$/, ".$1");
                 //"￥"
-                return (prefix ? prefix : "") + num.replace(/^\./, "0.")
+                return (prefix ? prefix : "") + num.replace(/\.$/, "");
             },
 
             //----- TODO TR 状态改变事件 , 【过时】，通过CSS 来控制  -----------------------------------------------//
@@ -319,11 +321,11 @@ define(['jquery', 'naure'], function ($, NAURE) {
         };
 
         //prototype
-        String.prototype.thousandsSeparator = function (prefix) {
-            return utility.thousandsSeparator(this);
+        String.prototype.thousandsSeparator = function (fixed, prefix) {
+            return utility.thousandsSeparator(this, fixed, prefix);
         };
-        Number.prototype.thousandsSeparator = function (prefix) {
-            return utility.thousandsSeparator(this);
+        Number.prototype.thousandsSeparator = function (fixed, prefix) {
+            return utility.thousandsSeparator(this, fixed, prefix);
         };
 
         return utility;
