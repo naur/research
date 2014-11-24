@@ -137,7 +137,8 @@
                 stocksContainer: '#stocks tbody',
                 stocksHead: '#stocks thead tr',
                 stocksName: '#stocks thead tr td:first-child, #stocks tbody tr td:first-child',
-                stocks: '#stocks tbody tr'
+                stocks: '#stocks tbody tr',
+                stocksHide: '#stocks tbody tr .amount, #stocks tbody tr .latest-value, #stocks tbody tr .totalcapital, #stocks tbody tr .currcapital'
             }
         };
 
@@ -259,6 +260,11 @@
                                 $(global.dom.stocksName).css('display', 'table-cell') :
                                 $(global.dom.stocksName).css('display', 'none');
                     }
+                    if (ev.keyCode == global.utility.keyCode.D) {
+                        'none' == $(global.dom.stocksHide).css('display') ?
+                                $(global.dom.stocksHide).css('display', 'table-cell') :
+                                $(global.dom.stocksHide).css('display', 'none');
+                    }
                 });
 
                 $(global.dom.calc).on('keyup', function (event) {
@@ -278,6 +284,10 @@
             display: none;
         }
 
+        #stocks tbody tr .amount, #stocks tbody tr .latest-value, #stocks tbody tr .totalcapital, #stocks tbody tr .currcapital {
+            display: none;
+        }
+
         table tbody tr {
             text-align: right;
         }
@@ -285,7 +295,6 @@
         table tbody tr td.name, table tbody tr td.code {
             text-align: center;
         }
-
         input {
             border: 0px;
             background-color: #ffffff;
