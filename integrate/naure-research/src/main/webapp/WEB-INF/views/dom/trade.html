@@ -33,11 +33,11 @@
             totalAmount: 0,
             currAmount: 0,
             stocks: [
-                ['600265', 2700, 20440.48, 'sh'],
-                ['600793', 2000, 19690.30, 'sh'],
+                ['600265', 2700, 35640.00, 'sh'],  //7.58
+                ['600793', 2000, 26400.00, 'sh'],  //9.85
                 ['000509', 500, 2790.00, 'sz'],
                 ['300157', 1500, 19669.65, 'sz'],
-                ['600689', 0, 0, 'sh'], //', 2700, 24271.87, 'sh'],
+                ['600689', 2700, 24300.00, 'sh'],
                 ['300227', 600, 12672.66, 'sz'],
 
                 ['000001', 0, 0, 'sh'],
@@ -83,9 +83,8 @@
             '<td class="cost">{3}</td><td class="curr"></td>' +
             '<td class="priceLimit"></td><td class="priceLimitAmount"></td><td class="profits"></td><td class="profitability"></td>' +
             '<td class="yclose"></td><td class="open"></td><td><span class="low" />-<span class="high" /></td>' +
-            '<td class="totalcapital"></td><td class="currcapital"></td>' +
             '<td class="bidden"></td><td class="seller"></td><td class="turnover"></td>' +
-            '<td class="latest-value"></td><td class="amount">{4}</td>' +
+            '<td class="amount">{6}</td><td class="latest-value"></td><td class="totalcapital"></td><td class="currcapital"></td>' +
             '</tr>',
             stockUri: {
                 sina: {
@@ -163,7 +162,7 @@
                         parent.find('.curr').html(curr);
                         parent.find('.profits').html(0 != number ? (curr * number - amount).toFixed(2) : '');
                         parent.find('.profitability').html(amount != 0 ? ((curr * number - amount) / amount * 100).toFixed(2) + ' %' : '');
-                        parent.find('.latest-value').html((curr * number).toFixed(2));
+                        parent.find('.latest-value').html((curr * number).thousandsSeparator(2));
                         parent.find('.yclose').html(stockRealtime.yclose);
                         parent.find('.open').html(stockRealtime.open);
                         parent.find('.high').html(stockRealtime.high);
@@ -230,7 +229,7 @@
                         stocks[index][3], stocks[index][0],
                         0 != stocks[index][1] ? stocks[index][1] : '',
                         0 == stocks[index][1] ? '' : (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][2],
-                        stocks[index][5] ? stocks[index][5] : 0);
+                        stocks[index][5] ? stocks[index][5] : 0, stocks[index][2].thousandsSeparator());
                 codes.push(stocks[index][3] + stocks[index][0]);
             }
             stocks.html = html;
@@ -300,8 +299,8 @@
     <tr>
         <th class="name">证券名称</th>
         <th class="code">证券代码</th>
-        <th class="amount">成本金额</th>
         <th class="number">证券数量</th>
+        <th class="cost">成本价</th>
         <th class="curr">当前价</th>
         <th class="priceLimit">涨跌幅</th>
         <th class="priceLimitAmount">涨跌额</th>
@@ -310,13 +309,13 @@
         <th class="yclose">昨日收盘价</th>
         <th class="open">今日开盘价</th>
         <th class="high-low">今日最高价/今日最低价</th>
-        <th class="totalcapital">总股本</th>
-        <th class="currcapital">流通股本</th>
         <th class="bidden">竞买</th>
         <th class="seller ">竞卖</th>
         <th class="turnover">成交</th>
+        <th class="amount">成本金额</th>
         <th class="latest-value">最新市值</th>
-        <th class="cost">成本价</th>
+        <th class="totalcapital">总股本</th>
+        <th class="currcapital">流通股本</th>
     </tr>
     </thead>
     <tbody>
