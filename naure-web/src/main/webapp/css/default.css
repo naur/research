@@ -192,11 +192,11 @@ table tbody tr .loading {
     height: 15.5px;
 }
 
-table tbody tr:nth-child(even) {
+table tbody .tdeven, table tbody tr:nth-child(even) {
     background-color: #f1f9fc;
 }
 
-table tbody tr:nth-child(odd) {
+table tbody .tdodd, table tbody tr:nth-child(odd) {
     /*background-color: #f0f8e6;*/
 }
 
