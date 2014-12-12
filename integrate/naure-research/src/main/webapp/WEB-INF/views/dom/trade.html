@@ -13,6 +13,8 @@
                 'jquery.strings': 'http://cdn.naure.org/js/core/jquery.strings',
                 'oop': 'http://cdn.naure.org/js/core/oop',
                 'naure': 'http://cdn.naure.org/js/core/naure',
+                'naure.math': 'http://cdn.naure.org/js/core/naure.math',
+                'naure.math.symbol' : 'http://cdn.naure.org/js/core/naure.math.symbol',
                 'naure.utility': 'http://cdn.naure.org/js/core/naure.utility',
                 'naure.message': 'http://cdn.naure.org/js/core/naure.message',
                 'naure.http.xmlhttp': 'http://cdn.naure.org/js/core/naure.http.xmlhttp'
@@ -22,6 +24,7 @@
             }
         });
 
+//http://hq.sinajs.cn/rn=1418180251576&list=sh000001_zdp,sh000002_zdp,sh000003_zdp,sz399005_zdp,sz399006_zdp,sz399102_zdp,sz399107_zdp,sz399108_zdp
         //Open	High	Low	Close	Volume, EPS
         var global = {
             http: null,
@@ -41,6 +44,13 @@
                 ['300024', 800, 31631.6, 'sz'],
 
                 ['000001', 0, 0, 'sh'],
+//                ['000002', 0, 0, 'sh'],
+//                ['000003', 0, 0, 'sh'],
+//                ['399005', 0, 0, 'sz'],
+//                ['399006', 0, 0, 'sz'],
+//                ['399102', 0, 0, 'sz'],
+//                ['399107', 0, 0, 'sz'],
+//                ['399108', 0, 0, 'sz'],
 
                 ['002319', 0, 0, 'sz'],
                 ['600580', 0, 0, 'sh'],
@@ -243,10 +253,11 @@
             stocks.codes = codes;
         }
 
-        require(['jquery', 'jquery.strings', 'naure.http.xmlhttp', 'naure.message', 'naure.utility'], function ($, $1, NAURE) {
+        require(['jquery', 'jquery.strings', 'naure.math', 'naure.http.xmlhttp', 'naure.message', 'naure.utility'], function ($, $1, NAURE) {
             global.http = NAURE.HTTP;
             global.message = NAURE.Message;
             global.utility = NAURE.Utility;
+            global.math = NAURE.Math;
             $('body').message({overlay: 'left-bottom', multiple: false, title: ''});
             init(global.stocks);
             $(function () {

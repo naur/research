@@ -260,7 +260,7 @@ function fact(ff) {
         for (var nns = 1; nns <= ff; nns++) {
             s *= nns;
         }
-        return~~s;
+        return ~~s;
     } else if (ff != (~~ff) || ff < 0) {
         return Gamma(ff + 1);
     }
@@ -309,12 +309,16 @@ define(['jquery', 'naure', 'naure.math.symbol'], function ($, NAURE) {
 
     NAURE.Math = (function () {
         var math = {
-            arbRound:function (value, roundTo) {
+            arbRound: function (value, roundTo) {
                 return Math.round(value / roundTo) * roundTo;
             },
 
-            arbFloor:function (value, roundTo) {
+            arbFloor: function (value, roundTo) {
                 return Math.floor(value / roundTo) * roundTo;
+            },
+
+            milli: function () {
+                return new Date().getTime();
             }
         };
 
