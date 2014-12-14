@@ -5,298 +5,11 @@
     <title></title>
     <link href="http://cdn.naure.org/css/default.css" rel="stylesheet" type="text/css"/>
     <link href="http://cdn.naure.org/css/naure.message.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="http://cdn.naure.org/js/core/require.js"></script>
-    <script type="text/javascript">
-        require.config({
-            paths: {
-                'jquery': 'http://code.jquery.com/jquery-2.1.0.min',
-                'jquery.strings': 'http://cdn.naure.org/js/core/jquery.strings',
-                'oop': 'http://cdn.naure.org/js/core/oop',
-                'naure': 'http://cdn.naure.org/js/core/naure',
-                'naure.math': 'http://cdn.naure.org/js/core/naure.math',
-                'naure.math.symbol' : 'http://cdn.naure.org/js/core/naure.math.symbol',
-                'naure.utility': 'http://cdn.naure.org/js/core/naure.utility',
-                'naure.message': 'http://cdn.naure.org/js/core/naure.message',
-                'naure.http.xmlhttp': 'http://cdn.naure.org/js/core/naure.http.xmlhttp'
-            },
-            shim: {
-                'jquery.strings': ['jquery']
-            }
-        });
-
-//http://hq.sinajs.cn/rn=1418180251576&list=sh000001_zdp,sh000002_zdp,sh000003_zdp,sz399005_zdp,sz399006_zdp,sz399102_zdp,sz399107_zdp,sz399108_zdp
-        //Open	High	Low	Close	Volume, EPS
-        var global = {
-            http: null,
-            message: null,
-            utility: null,
-            isShow: false,
-            clock: null,
-            interval: 10000,
-            totalAmount: 0,
-            currAmount: 0,
-            stocks: [
-               ['600265', 2700, 35640.00, 'sh'],  //7.58
-                ['600793', 2000, 26400.00, 'sh'],  //9.85
-                ['000509', 500, 2790.00, 'sz'],
-                ['300157', 1500, 19669.65, 'sz'],
-                ['600689', 2700, 24300.00, 'sh'],
-                ['300024', 800, 31631.6, 'sz'],
-
-                ['000001', 0, 0, 'sh'],
-//                ['000002', 0, 0, 'sh'],
-//                ['000003', 0, 0, 'sh'],
-//                ['399005', 0, 0, 'sz'],
-//                ['399006', 0, 0, 'sz'],
-//                ['399102', 0, 0, 'sz'],
-//                ['399107', 0, 0, 'sz'],
-//                ['399108', 0, 0, 'sz'],
-
-                ['002319', 0, 0, 'sz'],
-                ['600580', 0, 0, 'sh'],
-                ['300227', 0, 0, 'sz'],
-                ['600637', 0, 0, 'sh'],
-                ['300097', 0, 0, 'sz'],
-                ['600853', 0, 0, 'sh'],
-                ['002474', 0, 0, 'sz'],
-                ['002072', 0, 0, 'sz'],
-                ['000004', 0, 0, 'sz'],
-                ['600271', 0, 0, 'sh'],
-                ['600733', 0, 0, 'sh'],
-                ['000555', 0, 0, 'sz'],
-                ['600455', 0, 0, 'sh'],
-                ['000670', 0, 0, 'sz'],
-                ['002633', 0, 0, 'sz'],
-                ['000609', 0, 0, 'sz'],
-                ['002684', 0, 0, 'sz'],
-                ['000711', 0, 0, 'sz'],
-                ['000803', 0, 0, 'sz'],
-                ['002425', 0, 0, 'sz'],
-                ['600182', 0, 0, 'sh'],
-                ['000738', 0, 0, 'sz'],	//丁丁的
-                ['002566', 0, 0, 'sz'],
-                ['600444', 0, 0, 'sh'],
-
-//        ['300197',  500,  5889.50, 'sz'],
-//        ['601888', 0, 0, 'sh'],
-//        ['600768', 0, 0, 'sh'],
-//        ['000020', 0, 0, 'sz'],
-//        ['601989', 0, 0, 'sh'],
-//        ['000673', 0, 0, 'sz'],
-//        ['601225', 0, 0, 'sh'],
-//        ['000990', 0, 0, 'sz'],
-//        ['002579', 0, 0, 'sz'],
-
-//        ['600836', 0, 0, 'sh'],
-//        ['000762', 0, 0, 'sz'],
-//        ['000751', 0, 0, 'sz'],
-//        ['000960', 0, 0, 'sz'],
-//        ['601877', 0, 0, 'sh'],
-                ['600715', 0, 0, 'sh']
-            ],
-            stockHtmlTemplate: '<tr stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">' +
-            '<td class="name"></td><td class="code">{1}</td><td class="number">{2}</td>' +
-            '<td class="cost">{3}</td><td class="curr"></td>' +
-            '<td class="priceLimit"></td><td class="priceLimitAmount"></td><td class="profits"></td><td class="profitability"></td>' +
-            '<td class="yclose"></td><td class="open"></td><td><span class="low" />-<span class="high" /></td>' +
-            '<td class="bidden"></td><td class="seller"></td><td class="turnover"></td>' +
-            '<td class="amount">{6}</td><td class="latest-value"></td><td class="totalcapital"></td><td class="currcapital"></td>' +
-            '</tr>',
-            stockUri: {
-                sina: {
-                    uri: 'http://hq.sinajs.cn/list=', parse: function (codes, info) {
-                        eval(info.replace(/var hq_str_/g, 'global.'));
-                        var stock, stocks = {};
-                        for (var index in codes) {
-                            stock = global[codes[index]].split(',');
-                            stocks[codes[index]] = {};
-                            stocks[codes[index]].name = stock[0];
-                            stocks[codes[index]].curr = stock[3];
-                            stocks[codes[index]].yclose = stock[2];
-                            stocks[codes[index]].open = stock[1];
-                            stocks[codes[index]].high = stock[4];
-                            stocks[codes[index]].low = stock[5];
-                            stocks[codes[index]].priceLimitAmount = (stocks[codes[index]].curr - stocks[codes[index]].yclose).toFixed(3);
-                            stocks[codes[index]].priceLimit = (stocks[codes[index]].priceLimitAmount / stocks[codes[index]].yclose * 100).toFixed(2) + ' %';
-                            stocks[codes[index]].biddenP1 = stock[11];
-                            stocks[codes[index]].biddenV1 = Math.round(parseFloat(stock[10]) / 100);  //单位：手
-                            stocks[codes[index]].sellerP1 = stock[21];
-                            stocks[codes[index]].sellerV1 = Math.round(parseFloat(stock[20]) / 100);  //单位：手
-                            stocks[codes[index]].turnoverVol = stock[8] / 100;  //单位：手
-                            stocks[codes[index]].turnoverAmt = stock[9] / 1000; //单位：万元
-                        }
-
-                        return stocks;
-                    }
-                },
-                tencent: {
-                    uri: 'http://qt.gtimg.cn/q=', parse: function () {
-                    }
-                },
-                capital: {
-                    uri: 'http://finance.sina.com.cn/realstock/company/{0}/jsvar.js', parse: function (code, info) {
-                        var result = {code: code, total: 0, curr: 0};
-                        info = info.match(/totalcapital\s=\s(\d+(\D\d+)?);[\s\S]+currcapital\s=\s(\d+(\D\d+)?);/i);
-                        if (!info) return result;
-                        result.total = parseFloat(info[1]).toFixed(4);
-                        result.curr = parseFloat(info[3]).toFixed(4);
-                        return result
-                    }
-                }
-            },
-            currStockUri: 'sina',
-            messageTemplate: 'clock: {0}, cost: {1}, curr: {2}, profit: {3} {4}',
-            dom: {
-                result: '#result',
-                calc: '#calc',
-                message: '#message',
-                stocksContainer: '#stocks tbody',
-                stocksHead: '#stocks thead tr',
-                stocksName: '#stocks thead tr td:first-child, #stocks tbody tr td:first-child',
-                stocks: '#stocks tbody tr',
-                stocksHide: '#stocks tbody tr .amount, #stocks tbody tr .latest-value, #stocks tbody tr .totalcapital, #stocks tbody tr .currcapital'
-            }
-        };
-
-        function getRealtimeInfo(codes, refresh) {
-            global.http.request({
-                uri: global.stockUri[global.currStockUri].uri + codes.toString(),
-                success: function (obj) {
-                    var stocks = global.stockUri[global.currStockUri].parse(codes, obj.output);
-
-                    global.currAmount = 0;
-                    var stockRealtime, curr, parent, currcapital, cost, number, amount;
-                    for (var index in codes) {
-                        stockRealtime = stocks[codes[index]];
-                        parent = $(global.dom.stocks + '[stock="' + codes[index] + '"]');
-                        currcapital = parseFloat(parent.attr('currcapital')) * 100; //单位：手
-                        cost = parseFloat(parent.attr('cost'));
-                        number = parseFloat(parent.attr('number') ? parent.attr('number') : 0);
-                        amount = parseFloat(parent.attr('amount'));
-                        curr = parseFloat(parent.attr('curr')) == 0 ? stockRealtime.curr : parseFloat(parent.attr('curr'));
-                        global.currAmount += number * curr;
-                        parent.find('.name').html(stockRealtime.name);
-                        parent.find('.curr').html(curr);
-                        parent.find('.profits').html(0 != number ? (curr * number - amount).toFixed(2) : '');
-                        parent.find('.profitability').html(amount != 0 ? ((curr * number - amount) / amount * 100).toFixed(2) + ' %' : '');
-                        parent.find('.latest-value').html((curr * number).thousandsSeparator(2));
-                        parent.find('.yclose').html(stockRealtime.yclose);
-                        parent.find('.open').html(stockRealtime.open);
-                        parent.find('.high').html(stockRealtime.high);
-                        parent.find('.low').html(stockRealtime.low);
-                        parent.find('.priceLimit').html(stockRealtime.priceLimit);
-                        parent.find('.priceLimitAmount').html(stockRealtime.priceLimitAmount);
-                        if (0 != currcapital) {
-                            parent.find('.bidden').html(stockRealtime.biddenP1 + '/' + stockRealtime.biddenV1.thousandsSeparator(0) + '-' + (stockRealtime.biddenV1 / currcapital * 100).toFixed(3));
-                            parent.find('.seller').html(stockRealtime.sellerP1 + '/' + stockRealtime.sellerV1.thousandsSeparator(0) + '-' + (stockRealtime.sellerV1 / currcapital * 100).toFixed(3));
-                            parent.find('.turnover').html(
-                                    //stockRealtime.turnoverAmt.toFixed(2).thousandsSeparator() + '/' +
-                                    stockRealtime.turnoverVol + '-' + (stockRealtime.turnoverVol / currcapital * 100).toFixed(3));
-                        }
-                    }
-                    global.message.show({
-                        content: $.format(global.messageTemplate, global.clock,
-                                global.totalAmount.toFixed(2),
-                                global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), '')
-                    });
-                    if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', global.interval);
-                }, error: function (err) {
-                    delete err.http;
-                    global.message.show({
-                        content: $.format(global.messageTemplate, global.clock,
-                                global.totalAmount.toFixed(2),
-                                global.currAmount, (global.currAmount - global.totalAmount).toFixed(2),
-                                JSON.stringify(err))
-                    });
-                    if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', global.interval);
-                }, changed: function (obj) {
-                    //window.console.log(JSON.stringify({clock: global.clock, state: obj.state}));
-                }
-            });
-        }
-
-        function getCapitalInfo(codes) {
-            for (var index in codes) {
-                var code = codes[index];
-                global.http.request({
-                    uri: $.format(global.stockUri.capital.uri, code),
-                    context: $(global.dom.stocks + '[stock="' + code + '"]'),
-                    success: function (obj) {
-                        var capital = global.stockUri.capital.parse(obj.context.attr('stock'), obj.output);
-                        var parent = obj.context;
-                        parent.find('.totalcapital').html(capital.total.thousandsSeparator());
-                        parent.find('.currcapital').html(capital.curr.thousandsSeparator());
-                        parent.attr('totalcapital', capital.total);
-                        parent.attr('currcapital', capital.curr);
-                    }
-                });
-            }
-        }
-
-        function init(stocks) {
-            var codes = [];
-            var html = '';
-            for (var index in stocks) {
-                if (!stocks.hasOwnProperty(index)) continue;
-                //计算总成本
-                if (0 != stocks[index][1]) {
-                    global.totalAmount += stocks[index][2];
-                }
-                html += $.format(global.stockHtmlTemplate,
-                        stocks[index][3], stocks[index][0],
-                        0 != stocks[index][1] ? stocks[index][1] : '',
-                        0 == stocks[index][1] ? '' : (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][2],
-                        stocks[index][5] ? stocks[index][5] : 0, stocks[index][2].thousandsSeparator());
-                codes.push(stocks[index][3] + stocks[index][0]);
-            }
-            stocks.html = html;
-            stocks.codes = codes;
-        }
-
-        require(['jquery', 'jquery.strings', 'naure.math', 'naure.http.xmlhttp', 'naure.message', 'naure.utility'], function ($, $1, NAURE) {
-            global.http = NAURE.HTTP;
-            global.message = NAURE.Message;
-            global.utility = NAURE.Utility;
-            global.math = NAURE.Math;
-            $('body').message({overlay: 'left-bottom', multiple: false, title: ''});
-            init(global.stocks);
-            $(function () {
-                $(global.dom.stocksContainer).html(global.stocks.html);
-                getCapitalInfo(global.stocks.codes);
-                $(document).on('keyup', function (event) {
-                    var ev = document.all ? window.event : event;
-                    if (ev.keyCode == global.utility.keyCode.R)  getRealtimeInfo(global.stocks.codes, true);
-                    if (ev.keyCode == global.utility.keyCode.C)  getCapitalInfo(global.stocks.codes);
-                    if (ev.keyCode == global.utility.keyCode.H) {
-                        'none' == $(global.dom.stocksHead).css('display') ?
-                                $(global.dom.stocksHead).css('display', 'table-row') :
-                                $(global.dom.stocksHead).css('display', 'none');
-                    }
-                    if (ev.keyCode == global.utility.keyCode.N) {
-                        'none' == $(global.dom.stocksName).css('display') ?
-                                $(global.dom.stocksName).css('display', 'table-cell') :
-                                $(global.dom.stocksName).css('display', 'none');
-                    }
-                    if (ev.keyCode == global.utility.keyCode.D) {
-                        'none' == $(global.dom.stocksHide).css('display') ?
-                                $(global.dom.stocksHide).css('display', 'table-cell') :
-                                $(global.dom.stocksHide).css('display', 'none');
-                    }
-                });
-
-                $(global.dom.calc).on('keyup', function (event) {
-                    var ev = document.all ? window.event : event;
-                    if (ev.keyCode == global.utility.keyCode.ENTER) {
-                        eval('var result = ' + $(this).val());
-                        $(global.dom.result).html(result);
-                    }
-                });
-
-                global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', 5000);
-            });
-        });
-    </script>
     <style>
+        body {
+            background-color: #ffffff;
+        }
+
         thead tr, tbody tr td.name {
             display: none;
         }
@@ -312,13 +25,14 @@
         table tbody tr td.name, table tbody tr td.code {
             text-align: center;
         }
+
         input {
             border: 0px;
             background-color: #ffffff;
         }
     </style>
 </head>
-<body style="background-color: #ffffff;">
+<body>
 <table id="stocks" rules="rows" class="raisefocus">
     <colgroup align="right" style="color:#0000FF;"></colgroup>
     <thead>
@@ -349,6 +63,300 @@
 </table>
 <br/>
 <input type="text" class="small" id="calc"/><span id="result"></span>
+
+<script type="text/javascript" src="http://cdn.naure.org/js/core/require.js"></script>
+<script type="text/javascript">
+    require.config({
+        paths: {
+            'jquery': 'http://code.jquery.com/jquery-2.1.0.min',
+            'jquery.strings': 'http://cdn.naure.org/js/core/jquery.strings',
+            'oop': 'http://cdn.naure.org/js/core/oop',
+            'naure': 'http://cdn.naure.org/js/core/naure',
+            'naure.math': 'http://cdn.naure.org/js/core/naure.math',
+            'naure.math.symbol': 'http://cdn.naure.org/js/core/naure.math.symbol',
+            'naure.utility': 'http://cdn.naure.org/js/core/naure.utility',
+            'naure.message': 'http://cdn.naure.org/js/core/naure.message',
+            'naure.http.xmlhttp': 'http://cdn.naure.org/js/core/naure.http.xmlhttp'
+        },
+        shim: {
+            'jquery.strings': ['jquery']
+        }
+    });
+
+    //http://hq.sinajs.cn/rn=1418180251576&list=sh000001_zdp,sh000002_zdp,sh000003_zdp,sz399005_zdp,sz399006_zdp,sz399102_zdp,sz399107_zdp,sz399108_zdp
+    //Open	High	Low	Close	Volume, EPS
+    var global = {
+        http: null,
+        message: null,
+        utility: null,
+        isShow: false,
+        clock: null,
+        interval: 10000,
+        totalAmount: 0,
+        currAmount: 0,
+        stocks: [
+            ['600265', 2700, 35640.00, 'sh'],  //7.58
+            ['600793', 2000, 26400.00, 'sh'],  //9.85
+            ['000509', 500, 2790.00, 'sz'],
+            ['300157', 1500, 19669.65, 'sz'],
+            ['600689', 2700, 24300.00, 'sh'],
+            ['300024', 800, 31631.6, 'sz'],
+
+            ['000001', 0, 0, 'sh'],
+//            ['000002', 0, 0, 'sh'],
+//            ['000003', 0, 0, 'sh'],
+            ['399005', 0, 0, 'sz'],
+            ['399006', 0, 0, 'sz'],
+//            ['399102', 0, 0, 'sz'],
+//            ['399107', 0, 0, 'sz'],
+//            ['399108', 0, 0, 'sz'],
+
+            ['002319', 0, 0, 'sz'],
+            ['600580', 0, 0, 'sh'],
+            ['300227', 0, 0, 'sz'],
+            ['600637', 0, 0, 'sh'],
+            ['300097', 0, 0, 'sz'],
+            ['600853', 0, 0, 'sh'],
+            ['002474', 0, 0, 'sz'],
+            ['002072', 0, 0, 'sz'],
+            ['000004', 0, 0, 'sz'],
+            ['600271', 0, 0, 'sh'],
+            ['600733', 0, 0, 'sh'],
+            ['000555', 0, 0, 'sz'],
+            ['600455', 0, 0, 'sh'],
+            ['000670', 0, 0, 'sz'],
+            ['002633', 0, 0, 'sz'],
+            ['000609', 0, 0, 'sz'],
+            ['002684', 0, 0, 'sz'],
+            ['000711', 0, 0, 'sz'],
+            ['000803', 0, 0, 'sz'],
+            ['002425', 0, 0, 'sz'],
+            ['600182', 0, 0, 'sh'],
+            ['002566', 0, 0, 'sz'],
+            ['600444', 0, 0, 'sh'],
+
+//        ['300197',  500,  5889.50, 'sz'],
+//        ['601888', 0, 0, 'sh'],
+//        ['600768', 0, 0, 'sh'],
+//        ['000020', 0, 0, 'sz'],
+//        ['601989', 0, 0, 'sh'],
+//        ['000673', 0, 0, 'sz'],
+//        ['601225', 0, 0, 'sh'],
+//        ['000990', 0, 0, 'sz'],
+//        ['002579', 0, 0, 'sz'],
+
+//        ['600836', 0, 0, 'sh'],
+//        ['000762', 0, 0, 'sz'],
+//        ['000751', 0, 0, 'sz'],
+//        ['000960', 0, 0, 'sz'],
+//        ['601877', 0, 0, 'sh'],
+            ['600715', 0, 0, 'sh']
+        ],
+        stockHtmlTemplate: '<tr stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">' +
+        '<td class="name"></td><td class="code">{1}</td><td class="number">{2}</td>' +
+        '<td class="cost">{3}</td><td class="curr"></td>' +
+        '<td class="priceLimit"></td><td class="priceLimitAmount"></td><td class="profits"></td><td class="profitability"></td>' +
+        '<td class="yclose"></td><td class="open"></td><td><span class="low" />-<span class="high" /></td>' +
+        '<td class="bidden"></td><td class="seller"></td><td class="turnover"></td>' +
+        '<td class="amount">{6}</td><td class="latest-value"></td><td class="totalcapital"></td><td class="currcapital"></td>' +
+        '</tr>',
+        stockUri: {
+            sina: {
+                uri: 'http://hq.sinajs.cn/list=',
+                parse: function (codes, info) {
+                    eval(info.replace(/var hq_str_/g, 'global.'));
+                    var stock, stocks = {};
+                    for (var index in codes) {
+                        stock = global[codes[index]].split(',');
+                        stocks[codes[index]] = {};
+                        stocks[codes[index]].name = stock[0];
+                        stocks[codes[index]].curr = stock[3];
+                        stocks[codes[index]].yclose = stock[2];
+                        stocks[codes[index]].open = stock[1];
+                        stocks[codes[index]].high = stock[4];
+                        stocks[codes[index]].low = stock[5];
+                        stocks[codes[index]].priceLimitAmount = (stocks[codes[index]].curr - stocks[codes[index]].yclose).toFixed(3);
+                        stocks[codes[index]].priceLimit = (stocks[codes[index]].priceLimitAmount / stocks[codes[index]].yclose * 100).toFixed(2) + ' %';
+                        stocks[codes[index]].biddenP1 = stock[11];
+                        stocks[codes[index]].biddenV1 = Math.round(parseFloat(stock[10]) / 100);  //单位：手
+                        stocks[codes[index]].sellerP1 = stock[21];
+                        stocks[codes[index]].sellerV1 = Math.round(parseFloat(stock[20]) / 100);  //单位：手
+                        stocks[codes[index]].turnoverVol = stock[8] / 100;  //单位：手
+                        stocks[codes[index]].turnoverAmt = stock[9] / 1000; //单位：万元
+                    }
+
+                    return stocks;
+                }
+            },
+            tencent: {
+                uri: 'http://qt.gtimg.cn/q=',
+                parse: function () {
+                }
+            },
+            capital: {
+                uri: 'http://finance.sina.com.cn/realstock/company/{0}/jsvar.js',
+                parse: function (code, info) {
+                    var result = {code: code, total: 0, curr: 0};
+                    info = info.match(/totalcapital\s=\s(\d+(\D\d+)?);[\s\S]+currcapital\s=\s(\d+(\D\d+)?);[\s\S]+curracapital\s=\s(\d+(\D\d+)?);/i);
+                    if (!info) return result;
+                    result.total = parseFloat(info[1]).toFixed(4);
+                    result.curr = '0' != info[3] ? parseFloat(info[3]).toFixed(4) : parseFloat(info[5]).toFixed(4);
+                    return result
+                }
+            }
+        },
+        currStockUri: 'sina',
+        messageTemplate: 'clock: {0}, cost: {1}, curr: {2}, profit: {3} {4}',
+        dom: {
+            result: '#result',
+            calc: '#calc',
+            message: '#message',
+            stocksContainer: '#stocks tbody',
+            stocksHead: '#stocks thead tr',
+            stocksName: '#stocks thead tr td:first-child, #stocks tbody tr td:first-child',
+            stocks: '#stocks tbody tr',
+            stocksHide: '#stocks tbody tr .amount, #stocks tbody tr .latest-value, #stocks tbody tr .totalcapital, #stocks tbody tr .currcapital'
+        }
+    };
+
+    function getRealtimeInfo(codes, refresh) {
+        global.http.request({
+            uri: global.stockUri[global.currStockUri].uri + codes.toString(),
+            success: function (obj) {
+                var stocks = global.stockUri[global.currStockUri].parse(codes, obj.output);
+
+                global.currAmount = 0;
+                var stockRealtime, curr, parent, currcapital, cost, number, amount;
+                for (var index in codes) {
+                    stockRealtime = stocks[codes[index]];
+                    parent = $(global.dom.stocks + '[stock="' + codes[index] + '"]');
+                    currcapital = parseFloat(parent.attr('currcapital')) * 100; //单位：手
+                    cost = parseFloat(parent.attr('cost'));
+                    number = parseFloat(parent.attr('number') ? parent.attr('number') : 0);
+                    amount = parseFloat(parent.attr('amount'));
+                    curr = parseFloat(parent.attr('curr')) == 0 ? stockRealtime.curr : parseFloat(parent.attr('curr'));
+                    global.currAmount += number * curr;
+                    parent.find('.name').html(stockRealtime.name);
+                    parent.find('.curr').html(curr);
+                    parent.find('.profits').html(0 != number ? (curr * number - amount).toFixed(2) : '');
+                    parent.find('.profitability').html(amount != 0 ? ((curr * number - amount) / amount * 100).toFixed(2) + ' %' : '');
+                    parent.find('.latest-value').html((curr * number).thousandsSeparator(2));
+                    parent.find('.yclose').html(stockRealtime.yclose);
+                    parent.find('.open').html(stockRealtime.open);
+                    parent.find('.high').html(stockRealtime.high);
+                    parent.find('.low').html(stockRealtime.low);
+                    parent.find('.priceLimit').html(stockRealtime.priceLimit);
+                    parent.find('.priceLimitAmount').html(stockRealtime.priceLimitAmount);
+                    if (0 != currcapital) {
+                        parent.find('.bidden').html(stockRealtime.biddenP1 + '/' + stockRealtime.biddenV1.thousandsSeparator(0) + '-' + (stockRealtime.biddenV1 / currcapital * 100).toFixed(3));
+                        parent.find('.seller').html(stockRealtime.sellerP1 + '/' + stockRealtime.sellerV1.thousandsSeparator(0) + '-' + (stockRealtime.sellerV1 / currcapital * 100).toFixed(3));
+                        parent.find('.turnover').html(
+                                //stockRealtime.turnoverAmt.toFixed(2).thousandsSeparator() + '/' +
+                                stockRealtime.turnoverVol + '-' + (stockRealtime.turnoverVol / currcapital * 100).toFixed(3));
+                    }
+                }
+                global.message.show({
+                    content: $.format(global.messageTemplate, global.clock,
+                            global.totalAmount.toFixed(2),
+                            global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), '')
+                });
+                if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', global.interval);
+            }, error: function (err) {
+                delete err.http;
+                global.message.show({
+                    content: $.format(global.messageTemplate, global.clock,
+                            global.totalAmount.toFixed(2),
+                            global.currAmount, (global.currAmount - global.totalAmount).toFixed(2),
+                            JSON.stringify(err))
+                });
+                if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', global.interval);
+            }, changed: function (obj) {
+                //window.console.log(JSON.stringify({clock: global.clock, state: obj.state}));
+            }
+        });
+    }
+
+    function getCapitalInfo(codes) {
+        for (var index in codes) {
+            var code = codes[index];
+            global.http.request({
+                uri: $.format(global.stockUri.capital.uri, code),
+                context: $(global.dom.stocks + '[stock="' + code + '"]'),
+                success: function (obj) {
+                    var capital = global.stockUri.capital.parse(obj.context.attr('stock'), obj.output);
+                    var parent = obj.context;
+                    parent.find('.totalcapital').html(capital.total.thousandsSeparator());
+                    parent.find('.currcapital').html(capital.curr.thousandsSeparator());
+                    parent.attr('totalcapital', capital.total);
+                    parent.attr('currcapital', capital.curr);
+                }
+            });
+        }
+    }
+
+    function init(stocks) {
+        var codes = [];
+        var html = '';
+        for (var index in stocks) {
+            if (!stocks.hasOwnProperty(index)) continue;
+            //计算总成本
+            if (0 != stocks[index][1]) {
+                global.totalAmount += stocks[index][2];
+            }
+            html += $.format(global.stockHtmlTemplate,
+                    stocks[index][3], stocks[index][0],
+                    0 != stocks[index][1] ? stocks[index][1] : '',
+                    0 == stocks[index][1] ? '' : (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][2],
+                    stocks[index][5] ? stocks[index][5] : 0, stocks[index][2].thousandsSeparator());
+            codes.push(stocks[index][3] + stocks[index][0]);
+        }
+        stocks.html = html;
+        stocks.codes = codes;
+    }
+
+    require(['jquery', 'jquery.strings', 'naure.math', 'naure.http.xmlhttp', 'naure.message', 'naure.utility'], function ($, $1, NAURE) {
+        global.http = NAURE.HTTP;
+        global.message = NAURE.Message;
+        global.utility = NAURE.Utility;
+        global.math = NAURE.Math;
+        $('body').message({overlay: 'left-bottom', multiple: false, title: ''});
+        init(global.stocks);
+        $(function () {
+            $(global.dom.stocksContainer).html(global.stocks.html);
+            getCapitalInfo(global.stocks.codes);
+            $(document).on('keyup', function (event) {
+                var ev = document.all ? window.event : event;
+                if (ev.keyCode == global.utility.keyCode.R)  getRealtimeInfo(global.stocks.codes, true);
+                if (ev.keyCode == global.utility.keyCode.C)  getCapitalInfo(global.stocks.codes);
+                if (ev.keyCode == global.utility.keyCode.H) {
+                    'none' == $(global.dom.stocksHead).css('display') ?
+                            $(global.dom.stocksHead).css('display', 'table-row') :
+                            $(global.dom.stocksHead).css('display', 'none');
+                }
+                if (ev.keyCode == global.utility.keyCode.N) {
+                    'none' == $(global.dom.stocksName).css('display') ?
+                            $(global.dom.stocksName).css('display', 'table-cell') :
+                            $(global.dom.stocksName).css('display', 'none');
+                }
+                if (ev.keyCode == global.utility.keyCode.D) {
+                    'none' == $(global.dom.stocksHide).css('display') ?
+                            $(global.dom.stocksHide).css('display', 'table-cell') :
+                            $(global.dom.stocksHide).css('display', 'none');
+                }
+            });
+
+            $(global.dom.calc).on('keyup', function (event) {
+                var ev = document.all ? window.event : event;
+                if (ev.keyCode == global.utility.keyCode.ENTER) {
+                    eval('var result = ' + $(this).val());
+                    $(global.dom.result).html(result);
+                }
+            });
+
+            global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', 5000);
+        });
+    });
+</script>
 </body>
 </html>
 
