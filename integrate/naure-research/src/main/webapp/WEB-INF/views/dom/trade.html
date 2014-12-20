@@ -49,9 +49,9 @@
         <th class="yclose">昨日收盘价</th>
         <th class="open">今日开盘价</th>
         <th class="high-low">今日最高价/今日最低价</th>
-        <th class="bidden">竞买</th>
-        <th class="seller ">竞卖</th>
-        <th class="turnover">成交</th>
+        <th class="bidden advance">竞买</th>
+        <th class="seller decline">竞卖</th>
+        <th class="turnover dynainfo">成交</th>
         <th class="amount">成本金额</th>
         <th class="latest-value">最新市值</th>
         <th class="totalcapital">总股本</th>
@@ -94,49 +94,48 @@
         interval: 10000,
         totalAmount: 0,
         currAmount: 0,
-        stocks: [
-            ['600265', 2700, 35640.00, 'sh'],  //7.58
-            ['600793', 2000, 26400.00, 'sh'],  //9.85
-            ['000509', 500, 2790.00, 'sz'],
-            ['300157', 1500, 19669.65, 'sz'],
-            ['600689', 2700, 24300.00, 'sh'],
-            ['002063', 1600, 36836.8, 'sz'],
-
-            ['000001', 0, 0, 'sh'],
-//            ['000002', 0, 0, 'sh'],
-//            ['000003', 0, 0, 'sh'],
-            ['399005', 0, 0, 'sz'],
-            ['399006', 0, 0, 'sz'],
-//            ['399102', 0, 0, 'sz'],
-//            ['399107', 0, 0, 'sz'],
-//            ['399108', 0, 0, 'sz'],
-
-            ['300024', 0, 0, 'sz'],
-            ['300227', 0, 0, 'sz'],
-
-            ['002319', 0, 0, 'sz'],
-            ['600580', 0, 0, 'sh'],
-
-            ['600637', 0, 0, 'sh'],
-            ['300097', 0, 0, 'sz'],
-            ['600853', 0, 0, 'sh'],
-            ['002474', 0, 0, 'sz'],
-            ['002072', 0, 0, 'sz'],
-            ['000004', 0, 0, 'sz'],
-            ['600271', 0, 0, 'sh'],
-            ['600733', 0, 0, 'sh'],
-            ['000555', 0, 0, 'sz'],
-            ['600455', 0, 0, 'sh'],
-            ['000670', 0, 0, 'sz'],
-            ['002633', 0, 0, 'sz'],
-            ['000609', 0, 0, 'sz'],
-            ['002684', 0, 0, 'sz'],
-            ['000711', 0, 0, 'sz'],
-            ['000803', 0, 0, 'sz'],
-            ['002425', 0, 0, 'sz'],
-            ['600182', 0, 0, 'sh'],
-            ['002566', 0, 0, 'sz'],
-            ['600444', 0, 0, 'sh'],
+        stockMarket: {
+            indexes: [
+                ['000001', 0, 0, 'sh'],
+                ['000002', 0, 0, 'sh'],
+                ['000003', 0, 0, 'sh'],
+                ['399005', 0, 0, 'sz'],
+                ['399006', 0, 0, 'sz'],
+                ['399102', 0, 0, 'sz'],
+                ['399107', 0, 0, 'sz'],
+                ['399108', 0, 0, 'sz']
+            ],
+            stocks: [
+                ['600265', 2700, 35640.00, 'sh'],  //7.58
+                ['600793', 2000, 26400.00, 'sh'],  //9.85
+                ['000509', 500, 2790.00, 'sz'],
+                ['300157', 1500, 19669.65, 'sz'],
+                ['600689', 2700, 24300.00, 'sh'],
+                ['002063', 1600, 36836.8, 'sz'],
+                ['300024', 0, 0, 'sz'],
+                ['300227', 0, 0, 'sz'],
+                ['002319', 0, 0, 'sz'],
+                ['600580', 0, 0, 'sh'],
+                ['600637', 0, 0, 'sh'],
+                ['300097', 0, 0, 'sz'],
+                ['600853', 0, 0, 'sh'],
+                ['002474', 0, 0, 'sz'],
+                ['002072', 0, 0, 'sz'],
+                ['000004', 0, 0, 'sz'],
+                ['600271', 0, 0, 'sh'],
+                ['600733', 0, 0, 'sh'],
+                ['000555', 0, 0, 'sz'],
+                ['600455', 0, 0, 'sh'],
+                ['000670', 0, 0, 'sz'],
+                ['002633', 0, 0, 'sz'],
+                ['000609', 0, 0, 'sz'],
+                ['002684', 0, 0, 'sz'],
+                ['000711', 0, 0, 'sz'],
+                ['000803', 0, 0, 'sz'],
+                ['002425', 0, 0, 'sz'],
+                ['600182', 0, 0, 'sh'],
+                ['002566', 0, 0, 'sz'],
+                ['600444', 0, 0, 'sh'],
 
 //        ['300197',  500,  5889.50, 'sz'],
 //        ['601888', 0, 0, 'sh'],
@@ -153,14 +152,15 @@
 //        ['000751', 0, 0, 'sz'],
 //        ['000960', 0, 0, 'sz'],
 //        ['601877', 0, 0, 'sh'],
-            ['600715', 0, 0, 'sh']
-        ],
+                ['600715', 0, 0, 'sh']
+            ]
+        },
         stockHtmlTemplate: '<tr stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">' +
         '<td class="name"></td><td class="code">{1}</td><td class="number">{2}</td>' +
         '<td class="cost">{3}</td><td class="curr"></td>' +
         '<td class="priceLimit"></td><td class="priceLimitAmount"></td><td class="profits"></td><td class="profitability"></td>' +
         '<td class="yclose"></td><td class="open"></td><td><span class="low" />-<span class="high" /></td>' +
-        '<td class="bidden"></td><td class="seller"></td><td class="turnover"></td>' +
+        '<td class="bidden advance"></td><td class="seller decline"></td><td class="turnover dynainfo"></td>' +
         '<td class="amount">{6}</td><td class="latest-value"></td><td class="totalcapital"></td><td class="currcapital"></td>' +
         '</tr>',
         currStockUri: 'sina',
@@ -212,29 +212,18 @@
                     }
                 }
             },
-            advanceDeclineInfo: {
+            advanceDecline: {
                 sina: {
                     uri: 'http://hq.sinajs.cn/rn=1418180251576&list=',
-                    parse: function () {
+                    parse: function (codes) {
                         eval(info.replace(/var hq_str_/g, 'global.'));
                         var stock, stocks = {};
                         for (var index in codes) {
-                            stock = global[codes[index]].split(',');
+                            stock = global[codes[index] + "_zdp"].split(',');
                             stocks[codes[index]] = {};
-                            stocks[codes[index]].name = stock[0];
-                            stocks[codes[index]].curr = stock[3];
-                            stocks[codes[index]].yclose = stock[2];
-                            stocks[codes[index]].open = stock[1];
-                            stocks[codes[index]].high = stock[4];
-                            stocks[codes[index]].low = stock[5];
-                            stocks[codes[index]].priceLimitAmount = (stocks[codes[index]].curr - stocks[codes[index]].yclose).toFixed(3);
-                            stocks[codes[index]].priceLimit = (stocks[codes[index]].priceLimitAmount / stocks[codes[index]].yclose * 100).toFixed(2) + ' %';
-                            stocks[codes[index]].biddenP1 = stock[11];
-                            stocks[codes[index]].biddenV1 = Math.round(parseFloat(stock[10]) / 100);  //单位：手
-                            stocks[codes[index]].sellerP1 = stock[21];
-                            stocks[codes[index]].sellerV1 = Math.round(parseFloat(stock[20]) / 100);  //单位：手
-                            stocks[codes[index]].turnoverVol = stock[8] / 100;  //单位：手
-                            stocks[codes[index]].turnoverAmt = stock[9] / 1000; //单位：万元
+                            stocks[codes[index]].advance = stock[0];
+                            stocks[codes[index]].decline = stock[1];
+                            stocks[codes[index]].dynainfo = stock[2];
                         }
 
                         return stocks;
@@ -255,7 +244,8 @@
         }
     };
 
-    function getRealtimeInfo(codes, refresh) {
+    function getRealtimeInfo(stockMarket, refresh) {
+        var codes = stockMarket.codes;
         global.http.request({
             uri: global.stockUri.realtime[global.currStockUri].uri + codes.toString(),
             success: function (obj) {
@@ -283,7 +273,7 @@
                     parent.find('.low').html(stockRealtime.low);
                     parent.find('.priceLimit').html(stockRealtime.priceLimit);
                     parent.find('.priceLimitAmount').html(stockRealtime.priceLimitAmount);
-                    if (0 != currcapital) {
+                    if (currcapital && 0 != currcapital) {
                         parent.find('.bidden').html(stockRealtime.biddenP1 + '/' + stockRealtime.biddenV1.thousandsSeparator(0) + '-' + (stockRealtime.biddenV1 / currcapital * 100).toFixed(3));
                         parent.find('.seller').html(stockRealtime.sellerP1 + '/' + stockRealtime.sellerV1.thousandsSeparator(0) + '-' + (stockRealtime.sellerV1 / currcapital * 100).toFixed(3));
                         parent.find('.turnover').html(
@@ -296,7 +286,7 @@
                             global.totalAmount.toFixed(2),
                             global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), '')
                 });
-                if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', global.interval);
+                if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stockMarket)', global.interval);
             }, error: function (err) {
                 delete err.http;
                 global.message.show({
@@ -305,7 +295,7 @@
                             global.currAmount, (global.currAmount - global.totalAmount).toFixed(2),
                             JSON.stringify(err))
                 });
-                if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', global.interval);
+                if (!refresh) global.clock = setTimeout('getRealtimeInfo(global.stockMarket)', global.interval);
             }, changed: function (obj) {
                 //window.console.log(JSON.stringify({clock: global.clock, state: obj.state}));
             }
@@ -330,9 +320,24 @@
         }
     }
 
-    function init(stocks) {
-        var codes = [];
-        var html = '';
+    function getAdvanceDeclineInfo(codes) {
+        global.http.request({
+            uri: global.stockUri.advanceDecline[global.currStockUri].uri + codes.join("_zdp,"),
+            success: function (obj) {
+                var parent, stockAdvanceDecline, stocks = global.stockUri.realtime[global.currStockUri].parse(codes, obj.output);
+                for (var index in codes) {
+                    stockAdvanceDecline = stocks[codes[index]];
+                    parent = $(global.dom.stocks + '[stock="' + codes[index] + '"]');
+                    parent.find('.advance').html(stockAdvanceDecline.advance);
+                    parent.find('.decline').html(stockAdvanceDecline.decline);
+                    parent.find('.dynainfo').html(stockAdvanceDecline.dynainfo);
+                }
+            }
+        });
+    }
+
+    function init(stockMarket) {
+        var codes = [], html = '', stocks = stockMarket.stocks, indexes = stockMarket.indexes;
         for (var index in stocks) {
             if (!stocks.hasOwnProperty(index)) continue;
             //计算总成本
@@ -346,8 +351,21 @@
                     stocks[index][5] ? stocks[index][5] : 0, stocks[index][2].thousandsSeparator());
             codes.push(stocks[index][3] + stocks[index][0]);
         }
-        stocks.html = html;
-        stocks.codes = codes;
+        stockMarket.stocks.codes = codes;
+
+        codes = [];
+        for (var index in indexes) {
+            if (!indexes.hasOwnProperty(index)) continue;
+            html += $.format(global.stockHtmlTemplate,
+                    indexes[index][3], indexes[index][0],
+                    0 != indexes[index][1] ? indexes[index][1] : '',
+                    0 == indexes[index][1] ? '' : (indexes[index][2] / indexes[index][1]).toFixed(3), indexes[index][2],
+                    indexes[index][5] ? indexes[index][5] : 0, indexes[index][2].thousandsSeparator());
+            codes.push(indexes[index][3] + indexes[index][0]);
+        }
+        stockMarket.html = html;
+        stockMarket.indexes.codes = codes;
+        stockMarket.codes = stockMarket.stocks.codes.concat(stockMarket.indexes.codes);
     }
 
     require(['jquery', 'jquery.strings', 'naure.math', 'naure.http.xmlhttp', 'naure.message', 'naure.utility'], function ($, $1, NAURE) {
@@ -356,14 +374,14 @@
         global.utility = NAURE.Utility;
         global.math = NAURE.Math;
         $('body').message({overlay: 'left-bottom', multiple: false, title: ''});
-        init(global.stocks);
+        init(global.stockMarket);
         $(function () {
-            $(global.dom.stocksContainer).html(global.stocks.html);
-            getCapitalInfo(global.stocks.codes);
+            $(global.dom.stocksContainer).html(global.stockMarket.html);
+            getCapitalInfo(global.stockMarket.codes);
             $(document).on('keyup', function (event) {
                 var ev = document.all ? window.event : event;
-                if (ev.keyCode == global.utility.keyCode.R)  getRealtimeInfo(global.stocks.codes, true);
-                if (ev.keyCode == global.utility.keyCode.C)  getCapitalInfo(global.stocks.codes);
+                if (ev.keyCode == global.utility.keyCode.R)  getRealtimeInfo(global.stockMarket, true);
+                if (ev.keyCode == global.utility.keyCode.C)  getCapitalInfo(global.stockMarket.codes);
                 if (ev.keyCode == global.utility.keyCode.H) {
                     'none' == $(global.dom.stocksHead).css('display') ?
                             $(global.dom.stocksHead).css('display', 'table-row') :
@@ -389,7 +407,7 @@
                 }
             });
 
-            global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', 5000);
+            global.clock = setTimeout('getRealtimeInfo(global.stockMarket)', 5000);
         });
     });
 
