@@ -75,9 +75,9 @@
         currAmount: 0,
         stockTitle: [
             {name: 'name', alias: '证券名称'},
-            {name: 'code', alias: '证券代码'},
-            {name: 'number', alias: '证券数量'},
-            {name: 'cost', alias: '成本价'},
+            {name: 'code', alias: '证券代码', placeholder: '{1}'},
+            {name: 'number', alias: '证券数量', placeholder: '{2}'},
+            {name: 'cost', alias: '成本价', placeholder: '{3}'},
             {name: 'curr', alias: '当前价'},
             {name: 'priceLimit', alias: '涨跌幅'},
             {name: 'priceLimitAmount', alias: '涨跌额'},
@@ -85,11 +85,11 @@
             {name: 'profitability', alias: '盈亏比例(%)'},
             {name: 'yclose', alias: '昨日收盘价'},
             {name: 'open', alias: '今日开盘价'},
-            {name: 'high-low', alias: '今日最高价/今日最低价'},
+            {name: 'high-low', alias: '今日最高价/今日最低价', placeholder: '<span class="low" />-<span class="high" />'},
             {name: 'bidden advance', alias: '竞买'},
             {name: 'seller decline', alias: '竞卖'},
             {name: 'turnover dynainfo', alias: '成交'},
-            {name: 'amount', alias: '成本金额'},
+            {name: 'amount', alias: '成本金额', placeholder: '{6}'},
             {name: 'latest-value', alias: '最新市值'},
             {name: 'totalcapital', alias: '总股本'},
             {name: 'currcapital', alias: '流通股本'}
@@ -155,15 +155,9 @@
             ]
         },
         stockHtmlTemplate: {
-            head: '<th class="{0}">{1}</th>',
-            body: '<tr stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">' +
-            '<td class="name"></td><td class="code">{1}</td><td class="number">{2}</td>' +
-            '<td class="cost">{3}</td><td class="curr"></td>' +
-            '<td class="priceLimit"></td><td class="priceLimitAmount"></td><td class="profits"></td><td class="profitability"></td>' +
-            '<td class="yclose"></td><td class="open"></td><td><span class="low" />-<span class="high" /></td>' +
-            '<td class="bidden advance"></td><td class="seller decline"></td><td class="turnover dynainfo"></td>' +
-            '<td class="amount">{6}</td><td class="latest-value"></td><td class="totalcapital"></td><td class="currcapital"></td>' +
-            '</tr>'
+            th: '<th class="{0}">{1}</th>',
+            td: '<td class="{0}">{1}</td>',
+            body: '<tr stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">'
         },
         currStockUri: 'sina',
         stockUri: {
@@ -352,16 +346,23 @@
     }
 
     function init(stockMarket) {
-        var codes = [], html = '', stocks = stockMarket.stocks, indexes = stockMarket.indexes;
+        var codes = [], td = '', html = '', stocks = stockMarket.stocks, indexes = stockMarket.indexes;
 
         for (var index in global.stockTitle) {
             if (!global.stockTitle.hasOwnProperty(index)) continue;
             $(global.dom.stocksHeadContainer).append(
                     $.format(
-                            global.stockHtmlTemplate.head,
+                            global.stockHtmlTemplate.th,
                             global.stockTitle[index].name, global.stockTitle[index].alias)
             );
+            td += $.format(
+                    global.stockHtmlTemplate.td,
+                    global.stockTitle[index].name,
+                    global.stockTitle[index].placeholder ? global.stockTitle[index].placeholder : ''
+            );
         }
+
+        global.stockHtmlTemplate.body += td + '</td>';
 
         for (var index in stocks) {
             if (!stocks.hasOwnProperty(index)) continue;
