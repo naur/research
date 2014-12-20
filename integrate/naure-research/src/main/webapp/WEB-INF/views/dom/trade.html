@@ -163,52 +163,85 @@
         '<td class="bidden"></td><td class="seller"></td><td class="turnover"></td>' +
         '<td class="amount">{6}</td><td class="latest-value"></td><td class="totalcapital"></td><td class="currcapital"></td>' +
         '</tr>',
+        currStockUri: 'sina',
         stockUri: {
-            sina: {
-                uri: 'http://hq.sinajs.cn/list=',
-                parse: function (codes, info) {
-                    eval(info.replace(/var hq_str_/g, 'global.'));
-                    var stock, stocks = {};
-                    for (var index in codes) {
-                        stock = global[codes[index]].split(',');
-                        stocks[codes[index]] = {};
-                        stocks[codes[index]].name = stock[0];
-                        stocks[codes[index]].curr = stock[3];
-                        stocks[codes[index]].yclose = stock[2];
-                        stocks[codes[index]].open = stock[1];
-                        stocks[codes[index]].high = stock[4];
-                        stocks[codes[index]].low = stock[5];
-                        stocks[codes[index]].priceLimitAmount = (stocks[codes[index]].curr - stocks[codes[index]].yclose).toFixed(3);
-                        stocks[codes[index]].priceLimit = (stocks[codes[index]].priceLimitAmount / stocks[codes[index]].yclose * 100).toFixed(2) + ' %';
-                        stocks[codes[index]].biddenP1 = stock[11];
-                        stocks[codes[index]].biddenV1 = Math.round(parseFloat(stock[10]) / 100);  //单位：手
-                        stocks[codes[index]].sellerP1 = stock[21];
-                        stocks[codes[index]].sellerV1 = Math.round(parseFloat(stock[20]) / 100);  //单位：手
-                        stocks[codes[index]].turnoverVol = stock[8] / 100;  //单位：手
-                        stocks[codes[index]].turnoverAmt = stock[9] / 1000; //单位：万元
-                    }
+            realtime: {
+                sina: {
+                    uri: 'http://hq.sinajs.cn/list=',
+                    parse: function (codes, info) {
+                        eval(info.replace(/var hq_str_/g, 'global.'));
+                        var stock, stocks = {};
+                        for (var index in codes) {
+                            stock = global[codes[index]].split(',');
+                            stocks[codes[index]] = {};
+                            stocks[codes[index]].name = stock[0];
+                            stocks[codes[index]].curr = stock[3];
+                            stocks[codes[index]].yclose = stock[2];
+                            stocks[codes[index]].open = stock[1];
+                            stocks[codes[index]].high = stock[4];
+                            stocks[codes[index]].low = stock[5];
+                            stocks[codes[index]].priceLimitAmount = (stocks[codes[index]].curr - stocks[codes[index]].yclose).toFixed(3);
+                            stocks[codes[index]].priceLimit = (stocks[codes[index]].priceLimitAmount / stocks[codes[index]].yclose * 100).toFixed(2) + ' %';
+                            stocks[codes[index]].biddenP1 = stock[11];
+                            stocks[codes[index]].biddenV1 = Math.round(parseFloat(stock[10]) / 100);  //单位：手
+                            stocks[codes[index]].sellerP1 = stock[21];
+                            stocks[codes[index]].sellerV1 = Math.round(parseFloat(stock[20]) / 100);  //单位：手
+                            stocks[codes[index]].turnoverVol = stock[8] / 100;  //单位：手
+                            stocks[codes[index]].turnoverAmt = stock[9] / 1000; //单位：万元
+                        }
 
-                    return stocks;
-                }
-            },
-            tencent: {
-                uri: 'http://qt.gtimg.cn/q=',
-                parse: function () {
+                        return stocks;
+                    }
+                },
+                tencent: {
+                    uri: 'http://qt.gtimg.cn/q=',
+                    parse: function () {
+                    }
                 }
             },
             capital: {
-                uri: 'http://finance.sina.com.cn/realstock/company/{0}/jsvar.js',
-                parse: function (code, info) {
-                    var result = {code: code, total: 0, curr: 0};
-                    info = info.match(/totalcapital\s=\s(\d+(\D\d+)?);[\s\S]+currcapital\s=\s(\d+(\D\d+)?);[\s\S]+curracapital\s=\s(\d+(\D\d+)?);/i);
-                    if (!info) return result;
-                    result.total = parseFloat(info[1]).toFixed(4);
-                    result.curr = '0' != info[3] ? parseFloat(info[3]).toFixed(4) : parseFloat(info[5]).toFixed(4);
-                    return result
+                sina: {
+                    uri: 'http://finance.sina.com.cn/realstock/company/{0}/jsvar.js',
+                    parse: function (code, info) {
+                        var result = {code: code, total: 0, curr: 0};
+                        info = info.match(/totalcapital\s=\s(\d+(\D\d+)?);[\s\S]+currcapital\s=\s(\d+(\D\d+)?);[\s\S]+curracapital\s=\s(\d+(\D\d+)?);/i);
+                        if (!info) return result;
+                        result.total = parseFloat(info[1]).toFixed(4);
+                        result.curr = '0' != info[3] ? parseFloat(info[3]).toFixed(4) : parseFloat(info[5]).toFixed(4);
+                        return result
+                    }
+                }
+            },
+            advanceDeclineInfo: {
+                sina: {
+                    uri: 'http://hq.sinajs.cn/rn=1418180251576&list=',
+                    parse: function () {
+                        eval(info.replace(/var hq_str_/g, 'global.'));
+                        var stock, stocks = {};
+                        for (var index in codes) {
+                            stock = global[codes[index]].split(',');
+                            stocks[codes[index]] = {};
+                            stocks[codes[index]].name = stock[0];
+                            stocks[codes[index]].curr = stock[3];
+                            stocks[codes[index]].yclose = stock[2];
+                            stocks[codes[index]].open = stock[1];
+                            stocks[codes[index]].high = stock[4];
+                            stocks[codes[index]].low = stock[5];
+                            stocks[codes[index]].priceLimitAmount = (stocks[codes[index]].curr - stocks[codes[index]].yclose).toFixed(3);
+                            stocks[codes[index]].priceLimit = (stocks[codes[index]].priceLimitAmount / stocks[codes[index]].yclose * 100).toFixed(2) + ' %';
+                            stocks[codes[index]].biddenP1 = stock[11];
+                            stocks[codes[index]].biddenV1 = Math.round(parseFloat(stock[10]) / 100);  //单位：手
+                            stocks[codes[index]].sellerP1 = stock[21];
+                            stocks[codes[index]].sellerV1 = Math.round(parseFloat(stock[20]) / 100);  //单位：手
+                            stocks[codes[index]].turnoverVol = stock[8] / 100;  //单位：手
+                            stocks[codes[index]].turnoverAmt = stock[9] / 1000; //单位：万元
+                        }
+
+                        return stocks;
+                    }
                 }
             }
         },
-        currStockUri: 'sina',
         messageTemplate: 'clock: {0}, cost: {1}, curr: {2}, profit: {3} {4}',
         dom: {
             result: '#result',
@@ -224,9 +257,9 @@
 
     function getRealtimeInfo(codes, refresh) {
         global.http.request({
-            uri: global.stockUri[global.currStockUri].uri + codes.toString(),
+            uri: global.stockUri.realtime[global.currStockUri].uri + codes.toString(),
             success: function (obj) {
-                var stocks = global.stockUri[global.currStockUri].parse(codes, obj.output);
+                var stocks = global.stockUri.realtime[global.currStockUri].parse(codes, obj.output);
 
                 global.currAmount = 0;
                 var stockRealtime, curr, parent, currcapital, cost, number, amount;
@@ -283,10 +316,10 @@
         for (var index in codes) {
             var code = codes[index];
             global.http.request({
-                uri: $.format(global.stockUri.capital.uri, code),
+                uri: $.format(global.stockUri.capital[global.currStockUri].uri, code),
                 context: $(global.dom.stocks + '[stock="' + code + '"]'),
                 success: function (obj) {
-                    var capital = global.stockUri.capital.parse(obj.context.attr('stock'), obj.output);
+                    var capital = global.stockUri.capital[global.currStockUri].parse(obj.context.attr('stock'), obj.output);
                     var parent = obj.context;
                     parent.find('.totalcapital').html(capital.total.thousandsSeparator());
                     parent.find('.currcapital').html(capital.curr.thousandsSeparator());
@@ -359,6 +392,7 @@
             global.clock = setTimeout('getRealtimeInfo(global.stocks.codes)', 5000);
         });
     });
+
 </script>
 </body>
 </html>
