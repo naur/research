@@ -97,12 +97,12 @@
         stockMarket: {
             indexes: [
                 ['000001', 0, 0, 'sh'],
-                //['000002', 0, 0, 'sh'],
-                //['000003', 0, 0, 'sh'],
-                ['399005', 0, 0, 'sz'],
-                ['399006', 0, 0, 'sz'],
-                ['399102', 0, 0, 'sz'],
+                ['000002', 0, 0, 'sh'],
                 ['399107', 0, 0, 'sz'],
+                ['399102', 0, 0, 'sz'],
+                ['399005', 0, 0, 'sz'],
+                //['399006', 0, 0, 'sz'],
+                //['000003', 0, 0, 'sh'],
                 //['399108', 0, 0, 'sz']
             ],
             stocks: [
@@ -114,38 +114,40 @@
                 ['002063', 1600, 36836.8, 'sz'],
                 ['300024', 0, 0, 'sz'],
                 ['300227', 0, 0, 'sz'],
-                ['002319', 0, 0, 'sz'],
-                ['600580', 0, 0, 'sh'],
-                ['600637', 0, 0, 'sh'],
+
+                ['600768', 0, 0, 'sh'],
+
+                ['002579', 0, 0, 'sz'],
+                ['300197', 0, 0, 'sz'],
                 ['300097', 0, 0, 'sz'],
                 ['600853', 0, 0, 'sh'],
                 ['002474', 0, 0, 'sz'],
                 ['002072', 0, 0, 'sz'],
-//                ['000004', 0, 0, 'sz'],
-//                ['600271', 0, 0, 'sh'],
-//                ['600733', 0, 0, 'sh'],
-//                ['000555', 0, 0, 'sz'],
-//                ['600455', 0, 0, 'sh'],
-//                ['000670', 0, 0, 'sz'],
-//                ['002633', 0, 0, 'sz'],
-//                ['000609', 0, 0, 'sz'],
-//                ['002684', 0, 0, 'sz'],
-//                ['000711', 0, 0, 'sz'],
-//                ['000803', 0, 0, 'sz'],
-//                ['002425', 0, 0, 'sz'],
-//                ['600182', 0, 0, 'sh'],
-//                ['002566', 0, 0, 'sz'],
-//                ['600444', 0, 0, 'sh'],
+                ['600271', 0, 0, 'sh'],
+                ['600733', 0, 0, 'sh'],
+                ['600455', 0, 0, 'sh'],
+                ['000609', 0, 0, 'sz'],
+                ['002684', 0, 0, 'sz'],
+                ['000803', 0, 0, 'sz'],
+                ['002425', 0, 0, 'sz'],
+                ['600182', 0, 0, 'sh'],
+                ['002566', 0, 0, 'sz'],
 
-//                ['300197', 500, 5889.50, 'sz'],
+//                ['002319', 0, 0, 'sz'],
+//                ['600580', 0, 0, 'sh'],
+//                ['600637', 0, 0, 'sh'],
+//                ['002633', 0, 0, 'sz'],
+//                ['000670', 0, 0, 'sz'],
+//                ['000004', 0, 0, 'sz'],
+//                ['600444', 0, 0, 'sh'],
+//                ['000711', 0, 0, 'sz'],
+//                ['000555', 0, 0, 'sz'],
 //                ['601888', 0, 0, 'sh'],
-//                ['600768', 0, 0, 'sh'],
 //                ['000020', 0, 0, 'sz'],
 //                ['601989', 0, 0, 'sh'],
 //                ['000673', 0, 0, 'sz'],
 //                ['601225', 0, 0, 'sh'],
 //                ['000990', 0, 0, 'sz'],
-//                ['002579', 0, 0, 'sz'],
 //                ['600836', 0, 0, 'sh'],
 //                ['000762', 0, 0, 'sz'],
 //                ['000751', 0, 0, 'sz'],
@@ -220,6 +222,7 @@
                             stocks[codes[index]].advance = stock[0];
                             stocks[codes[index]].decline = stock[1];
                             stocks[codes[index]].dynainfo = stock[2];
+                            stocks[codes[index]].total = parseInt(stock[0]) + parseInt(stock[1]) + parseInt(stock[2]);
                         }
 
                         return stocks;
@@ -326,13 +329,13 @@
         global.http.request({
             uri: global.stockUri.advanceDecline[global.currStockUri].uri + codes.join("_zdp,") + '_zdp',
             success: function (obj) {
-                var parent, stockAdvanceDecline, stocks = global.stockUri.advanceDecline[global.currStockUri].parse(codes, obj.output);
+                var parent, adp, stocks = global.stockUri.advanceDecline[global.currStockUri].parse(codes, obj.output);
                 for (var index in codes) {
-                    stockAdvanceDecline = stocks[codes[index]];
+                    adp = stocks[codes[index]];
                     parent = $(global.dom.stocks + '[stock="' + codes[index] + '"]');
-                    parent.find('.advance').html(stockAdvanceDecline.advance);
-                    parent.find('.decline').html(stockAdvanceDecline.decline);
-                    parent.find('.dynainfo').html(stockAdvanceDecline.dynainfo);
+                    parent.find('.advance').html(adp.advance + '-' + (adp.advance / adp.total * 100).toFixed(2));
+                    parent.find('.decline').html(adp.decline + '-' + (adp.decline / adp.total * 100).toFixed(2));
+                    parent.find('.dynainfo').html(adp.dynainfo + '-' + (adp.dynainfo / adp.total * 100).toFixed(2));
                 }
             }
         });
