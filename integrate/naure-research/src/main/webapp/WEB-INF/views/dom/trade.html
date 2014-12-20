@@ -121,21 +121,21 @@
                 ['600853', 0, 0, 'sh'],
                 ['002474', 0, 0, 'sz'],
                 ['002072', 0, 0, 'sz'],
-                ['000004', 0, 0, 'sz'],
-                ['600271', 0, 0, 'sh'],
-                ['600733', 0, 0, 'sh'],
-                ['000555', 0, 0, 'sz'],
-                ['600455', 0, 0, 'sh'],
-                ['000670', 0, 0, 'sz'],
-                ['002633', 0, 0, 'sz'],
-                ['000609', 0, 0, 'sz'],
-                ['002684', 0, 0, 'sz'],
-                ['000711', 0, 0, 'sz'],
-                ['000803', 0, 0, 'sz'],
-                ['002425', 0, 0, 'sz'],
-                ['600182', 0, 0, 'sh'],
-                ['002566', 0, 0, 'sz'],
-                ['600444', 0, 0, 'sh'],
+//                ['000004', 0, 0, 'sz'],
+//                ['600271', 0, 0, 'sh'],
+//                ['600733', 0, 0, 'sh'],
+//                ['000555', 0, 0, 'sz'],
+//                ['600455', 0, 0, 'sh'],
+//                ['000670', 0, 0, 'sz'],
+//                ['002633', 0, 0, 'sz'],
+//                ['000609', 0, 0, 'sz'],
+//                ['002684', 0, 0, 'sz'],
+//                ['000711', 0, 0, 'sz'],
+//                ['000803', 0, 0, 'sz'],
+//                ['002425', 0, 0, 'sz'],
+//                ['600182', 0, 0, 'sh'],
+//                ['002566', 0, 0, 'sz'],
+//                ['600444', 0, 0, 'sh'],
 
 //        ['300197',  500,  5889.50, 'sz'],
 //        ['601888', 0, 0, 'sh'],
@@ -215,7 +215,7 @@
             advanceDecline: {
                 sina: {
                     uri: 'http://hq.sinajs.cn/rn=1418180251576&list=',
-                    parse: function (codes) {
+                    parse: function (codes, info) {
                         eval(info.replace(/var hq_str_/g, 'global.'));
                         var stock, stocks = {};
                         for (var index in codes) {
@@ -324,11 +324,12 @@
         }
     }
 
-    function getAdvanceDeclineInfo(codes) {
+    function getAdvanceDeclineInfo(stockMarket) {
+        var codes = stockMarket.indexes.codes;
         global.http.request({
-            uri: global.stockUri.advanceDecline[global.currStockUri].uri + codes.join("_zdp,"),
+            uri: global.stockUri.advanceDecline[global.currStockUri].uri + codes.join("_zdp,") + '_zdp',
             success: function (obj) {
-                var parent, stockAdvanceDecline, stocks = global.stockUri.realtime[global.currStockUri].parse(codes, obj.output);
+                var parent, stockAdvanceDecline, stocks = global.stockUri.advanceDecline[global.currStockUri].parse(codes, obj.output);
                 for (var index in codes) {
                     stockAdvanceDecline = stocks[codes[index]];
                     parent = $(global.dom.stocks + '[stock="' + codes[index] + '"]');
@@ -391,7 +392,7 @@
             getCapitalInfo(global.stockMarket.codes);
             $(document).on('keyup', function (event) {
                 var ev = document.all ? window.event : event;
-                if (ev.keyCode == global.utility.keyCode.R)  getRealtimeInfo(global.stockMarket, true);
+                if (ev.keyCode == global.utility.keyCode.R)  stockMarketTimer(global.stockMarket, true);
                 if (ev.keyCode == global.utility.keyCode.C)  getCapitalInfo(global.stockMarket.codes);
                 if (ev.keyCode == global.utility.keyCode.H) {
                     'none' == $(global.dom.stocksHead).css('display') ?
@@ -418,7 +419,7 @@
                 }
             });
 
-            global.clock = setTimeout('getRealtimeInfo(global.stockMarket)', global.interval);
+            global.clock = setTimeout('stockMarketTimer(global.stockMarket)', global.interval);
         });
     });
 
