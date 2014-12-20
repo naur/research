@@ -3,3 +3,39 @@ sz: 000001 -- 002725
      300001 -- 300383
 
 http://biz.finance.sina.com.cn/stock/flash_hq/kline_data.php?&rand=random(10000)&symbol=sz000010&begin_date=19950802&end_date=20120723&type=xml
+
+
+
+
+
+<!--var lta = 9026.9304;//流通A股,老数据保留-->
+<!--var lastfive = 30.8432;//过去5个交易日平均每分钟成交量-->
+<!--var flag = 1; //判断标志-->
+<!--var totalcapital = 12773.0893; //总股本-->
+<!--var currcapital = 9026.9304; //流通股本-->
+<!--var curracapital = 0; //流通A股-->
+<!--var currbcapital = 0; //流通B股-->
+<!--var a_code = 'sz000803'; //流通A股代码-->
+<!--var b_code = ''; //流通B股代码-->
+<!--var papercode = 'sz000803'; //当前页面个股代码-->
+<!--var exchangerate = 0; //汇率-->
+<!--var fourQ_mgsy = -0.0250;//最近四个季度每股收益和-->
+<!--var lastyear_mgsy = 0.0333;//前一年每股收益和-->
+<!--var price_5_ago = 8.540;//5日前收盘价格-->
+<!--var price_10_ago = 8.230;//10日前收盘价格-->
+<!--var price_20_ago = 8.110;//20日前收盘价格-->
+<!--var price_60_ago = 7.240;//60日前收盘价格-->
+<!--var price_120_ago = 8.120;//120日前收盘价格-->
+<!--var price_250_ago = 7.220;//250日前收盘价格-->
+<!--var mgjzc = 1.1531;//最近报告的每股净资产-->
+<!--var stock_state = 1;//个股状态（0:无该记录; 1:上市正常交易; 2:未上市; 3:退市）-->
+<!--var trans_flag = 1;//是否显示涨跌停价（1:显示 0:不显示）-->
+<!--var profit = 0.0425;//最近年度净利润-->
+<!--var profit_four = -0.0320;//最近四个季度净利润-->
+<!--var stockType = 'A'; //股票类型  A-A股 B-B股  I-指数-->
+<!--var stockname = '金宇车城'; //股票名称-->
+<!--var corr_hkstock = ''; //相关港股代码-->
+<!--var corr_bdc = ''; //相关债券可转换债-->
+<!--var corr_bde = ''; //相关债券普通企业债-->
+
+<!--/* BHPsnK7Cm94I1m1LT9oBbUxsAQI/tgPKy65jyFVorJxI+1EIO93Qt424Ixf9wBWPIGXcpKaSbXdJW/qND1DBRMwXtjHUVq5WkIPxRu8dYiHSMhK2rd+G4J8fJTsDMDuXXBGaU/JHe5/+DqKHxzt6MVAozqAWiOvIC008Tg== */-->

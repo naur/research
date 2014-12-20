@@ -37,6 +37,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
             contentType: 'application/xml; charset=utf-8',
             error: null,
             success: null,
+            complete: null,
             changed: null,
             context: null,
             htmlParser: {parser: null, delegate: null}
@@ -87,7 +88,11 @@ define(['jquery', 'naure'], function ($, NAURE) {
             opt.xmlhttp.open(opt.method, opt.uri, opt.async);
             opt.xmlhttp.onload = function () {
                 if (opt.success) {
-                    opt.success({output: opt.xmlhttp.responseXML && opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText, http: opt.xmlhttp, context: opt.context});
+                    opt.success({
+                        output: opt.xmlhttp.responseXML && opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText,
+                        http: opt.xmlhttp,
+                        context: opt.context
+                    });
                     if (opt.htmlParser) {
                         if (!opt.htmlParser.parser) {
                             if (opt.xmlhttp.getResponseHeader('Content-Type').search(/xml/g) >= 0)
@@ -102,12 +107,31 @@ define(['jquery', 'naure'], function ($, NAURE) {
                 }
                 if (opt.context)
                     $(opt.context).attr('disabled', false);
+
+                if (opt.complete)
+                    opt.complete({
+                        type: 'success',
+                        output: opt.xmlhttp.responseXML && opt.xmlhttp.responseXML.text.length > 0 ? opt.xmlhttp.responseXML : opt.xmlhttp.responseText,
+                        http: opt.xmlhttp,
+                        context: opt.context
+                    });
             };
             opt.xmlhttp.onerror = function () {
                 if (opt.error)
-                    opt.error({state: NAURE.HTTP.state(opt.xmlhttp.readyState), http: opt.xmlhttp, context: opt.context});
+                    opt.error({
+                        state: NAURE.HTTP.state(opt.xmlhttp.readyState),
+                        http: opt.xmlhttp,
+                        context: opt.context
+                    });
                 if (opt.context)
                     $(opt.context).attr('disabled', false);
+                if (opt.complete)
+                    opt.complete({
+                        type: 'error',
+                        state: NAURE.HTTP.state(opt.xmlhttp.readyState),
+                        http: opt.xmlhttp,
+                        context: opt.context
+                    });
             };
             opt.xmlhttp.onreadystatechange = opt.stateChange;
             opt.xmlhttp.withCredentials = true; //标准的CORS请求不对cookies做任何事情，既不发送也不改变。如果希望改变这一情况，就需要将withCredentials设置为true。
@@ -124,6 +148,9 @@ define(['jquery', 'naure'], function ($, NAURE) {
         else {
             if (opt.error) {
                 opt.error({state: "Your browser does not support XMLHTTP."});
+            }
+            if (opt.complete) {
+                opt.complete({type: 'error', state: "Your browser does not support XMLHTTP."});
             }
         }
     };
@@ -172,7 +199,11 @@ define(['jquery', 'naure'], function ($, NAURE) {
                     delegate({content: span + '&lt;' + rootElement.nodeName + '/&gt;', datehide: true});
                 else {
                     if (rootElement.firstChild.nodeType == 3) {
-                        delegate({content: span + '&lt;' + rootElement.nodeName + '&gt;', datehide: true, inline: true});
+                        delegate({
+                            content: span + '&lt;' + rootElement.nodeName + '&gt;',
+                            datehide: true,
+                            inline: true
+                        });
                     }
                     else
                         delegate({content: span + '&lt;' + rootElement.nodeName + '&gt;', datehide: true});
@@ -204,7 +235,7 @@ define(['jquery', 'naure'], function ($, NAURE) {
         for (var key in jsonObj) {
             if (jsonObj[key] && (typeof(jsonObj[key]) == 'object')
             //&& jsonObj[key].length
-                ) {
+            ) {
                 containArray = true;
                 break;
             }
