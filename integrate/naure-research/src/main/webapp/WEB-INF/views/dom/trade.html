@@ -36,30 +36,9 @@
 <table id="stocks" rules="rows" class="raisefocus">
     <colgroup align="right" style="color:#0000FF;"></colgroup>
     <thead>
-    <tr>
-        <th class="name">证券名称</th>
-        <th class="code">证券代码</th>
-        <th class="number">证券数量</th>
-        <th class="cost">成本价</th>
-        <th class="curr">当前价</th>
-        <th class="priceLimit">涨跌幅</th>
-        <th class="priceLimitAmount">涨跌额</th>
-        <th class="profits">浮动盈亏</th>
-        <th class="profitability">盈亏比例(%)</th>
-        <th class="yclose">昨日收盘价</th>
-        <th class="open">今日开盘价</th>
-        <th class="high-low">今日最高价/今日最低价</th>
-        <th class="bidden advance">竞买</th>
-        <th class="seller decline">竞卖</th>
-        <th class="turnover dynainfo">成交</th>
-        <th class="amount">成本金额</th>
-        <th class="latest-value">最新市值</th>
-        <th class="totalcapital">总股本</th>
-        <th class="currcapital">流通股本</th>
-    </tr>
+    <tr></tr>
     </thead>
-    <tbody>
-    </tbody>
+    <tbody></tbody>
 </table>
 <br/>
 <input type="text" class="small" id="calc"/><span id="result"></span>
@@ -86,24 +65,45 @@
     //http://hq.sinajs.cn/rn=1418180251576&list=sh000001_zdp,sh000002_zdp,sh000003_zdp,sz399005_zdp,sz399006_zdp,sz399102_zdp,sz399107_zdp,sz399108_zdp
     //Open	High	Low	Close	Volume, EPS
     var global = {
+        interval: 8000,
         http: null,
         message: null,
         utility: null,
         isShow: false,
         clock: null,
-        interval: 8000,
         totalAmount: 0,
         currAmount: 0,
+        stockTitle: [
+            {name: 'name', alias: '证券名称'},
+            {name: 'code', alias: '证券代码'},
+            {name: 'number', alias: '证券数量'},
+            {name: 'cost', alias: '成本价'},
+            {name: 'curr', alias: '当前价'},
+            {name: 'priceLimit', alias: '涨跌幅'},
+            {name: 'priceLimitAmount', alias: '涨跌额'},
+            {name: 'profits', alias: '浮动盈亏'},
+            {name: 'profitability', alias: '盈亏比例(%)'},
+            {name: 'yclose', alias: '昨日收盘价'},
+            {name: 'open', alias: '今日开盘价'},
+            {name: 'high-low', alias: '今日最高价/今日最低价'},
+            {name: 'bidden advance', alias: '竞买'},
+            {name: 'seller decline', alias: '竞卖'},
+            {name: 'turnover dynainfo', alias: '成交'},
+            {name: 'amount', alias: '成本金额'},
+            {name: 'latest-value', alias: '最新市值'},
+            {name: 'totalcapital', alias: '总股本'},
+            {name: 'currcapital', alias: '流通股本'}
+        ],
         stockMarket: {
             indexes: [
                 ['000001', 0, 0, 'sh'],
-                ['000002', 0, 0, 'sh'],
-                ['000003', 0, 0, 'sh'],
+                //['000002', 0, 0, 'sh'],
+                //['000003', 0, 0, 'sh'],
                 ['399005', 0, 0, 'sz'],
                 ['399006', 0, 0, 'sz'],
                 ['399102', 0, 0, 'sz'],
                 ['399107', 0, 0, 'sz'],
-                ['399108', 0, 0, 'sz']
+                //['399108', 0, 0, 'sz']
             ],
             stocks: [
                 ['600265', 2700, 35640.00, 'sh'],  //7.58
@@ -137,32 +137,34 @@
 //                ['002566', 0, 0, 'sz'],
 //                ['600444', 0, 0, 'sh'],
 
-//        ['300197',  500,  5889.50, 'sz'],
-//        ['601888', 0, 0, 'sh'],
-//        ['600768', 0, 0, 'sh'],
-//        ['000020', 0, 0, 'sz'],
-//        ['601989', 0, 0, 'sh'],
-//        ['000673', 0, 0, 'sz'],
-//        ['601225', 0, 0, 'sh'],
-//        ['000990', 0, 0, 'sz'],
-//        ['002579', 0, 0, 'sz'],
-
-//        ['600836', 0, 0, 'sh'],
-//        ['000762', 0, 0, 'sz'],
-//        ['000751', 0, 0, 'sz'],
-//        ['000960', 0, 0, 'sz'],
-//        ['601877', 0, 0, 'sh'],
-                ['600715', 0, 0, 'sh']
+//                ['300197', 500, 5889.50, 'sz'],
+//                ['601888', 0, 0, 'sh'],
+//                ['600768', 0, 0, 'sh'],
+//                ['000020', 0, 0, 'sz'],
+//                ['601989', 0, 0, 'sh'],
+//                ['000673', 0, 0, 'sz'],
+//                ['601225', 0, 0, 'sh'],
+//                ['000990', 0, 0, 'sz'],
+//                ['002579', 0, 0, 'sz'],
+//                ['600836', 0, 0, 'sh'],
+//                ['000762', 0, 0, 'sz'],
+//                ['000751', 0, 0, 'sz'],
+//                ['000960', 0, 0, 'sz'],
+//                ['601877', 0, 0, 'sh'],
+//                ['600715', 0, 0, 'sh']
             ]
         },
-        stockHtmlTemplate: '<tr stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">' +
-        '<td class="name"></td><td class="code">{1}</td><td class="number">{2}</td>' +
-        '<td class="cost">{3}</td><td class="curr"></td>' +
-        '<td class="priceLimit"></td><td class="priceLimitAmount"></td><td class="profits"></td><td class="profitability"></td>' +
-        '<td class="yclose"></td><td class="open"></td><td><span class="low" />-<span class="high" /></td>' +
-        '<td class="bidden advance"></td><td class="seller decline"></td><td class="turnover dynainfo"></td>' +
-        '<td class="amount">{6}</td><td class="latest-value"></td><td class="totalcapital"></td><td class="currcapital"></td>' +
-        '</tr>',
+        stockHtmlTemplate: {
+            head: '<th class="{0}">{1}</th>',
+            body: '<tr stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">' +
+            '<td class="name"></td><td class="code">{1}</td><td class="number">{2}</td>' +
+            '<td class="cost">{3}</td><td class="curr"></td>' +
+            '<td class="priceLimit"></td><td class="priceLimitAmount"></td><td class="profits"></td><td class="profitability"></td>' +
+            '<td class="yclose"></td><td class="open"></td><td><span class="low" />-<span class="high" /></td>' +
+            '<td class="bidden advance"></td><td class="seller decline"></td><td class="turnover dynainfo"></td>' +
+            '<td class="amount">{6}</td><td class="latest-value"></td><td class="totalcapital"></td><td class="currcapital"></td>' +
+            '</tr>'
+        },
         currStockUri: 'sina',
         stockUri: {
             realtime: {
@@ -236,6 +238,7 @@
             result: '#result',
             calc: '#calc',
             message: '#message',
+            stocksHeadContainer: '#stocks thead tr',
             stocksContainer: '#stocks tbody',
             stocksHead: '#stocks thead tr',
             stocksName: '#stocks thead tr td:first-child, #stocks tbody tr td:first-child',
@@ -350,13 +353,23 @@
 
     function init(stockMarket) {
         var codes = [], html = '', stocks = stockMarket.stocks, indexes = stockMarket.indexes;
+
+        for (var index in global.stockTitle) {
+            if (!global.stockTitle.hasOwnProperty(index)) continue;
+            $(global.dom.stocksHeadContainer).append(
+                    $.format(
+                            global.stockHtmlTemplate.head,
+                            global.stockTitle[index].name, global.stockTitle[index].alias)
+            );
+        }
+
         for (var index in stocks) {
             if (!stocks.hasOwnProperty(index)) continue;
             //计算总成本
             if (0 != stocks[index][1]) {
                 global.totalAmount += stocks[index][2];
             }
-            html += $.format(global.stockHtmlTemplate,
+            html += $.format(global.stockHtmlTemplate.body,
                     stocks[index][3], stocks[index][0],
                     0 != stocks[index][1] ? stocks[index][1] : '',
                     0 == stocks[index][1] ? '' : (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][2],
@@ -368,7 +381,7 @@
         codes = [];
         for (var index in indexes) {
             if (!indexes.hasOwnProperty(index)) continue;
-            html += $.format(global.stockHtmlTemplate,
+            html += $.format(global.stockHtmlTemplate.body,
                     indexes[index][3], indexes[index][0],
                     0 != indexes[index][1] ? indexes[index][1] : '',
                     0 == indexes[index][1] ? '' : (indexes[index][2] / indexes[index][1]).toFixed(3), indexes[index][2],
