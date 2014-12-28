@@ -1,2 +1,4 @@
-Naure.org
-Research.Naure.org
+itody.org
+lab.itody.org
+
+gradle -x test -Presearch build
