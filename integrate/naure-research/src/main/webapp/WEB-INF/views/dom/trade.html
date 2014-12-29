@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title></title>
-    <link href="http://cdn.naure.org/css/default.css" rel="stylesheet" type="text/css"/>
-    <link href="http://cdn.naure.org/css/naure.message.css" rel="stylesheet" type="text/css"/>
+    <link href="file:///D:/Research/projects/res/naure-web/src/main/webapp/css/default.css" rel="stylesheet" type="text/css"/>
+    <link href="file:///D:/Research/projects/res/naure-web/src/main/webapp/css/naure.message.css" rel="stylesheet" type="text/css"/>
     <style>
         body {
             background-color: #ffffff;
@@ -43,19 +43,19 @@
 <br/>
 <input type="text" class="small" id="calc"/><span id="result"></span>
 
-<script type="text/javascript" src="http://cdn.naure.org/js/core/require.js"></script>
+<script type="text/javascript" src="file:///D:/Research/projects/res/naure-web/src/main/webapp/js/core/require.js"></script>
 <script type="text/javascript">
     require.config({
         paths: {
             'jquery': 'http://code.jquery.com/jquery-2.1.0.min',
-            'jquery.strings': 'http://cdn.naure.org/js/core/jquery.strings',
-            'oop': 'http://cdn.naure.org/js/core/oop',
-            'naure': 'http://cdn.naure.org/js/core/naure',
-            'naure.math': 'http://cdn.naure.org/js/core/naure.math',
-            'naure.math.symbol': 'http://cdn.naure.org/js/core/naure.math.symbol',
-            'naure.utility': 'http://cdn.naure.org/js/core/naure.utility',
-            'naure.message': 'http://cdn.naure.org/js/core/naure.message',
-            'naure.http.xmlhttp': 'http://cdn.naure.org/js/core/naure.http.xmlhttp'
+            'jquery.strings': 'file:///D:/Research/projects/res/naure-web/src/main/webapp/js/core/jquery.strings',
+            'oop': 'file:///D:/Research/projects/res/naure-web/src/main/webapp/js/core/oop',
+            'naure': 'file:///D:/Research/projects/res/naure-web/src/main/webapp/js/core/naure',
+            'naure.math': 'file:///D:/Research/projects/res/integrate/naure-research/src/main/webapp/js/core/math/naure.math',
+            'naure.math.symbol': 'file:///D:/Research/projects/res/integrate/naure-research/src/main/webapp/js/core/math/naure.math.symbol',
+            'naure.utility': 'file:///D:/Research/projects/res/naure-web/src/main/webapp/js/core/naure.utility',
+            'naure.message': 'file:///D:/Research/projects/res/naure-web/src/main/webapp/js/core/naure.message',
+            'naure.http.xmlhttp': 'file:///D:/Research/projects/res/naure-web/src/main/webapp/js/core/naure.http.xmlhttp'
         },
         shim: {
             'jquery.strings': ['jquery']
@@ -99,8 +99,9 @@
                 ['000001', 0, 0, 'sh'],
                 ['000002', 0, 0, 'sh'],
                 ['399107', 0, 0, 'sz'],
+                ['399101', 0, 0, 'sz'],
                 ['399102', 0, 0, 'sz'],
-                ['399005', 0, 0, 'sz'],
+                //['399005', 0, 0, 'sz'],
                 //['399006', 0, 0, 'sz'],
                 //['000003', 0, 0, 'sh'],
                 //['399108', 0, 0, 'sz']
@@ -108,7 +109,7 @@
             stocks: [
                 ['600265', 2700, 35640.00, 'sh'],  //7.58
                 ['600793', 2000, 26400.00, 'sh'],  //9.85
-                ['000509', 500, 2790.00, 'sz'],
+                //['000509', 500, 2790.00, 'sz'],
                 ['300157', 1500, 19669.65, 'sz'],
                 ['600689', 2700, 24300.00, 'sh'],
                 ['002063', 1600, 36836.8, 'sz'],
