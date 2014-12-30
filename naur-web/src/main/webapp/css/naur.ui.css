@@ -1,0 +1,80 @@
+.x {
+    background: url("/images/icon_x.png") no-repeat center;
+}
+
+.y {
+    background: url("/images/icon_y.png") no-repeat center;
+}
+
+.dropdown-prompt {
+    border: 1px solid green;
+    font: italic 12.5px arial, sans-serif;
+    background-color: white;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: absolute;
+    z-index: 10000;
+    line-height: 20px;
+    min-width: 150px;
+    max-height: 300px;
+    display: none;
+    overflow: auto;
+}
+
+.dropdown-prompt li {
+    min-width: 150px;
+    padding: 2px 6px;
+    white-space: nowrap;
+    color: black;
+    text-align: left;
+}
+
+.dropdown-prompt li.select {
+    cursor: pointer;
+    background-color: greenyellow;
+}
+
+.dropdown-prompt li.match {
+    text-decoration: underline;
+    color: yellow;
+}
+
+.tag_panel {
+    display: inline-block;
+    background: #ffffff;
+    border: 1px solid yellowgreen;
+    width: 98%;
+    margin: 1px;
+}
+
+.tag_panel_hover {
+    border: 1px solid green;
+}
+
+.tag_panel ul {
+    display: block;
+    list-style: none;
+    padding: 1px;
+    margin: 0px;
+    overflow: auto;
+    min-height: 50px;;
+    max-height: 120px;
+}
+
+.tag_panel ul li {
+    padding: 4px 4px;
+    margin: 4px 4px;
+    cursor: pointer;
+    float: left;
+    border: 1px solid yellowgreen;
+    background: #ffffff;
+}
+
+.tag_panel ul li.tag_panel_item_select {
+    background: #FFD801;
+}
+
+.raise {
+    background: lime;
+}
