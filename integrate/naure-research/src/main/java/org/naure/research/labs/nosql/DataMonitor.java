@@ -49,6 +49,7 @@ public class DataMonitor implements Watcher, AsyncCallback.StatCallback {
         void closing(int rc);
     }
 
+    @SuppressWarnings("unchecked")
     public void process(WatchedEvent event) {
         String path = event.getPath();
         if (event.getType() == Event.EventType.None) {

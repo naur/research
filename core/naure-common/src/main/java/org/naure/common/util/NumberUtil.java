@@ -6,11 +6,12 @@
 
 package org.naure.common.util;
 
+import org.naure.common.GlobalConstants;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 
-import com.yihaodian.scm.scs.framework.common.constant.GlobalConstants;
 
 /**
  * 数值工具类
@@ -172,8 +173,8 @@ public class NumberUtil {
     /**
      * getPercent重载，根据录入精度要求显示对应小数位
      * 
-     * @param Double
-     * @param int 保留小数位个数
+     * @param d
+     * @param scale 保留小数位个数
      * @return
      */
     public static String getPercent(Double d,int scale) {

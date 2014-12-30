@@ -1,5 +1,5 @@
-﻿/*
- * @(#) DateUtil.java 2014-38-12
+/*
+ * @(#) DateUtil.java 2014-12-30
  * 
  * Copy Right@ 纽海信息技术有限公司
  */
@@ -18,14 +18,13 @@ import java.util.List;
  * author jiaruizhi
  *
  *
- * 创建日期: 2014-38-12
+ * 创建日期: 2014-26-30
  * 修改人 :
  * 修改说明:
  * 评审人 ：
  * </pre>
  */
 public class DateUtil {
-
     public static Date getPrevWeekDay(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
