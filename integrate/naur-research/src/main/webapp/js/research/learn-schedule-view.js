@@ -11,6 +11,7 @@
 
 /*-------------------- 全局变量 START ----------------*/
 var global = {
+    dayOfPage: null,
     ONEDAY: 24 * 60 * 60 * 1000,
     fileUri: '/upload/learn/{0}',
     getUri: '/learn/schedule/{0}.json',    // /learn/schedule/1,2,3.xml
@@ -25,7 +26,7 @@ var global = {
         heading: 'heading',
         chart: '图表',
 //        id: 'id',
-        created: 'created',
+        created: 'created'
 //        updated: 'updated'
     },
     uploadOpt: {
@@ -150,11 +151,15 @@ function handleFile() {
             var schedule = null;
             var timeStart = null, timeEnd = null;
             for (var i = 0; i < text.length; i++) {
+                if ('//' == text[i].substr(0, 2)) {
+                    global.dayOfPage = parseInt(text[i].match(/CURRENT\s+(\d+)\s+/)[1]);
+                    continue;
+                }
                 schedule = text[i].split('|');
                 if (schedule && schedule.length > 1) {
                     schedule = {
                         pages: schedule[0].trim(),
-                        days: schedule[1].trim(),
+                        days: (parseInt(schedule[0].trim()) / global.dayOfPage).toPixed(),
                         time: schedule[2].trim(),
                         path: schedule[3].trim(),
                         heading: schedule[4].trim()
@@ -165,15 +170,15 @@ function handleFile() {
                         timeStart = new Date(schedule.time);
                     }
                     if (timeStart && !isNaN(parseInt(schedule.days))) {
-			if (parseInt(schedule.days) > 0) {
+                        if (parseInt(schedule.days) > 0) {
                             timeEnd = new Date(timeStart.getTime() + (parseInt(schedule.days) - 1) * global.ONEDAY);
-			} else {
-			    timeEnd = timeStart;
-			}
+                        } else {
+                            timeEnd = timeStart;
+                        }
                         schedule.time = timeStart.format('yyyy-MM-dd') + " -> " + timeEnd.format('yyyy-MM-dd');
-			if (parseInt(schedule.days) > 0) {
+                        if (parseInt(schedule.days) > 0) {
                             timeStart = new Date(timeEnd.getTime() + global.ONEDAY);
-			}
+                        }
                     }
 
                     AddLearningSchedule(schedule)
@@ -210,17 +215,19 @@ function renderLearningSchedule(elem) {
             global.message.empty();
 
             $(global.dom.container + ' table tbody').html($.render.row(
-                $.views.toRow(global.table, obj.output.information.data, {before: function (data, prop, result) {
-                    if ('chart' == prop) {
-                        result['chart'] = '<canvas class="chart"></canvas>';
-                        return true;
-                    } else if ('created' == prop) {
-                        result[prop] = new Date(data[prop]).format('yyyy-MM-dd HH:mm:ss')
-                        return true;
-                    } else {
-                        return false;
+                $.views.toRow(global.table, obj.output.information.data, {
+                    before: function (data, prop, result) {
+                        if ('chart' == prop) {
+                            result['chart'] = '<canvas class="chart"></canvas>';
+                            return true;
+                        } else if ('created' == prop) {
+                            result[prop] = new Date(data[prop]).format('yyyy-MM-dd HH:mm:ss')
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
-                }})
+                })
             ));
 
             renderChart();
@@ -257,9 +264,11 @@ function renderChart() {
             new Date(match[2]) <= global.endTime) {
             global.gantt.block({
                 container: this,
-                coordinate: {X1: global.startTime, X2: global.endTime,
+                coordinate: {
+                    X1: global.startTime, X2: global.endTime,
                     Y1: new Date(match[1]),
-                    Y2: new Date(match[2])}
+                    Y2: new Date(match[2])
+                }
             });
         } else {
             global.gantt.block({
@@ -384,7 +393,7 @@ function initEvent() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require([ 'loading', 'research-template', 'naur.chart.gantt', 'jquery.uploadify'], function (mod, $1) {
+require(['loading', 'research-template', 'naur.chart.gantt', 'jquery.uploadify'], function (mod, $1) {
     global.message = mod.naur.Message;
     global.http = mod.naur.HTTP;
     global.utility = mod.naur.Utility;
