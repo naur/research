@@ -36,7 +36,7 @@
 //        try {
 //            EnvironmentConfig envConfig = new EnvironmentConfig();
 //            envConfig.setAllowCreate(true);
-//            myDbEnvironment = new Environment(new File("E:\\Database\\Naure\\BerkeleyDB"), envConfig);
+//            myDbEnvironment = new Environment(new File("E:\\Database\\Naur\\BerkeleyDB"), envConfig);
 //
 //            DatabaseConfig dbConfig = new DatabaseConfig();
 //            dbConfig.setAllowCreate(true);
