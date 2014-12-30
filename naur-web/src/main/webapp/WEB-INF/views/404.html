@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> 404 Error Page </title>
+    <link href="/css/mathquill.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/naur.ui.overlay.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/naur.message.css" rel="stylesheet" type="text/css"/>
+
+    <script type="text/javascript" src="/js/core/require.js"></script>
+    <script type="text/javascript" src="/js/core/require.config.js"></script>
+
+    <script type="text/javascript">
+        var message;
+        require(['jquery', 'naur.message', 'naur.analytics'], function ($, NAUR) {
+            message = NAUR.Message;
+            analytics = NAUR.Analytics;
+            analytics.isTrack = false;
+
+            $(function () {
+                $('body').message();
+                message.show({content:'404', color:'red'});
+
+                analytics.isTrack = true;
+                analytics.track({code:404});
+            });
+        });
+    </script>
+
+</head>
+<body></body>
+</html>

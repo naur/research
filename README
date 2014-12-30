@@ -1,4 +1,4 @@
-itody.org
-lab.itody.org
+naur.org
+lab.naur.org
 
 gradle -x test -Presearch build

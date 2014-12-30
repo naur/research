@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> #macro($title)#end </title>
+    <link href="/css/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/bootstrap/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/default.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/naur.message.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/naur.ui.overlay.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/naur.ui.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="/js/core/require.js"></script>
+    <script type="text/javascript" src="/js/core/require.config.js"></script>
+    #macro($css)#end
+</head>
+<body style="background-color: #ffffff">
+
+<!--navigation start-->
+
+#macro($navigation)
+$!{render(read("navigation.html"))}
+#end
+
+<!--navigation end-->
+
+<!--container start -->
+
+<div class="container-fluid">
+    #macro($content)#end
+</div>
+
+<!--container end -->
+
+#macro($js)#end
+
+</body>
+</html>

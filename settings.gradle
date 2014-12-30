@@ -1,21 +1,21 @@
-rootProject.name = 'naure'
+rootProject.name = 'naur'
 
-include ':core:naure-common'
-include ':core:naure-utility'
-include ':core:naure-repositories'
-include ':core:naure-integrate'
+include ':core:naur-common'
+include ':core:naur-utility'
+include ':core:naur-repositories'
+include ':core:naur-integrate'
 
-include ':integrate:naure-home'
-include ':integrate:naure-research'
-include ':integrate:naure-shoping'
-include ':naure-web'
+include ':integrate:naur-home'
+include ':integrate:naur-research'
+include ':integrate:naur-shoping'
+include ':naur-web'
 
-project(':core:naure-common').projectDir = "$rootDir/core/naure-common" as File
-project(':core:naure-utility').projectDir = "$rootDir/core/naure-utility" as File
-project(':core:naure-repositories').projectDir = "$rootDir/core/naure-repositories" as File
-project(':core:naure-integrate').projectDir = "$rootDir/core/naure-integrate" as File
+project(':core:naur-common').projectDir = "$rootDir/core/naur-common" as File
+project(':core:naur-utility').projectDir = "$rootDir/core/naur-utility" as File
+project(':core:naur-repositories').projectDir = "$rootDir/core/naur-repositories" as File
+project(':core:naur-integrate').projectDir = "$rootDir/core/naur-integrate" as File
 
-project(':integrate:naure-home').projectDir = "$rootDir/integrate/naure-home" as File
-project(':integrate:naure-research').projectDir = "$rootDir/integrate/naure-research" as File
-project(':integrate:naure-shoping').projectDir = "$rootDir/integrate/naure-shoping" as File
-project(':naure-web').projectDir = "$rootDir/naure-web" as File
+project(':integrate:naur-home').projectDir = "$rootDir/integrate/naur-home" as File
+project(':integrate:naur-research').projectDir = "$rootDir/integrate/naur-research" as File
+project(':integrate:naur-shoping').projectDir = "$rootDir/integrate/naur-shoping" as File
+project(':naur-web').projectDir = "$rootDir/naur-web" as File

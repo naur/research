@@ -268,7 +268,7 @@ function renderLearningSchedule(elem) {
     global.message.show({content: '正在获取数据...'});
 
     //todo url:  /learn/schedule/1,2,3.xml
-    global.dataAreaElement.NAURE_HTTP_Acquire({
+    global.dataAreaElement.NAUR_HTTP_Acquire({
         xmlUrl: '/learn/schedule/' + (location.search ? location.search.substr(1) : 1) + '.xml',
         xslUrl: '/xsl/learning-schedule.xsl',
         context: elem,
@@ -401,12 +401,12 @@ function initEvent() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require([ 'loading', 'research-template', 'naure.chart.gantt',
-    'naure.ui.overlay', 'jquery.uploadify'], function (mod, $1) {
-    global.message = mod.naure.Message;
-    global.http = mod.naure.HTTP;
-    global.utility = mod.naure.Utility;
-    global.gantt = mod.naure.Chart.Gantt;
+require([ 'loading', 'research-template', 'naur.chart.gantt',
+    'naur.ui.overlay', 'jquery.uploadify'], function (mod, $1) {
+    global.message = mod.naur.Message;
+    global.http = mod.naur.HTTP;
+    global.utility = mod.naur.Utility;
+    global.gantt = mod.naur.Chart.Gantt;
 
     global.messageElement = $('article section:eq(3)');
     global.dataAreaElement = $('article section:eq(2)');

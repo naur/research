@@ -3,28 +3,28 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>naure-parent</artifactId>
-        <groupId>org.naure</groupId>
+        <artifactId>naur-parent</artifactId>
+        <groupId>org.naur</groupId>
         <version>1.0</version>
-        <relativePath>../commom/naure-parent/pom.xml</relativePath>
+        <relativePath>../commom/naur-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>naure-home</artifactId>
+    <artifactId>naur-home</artifactId>
     <packaging>war</packaging>
 
     <dependencies>
 
         <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-integrate</artifactId>
+            <groupId>org.naur</groupId>
+            <artifactId>naur-integrate</artifactId>
             <type>war</type>
             <!--<scope>runtime</scope>-->
         </dependency>
 
         <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-integrate</artifactId>
+            <groupId>org.naur</groupId>
+            <artifactId>naur-integrate</artifactId>
             <classifier>classes</classifier>
             <type>jar</type>
             <scope>provided</scope>
@@ -40,8 +40,8 @@
                 <!--<configuration>-->
                     <!--<overlays>-->
                         <!--<overlay>-->
-                            <!--<groupId>org.naure</groupId>-->
-                            <!--<artifactId>naure-integrate</artifactId>-->
+                            <!--<groupId>org.naur</groupId>-->
+                            <!--<artifactId>naur-integrate</artifactId>-->
                             <!--&lt;!&ndash;<excludes>&ndash;&gt;-->
                             <!--&lt;!&ndash;<exclude>WEB-INF/classes/images/sampleimage-dependency.jpg</exclude>&ndash;&gt;-->
                             <!--&lt;!&ndash;</excludes>&ndash;&gt;-->

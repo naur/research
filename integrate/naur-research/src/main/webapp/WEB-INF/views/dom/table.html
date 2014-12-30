@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>表格编辑演示</title>
+    <link href="http://cdn.naur.org/css/default.css" rel="stylesheet" type="text/css"/>
+    <link href="http://cdn.naur.org/css/metro/iconFont.min.css" rel="stylesheet" type="text/css"/>
+    <link href="http://cdn.naur.org/css/metro/metro-bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="http://cdn.naur.org/css/metro/metro-bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <link href="http://cdn.naur.org/css/naur.message.css" rel="stylesheet" type="text/css"/>
+    <!--handsontable START-->
+    <link rel="stylesheet" media="screen"
+          href="http://warpech.github.io/jquery-handsontable/dist/jquery.handsontable.full.css">
+    <link rel="stylesheet" media="screen"
+          href="http://warpech.github.io/jquery-handsontable/demo/css/samples.css?20140401">
+    <!--handsontable END-->
+    <script type="text/javascript" src="http://cdn.naur.org/js/core/require.js"></script>
+    <style>
+        .grid {
+            background: white;
+            margin: 20px;
+        }
+
+        .handsontable td.td_title {
+            color: green;
+            fontWeight: bold;
+            background-color: #CCEECC;
+        }
+    </style>
+</head>
+<body class="metro" style="background-color: #ffffff">
+
+<div id="navigation">
+    <nav class="navigation-bar">
+        <nav class="navigation-bar-content">
+            <a class="element"><span class="icon-grid-view"></span> 表格编辑演示 <sup>1.0</sup></a>
+
+            <!--分隔符-->
+            <span class="element-divider"></span>
+            <a class="element brand" href="#"><span class="icon-spin"></span></a>
+            <a class="element brand" href="#"><span class="icon-printer"></span></a>
+            <a class="element brand" href="#"><span class="icon-locked-2"></span></a>
+
+            <!--分隔符-->
+            <span class="element-divider"></span>
+
+            <div class="element place-right">
+                <a class="dropdown-toggle" href="#"><span class="icon-cog"></span></a>
+            </div>
+            <!--分隔符-->
+            <span class="element-divider place-right"></span>
+
+        </nav>
+    </nav>
+</div>
+
+<div class="grid">
+</div>
+
+<script type="text/javascript">
+var global = {
+    keys: ['CHECK', 'TABLE', 'FIELD'],
+    tableEditor: {'Handsontable': handsontableShow, 'Table Smart Editor': tableSmartEditorShow, 'Tables Generator': tablesGeneratorShow},
+    rowTemplate: "<div class=\"row\">\n" +
+            "        <div class=\"span3\">\n" +
+            "            <span class=\"item-title\"> {0}</span>\n" +
+            "        </div>\n" +
+            "        <div class=\"span8 offset1\">\n" +
+            "            <div class=\"demo\"></div>\n" +
+            "        </div>\n" +
+            "    </div>",
+    dom: {
+        grid: '.grid',
+        example: function (n) {
+            return '.demo:eq(' + (n - 1) + ')'
+        }}
+};
+
+var tableEditor = function (options) {
+    var opt = $.extend({
+        container: null,
+        date: null,
+        style: {
+            title: 'title',
+            check: 'check',
+            table: null,
+            field: null,
+            value: null
+        }
+    }, options);
+
+    this.renderer = {
+        checkRenderer: function (instance, td, row, col, prop, value, cellProperties) {
+        },
+        tableRenderer: function (instance, td, row, col, prop, value, cellProperties) {
+            Handsontable.renderers.TextRenderer.apply(this, arguments);
+            $(td).addClass('td_title');
+        },
+        fieldRenderer: function (instance, td, row, col, prop, value, cellProperties) {
+        },
+        valueRenderer: function (instance, td, row, col, prop, value, cellProperties) {
+        },
+        titleRenderer: function (instance, td, row, col, prop, value, cellProperties) {
+        },
+
+        cellRenderer: function (instance, td, row, col, prop, value, cellProperties) {
+            if (0 != col && opt.style[instance.getDataAtCell(row, 0)]) {
+                $(td).addClass(opt.style[instance.getDataAtCell(row, 0)]);
+            }
+            if (0 == col) {
+                $(td).addClass(opt.style[instance.getDataAtCell(row, 0)]);
+            }
+            Handsontable.renderers.TextRenderer.apply(this, arguments);
+        }
+    };
+
+    $(contailer).handsontable({
+        data: [
+            ['TABLE', 'tran_order_detail', '调拨明细信息', 'SCS_DATA_DS'],
+            ['FIELD', 'ID' , 'RAN_ORDER_NO', 'PRODUCT_ID', 'CREATE_TIME'],
+            ['KEY', 'ID'],
+            ['VALUE', -7000, -7200, 17627, '2013-07-31 09:20:00'],
+            ['VALUE', -7001, -7201, 17628, '2013-07-01 09:20:00'],
+            ['VALUE', -7002, -7202, 17629, '2013-07-26 09:20:00'],
+            ['VALUE', -7003, -7203, 17630, '2013-07-26 09:20:00'],
+            [],
+            ['CHECK', '删除md_product'],
+            ['TABLE', 'md_product', 'md_product', 'SCS_DATA_DS'],
+            ['FIELD', 'SQL'],
+            ['VALUE', 'delete from md_product WHERE id IN (17627, 17628, 17629, 17630);']
+        ],
+        colHeaders: true,
+        rowHeaders: true,
+        minSpareCols: 1,
+        minSpareRows: 1,
+        manualColumnResize: true,
+        manualColumnMove: true,
+        outsideClickDeselects: false,
+        cells: function (row, col, prop) {
+            this.renderer = global.renderer.cellRenderer;
+            return {};
+        },
+        contextMenu: {
+            callback: function (key, options) {
+                var m = "clicked: " + key;
+                global.message.show({content: m + ': ' + JSON.stringify(options), color: 'red'});
+            },
+            items: {
+                'row_above': {},
+                'row_below': {},
+                'row_copy_above': {name: '插入的单元格', icon: null, disabled: function () {
+                    //return ($(global.dom.example(1)).handsontable('getSelected')[0] === 0);
+                    return false;
+                }, callback: function (key, options) {
+                    global.message.show({content: JSON.stringify(arguments), color: 'red'});
+                }},
+                'hsep1': '---------',
+                'col_left': {},
+                'col_right': {},
+                'hsep2': '---------',
+                'remove_row': {},
+                'remove_col': {},
+                'hsep3': '---------',
+                'undo': {},
+                'redo': {},
+                'hsep4': '---------',
+                overwrite: {name: 'overwrite', callback: function (key, options) {
+                    if (!this.data) this.data = {};
+                    this.data['pasteMode'] = 'overwrite';
+                    this.updateSettings({pasteMode: this.data['pasteMode']});
+                    return false;
+                }, disabled: function (key, options) {
+                    return  !this.data ? true : 'overwrite' == this.data['pasteMode'];
+                }},
+                shiftDown: {name: 'shift_down', callback: function (key, options) {
+                    if (!this.data) this.data = {};
+                    this.data['pasteMode'] = 'shift_down';
+                    this.updateSettings({pasteMode: this.data['pasteMode']});
+                    return false;
+                }, disabled: function (key, options) {
+                    return  !this.data ? false : 'shift_down' == this.data['pasteMode'];
+                }},
+                shiftRight: {name: 'shift_right', callback: function (key, options) {
+                    if (!this.data) this.data = {};
+                    this.data['pasteMode'] = 'shift_right';
+                    this.updateSettings({pasteMode: this.data['pasteMode']});
+                    return false;
+                }, disabled: function (key, options) {
+                    return  !this.data ? false : 'shift_right' == this.data['pasteMode'];
+                }},
+                "about": {name: '一号店表格编辑', callback: function () {
+                    alert('一号店表格编辑');
+                    return false;
+                }}
+            }
+        }
+    });
+};
+
+
+var cellType = {
+    title: global.renderer.titleRenderer,
+    head: 'head',
+    field: 'field',
+    value: 'value'
+};
+
+function orangeRenderer(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.renderers.TextRenderer.apply(this, arguments);
+    $(td).css({background: 'orange'});
+}
+
+function handsontableShow() {
+    $(global.dom.example(1)).handsontable({
+        data: [
+            ['TABLE', 'tran_order_detail', '调拨明细信息', 'SCS_DATA_DS'],
+            ['FIELD', 'ID' , 'RAN_ORDER_NO', 'PRODUCT_ID', 'CREATE_TIME'],
+            ['KEY', 'ID'],
+            ['VALUE', -7000, -7200, 17627, '2013-07-31 09:20:00'],
+            ['VALUE', -7001, -7201, 17628, '2013-07-01 09:20:00'],
+            ['VALUE', -7002, -7202, 17629, '2013-07-26 09:20:00'],
+            ['VALUE', -7003, -7203, 17630, '2013-07-26 09:20:00'],
+            [],
+            ['CHECK', '删除md_product'],
+            ['TABLE', 'md_product', 'md_product', 'SCS_DATA_DS'],
+            ['FIELD', 'SQL'],
+            ['VALUE', 'delete from md_product WHERE id IN (17627, 17628, 17629, 17630);']
+        ],
+        colHeaders: true,
+        rowHeaders: true,
+        minSpareCols: 1,
+        minSpareRows: 1,
+        manualColumnResize: true,
+        manualColumnMove: true,
+        outsideClickDeselects: false,
+        cells: function (row, col, prop) {
+            this.renderer = global.renderer.cellRenderer;
+            return {};
+        },
+        contextMenu: {
+            callback: function (key, options) {
+                var m = "clicked: " + key;
+                global.message.show({content: m + ': ' + JSON.stringify(options), color: 'red'});
+            },
+            items: {
+                'row_above': {},
+                'row_below': {},
+                'row_copy_above': {name: '插入的单元格', icon: null, disabled: function () {
+                    //return ($(global.dom.example(1)).handsontable('getSelected')[0] === 0);
+                    return false;
+                }, callback: function (key, options) {
+                    global.message.show({content: JSON.stringify(arguments), color: 'red'});
+                }},
+                'hsep1': '---------',
+                'col_left': {},
+                'col_right': {},
+                'hsep2': '---------',
+                'remove_row': {},
+                'remove_col': {},
+                'hsep3': '---------',
+                'undo': {},
+                'redo': {},
+                'hsep4': '---------',
+                overwrite: {name: 'overwrite', callback: function (key, options) {
+                    if (!this.data) this.data = {};
+                    this.data['pasteMode'] = 'overwrite';
+                    this.updateSettings({pasteMode: this.data['pasteMode']});
+                    return false;
+                }, disabled: function (key, options) {
+                    return  !this.data ? true : 'overwrite' == this.data['pasteMode'];
+                }},
+                shiftDown: {name: 'shift_down', callback: function (key, options) {
+                    if (!this.data) this.data = {};
+                    this.data['pasteMode'] = 'shift_down';
+                    this.updateSettings({pasteMode: this.data['pasteMode']});
+                    return false;
+                }, disabled: function (key, options) {
+                    return  !this.data ? false : 'shift_down' == this.data['pasteMode'];
+                }},
+                shiftRight: {name: 'shift_right', callback: function (key, options) {
+                    if (!this.data) this.data = {};
+                    this.data['pasteMode'] = 'shift_right';
+                    this.updateSettings({pasteMode: this.data['pasteMode']});
+                    return false;
+                }, disabled: function (key, options) {
+                    return  !this.data ? false : 'shift_right' == this.data['pasteMode'];
+                }},
+                "about": {name: '一号店表格编辑', callback: function () {
+                    alert('一号店表格编辑');
+                    return false;
+                }}
+            }
+        }
+    });
+}
+
+function tableSmartEditorShow() {
+}
+
+function tablesGeneratorShow() {
+}
+
+//    function bindDumpButton() {
+//        $('body').on('click', 'button[name=dump]', function () {
+//            var dump = $(this).data('dump');
+//            var $container = $(dump);
+//            console.log('data of ' + dump, $container.handsontable('getData'));
+//        });
+//    }
+//    bindDumpButton();
+
+require.config({
+    paths: {
+        'jquery': 'http://code.jquery.com/jquery-2.1.0.min',
+        'jquery.strings': 'http://cdn.naur.org/js/core/jquery.strings',
+        'jquery.widget': 'http://cdn.naur.org/js/core/jquery.widget.min',
+        'jquery.mousewheel': 'http://cdn.naur.org/js/core/jquery.mousewheel',
+        'oop': 'http://cdn.naur.org/js/core/oop',
+        'metro': 'http://cdn.naur.org/js/core/metro.min',
+        'naur': 'http://cdn.naur.org/js/core/naur',
+        'naur.utility': 'http://cdn.naur.org/js/core/naur.utility',
+        'yhd.message': 'http://cdn.naur.org/js/core/naur.message',
+        'yhd.http.xmlhttp': 'http://cdn.naur.org/js/core/naur.http.xmlhttp',
+        'handsontable': 'http://warpech.github.io/jquery-handsontable/dist/jquery.handsontable.full'
+    },
+    shim: {
+        'jquery.widget': ['jquery'],
+        'jquery.mousewheel': ['jquery'],
+        'jquery.strings': ['jquery'],
+        'metro': ['jquery', 'jquery.widget', 'jquery.mousewheel'],
+        'handsontable': ['jquery'],
+        'yhd.message': ['handsontable']
+    }
+});
+
+function init() {
+    $(global.dom.grid).html('');
+    for (var index in global.tableEditor) {
+        $(global.dom.grid).append(global.utility.format(global.rowTemplate, index));
+        global.tableEditor[index]();
+        global.message.show({content: index + ' loaded!'});
+    }
+}
+
+require(['jquery', 'metro', 'jquery.strings', 'yhd.http.xmlhttp', 'yhd.message'], function ($, $1, $2, YHD) {
+    global.http = YHD.HTTP;
+    global.message = YHD.Message;
+    global.utility = YHD.Utility;
+    $('body').message({overlay: 'left-bottom', title: ''});
+    init();
+    $(function () {
+        $(document).on('keyup', function (event) {
+            var ev = document.all ? window.event : event;
+            if (ev.keyCode == global.utility.keyCode.C && 'BODY' == event.target.nodeName) global.message.empty();
+        });
+    });
+});
+</script>
+</body>
+</html>

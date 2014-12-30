@@ -1,0 +1,9 @@
+description = ''
+
+dependencies {
+    compile project(':core:naur-integrate')
+    testCompile project(':core:naur-common').sourceSets.test.output
+
+    compile group: 'org.jrobin', name: 'jrobin', version: jrobin_version
+    compile group: 'javax.servlet', name: 'servlet-api', version: servlet_api_version
+}

@@ -3,34 +3,34 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>naure-parent</artifactId>
-        <groupId>org.naure</groupId>
+        <artifactId>naur-parent</artifactId>
+        <groupId>org.naur</groupId>
         <version>1.0</version>
-        <relativePath>../naure-parent/pom.xml</relativePath>
+        <relativePath>../naur-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>naure-integrate</artifactId>
+    <artifactId>naur-integrate</artifactId>
     <packaging>war</packaging>
 
     <dependencies>
 
         <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-common</artifactId>
+            <groupId>org.naur</groupId>
+            <artifactId>naur-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-common</artifactId>
+            <groupId>org.naur</groupId>
+            <artifactId>naur-common</artifactId>
             <type>test-jar</type>
         </dependency>
         <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-utility</artifactId>
+            <groupId>org.naur</groupId>
+            <artifactId>naur-utility</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.naure</groupId>
-            <artifactId>naure-repositories</artifactId>
+            <groupId>org.naur</groupId>
+            <artifactId>naur-repositories</artifactId>
         </dependency>
 
         <dependency>

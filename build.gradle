@@ -5,7 +5,7 @@ allprojects {
 //    apply plugin: 'findbugs'
 //    apply plugin: 'pmd'
 //    apply plugin: 'jdepend'
-    group = 'org.naure'
+    group = 'org.naur'
     version = '1.0'
 //    tasks.withType(Compile) {
 //        options.encoding = 'UTF-8'

@@ -1,0 +1,10 @@
+description = ''
+
+dependencies {
+    compile project(':core:naur-common')
+    testCompile project(':core:naur-common').sourceSets.test.output
+
+    compile group: 'org.apache.poi', name: 'poi', version: poi_version
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: poi_version
+    compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: poi_version
+}

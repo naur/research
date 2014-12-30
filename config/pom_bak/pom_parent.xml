@@ -5,8 +5,8 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.naure</groupId>
-    <artifactId>naure-parent</artifactId>
+    <groupId>org.naur</groupId>
+    <artifactId>naur-parent</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
 
@@ -21,7 +21,7 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 
         <jboss.domain>default</jboss.domain>
-        <naure.version>1.0</naure.version>
+        <naur.version>1.0</naur.version>
         <guava.version>17.0</guava.version>
 
         <org.springframework.version>4.0.5.RELEASE</org.springframework.version>
@@ -55,7 +55,7 @@
         <castor.version>1.2</castor.version>
         <httl.version>1.0.11</httl.version>
 
-        <naure.log.file.path>/var/web/logs</naure.log.file.path>
+        <naur.log.file.path>/var/web/logs</naur.log.file.path>
 
     </properties>
 
@@ -63,11 +63,11 @@
 
         <dependencies>
 
-            <!--naure-->
+            <!--naur-->
             <dependency>
-                <groupId>org.naure</groupId>
-                <artifactId>naure-common</artifactId>
-                <version>${naure.version}</version>
+                <groupId>org.naur</groupId>
+                <artifactId>naur-common</artifactId>
+                <version>${naur.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>commons-lang</artifactId>
@@ -77,9 +77,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.naure</groupId>
-                <artifactId>naure-common</artifactId>
-                <version>${naure.version}</version>
+                <groupId>org.naur</groupId>
+                <artifactId>naur-common</artifactId>
+                <version>${naur.version}</version>
                 <type>test-jar</type>
                 <exclusions>
                     <exclusion>
@@ -90,34 +90,34 @@
             </dependency>
 
             <dependency>
-                <groupId>org.naure</groupId>
-                <artifactId>naure-utility</artifactId>
-                <version>${naure.version}</version>
+                <groupId>org.naur</groupId>
+                <artifactId>naur-utility</artifactId>
+                <version>${naur.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.naure</groupId>
-                <artifactId>naure-repositories</artifactId>
-                <version>${naure.version}</version>
+                <groupId>org.naur</groupId>
+                <artifactId>naur-repositories</artifactId>
+                <version>${naur.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.naure</groupId>
-                <artifactId>naure-integrate</artifactId>
-                <version>${naure.version}</version>
+                <groupId>org.naur</groupId>
+                <artifactId>naur-integrate</artifactId>
+                <version>${naur.version}</version>
                 <classifier>classes</classifier>
             </dependency>
 
             <dependency>
-                <groupId>org.naure</groupId>
-                <artifactId>naure-integrate</artifactId>
-                <version>${naure.version}</version>
+                <groupId>org.naur</groupId>
+                <artifactId>naur-integrate</artifactId>
+                <version>${naur.version}</version>
                 <type>war</type>
             </dependency>
 
             <!--<dependency>-->
-            <!--<groupId>org.naure</groupId>-->
-            <!--<artifactId>naure-research</artifactId>-->
-            <!--<version>${naure.version}</version>-->
+            <!--<groupId>org.naur</groupId>-->
+            <!--<artifactId>naur-research</artifactId>-->
+            <!--<version>${naur.version}</version>-->
             <!--</dependency>-->
 
             <dependency>

@@ -1,0 +1,118 @@
+$!{extends("/layout.html")}
+
+#macro(title) House #end
+
+#macro(content)
+
+<style type="text/css">
+    #map {
+        width: 100%;
+        height: 500px;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="map"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <a target="_blank" href="http://guangguchuntianpa.fang.com"><h4><span class="label label-danger">保利清能西海岸</span>
+        </h4></a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <a target="_blank" href="http://guangguchuntianpa.fang.com"><h4><span
+                class="label label-danger">光谷北大资源.山水年华</span></h4></a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <a target="_blank" href="http://langshilicheng.fang.com"><h4><span class="label label-danger">朗诗里程</span></h4>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <a target="_blank" href="http://guangguchuntianpa.fang.com"><h4><span class="label label-danger">平安光谷春天</span>
+        </h4></a>
+    </div>
+</div>
+
+<script type="text/javascript"
+        src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCFq_f1XYnmyUiG7SHj9u1guoq7DInfp_g&sensor=false&region=zh-CN&language=zh-CN"></script>
+<script type="text/javascript" src="/js/core/maplabel-compiled.js"></script>
+<script type="text/javascript">
+    var global = {
+        font: {
+            size: 12,
+            color: 'red'
+        },
+        map: null,
+        marker: null,
+        geocoder: null,
+        //经度：114.38484,  维度：30.478435
+        //北京：39.904214, 116.40741300000002);
+        center: [30.47856, 114.40844],
+        points: [
+            {point: [30.47856, 114.40844], name: '工作地方'},
+            {point: [30.40364, 114.41549], name: '保利清能西海岸'},
+            {point: [30.43973, 114.43742], name: '平安光谷春天'},
+            {point: [30.48021, 114.51558], name: '朗诗里程'},
+            {point: [30.49713, 114.53742], name: '光谷北大资源.山水年华'}
+        ]
+    };
+
+    function loadPoint() {
+        for (var index in global.points) {
+            global.points[index].point = new google.maps.LatLng(global.points[index].point[0], global.points[index].point[1]);
+        }
+        global.center = new google.maps.LatLng(global.center[0], global.center[1]);
+
+        global.map = new google.maps.Map(
+                document.getElementById("map"), {
+                    zoom: 14,
+                    center: global.center,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+        );
+
+        //google.maps.Marker
+        for (var index in global.points) {
+            var mapLabel = new MapLabel({
+                text: global.points[index].name,
+                map: global.map,
+                position: global.points[index].point,
+                fontSize: global.font.size,
+                fontColor: global.font.color,
+                align: 'right',
+                title: '您当前所在的位置\r\n经度：' + global.points[index].point.lng() + '\r\n维度： ' + global.points[index].point.lat()
+            });
+            var marker = new google.maps.Marker;
+            marker.bindTo('map', mapLabel);
+            marker.bindTo('position', mapLabel);
+        }
+
+        global.geocoder = new google.maps.Geocoder();
+    }
+
+    google.maps.event.addDomListener(window, 'load', loadPoint);
+
+    function init() {
+    }
+
+    //require(['loading', 'research-template', 'google.maps', 'google.maplabel'], function (NAUR) {
+    require(['loading', 'research-template'], function (NAUR) {
+        $(function () {
+        });
+    });
+</script>
+
+#end

@@ -42,8 +42,8 @@ if (null != ext.profile && !(ext.profile.equals(""))) {
             }
 
 
-    testCompile project(path: ':core:naure-common', type: 'tests')
-    D:/Research/projects/res/naure-research/build/reports/tests/index.html
+    testCompile project(path: ':core:naur-common', type: 'tests')
+    D:/Research/projects/res/naur-research/build/reports/tests/index.html
 
     dependencies {
         testCompile project(':modules:bam-ae').sourceSets.test.classes

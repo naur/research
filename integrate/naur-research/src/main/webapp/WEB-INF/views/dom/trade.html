@@ -1,0 +1,446 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="file:///D:/Research/projects/res/naur-web/src/main/webapp/css/default.css" rel="stylesheet" type="text/css"/>
+    <link href="file:///D:/Research/projects/res/naur-web/src/main/webapp/css/naur.message.css" rel="stylesheet" type="text/css"/>
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        thead tr, tbody tr td.name {
+            display: none;
+        }
+
+        #stocks tbody tr .amount, #stocks tbody tr .latest-value, #stocks tbody tr .totalcapital, #stocks tbody tr .currcapital {
+            display: none;
+        }
+
+        table tbody tr {
+            text-align: right;
+        }
+
+        table tbody tr td.name, table tbody tr td.code {
+            text-align: center;
+        }
+
+        input {
+            border: 0px;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<table id="stocks" rules="rows" class="raisefocus">
+    <colgroup align="right" style="color:#0000FF;"></colgroup>
+    <thead>
+    <tr></tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<br/>
+<input type="text" class="small" id="calc"/><span id="result"></span>
+
+<script type="text/javascript" src="file:///D:/Research/projects/res/naur-web/src/main/webapp/js/core/require.js"></script>
+<script type="text/javascript">
+    require.config({
+        paths: {
+            'jquery': 'http://code.jquery.com/jquery-2.1.0.min',
+            'jquery.strings': 'file:///D:/Research/projects/res/naur-web/src/main/webapp/js/core/jquery.strings',
+            'oop': 'file:///D:/Research/projects/res/naur-web/src/main/webapp/js/core/oop',
+            'naur': 'file:///D:/Research/projects/res/naur-web/src/main/webapp/js/core/naur',
+            'naur.math': 'file:///D:/Research/projects/res/integrate/naur-research/src/main/webapp/js/core/math/naur.math',
+            'naur.math.symbol': 'file:///D:/Research/projects/res/integrate/naur-research/src/main/webapp/js/core/math/naur.math.symbol',
+            'naur.utility': 'file:///D:/Research/projects/res/naur-web/src/main/webapp/js/core/naur.utility',
+            'naur.message': 'file:///D:/Research/projects/res/naur-web/src/main/webapp/js/core/naur.message',
+            'naur.http.xmlhttp': 'file:///D:/Research/projects/res/naur-web/src/main/webapp/js/core/naur.http.xmlhttp'
+        },
+        shim: {
+            'jquery.strings': ['jquery']
+        }
+    });
+
+    //http://hq.sinajs.cn/rn=1418180251576&list=sh000001_zdp,sh000002_zdp,sh000003_zdp,sz399005_zdp,sz399006_zdp,sz399102_zdp,sz399107_zdp,sz399108_zdp
+    //Open	High	Low	Close	Volume, EPS
+    var global = {
+        interval: 8000,
+        http: null,
+        message: null,
+        utility: null,
+        isShow: false,
+        clock: null,
+        totalAmount: 0,
+        currAmount: 0,
+        stockTitle: [
+            {name: 'name', alias: '证券名称'},
+            {name: 'code', alias: '证券代码', placeholder: '{1}'},
+            {name: 'number', alias: '证券数量', placeholder: '{2}'},
+            {name: 'cost', alias: '成本价', placeholder: '{3}'},
+            {name: 'curr', alias: '当前价'},
+            {name: 'priceLimit', alias: '涨跌幅'},
+            {name: 'priceLimitAmount', alias: '涨跌额'},
+            {name: 'profits', alias: '浮动盈亏'},
+            {name: 'profitability', alias: '盈亏比例(%)'},
+            {name: 'yclose', alias: '昨日收盘价'},
+            {name: 'open', alias: '今日开盘价'},
+            {name: 'high-low', alias: '今日最高价/今日最低价', placeholder: '<span class="low" />-<span class="high" />'},
+            {name: 'bidden advance', alias: '竞买'},
+            {name: 'seller decline', alias: '竞卖'},
+            {name: 'turnover dynainfo', alias: '成交'},
+            {name: 'amount', alias: '成本金额', placeholder: '{6}'},
+            {name: 'latest-value', alias: '最新市值'},
+            {name: 'totalcapital', alias: '总股本'},
+            {name: 'currcapital', alias: '流通股本'}
+        ],
+        stockMarket: {
+            indexes: [
+                ['000001', 0, 0, 'sh'],
+                ['000002', 0, 0, 'sh'],
+                ['399107', 0, 0, 'sz'],
+                ['399101', 0, 0, 'sz'],
+                ['399102', 0, 0, 'sz'],
+                //['399005', 0, 0, 'sz'],
+                //['399006', 0, 0, 'sz'],
+                //['000003', 0, 0, 'sh'],
+                //['399108', 0, 0, 'sz']
+            ],
+            stocks: [
+                ['600265', 2700, 35640.00, 'sh'],  //7.58
+                ['600793', 2000, 26400.00, 'sh'],  //9.85
+                //['000509', 500, 2790.00, 'sz'],
+                ['300157', 1500, 19669.65, 'sz'],
+                ['600689', 2700, 24300.00, 'sh'],
+                ['002063', 1600, 36836.8, 'sz'],
+                ['300024', 0, 0, 'sz'],
+                ['300227', 0, 0, 'sz'],
+
+                ['600768', 0, 0, 'sh'],
+
+                ['002579', 0, 0, 'sz'],
+                ['300197', 0, 0, 'sz'],
+                ['300097', 0, 0, 'sz'],
+                ['600853', 0, 0, 'sh'],
+                ['002474', 0, 0, 'sz'],
+                ['002072', 0, 0, 'sz'],
+                ['600271', 0, 0, 'sh'],
+                ['600733', 0, 0, 'sh'],
+                ['600455', 0, 0, 'sh'],
+                ['000609', 0, 0, 'sz'],
+                ['002684', 0, 0, 'sz'],
+                ['000803', 0, 0, 'sz'],
+                ['002425', 0, 0, 'sz'],
+                ['600182', 0, 0, 'sh'],
+                ['002566', 0, 0, 'sz'],
+
+//                ['002319', 0, 0, 'sz'],
+//                ['600580', 0, 0, 'sh'],
+//                ['600637', 0, 0, 'sh'],
+//                ['002633', 0, 0, 'sz'],
+//                ['000670', 0, 0, 'sz'],
+//                ['000004', 0, 0, 'sz'],
+//                ['600444', 0, 0, 'sh'],
+//                ['000711', 0, 0, 'sz'],
+//                ['000555', 0, 0, 'sz'],
+//                ['601888', 0, 0, 'sh'],
+//                ['000020', 0, 0, 'sz'],
+//                ['601989', 0, 0, 'sh'],
+//                ['000673', 0, 0, 'sz'],
+//                ['601225', 0, 0, 'sh'],
+//                ['000990', 0, 0, 'sz'],
+//                ['600836', 0, 0, 'sh'],
+//                ['000762', 0, 0, 'sz'],
+//                ['000751', 0, 0, 'sz'],
+//                ['000960', 0, 0, 'sz'],
+//                ['601877', 0, 0, 'sh'],
+//                ['600715', 0, 0, 'sh']
+            ]
+        },
+        stockHtmlTemplate: {
+            th: '<th class="{0}">{1}</th>',
+            td: '<td class="{0}">{1}</td>',
+            body: '<tr stock="{0}{1}" number="{2}" cost="{3}" amount="{4}" curr="{5}">'
+        },
+        currStockUri: 'sina',
+        stockUri: {
+            realtime: {
+                sina: {
+                    uri: 'http://hq.sinajs.cn/list=',
+                    parse: function (codes, info) {
+                        eval(info.replace(/var hq_str_/g, 'global.'));
+                        var stock, stocks = {};
+                        for (var index in codes) {
+                            stock = global[codes[index]].split(',');
+                            stocks[codes[index]] = {};
+                            stocks[codes[index]].name = stock[0];
+                            stocks[codes[index]].curr = stock[3];
+                            stocks[codes[index]].yclose = stock[2];
+                            stocks[codes[index]].open = stock[1];
+                            stocks[codes[index]].high = stock[4];
+                            stocks[codes[index]].low = stock[5];
+                            stocks[codes[index]].priceLimitAmount = (stocks[codes[index]].curr - stocks[codes[index]].yclose).toFixed(3);
+                            stocks[codes[index]].priceLimit = (stocks[codes[index]].priceLimitAmount / stocks[codes[index]].yclose * 100).toFixed(2) + ' %';
+                            stocks[codes[index]].biddenP1 = stock[11];
+                            stocks[codes[index]].biddenV1 = Math.round(parseFloat(stock[10]) / 100);  //单位：手
+                            stocks[codes[index]].sellerP1 = stock[21];
+                            stocks[codes[index]].sellerV1 = Math.round(parseFloat(stock[20]) / 100);  //单位：手
+                            stocks[codes[index]].turnoverVol = stock[8] / 100;  //单位：手
+                            stocks[codes[index]].turnoverAmt = stock[9] / 1000; //单位：万元
+                        }
+
+                        return stocks;
+                    }
+                },
+                tencent: {
+                    uri: 'http://qt.gtimg.cn/q=',
+                    parse: function () {
+                    }
+                }
+            },
+            capital: {
+                sina: {
+                    uri: 'http://finance.sina.com.cn/realstock/company/{0}/jsvar.js',
+                    parse: function (code, info) {
+                        var result = {code: code, total: 0, curr: 0};
+                        info = info.match(/totalcapital\s=\s(\d+(\D\d+)?);[\s\S]+currcapital\s=\s(\d+(\D\d+)?);[\s\S]+curracapital\s=\s(\d+(\D\d+)?);/i);
+                        if (!info) return result;
+                        result.total = parseFloat(info[1]).toFixed(4);
+                        result.curr = '0' != info[3] ? parseFloat(info[3]).toFixed(4) : parseFloat(info[5]).toFixed(4);
+                        return result
+                    }
+                }
+            },
+            advanceDecline: {
+                sina: {
+                    uri: 'http://hq.sinajs.cn/rn=1418180251576&list=',
+                    parse: function (codes, info) {
+                        eval(info.replace(/var hq_str_/g, 'global.'));
+                        var stock, stocks = {};
+                        for (var index in codes) {
+                            stock = global[codes[index] + "_zdp"].split(',');
+                            stocks[codes[index]] = {};
+                            stocks[codes[index]].advance = stock[0];
+                            stocks[codes[index]].decline = stock[1];
+                            stocks[codes[index]].dynainfo = stock[2];
+                            stocks[codes[index]].total = parseInt(stock[0]) + parseInt(stock[1]) + parseInt(stock[2]);
+                        }
+
+                        return stocks;
+                    }
+                }
+            }
+        },
+        messageTemplate: 'clock: {0}, cost: {1}, curr: {2}, profit: {3} {4}',
+        dom: {
+            result: '#result',
+            calc: '#calc',
+            message: '#message',
+            stocksHeadContainer: '#stocks thead tr',
+            stocksContainer: '#stocks tbody',
+            stocksHead: '#stocks thead tr',
+            stocksName: '#stocks thead tr td:first-child, #stocks tbody tr td:first-child',
+            stocks: '#stocks tbody tr',
+            stocksHide: '#stocks tbody tr .amount, #stocks tbody tr .latest-value, #stocks tbody tr .totalcapital, #stocks tbody tr .currcapital'
+        }
+    };
+
+    function getRealtimeInfo(stockMarket, complete) {
+        var codes = stockMarket.codes;
+        global.http.request({
+            uri: global.stockUri.realtime[global.currStockUri].uri + codes.toString(),
+            success: function (obj) {
+                var stocks = global.stockUri.realtime[global.currStockUri].parse(codes, obj.output);
+
+                global.currAmount = 0;
+                var stockRealtime, curr, parent, currcapital, cost, number, amount;
+                for (var index in codes) {
+                    stockRealtime = stocks[codes[index]];
+                    parent = $(global.dom.stocks + '[stock="' + codes[index] + '"]');
+                    currcapital = parseFloat(parent.attr('currcapital')) * 100; //单位：手
+                    cost = parseFloat(parent.attr('cost'));
+                    number = parseFloat(parent.attr('number') ? parent.attr('number') : 0);
+                    amount = parseFloat(parent.attr('amount'));
+                    curr = parseFloat(parent.attr('curr')) == 0 ? stockRealtime.curr : parseFloat(parent.attr('curr'));
+                    global.currAmount += number * curr;
+                    parent.find('.name').html(stockRealtime.name);
+                    parent.find('.curr').html(curr);
+                    parent.find('.profits').html(0 != number ? (curr * number - amount).toFixed(2) : '');
+                    parent.find('.profitability').html(amount != 0 ? ((curr * number - amount) / amount * 100).toFixed(2) + ' %' : '');
+                    parent.find('.latest-value').html((curr * number).thousandsSeparator(2));
+                    parent.find('.yclose').html(stockRealtime.yclose);
+                    parent.find('.open').html(stockRealtime.open);
+                    parent.find('.high').html(stockRealtime.high);
+                    parent.find('.low').html(stockRealtime.low);
+                    parent.find('.priceLimit').html(stockRealtime.priceLimit);
+                    parent.find('.priceLimitAmount').html(stockRealtime.priceLimitAmount);
+                    if (currcapital && 0 != currcapital) {
+                        parent.find('.bidden').html(stockRealtime.biddenP1 + '/' + stockRealtime.biddenV1.thousandsSeparator(0) + '-' + (stockRealtime.biddenV1 / currcapital * 100).toFixed(3));
+                        parent.find('.seller').html(stockRealtime.sellerP1 + '/' + stockRealtime.sellerV1.thousandsSeparator(0) + '-' + (stockRealtime.sellerV1 / currcapital * 100).toFixed(3));
+                        parent.find('.turnover').html(
+                                //stockRealtime.turnoverAmt.toFixed(2).thousandsSeparator() + '/' +
+                                stockRealtime.turnoverVol + '-' + (stockRealtime.turnoverVol / currcapital * 100).toFixed(3));
+                    }
+                }
+                global.message.show({
+                    content: $.format(global.messageTemplate, global.clock,
+                            global.totalAmount.toFixed(2),
+                            global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), '')
+                });
+            }, error: function (err) {
+                delete err.http;
+                global.message.show({
+                    content: $.format(global.messageTemplate, global.clock,
+                            global.totalAmount.toFixed(2),
+                            global.currAmount, (global.currAmount - global.totalAmount).toFixed(2),
+                            JSON.stringify(err))
+                });
+
+            }, complete: function () {
+                if (complete) {
+                    complete();
+                }
+            },
+            changed: function (obj) {
+                //window.console.log(JSON.stringify({clock: global.clock, state: obj.state}));
+            }
+        });
+    }
+
+    function getCapitalInfo(codes) {
+        for (var index in codes) {
+            var code = codes[index];
+            global.http.request({
+                uri: $.format(global.stockUri.capital[global.currStockUri].uri, code),
+                context: $(global.dom.stocks + '[stock="' + code + '"]'),
+                success: function (obj) {
+                    var capital = global.stockUri.capital[global.currStockUri].parse(obj.context.attr('stock'), obj.output);
+                    var parent = obj.context;
+                    parent.find('.totalcapital').html(capital.total.thousandsSeparator());
+                    parent.find('.currcapital').html(capital.curr.thousandsSeparator());
+                    parent.attr('totalcapital', capital.total);
+                    parent.attr('currcapital', capital.curr);
+                }
+            });
+        }
+    }
+
+    function getAdvanceDeclineInfo(stockMarket) {
+        var codes = stockMarket.indexes.codes;
+        global.http.request({
+            uri: global.stockUri.advanceDecline[global.currStockUri].uri + codes.join("_zdp,") + '_zdp',
+            success: function (obj) {
+                var parent, adp, stocks = global.stockUri.advanceDecline[global.currStockUri].parse(codes, obj.output);
+                for (var index in codes) {
+                    adp = stocks[codes[index]];
+                    parent = $(global.dom.stocks + '[stock="' + codes[index] + '"]');
+                    parent.find('.advance').html(adp.advance + '-' + (adp.advance / adp.total * 100).toFixed(2));
+                    parent.find('.decline').html(adp.decline + '-' + (adp.decline / adp.total * 100).toFixed(2));
+                    parent.find('.dynainfo').html(adp.dynainfo + '-' + (adp.dynainfo / adp.total * 100).toFixed(2));
+                }
+            }
+        });
+    }
+
+    function stockMarketTimer(stockMarket, refresh) {
+        getAdvanceDeclineInfo(global.stockMarket);
+        getRealtimeInfo(global.stockMarket, function () {
+            if (!refresh) global.clock = setTimeout('stockMarketTimer(global.stockMarket)', global.interval);
+        });
+    }
+
+    function init(stockMarket) {
+        var codes = [], td = '', html = '', stocks = stockMarket.stocks, indexes = stockMarket.indexes;
+
+        for (var index in global.stockTitle) {
+            if (!global.stockTitle.hasOwnProperty(index)) continue;
+            $(global.dom.stocksHeadContainer).append(
+                    $.format(
+                            global.stockHtmlTemplate.th,
+                            global.stockTitle[index].name, global.stockTitle[index].alias)
+            );
+            td += $.format(
+                    global.stockHtmlTemplate.td,
+                    global.stockTitle[index].name,
+                    global.stockTitle[index].placeholder ? global.stockTitle[index].placeholder : ''
+            );
+        }
+
+        global.stockHtmlTemplate.body += td + '</td>';
+
+        for (var index in stocks) {
+            if (!stocks.hasOwnProperty(index)) continue;
+            //计算总成本
+            if (0 != stocks[index][1]) {
+                global.totalAmount += stocks[index][2];
+            }
+            html += $.format(global.stockHtmlTemplate.body,
+                    stocks[index][3], stocks[index][0],
+                    0 != stocks[index][1] ? stocks[index][1] : '',
+                    0 == stocks[index][1] ? '' : (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][2],
+                    stocks[index][5] ? stocks[index][5] : 0, stocks[index][2].thousandsSeparator());
+            codes.push(stocks[index][3] + stocks[index][0]);
+        }
+        stockMarket.stocks.codes = codes;
+
+        codes = [];
+        for (var index in indexes) {
+            if (!indexes.hasOwnProperty(index)) continue;
+            html += $.format(global.stockHtmlTemplate.body,
+                    indexes[index][3], indexes[index][0],
+                    0 != indexes[index][1] ? indexes[index][1] : '',
+                    0 == indexes[index][1] ? '' : (indexes[index][2] / indexes[index][1]).toFixed(3), indexes[index][2],
+                    indexes[index][5] ? indexes[index][5] : 0, indexes[index][2].thousandsSeparator());
+            codes.push(indexes[index][3] + indexes[index][0]);
+        }
+        stockMarket.html = html;
+        stockMarket.indexes.codes = codes;
+        stockMarket.codes = stockMarket.stocks.codes.concat(stockMarket.indexes.codes);
+    }
+
+    require(['jquery', 'jquery.strings', 'naur.math', 'naur.http.xmlhttp', 'naur.message', 'naur.utility'], function ($, $1, NAUR) {
+        global.http = NAUR.HTTP;
+        global.message = NAUR.Message;
+        global.utility = NAUR.Utility;
+        global.math = NAUR.Math;
+        $('body').message({overlay: 'left-bottom', multiple: false, title: ''});
+        init(global.stockMarket);
+        $(function () {
+            $(global.dom.stocksContainer).html(global.stockMarket.html);
+            getCapitalInfo(global.stockMarket.codes);
+            $(document).on('keyup', function (event) {
+                var ev = document.all ? window.event : event;
+                if (ev.keyCode == global.utility.keyCode.R)  stockMarketTimer(global.stockMarket, true);
+                if (ev.keyCode == global.utility.keyCode.C)  getCapitalInfo(global.stockMarket.codes);
+                if (ev.keyCode == global.utility.keyCode.H) {
+                    'none' == $(global.dom.stocksHead).css('display') ?
+                            $(global.dom.stocksHead).css('display', 'table-row') :
+                            $(global.dom.stocksHead).css('display', 'none');
+                }
+                if (ev.keyCode == global.utility.keyCode.N) {
+                    'none' == $(global.dom.stocksName).css('display') ?
+                            $(global.dom.stocksName).css('display', 'table-cell') :
+                            $(global.dom.stocksName).css('display', 'none');
+                }
+                if (ev.keyCode == global.utility.keyCode.D) {
+                    'none' == $(global.dom.stocksHide).css('display') ?
+                            $(global.dom.stocksHide).css('display', 'table-cell') :
+                            $(global.dom.stocksHide).css('display', 'none');
+                }
+            });
+
+            $(global.dom.calc).on('keyup', function (event) {
+                var ev = document.all ? window.event : event;
+                if (ev.keyCode == global.utility.keyCode.ENTER) {
+                    eval('var result = ' + $(this).val());
+                    $(global.dom.result).html(result);
+                }
+            });
+
+            global.clock = setTimeout('stockMarketTimer(global.stockMarket)', global.interval);
+        });
+    });
+
+</script>
+</body>
+</html>

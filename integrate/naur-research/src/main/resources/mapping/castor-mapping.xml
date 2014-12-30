@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<mapping>
+    <field-handler name="dateFieldHandler" class="org.naur.common.util.DateFieldHandler">
+        <param name="date-format" value="yyyy-MM-dd"/>
+    </field-handler>
+
+    <class name="org.naur.repositories.models.finance.Stock">
+        <map-to xml="control"/>
+        <field name="quotes" type="org.naur.repositories.models.finance.StockQuote" collection="arraylist">
+            <bind-xml name="content" node="element"/>
+        </field>
+    </class>
+    <class name="org.naur.repositories.models.finance.StockQuote">
+        <map-to xml="content"/>
+        <field name="date" type="string" handler="dateFieldHandler">
+            <bind-xml name="d" node="attribute"/>
+        </field>
+        <field name="open" type="double">
+            <bind-xml name="o" node="attribute"/>
+        </field>
+        <field name="high" type="double">
+            <bind-xml name="h" node="attribute"/>
+        </field>
+        <field name="low" type="double">
+            <bind-xml name="l" node="attribute"/>
+        </field>
+        <field name="close" type="double">
+            <bind-xml name="c" node="attribute"/>
+        </field>
+        <field name="volume" type="double">
+            <bind-xml name="v" node="attribute"/>
+        </field>
+    </class>
+</mapping>

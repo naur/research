@@ -1,0 +1,246 @@
+﻿/*<tr style="background-color:expression_r((2%2==0)?"#ffffff":"#f4f4f4")">*/
+/*<td align="left" style="border:#B3D8EA 0px solid;">*/
+/*text-shadow: 0px 1px 0px #d1d1d1;*/
+
+/*default, small, large, auto*/
+
+* {
+    /*font: arial, Microsoft YaHei;*/
+    /*font-family: 'Comic Sans MS';*/
+    font-family: "Microsoft YaHei", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+    /*font-family: Arial, Helvetica, Sans-Serif;*/
+}
+
+/*取消下划线 */
+a {
+    text-decoration: none;
+}
+
+/*Rollover文本链接*/
+a:hover {
+    color: red;
+}
+
+/*最大、最小宽度*/
+.layout-container {
+    width: 800px;
+    max-width: 90%;
+}
+
+/*突出边界 */
+.layout-border {
+    border-bottom: 2px solid #427AA8;
+}
+
+/*Word Break*/
+.layout-break-word {
+    word-wrap: break-word;
+}
+
+.layout-left {
+    width: 50%;
+    float: left;
+    left: 0;
+}
+
+.layout-right {
+    width: 50%;
+    float: right;
+    right: 0;
+    /*text-align: center;*/
+}
+
+textarea {
+    font: italic 16px/20px arial, sans-serif;
+    color: #A22E00;
+}
+
+.ul-left, .ul-left li, .ul-right, .ul-right li {
+    list-style: none; /* 将默认的列表符号去掉 */
+    padding: 0; /* 将默认的内边距去掉 */
+    margin: 0; /* 将默认的外边距去掉 */
+}
+
+.ul-left li a, .ul-right li a {
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    padding: 6px 36px;
+    white-space: nowrap;
+    background-color: #465c71;
+    border: 1px #4e667d solid;
+}
+
+.ul-left li a:hover, .ul-right li a:hover {
+    background-color: #bfcbd6;
+    color: #465c71;
+}
+
+.ul-left li a:active, .ul-right li a:active {
+    background-color: #465c71;
+    color: #cfdbe6;
+}
+
+.ul-left li {
+    float: left;
+}
+
+.ul-right li {
+    float: right;
+}
+
+.stress_bold_16 {
+    font: italic bold 16px arial, sans-serif;
+    color: #A22E00;
+}
+
+.stress_bold_12 {
+    font: italic bold 12px arial, sans-serif;
+    color: #A22E00;
+}
+
+.stress_12 {
+    font: italic 12px arial, sans-serif;
+    color: red;
+}
+
+.float-delete {
+    background: url(../images/float_delete.png) no-repeat;
+    width: 20px;
+    height: 21px;
+    display: inline-block;
+    opacity: 0.5;
+    margin: 0px 14px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.float-delete:hover {
+    opacity: 1.0;
+}
+
+/*
+table tbody
+*/
+table {
+    border: 0px solid #b3d8ea;
+    font-size: 11px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    clear: both;
+    width: 100%;
+    text-align: center;
+    background-color: white;
+}
+
+table, table th, table td {
+    color: #696969;
+    font-family: "Microsoft YaHei", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+    white-space: nowrap;
+}
+
+table thead tr {
+    background: #9acd32;
+}
+
+table thead tr, table tfoot tr, table tbody tr {
+    border-left: 1px solid #b3d8ea;
+    border-top: 1px solid #b3d8ea;
+}
+
+/*f1f9fc*/
+table thead th, table tfoot th, table tbody th {
+    border: 1px solid #b3d8ea;
+    background: #e0e8f8 4px 50%;
+    /*height: 20px;*/
+    font: bold 12px arial, sans-serif;
+    vertical-align: middle;
+    color: #05539b;
+    font-weight: normal;
+    padding: 4px;
+    text-align: center;
+}
+
+table thead td, table tfoot td, table tbody td {
+    /*border-left: 1px solid #b3d8ea;*/
+    border-right: 1px solid #b3d8ea;
+    /*border-top: 1px solid #b3d8ea;*/
+    border-bottom: 1px solid #b3d8ea;
+    vertical-align: middle;
+    padding: 0px 2px 0px 2px;
+}
+
+table tbody tr .tdnowrap {
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+}
+
+table tbody tr .tdleft {
+    text-align: left;
+}
+
+table tbody tr .tdright {
+    text-align: right;
+}
+
+table tbody tr .loading {
+    width: 15.5px;
+    height: 15.5px;
+}
+
+table tbody .tdeven, table tbody tr:nth-child(even) {
+    background-color: #f1f9fc;
+}
+
+table tbody .tdodd, table tbody tr:nth-child(odd) {
+    /*background-color: #f0f8e6;*/
+}
+
+/* e4f7cb */
+table tbody tr:hover {
+    background-color: #b3d8ea;
+    padding: 9px 30px 9px 9px;
+    cursor: default;
+}
+
+table thead tr .cellHide {
+    display: none;
+}
+
+table tbody tr .cellHide {
+    display: none;
+}
+
+table tbody tr .cellnowrap {
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.select_overlay_img {
+    float: left;
+    display: inline;
+    position: absolute;
+    width: 20px;
+    high: 20px;
+    margin-left: 35px;
+    /*display: none;*/
+    /*background-image: url(/resources/themes/360buy/images/loading.gif);*/
+}
+
+.naur_loading {
+    color: red;
+    font: bold 12px arial, sans-serif;
+}
+
+.naur_title {
+    font: 14px arial, sans-serif;
+}
+
+.naur_subtitle {
+    font: italic 11px arial, sans-serif;
+}
