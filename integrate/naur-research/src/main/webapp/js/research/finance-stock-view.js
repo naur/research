@@ -27,8 +27,8 @@ var global = {
 /*-------------------- 函数 START --------------------*/
 
 function init() {
-    $(global.dom.start).val(new Date());
-    $(global.dom.end).val(new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000));
+    $(global.dom.start).val(new Date().format('yyyy-MM-dd'));
+    $(global.dom.end).val(new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000).format('yyyy-MM-dd'));
     $(global.dom.search).on('click', function () {
         global.http.acquire({
             uri: global.queryUri,
@@ -50,6 +50,7 @@ function init() {
 function initEcharts() {
     global.chart = global.echarts.core.init(document.getElementById(global.dom.chart.substr(1)));
     global.chart.setOption(global.echarts.options.line);
+
 }
 
 /*-------------------- 函数 END ----------------------*/

@@ -2,7 +2,7 @@
  * Created by Administrator on 3/8/14.
  */
 
-define(['jquery', 'integrate-template'],
+define(['jquery', 'integrate-template', 'naur.math'],
     function ($) {
         //菜单
         $.templates("menu", "<div>{{:#index+1}}: <b>{{>name}}</b> ({{>releaseYear}})</div>");
