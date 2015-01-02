@@ -442,4 +442,6 @@ define(['jquery', 'naur'], function($, NAUR) {
         NAUR.UI.templet(options);
         return this;
     }
+
+    return NAUR;
 });

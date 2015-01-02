@@ -59,7 +59,7 @@ define(['naur.ui', 'naur.utility'], function (NAUR) {
                         },
                         tooltip: {
                             trigger: "axis",
-                            formatter: tooltipFormat,
+                            //formatter: tooltipFormat,
                             axisPointer: {
                                 type: "shadow"
                             }
@@ -135,7 +135,7 @@ define(['naur.ui', 'naur.utility'], function (NAUR) {
                         },
                         tooltip: {
                             trigger: "axis",
-                            formatter: tooltipFormat,
+                            //formatter: tooltipFormat,
                             axisPointer: {
                                 type: "shadow"
                             }
