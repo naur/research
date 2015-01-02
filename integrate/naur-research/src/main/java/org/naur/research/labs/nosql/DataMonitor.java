@@ -12,7 +12,7 @@ import java.util.Arrays;
  * Time: 下午4:45
  * To change this template use File | Settings | File Templates.
  */
-
+@SuppressWarnings("unchecked")
 public class DataMonitor implements Watcher, AsyncCallback.StatCallback {
 
     ZooKeeper zk;

@@ -17,7 +17,8 @@ var global = {
         search: '#search',
         code: '#stock_code',
         start: '#stock_start_date',
-        end: '#stock_end_date'
+        end: '#stock_end_date',
+        chart: '#chart'
     }
 };
 
@@ -46,6 +47,12 @@ function init() {
     });
 }
 
+function initEcharts() {
+    var myChart = ec.init(document.getElementById('main'));
+    //var option =
+    myChart.setOption(option);
+}
+
 /*-------------------- 函数 END ----------------------*/
 
 /*-------------------- 事件 START --------------------*/
@@ -53,10 +60,11 @@ function init() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['loading', 'research-template'], function (mod) {
+require(['loading', 'research-template', 'naur.ui.echarts'], function (mod) {
     global.message = mod.naur.Message;
     global.http = mod.naur.HTTP;
     global.utility = mod.naur.Utility;
+    global.echarts = mod.ui.echarts;
     $(function () {
         init();
     });
