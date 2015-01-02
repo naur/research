@@ -28,9 +28,7 @@
  *
  */
 
-define(['naur.ui', 'naur.utility',
-        'echarts/chart/line',   // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
-        'echarts/chart/bar'], function (NAUR, $1, echarts) {
+define(['naur.ui', 'naur.utility', 'echarts.main'], function (NAUR, $1, echarts) {
         var utility = NAUR.Utility;
 
         NAUR.UI.Echarts = (function () {
@@ -175,8 +173,7 @@ define(['naur.ui', 'naur.utility',
                                 restore: "还原",
                                 saveAsImage: "保存为图片"
                             },
-                            featureImageIcon: {
-                            }
+                            featureImageIcon: {}
                         }
                     },
                     pie: {
