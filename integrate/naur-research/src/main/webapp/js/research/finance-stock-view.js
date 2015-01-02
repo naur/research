@@ -63,7 +63,7 @@ require(['loading', 'research-template', 'naur.ui.echarts', 'echarts/chart/line'
     global.message = mod.naur.Message;
     global.http = mod.naur.HTTP;
     global.utility = mod.naur.Utility;
-    global.echarts = mod.ui.echarts;
+    global.echarts = mod.naur.UI.Echarts;
     $(function () {
         init();
         initEcharts();
