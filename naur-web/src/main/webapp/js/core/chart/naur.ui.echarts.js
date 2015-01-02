@@ -332,7 +332,7 @@ define(['naur.ui', 'naur.utility', 'echarts-main'], function (NAUR) {
 
             /**
              *
-             * @param data 数据里可以包含多个数据集，例如：{ds1:[{key:value},{key:value}], ds2:[]}，ds1 = lines.key1, ds2 = lines.key2
+             * @param data 数据里可以包含多个数据集，例如：{ds1:[{key:?, value:?},{key:?, value:?}], ds2:[]}，ds1 = lines.key1, ds2 = lines.key2
              * @param axis 如：{
                  *                              lines: {key1:value1, key2:value2}, 线段的名字和对应的ID,
                  *                              points:{key:[1,2,3,4,5], map:[{1:0}, {2:0}, {3:0}, {4:0}, {5:0}]}, 坐标的刻度和对应的值,

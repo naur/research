@@ -27,28 +27,34 @@ var global = {
 /*-------------------- 函数 START --------------------*/
 
 function init() {
-    $(global.dom.start).val(new Date().format('yyyy-MM-dd'));
-    $(global.dom.end).val(new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000).format('yyyy-MM-dd'));
+    $(global.dom.start).val(new Date(new Date().getTime() - WkMilli).format('yyyy-MM-dd'));
+    $(global.dom.end).val(new Date().format('yyyy-MM-dd'));
     $(global.dom.search).on('click', function () {
-        global.http.acquire({
-            uri: global.queryUri,
-            context: this,
-            error: function (err) {
-                $(tbody).html(global.utility.format(global.message.tableTemplate, err));
-            },
-            success: function (obj) {
-                if (0 == obj.output.information.level) {
-                    $(tbody).html($.render.session(obj.output.information.data));
-                } else {
-                    $(tbody).html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
-                }
-            }
-        });
+
+        global.params = getParams();
+        var data = {'stock': [{'2014-12-26': 20}, {'2014-12-27': 60}, {'2014-12-28': 120}, {'2014-12-29': 10}]};
+        var option = global.echarts.getChartOption(global.params);
+        var series = global.echarts.getSeries(data, global.params);
+        global.chart.render({option: option, series: series});
+
+        //global.http.acquire({
+        //    uri: global.queryUri,
+        //    context: this,
+        //    error: function (err) {
+        //        $(tbody).html(global.utility.format(global.message.tableTemplate, err));
+        //    },
+        //    success: function (obj) {
+        //        if (0 == obj.output.information.level) {
+        //            $(tbody).html($.render.session(obj.output.information.data));
+        //        } else {
+        //            $(tbody).html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
+        //        }
+        //    }
+        //});
     });
 }
 
 function initEcharts() {
-    global.params = getParams();
     global.chart = global.echarts.core.init(document.getElementById(global.dom.chart.substr(1)));
     global.chart.render = function (opt) {
         if (opt.option)
@@ -56,10 +62,6 @@ function initEcharts() {
         if (opt.series)
             this.setSeries(opt.series);
     };
-    var data = {'stock': [{'2014-12-26': 20}, {'2014-12-27': 60}, {'2014-12-28': 120}, {'2014-12-29': 10}]};
-    var option = global.echarts.getChartOption(global.params);
-    var series = global.echarts.getSeries(data, global.params);
-    global.chart.render({option: option, series: series});
 }
 
 function getParams() {
@@ -67,7 +69,8 @@ function getParams() {
         start: $(global.dom.start).val() + 'T00:00:00+08:00',
         end: $(global.dom.end).val() + 'T00:00:00+08:00',
         lines: {stock: '股票'},
-        title: '股票走势图'
+        title: '股票走势图',
+        dataZoomLimit: 40
     };
     tmp.subtitle = new Date(tmp.start).format('yyyy年MM月dd日') + ' --- ' + new Date(tmp.end).format('yyyy年MM月dd日');
     tmp.points = global.echarts.parsePoints(tmp);
