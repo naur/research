@@ -257,10 +257,10 @@ define(['naur.ui', 'naur.utility', 'echarts-main'], function (NAUR) {
             /**
              * axis : {lines: 线段的名字和对应的ID, points: 坐标的刻度和对应的值, position: 坐标点所在的坐标轴, subtext: 子标题}.  X 和 Y 轴坐标类型
              * 例如：{
-                 *              lines: {key:value, key:value}, 线段的名字和对应的ID,
+                 *              lines: {key:value, key:value}, 线段的ID和对应的名字,
                  *                      如果有多条线段，那么 key 是线段标识符，value 是线段的中文名，会作为 charts 的 legend 显示在图表。
                  *                      后台返回的数据，通过key来识别是哪个线段的数据
-                 *              points:{key:[1,2,3,4,5], map:[{1:0}, {2:0}, {3:0}, {4:0}, {5:0}]}, 坐标的刻度和对应的值,
+                 *              points:{keys:[1,2,3,4,5], map:[{1:0}, {2:0}, {3:0}, {4:0}, {5:0}]}, 坐标的刻度和对应的值,
                  *              title: "title",
                  *              subtitle: "subtitle",
                  *              dataZoomLimit: 可变坐标的最小刻度数量限制,
@@ -327,14 +327,14 @@ define(['naur.ui', 'naur.utility', 'echarts-main'], function (NAUR) {
                     opt.grid = axis.grid;
                 }
 
-                return $.extend(true, {}, global.charts.options.line, opt);
+                return $.extend(true, {}, echarts.options.line, opt);
             };
 
             /**
              *
-             * @param data 数据里可以包含多个数据集，例如：{ds1:[{key:value},{key:value}], ds2:[]}，ds1 = lines.key1, ds1 = lines.key2
+             * @param data 数据里可以包含多个数据集，例如：{ds1:[{key:value},{key:value}], ds2:[]}，ds1 = lines.key1, ds2 = lines.key2
              * @param axis 如：{
-                 *                              lines: {key1:value1, key1:value1}, 线段的名字和对应的ID,
+                 *                              lines: {key1:value1, key2:value2}, 线段的名字和对应的ID,
                  *                              points:{key:[1,2,3,4,5], map:[{1:0}, {2:0}, {3:0}, {4:0}, {5:0}]}, 坐标的刻度和对应的值,
                  *                              stackPrefix,
                  *                              type,

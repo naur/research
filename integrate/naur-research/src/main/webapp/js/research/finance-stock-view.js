@@ -48,9 +48,30 @@ function init() {
 }
 
 function initEcharts() {
+    global.params = getParams();
     global.chart = global.echarts.core.init(document.getElementById(global.dom.chart.substr(1)));
-    global.chart.setOption(global.echarts.options.line);
+    global.chart.render = function (opt) {
+        if (opt.option)
+            this.setOption(opt.option, true);
+        if (opt.series)
+            this.setSeries(opt.series);
+    };
+    var data = {'stock': [{'2014-12-26': 20}, {'2014-12-27': 60}, {'2014-12-28': 120}, {'2014-12-29': 10}]};
+    var option = global.echarts.getChartOption(global.params);
+    var series = global.echarts.getSeries(data, global.params);
+    global.chart.render({option: option, series: series});
+}
 
+function getParams() {
+    var tmp = {
+        start: $(global.dom.start).val() + 'T00:00:00+08:00',
+        end: $(global.dom.start).val() + 'T00:00:00+08:00',
+        lines: {stock: '股票'},
+        title: '股票走势图'
+    };
+    tmp.subtitle = new Date(global.params.start).format('yyyy年MM月dd日') + ' --- ' + new Date(global.params.end).format('yyyy年MM月dd日');
+    tmp.points = global.echarts.parsePoints(tmp);
+    return tmp;
 }
 
 /*-------------------- 函数 END ----------------------*/
