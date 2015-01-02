@@ -65,11 +65,11 @@ function initEcharts() {
 function getParams() {
     var tmp = {
         start: $(global.dom.start).val() + 'T00:00:00+08:00',
-        end: $(global.dom.start).val() + 'T00:00:00+08:00',
+        end: $(global.dom.end).val() + 'T00:00:00+08:00',
         lines: {stock: '股票'},
         title: '股票走势图'
     };
-    tmp.subtitle = new Date(global.params.start).format('yyyy年MM月dd日') + ' --- ' + new Date(global.params.end).format('yyyy年MM月dd日');
+    tmp.subtitle = new Date(tmp.start).format('yyyy年MM月dd日') + ' --- ' + new Date(tmp.end).format('yyyy年MM月dd日');
     tmp.points = global.echarts.parsePoints(tmp);
     return tmp;
 }
