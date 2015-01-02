@@ -58,7 +58,7 @@ require.config({
         'jquery.uploadify': jsprefix + 'js/core/uploadify/jquery.uploadify.min',
 
         //echarts-2.0.4
-        //'echarts.main': jsprefix + 'js/core/echarts/echarts',
+        'echarts.main': jsprefix + 'js/core/echarts/echarts',
         'echarts': jsprefix + 'js/core/echarts',
         'echarts/chart/bar': jsprefix + 'js/core/echarts/chart/bar',       // 把所需图表指向单文件
         'echarts/chart/line': jsprefix + 'js/core/echarts/chart/line',
@@ -152,6 +152,8 @@ require.config({
         'jquery.uploadify': ['jquery'],
         'metro': ['jquery', 'jquery.widget', 'jquery.mousewheel'],
         'bootstrap': ['jquery'],
-        'modern.calendar': ['moment']
+        'modern.calendar': ['moment'],
+        'echarts/chart/bar': ['echarts.main'],
+        'echarts/chart/line': ['echarts.main']
     }
 });
