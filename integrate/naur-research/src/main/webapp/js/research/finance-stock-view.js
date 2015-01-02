@@ -32,7 +32,14 @@ function init() {
     $(global.dom.search).on('click', function () {
 
         global.params = getParams();
-        var data = {'stock': [{'2014-12-26': 20}, {'2014-12-27': 60}, {'2014-12-28': 120}, {'2014-12-29': 10}]};
+        var data = {
+            'stock': [
+                {key: '2014-12-26', value: 20},
+                {key: '2014-12-27', value: 60},
+                {key: '2014-12-28', value: 120},
+                {key: '2014-12-29', value: 10}
+            ]
+        };
         var option = global.echarts.getChartOption(global.params);
         var series = global.echarts.getSeries(data, global.params);
         global.chart.render({option: option, series: series});

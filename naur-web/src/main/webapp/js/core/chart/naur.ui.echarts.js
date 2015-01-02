@@ -86,13 +86,14 @@ define(['naur.ui', 'naur.utility', 'echarts-main'], function (NAUR) {
                         toolbox: {
                             show: true,
                             feature: {
-                                mark: true,
+                                mark: {show: true},
                                 dataView: {
+                                    show: true,
                                     readOnly: false
                                 },
-                                magicType: ["line", "bar", "custom"],
-                                restore: true,
-                                saveAsImage: true
+                                magicType: {show: true, type: ["line", "bar"]},
+                                restore: {show: true},
+                                saveAsImage: {show: true}
                             },
                             featureTitle: {
                                 mark: "辅助线开关",
@@ -154,13 +155,14 @@ define(['naur.ui', 'naur.utility', 'echarts-main'], function (NAUR) {
                         toolbox: {
                             show: true,
                             feature: {
-                                mark: true,
+                                mark: {show: true},
                                 dataView: {
+                                    show: true,
                                     readOnly: false
                                 },
-                                magicType: ["line", "bar"],
-                                restore: true,
-                                saveAsImage: true
+                                magicType: {show: true, type: ["line", "bar"]},
+                                restore: {show: true},
+                                saveAsImage: {show: true}
                             },
                             featureTitle: {
                                 mark: "辅助线开关",
