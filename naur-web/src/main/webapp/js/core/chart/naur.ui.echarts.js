@@ -29,7 +29,6 @@
  */
 
 define(['naur.ui', 'naur.utility',
-        'echarts',
         'echarts/chart/line',   // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
         'echarts/chart/bar'], function (NAUR, $1, echarts) {
         var utility = NAUR.Utility;

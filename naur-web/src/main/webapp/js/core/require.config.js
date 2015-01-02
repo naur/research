@@ -151,6 +151,8 @@ require.config({
         'jquery.uploadify': ['jquery'],
         'metro': ['jquery', 'jquery.widget', 'jquery.mousewheel'],
         'bootstrap': ['jquery'],
-        'modern.calendar': ['moment']
+        'modern.calendar': ['moment'],
+        'echarts/chart/bar': ['echarts'],
+        'echarts/chart/line': ['echarts']
     }
 });
