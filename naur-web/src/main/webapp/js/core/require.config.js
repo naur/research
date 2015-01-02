@@ -91,7 +91,7 @@ require.config({
         'naur.utility': jsprefix + 'js/core/naur.utility',
         'naur.analytics': jsprefix + 'js/core/naur.analytics',
         'naur.ui': jsprefix + 'js/core/naur.ui',
-        'naur.ui.echarts': jsprefix + 'js/core/naur.ui.echarts',
+        'naur.ui.echarts': jsprefix + 'js/core/chart/naur.ui.echarts',
         'naur.http': jsprefix + 'js/core/naur.http',
         'naur.http.xmlhttp': jsprefix + 'js/core/naur.http.xmlhttp',
         'naur.http.ajax': jsprefix + 'js/core/naur.http.ajax',
