@@ -37,7 +37,8 @@ function init() {
                 {key: '2014-12-26', value: 20},
                 {key: '2014-12-27', value: 60},
                 {key: '2014-12-28', value: 120},
-                {key: '2014-12-29', value: 10}
+                {key: '2014-12-29', value: 10},
+                {key: '2015-01-02', value: 30}
             ]
         };
         var option = global.echarts.getChartOption(global.params);
