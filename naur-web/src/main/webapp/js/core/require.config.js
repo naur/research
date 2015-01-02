@@ -58,10 +58,9 @@ require.config({
         'jquery.uploadify': jsprefix + 'js/core/uploadify/jquery.uploadify.min',
 
         //echarts-2.0.4
-        'echarts.main': jsprefix + 'js/core/echarts/echarts',
-        'echarts': jsprefix + 'js/core/echarts',
-        'echarts/chart/bar': jsprefix + 'js/core/echarts/chart/bar',       // 把所需图表指向单文件
-        'echarts/chart/line': jsprefix + 'js/core/echarts/chart/line',
+        'echarts': jsprefix + 'js/core/echarts/echarts-all',
+        //'echarts/chart/bar': jsprefix + 'js/core/echarts/chart/bar',       // 把所需图表指向单文件
+        //'echarts/chart/line': jsprefix + 'js/core/echarts/chart/line',
 
         //google map
         //'google.maps': 'http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN',
@@ -152,8 +151,6 @@ require.config({
         'jquery.uploadify': ['jquery'],
         'metro': ['jquery', 'jquery.widget', 'jquery.mousewheel'],
         'bootstrap': ['jquery'],
-        'modern.calendar': ['moment'],
-        'echarts/chart/bar': ['echarts.main'],
-        'echarts/chart/line': ['echarts.main']
+        'modern.calendar': ['moment']
     }
 });

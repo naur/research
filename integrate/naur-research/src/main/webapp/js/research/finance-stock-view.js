@@ -59,7 +59,7 @@ function initEcharts() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['loading', 'research-template', 'naur.ui.echarts', 'echarts/chart/line'], function (mod) {
+require(['loading', 'research-template', 'naur.ui.echarts', 'echarts'], function (mod) {
     global.message = mod.naur.Message;
     global.http = mod.naur.HTTP;
     global.utility = mod.naur.Utility;

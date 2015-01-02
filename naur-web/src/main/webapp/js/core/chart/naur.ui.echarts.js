@@ -28,12 +28,11 @@
  *
  */
 
-define(['naur.ui', 'naur.utility', 'echarts.main'], function (NAUR, $1, ec) {
+define(['naur.ui', 'naur.utility'], function (NAUR) {
         var utility = NAUR.Utility;
 
         NAUR.UI.Echarts = (function () {
             var echarts = {
-                core: ec,
                 options: {
                     line: {
                         grid: {
