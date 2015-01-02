@@ -48,9 +48,8 @@ function init() {
 }
 
 function initEcharts() {
-    var myChart = ec.init(document.getElementById('main'));
-    //var option =
-    myChart.setOption(option);
+    global.chart = global.echarts.core.init(document.getElementById(global.dom.chart.substr(1)));
+    global.chart.setOption(global.echarts.options.line);
 }
 
 /*-------------------- 函数 END ----------------------*/
@@ -67,6 +66,7 @@ require(['loading', 'research-template', 'naur.ui.echarts'], function (mod) {
     global.echarts = mod.ui.echarts;
     $(function () {
         init();
+        initEcharts();
     });
 });
 

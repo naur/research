@@ -16,7 +16,7 @@ jsprefix = jsprefix.replace('naur-integrate', 'naur-research');
 require.config({
     //baseUrl: '',
     paths: {
-        'loading': 'js/loading',
+        'loading': jsprefix + 'js/loading',
         jquery: jsprefix + 'js/core/jquery-2.1.1.min',
         'jquery.widget': jsprefix + 'js/core/jquery.widget.min',
         'jquery.mousewheel': jsprefix + 'js/core/jquery.mousewheel',
