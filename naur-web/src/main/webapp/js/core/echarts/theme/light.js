@@ -10,9 +10,19 @@ var theme = {
 
     // 图表标题
     title: {
+        x: "center",
+        y: "top",
         textStyle: {
             fontWeight: 'normal',
-            color: '#27727B'          // 主标题文字颜色
+            color: "#274b6d",
+            fontFamily: "arial, sans-serif",
+            fontSize: "14px"
+        },
+        subtextStyle: {
+            color: "#a22e00",
+            fontFamily: "arial, sans-serif",
+            fontSize: "11px",
+            fontStyle: "italic"
         }
     },
     
@@ -126,10 +136,10 @@ var theme = {
     line: {
         itemStyle: {
             normal: {
-                borderWidth:2,
+                borderWidth:1,
                 borderColor:'#fff',
                 lineStyle: {
-                    width: 3
+                    width: 1
                 }
             },
             emphasis: {

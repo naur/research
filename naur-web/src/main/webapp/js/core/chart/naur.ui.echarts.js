@@ -44,21 +44,21 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                             x2: 100,
                             y2: 85
                         },
-                        title: {
-                            x: "center",
-                            y: "top",
-                            textStyle: {
-                                color: "#274b6d",
-                                fontFamily: "arial, sans-serif",
-                                fontSize: "14px"
-                            },
-                            subtextStyle: {
-                                color: "#a22e00",
-                                fontFamily: "arial, sans-serif",
-                                fontSize: "11px",
-                                fontStyle: "italic"
-                            }
-                        },
+                        //title: {
+                        //    x: "center",
+                        //    y: "top",
+                        //    textStyle: {
+                        //        color: "#274b6d",
+                        //        fontFamily: "arial, sans-serif",
+                        //        fontSize: "14px"
+                        //    },
+                        //    subtextStyle: {
+                        //        color: "#a22e00",
+                        //        fontFamily: "arial, sans-serif",
+                        //        fontSize: "11px",
+                        //        fontStyle: "italic"
+                        //    }
+                        //},
                         tooltip: {
                             trigger: "axis",
                             //formatter: tooltipFormat,
@@ -121,21 +121,6 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                             x2: 100,
                             y2: 85
                         },
-                        title: {
-                            x: "center",
-                            y: "top",
-                            textStyle: {
-                                color: "#274b6d",
-                                fontFamily: "arial, sans-serif",
-                                fontSize: "14px"
-                            },
-                            subtextStyle: {
-                                color: "#a22e00",
-                                fontFamily: "arial, sans-serif",
-                                fontSize: "11px",
-                                fontStyle: "italic"
-                            }
-                        },
                         tooltip: {
                             trigger: "axis",
                             //formatter: tooltipFormat,
@@ -181,21 +166,6 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                         }
                     },
                     pie: {
-                        title: {
-                            x: "center",
-                            y: "top",
-                            textStyle: {
-                                color: "#274b6d",
-                                fontFamily: "arial, sans-serif",
-                                fontSize: "14px"
-                            },
-                            subtextStyle: {
-                                color: "#a22e00",
-                                fontFamily: "arial, sans-serif",
-                                fontSize: "11px",
-                                fontStyle: "italic"
-                            }
-                        },
                         tooltip: {
                             trigger: 'item',
                             formatter: "{a} <br/>{b} : {c} ({d}%)"
