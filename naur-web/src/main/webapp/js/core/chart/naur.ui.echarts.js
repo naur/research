@@ -196,7 +196,7 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
             echarts.options.bar = echarts.options.line;
 
             /**
-             * TODO jrz   week,year 未实现
+             * TODO jrz year 未实现
              * 根据参数获取X 坐标，返回日期数组
              * params ：{
              *                  start:'',
@@ -208,12 +208,18 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
             echarts.parsePoints = function (params) {
                 var x;
                 x = utility.getDays(params.start, params.end, function (date) {
-                    if ("week" == params.precision) {
-                        return date.getWeek(params.firstDayOfWeek).weekOfYear;
-                    } else if ("month" == params.precision)
-                        return date.format('yyyy-MM');
+                    if (params.pointFilter && params.pointFilter(date)) {
+                        return null;
+                    }
+
+                    var result = null;
+                    if ("week" == params.precision)
+                        result = date.getWeek(params.firstDayOfWeek).weekOfYear;
+                    else if ("month" == params.precision)
+                        result = date.format('yyyy-MM');
                     else
-                        return date.format('yyyy-MM-dd');
+                        result = date.format('yyyy-MM-dd');
+                    return result;
                 }, params.precision);
 
                 var buffer = {

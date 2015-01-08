@@ -78,7 +78,10 @@ function getParams() {
         end: $(global.dom.end).val() + 'T00:00:00+08:00',
         lines: {stock: '---'},
         title: '----',
-        dataZoomLimit: 40
+        dataZoomLimit: 40,
+        pointFilter: function (date) {
+            return global.utility.holiday(date);
+        }
     };
     tmp.subtitle = new Date(tmp.start).format('yyyy年MM月dd日') + ' --- ' + new Date(tmp.end).format('yyyy年MM月dd日');
     tmp.points = global.echarts.parsePoints(tmp);
