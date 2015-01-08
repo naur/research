@@ -28,12 +28,13 @@
  *
  */
 
-define(['naur.ui', 'naur.utility', 'echarts-main'], function (NAUR) {
+define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], function (NAUR, $2, $3, theme) {
         var utility = NAUR.Utility;
         var ec = echarts;
 
         NAUR.UI.Echarts = (function () {
             var echarts = {
+                theme: theme,
                 core: ec,
                 options: {
                     line: {
@@ -292,7 +293,7 @@ define(['naur.ui', 'naur.utility', 'echarts-main'], function (NAUR) {
                     },
                     dataZoom: {
                         show: (axis.points.keys && axis.points.keys.length > axis.dataZoomLimit) ? true : false,
-                        start: axis.dataZoomLimit < axis.points.keys.length ? (axis.points.keys.length - axis.dataZoomLimit) / axis.points.keys.length * 100 : 80
+                        start: axis.dataZoomLimit < axis.points.keys.length ? (axis.points.keys.length - axis.dataZoomLimit) / axis.points.keys.length * 100 : 0
                     },
                     xAxis: [
                         {

@@ -61,6 +61,8 @@ require.config({
         'echarts-main': jsprefix + '/js/core/echarts/echarts-all',
         //'echarts/chart/bar': jsprefix + '/js/core/echarts/chart/bar',       // 把所需图表指向单文件
         //'echarts/chart/line': jsprefix + '/js/core/echarts/chart/line',
+        'echarts-theme-infographic': jsprefix + '/js/core/echarts/theme/infographic',
+        'echarts-theme-light': jsprefix + '/js/core/echarts/theme/light',
 
         //google map
         //'google.maps': 'http://maps.google.com/maps/api/js?v=3.9&sensor=false&region=zh-CN&language=zh-CN',

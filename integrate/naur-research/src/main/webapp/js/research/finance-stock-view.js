@@ -76,8 +76,8 @@ function getParams() {
     var tmp = {
         start: $(global.dom.start).val() + 'T00:00:00+08:00',
         end: $(global.dom.end).val() + 'T00:00:00+08:00',
-        lines: {stock: '股票'},
-        title: '股票走势图',
+        lines: {stock: '---'},
+        title: '----',
         dataZoomLimit: 40
     };
     tmp.subtitle = new Date(tmp.start).format('yyyy年MM月dd日') + ' --- ' + new Date(tmp.end).format('yyyy年MM月dd日');
