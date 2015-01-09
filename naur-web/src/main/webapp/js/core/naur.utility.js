@@ -32,7 +32,7 @@ define(['jquery', 'naur'], function ($, NAUR) {
                 var month = date.getMonth();
                 var date = date.getDate();
 
-                if ((month == 0) && (date == 1)) return "元旦";
+                if ((month == 0) && (date == 1 || date == 2 || date == 3)) return "元旦";
                 if ((month == 1) && (date == 13 )) return "除夕";
                 if ((month == 1) && (date == 14 )) return "春节/情人节";
                 if ((month == 2) && (date == 1)) return "国际海豹日";
