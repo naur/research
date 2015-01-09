@@ -267,7 +267,7 @@
                     global.currAmount += number * curr;
                     parent.find('.name').html(stockRealtime.name);
                     parent.find('.curr').html(curr);
-                    parent.find('.profits').html(0 != number ? (curr * number - amount).toFixed(2) : '');
+                    parent.find('.profits').html(0 != number ? (curr * number - amount).thousandsSeparator(2) : '');
                     parent.find('.profitability').html(amount != 0 ? ((curr * number - amount) / amount * 100).toFixed(2) + ' %' : '');
                     parent.find('.latest-value').html((curr * number).thousandsSeparator(2));
                     parent.find('.yclose').html(stockRealtime.yclose);
@@ -286,8 +286,9 @@
                 }
                 global.message.show({
                     content: $.format(global.messageTemplate, global.clock,
-                            global.totalAmount.toFixed(2),
-                            global.currAmount, (global.currAmount - global.totalAmount).toFixed(2), '')
+                            global.totalAmount.thousandsSeparator(),
+                            global.currAmount.thousandsSeparator(), (global.currAmount - global.totalAmount).thousandsSeparator(), 
+                            ((global.currAmount - global.totalAmount) / global.totalAmount * 100).toFixed(2)) + ' %'
                 });
             }, error: function (err) {
                 delete err.http;
