@@ -87,6 +87,10 @@ require.config({
 
         'naur': jsprefix + '/js/core/naur',
         'naur.validate': jsprefix + '/js/core/naur.validate',
+
+        'naur.date': jsprefix + '/js/core/naur.date',
+        'naur.date.lunar': jsprefix + '/js/core/naur.date.lunar',
+
         'naur.pattern': jsprefix + '/js/core/naur.pattern',
         'naur.pattern.ajax': jsprefix + '/js/core/naur.pattern',
         'naur.pattern.xsl': jsprefix + '/js/core/naur.pattern',

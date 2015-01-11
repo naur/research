@@ -80,7 +80,9 @@ function getParams() {
         title: '----',
         dataZoomLimit: 40,
         pointFilter: function (date) {
-            return global.utility.holiday(date);
+            return global.date.stockHoliday(date, function () {
+                return global.chineseLunar.solar2lunar(date.getFullYear(), date.getMonth(), date.getDate());
+            });
         }
     };
     tmp.subtitle = new Date(tmp.start).format('yyyy年MM月dd日') + ' --- ' + new Date(tmp.end).format('yyyy年MM月dd日');
@@ -95,11 +97,13 @@ function getParams() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['loading', 'research-template', 'naur.ui.echarts'], function (mod) {
+require(['loading', 'research-template', 'naur.ui.echarts', 'naur.date.lunar'], function (mod) {
     global.message = mod.naur.Message;
     global.http = mod.naur.HTTP;
     global.utility = mod.naur.Utility;
     global.echarts = mod.naur.UI.Echarts;
+    global.date = mod.naur.Date;
+    global.chineseLunar = mod.naur.Date.ChineseLunar;
     $(function () {
         init();
         initEcharts();
