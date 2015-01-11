@@ -540,15 +540,15 @@
                 offset += _chineseLunar.lYearDays(i);
             }
             var leap = 0, isAdd = false;
-            for (var i = 1; i < m; i++) {
+            for (var j = 1; j < m; j++) {
                 leap = _chineseLunar.leapMonth(y);
                 if (!isAdd) {//处理闰月
-                    if (leap <= i && leap > 0) {
+                    if (leap <= j && leap > 0) {
                         offset += _chineseLunar.leapDays(y);
                         isAdd = true;
                     }
                 }
-                offset += _chineseLunar.monthDays(y, i);
+                offset += _chineseLunar.monthDays(y, j);
             }
             //转换闰月农历 需补充该年闰月的前一个月的时差
             if (isLeapMonth) {
