@@ -80,8 +80,8 @@ function getParams() {
         title: '----',
         dataZoomLimit: 40,
         pointFilter: function (date) {
-            return global.date.stockHoliday(date, function () {
-                return global.chineseLunar.solar2lunar(date.getFullYear(), date.getMonth(), date.getDate());
+            return global.date.stockHoliday(date, function (solar) {
+                return global.chineseLunar.solar2lunar(solar.getFullYear(), solar.getMonth() + 1, solar.getDate());
             });
         }
     };

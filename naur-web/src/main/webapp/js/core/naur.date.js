@@ -15,9 +15,9 @@
         WEEK: {
             Sunday: 0,
             Monday: 1,
-            Tuesday : 2,
-            Wednesday : 3,
-            Thursday : 4,
+            Tuesday: 2,
+            Wednesday: 3,
+            Thursday: 4,
             Friday: 5,
             Saturday: 6
         },
@@ -63,14 +63,61 @@
         },
 
         stockHoliday: function (solarDate, lunarDate) {
-            var week = date.getDay();
+            var week = solarDate.getDay();
             if (_date.WEEK.Sunday == week || _date.WEEK.Saturday == week) return true;
 
-            var month = date.getMonth();
-            var date = date.getDate();
+            var year = solarDate.getFullYear();
+            var month = solarDate.getMonth() + 1;
+            var date = solarDate.getDate();
 
-            //元旦 1/1-1/3
-            //春节 1/1-1/3
+            //阳历判断
+            //元旦 1/1-1/3        3天
+            //国庆节   10/1-10/7   7天
+            //劳动节 5/1-5/3     3天
+            switch (month) {
+                case 1:
+                    if (date >= 1 && date <= 3) return true;  //元旦
+                    break;
+                case 4:
+                    if (date >= 1 && date <= 3) return true;  //劳动节
+                    break;
+                case 10:
+                    if (date >= 1 && date <= 7) return true;  //国庆节
+                    break;
+            }
+
+            //农历判断
+            //春节 2/18-2/24    7天
+            //清明节 4/4-4/6    3天
+            //端午节 6/20-6/22     5/5  3天
+            //中秋节 9/26-9/27     8/15  2天
+            var _lunarDate = lunarDate(solarDate);
+            year = _lunarDate.lYear;
+            month = _lunarDate.lMonth;
+            date = _lunarDate.lMonth;
+            week = _lunarDate.nWeek;
+            switch (month) {
+                case 1:
+                    //TODO 日期问题
+                    if (date >= 1 && date <= 6) return true;  //春节
+                    break;
+                case 4:
+                    //TODO 清明是节气
+                    if (date >= 1 && date <= 3) return true;  //清明节
+                    break;
+                case 5:
+                    //TODO 要寻找上一天日期
+                    if (date === 5) return true;  //端午节
+                    break;
+                case 8:
+                    if (date >= 5 && date <= 7) return true;  //中秋节
+                    break;
+                case 12:
+                    if (date === 30) return true;  //除夕
+                    break;
+            }
+
+            return false;
         }
     };
 
