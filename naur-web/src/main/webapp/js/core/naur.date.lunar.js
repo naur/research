@@ -7,7 +7,10 @@
  *              1/11/2015 9:29 AM
  * Description:
  *              农历日期转换
+ *              http://www.cnitblog.com/addone/archive/2014/06/17/63461.html
+ *              http://blog.csdn.net/sYwb/article/details/337172
  *              http://blog.jjonline.cn/userInterFace/173.html
+ *              https://github.com/conis/lunar/blob/master/lib/chinese-lunar.js
  *
  */
 
@@ -43,35 +46,6 @@
             0x0b273, 0x06930, 0x07337, 0x06aa0, 0x0ad50, 0x14b55, 0x04b60, 0x0a570, 0x054e4, 0x0d160,//2080-2089
             0x0e968, 0x0d520, 0x0daa0, 0x16aa6, 0x056d0, 0x04ae0, 0x0a9d4, 0x0a2d0, 0x0d150, 0x0f252,//2090-2099
             0x0d520],//2100
-
-        /**
-         * 公历每个月份的天数普通表
-         */
-        solarMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-
-        /**
-         * 天干地支之天干速查表
-         * ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"]
-         */
-        Gan: ["\u7532", "\u4e59", "\u4e19", "\u4e01", "\u620a", "\u5df1", "\u5e9a", "\u8f9b", "\u58ec", "\u7678"],
-
-        /**
-         * 天干地支之地支速查表
-         * ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"]
-         */
-        Zhi: ["\u5b50", "\u4e11", "\u5bc5", "\u536f", "\u8fb0", "\u5df3", "\u5348", "\u672a", "\u7533", "\u9149", "\u620c", "\u4ea5"],
-
-        /**
-         * 天干地支之地支速查表<=>生肖
-         * ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"]
-         */
-        Animals: ["\u9f20", "\u725b", "\u864e", "\u5154", "\u9f99", "\u86c7", "\u9a6c", "\u7f8a", "\u7334", "\u9e21", "\u72d7", "\u732a"],
-
-        /**
-         * 4节气速查表
-         * ["小寒","大寒","立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至"]
-         */
-        solarTerm: ["\u5c0f\u5bd2", "\u5927\u5bd2", "\u7acb\u6625", "\u96e8\u6c34", "\u60ca\u86f0", "\u6625\u5206", "\u6e05\u660e", "\u8c37\u96e8", "\u7acb\u590f", "\u5c0f\u6ee1", "\u8292\u79cd", "\u590f\u81f3", "\u5c0f\u6691", "\u5927\u6691", "\u7acb\u79cb", "\u5904\u6691", "\u767d\u9732", "\u79cb\u5206", "\u5bd2\u9732", "\u971c\u964d", "\u7acb\u51ac", "\u5c0f\u96ea", "\u5927\u96ea", "\u51ac\u81f3"],
 
         /**
          * 1900-2100各年的24节气日期速查表
@@ -144,34 +118,6 @@
             '7f07e7f0e47f531b0723b0b6fb0721', '7f0e26665b66a449801e9808297c35', '665f67f0e37f1489801eb072297c35',
             '7ec967f0e37f14998082b0787b06bd', '7f07e7f0e47f531b0723b0b6fb0721', '7f0e27f1487f531b0b0bb0b6fb0722'],
 
-
-        /**
-         * 数字转中文速查表
-         * @Array Of Property
-         * @trans ['日','一','二','三','四','五','六','七','八','九','十']
-         * @return Cn string
-         */
-        nStr1: ["\u65e5", "\u4e00", "\u4e8c", "\u4e09", "\u56db", "\u4e94", "\u516d", "\u4e03", "\u516b", "\u4e5d", "\u5341"],
-
-
-        /**
-         * 日期转农历称呼速查表
-         * @Array Of Property
-         * @trans ['初','十','廿','卅']
-         * @return Cn string
-         */
-        nStr2: ["\u521d", "\u5341", "\u5eff", "\u5345"],
-
-
-        /**
-         * 月份转农历称呼速查表
-         * @Array Of Property
-         * @trans ['正','一','二','三','四','五','六','七','八','九','十','冬','腊']
-         * @return Cn string
-         */
-        nStr3: ["\u6b63", "\u4e8c", "\u4e09", "\u56db", "\u4e94", "\u516d", "\u4e03", "\u516b", "\u4e5d", "\u5341", "\u51ac", "\u814a"],
-
-
         /**
          * 返回农历y年一整年的总天数
          * @param lunar Year
@@ -240,7 +186,7 @@
             if (ms == 1) { //2月份的闰平规律测算后确认返回28或29
                 return (((y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0)) ? 29 : 28);
             } else {
-                return (_chineseLunar.solarMonth[ms]);
+                return (_chineseLunar.const.solarMonth[ms]);
             }
         },
 
@@ -251,7 +197,7 @@
          * @return Cn string
          */
         toGanZhi: function (offset) {
-            return (_chineseLunar.Gan[offset % 10] + _chineseLunar.Zhi[offset % 12]);
+            return (_chineseLunar.const.Gan[offset % 10] + _chineseLunar.const.Zhi[offset % 12]);
         },
 
 
@@ -322,7 +268,7 @@
             if (m > 12 || m < 1) {
                 return -1
             } //若参数错误 返回-1
-            var s = _chineseLunar.nStr3[m - 1];
+            var s = _chineseLunar.const.nStr3[m - 1];
             s += "\u6708";//加上月字
             return s;
         },
@@ -349,8 +295,8 @@
                     break;
                     break;
                 default :
-                    s = _chineseLunar.nStr2[Math.floor(d / 10)];
-                    s += _chineseLunar.nStr1[d % 10];
+                    s = _chineseLunar.const.nStr2[Math.floor(d / 10)];
+                    s += _chineseLunar.const.nStr1[d % 10];
             }
             return (s);
         },
@@ -363,7 +309,7 @@
          * @eg:var animal = _chineseLunar.getAnimal(1987) ;//animal='兔'
          */
         getAnimal: function (y) {
-            return _chineseLunar.Animals[(y - 4) % 12]
+            return _chineseLunar.const.Animals[(y - 4) % 12]
         },
 
 
@@ -406,7 +352,7 @@
                 isToday = true;
             }
             //星期几
-            var nWeek = objDate.getDay(), cWeek = _chineseLunar.nStr1[nWeek];
+            var nWeek = objDate.getDay(), cWeek = _chineseLunar.const.nStr1[nWeek];
             if (nWeek == 0) {
                 nWeek = 7;
             }//数字表示周几顺应天朝周一开始的惯例
@@ -477,11 +423,11 @@
             var Term = null;
             if (firstNode == d) {
                 isTerm = true;
-                Term = _chineseLunar.solarTerm[m * 2 - 2];
+                Term = _chineseLunar.const.solarTerm[m * 2 - 2];
             }
             if (secondNode == d) {
                 isTerm = true;
-                Term = _chineseLunar.solarTerm[m * 2 - 1];
+                Term = _chineseLunar.const.solarTerm[m * 2 - 1];
             }
             //日柱 当月一日与 1900/1/1 相差天数
             var dayCyclical = Date.UTC(y, sm, 1, 0, 0, 0, 0) / 86400000 + 25567 + 10;
@@ -567,6 +513,7 @@
 
     if (typeof define === 'function') {
         define('naur.date', function (NAUR) {
+            _chineseLunar.const = NAUR.Date;
             NAUR.Date.ChineseLunar = _chineseLunar;
             return NAUR;
         });

@@ -22,6 +22,94 @@
             Saturday: 6
         },
 
+
+        /**
+         * 公历每个月份的天数普通表
+         */
+        solarMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+
+        /**
+         * 天干地支之天干速查表
+         * ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"]
+         */
+        Gan: ["\u7532", "\u4e59", "\u4e19", "\u4e01", "\u620a", "\u5df1", "\u5e9a", "\u8f9b", "\u58ec", "\u7678"],
+
+        /**
+         * 天干地支之地支速查表
+         * ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"]
+         */
+        Zhi: ["\u5b50", "\u4e11", "\u5bc5", "\u536f", "\u8fb0", "\u5df3", "\u5348", "\u672a", "\u7533", "\u9149", "\u620c", "\u4ea5"],
+
+        /**
+         * 天干地支之地支速查表<=>生肖
+         * ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"]
+         */
+        Animals: ["\u9f20", "\u725b", "\u864e", "\u5154", "\u9f99", "\u86c7", "\u9a6c", "\u7f8a", "\u7334", "\u9e21", "\u72d7", "\u732a"],
+
+        /**
+         * 4节气速查表
+         * ["小寒","大寒","立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至"]
+         */
+        solarTerm: ["\u5c0f\u5bd2", "\u5927\u5bd2", "\u7acb\u6625", "\u96e8\u6c34", "\u60ca\u86f0", "\u6625\u5206", "\u6e05\u660e", "\u8c37\u96e8", "\u7acb\u590f", "\u5c0f\u6ee1", "\u8292\u79cd", "\u590f\u81f3", "\u5c0f\u6691", "\u5927\u6691", "\u7acb\u79cb", "\u5904\u6691", "\u767d\u9732", "\u79cb\u5206", "\u5bd2\u9732", "\u971c\u964d", "\u7acb\u51ac", "\u5c0f\u96ea", "\u5927\u96ea", "\u51ac\u81f3"],
+
+        /**
+         * 数字转中文速查表
+         * @Array Of Property
+         * @trans ['日','一','二','三','四','五','六','七','八','九','十']
+         * @return Cn string
+         */
+        nStr1: ["\u65e5", "\u4e00", "\u4e8c", "\u4e09", "\u56db", "\u4e94", "\u516d", "\u4e03", "\u516b", "\u4e5d", "\u5341"],
+
+
+        /**
+         * 日期转农历称呼速查表
+         * @Array Of Property
+         * @trans ['初','十','廿','卅']
+         * @return Cn string
+         */
+        nStr2: ["\u521d", "\u5341", "\u5eff", "\u5345"],
+
+
+        /**
+         * 月份转农历称呼速查表
+         * @Array Of Property
+         * @trans ['正','一','二','三','四','五','六','七','八','九','十','冬','腊']
+         * @return Cn string
+         */
+        nStr3: ["\u6b63", "\u4e8c", "\u4e09", "\u56db", "\u4e94", "\u516d", "\u4e03", "\u516b", "\u4e5d", "\u5341", "\u51ac", "\u814a"],
+
+        statutoryHolidays: {
+            //春节，清明，端午，中秋
+            2000: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2001: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2002: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2003: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2004: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2005: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2006: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2007: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2008: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2009: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2010: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2011: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2012: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2013: {2: [9, 15], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2014: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            2015: {2: [18, 24], 4: [4, 6], 6: [20, 22], 9: [26, 27]},
+            isHoliday: function (year, month, date) {
+                if (!_date.statutoryHolidays[year]) {
+                    alert('请补充 ' + year + ' 的假期信息');
+                    return false;
+                }
+
+                var range = _date.statutoryHolidays[year][month];
+                if (!range) {
+                    return false;
+                }
+                return date >= range[0] && date <= range[1]
+            }
+        },
+
         solarHoliday: function (date) {
             var month = date.getMonth();
             var date = date.getDate();
@@ -57,12 +145,10 @@
         },
 
         lunarHoliday: function (date) {
-
-
             return false;
         },
 
-        stockHoliday: function (solarDate, lunarDate) {
+        stockHoliday: function (solarDate) {
             var week = solarDate.getDay();
             if (_date.WEEK.Sunday == week || _date.WEEK.Saturday == week) return true;
 
@@ -78,7 +164,7 @@
                 case 1:
                     if (date >= 1 && date <= 3) return true;  //元旦
                     break;
-                case 4:
+                case 5:
                     if (date >= 1 && date <= 3) return true;  //劳动节
                     break;
                 case 10:
@@ -86,38 +172,50 @@
                     break;
             }
 
-            //农历判断
-            //春节 2/18-2/24    7天
-            //清明节 4/4-4/6    3天
-            //端午节 6/20-6/22     5/5  3天
-            //中秋节 9/26-9/27     8/15  2天
-            var _lunarDate = lunarDate(solarDate);
-            year = _lunarDate.lYear;
-            month = _lunarDate.lMonth;
-            date = _lunarDate.lMonth;
-            week = _lunarDate.nWeek;
-            switch (month) {
-                case 1:
-                    //TODO 日期问题
-                    if (date >= 1 && date <= 6) return true;  //春节
-                    break;
-                case 4:
-                    //TODO 清明是节气
-                    if (date >= 1 && date <= 3) return true;  //清明节
-                    break;
-                case 5:
-                    //TODO 要寻找上一天日期
-                    if (date === 5) return true;  //端午节
-                    break;
-                case 8:
-                    if (date >= 5 && date <= 7) return true;  //中秋节
-                    break;
-                case 12:
-                    if (date === 30) return true;  //除夕
-                    break;
-            }
+            return _date.statutoryHolidays.isHoliday(year, month, date);
 
-            return false;
+            ////农历判断
+            ////春节 2/18-2/24    7天
+            ////清明节 4/4-4/6    3天
+            ////端午节 6/20-6/22     5/5  3天
+            ////中秋节 9/26-9/27     8/15  2天
+            //var _lunarDate = lunarDate(solarDate);
+            //year = _lunarDate.lYear;
+            //month = _lunarDate.lMonth;
+            //date = _lunarDate.lMonth;
+            //week = _lunarDate.nWeek;
+            //switch (month) {
+            //    case 1:
+            //        //TODO 日期问题
+            //        if (date >= 1 && date <= 6) return true;  //春节
+            //        break;
+            //    case 4:
+            //        //TODO 清明是节气
+            //        if (_date.solarTerm[6] == _lunarDate.Term) return true;  //清明节
+            //        //TODO 要寻找上2天周末是否是清明节
+            //        if (date <= 5) {
+            //            if (_date.WEEK.Monday == week) {
+            //                solarDate.setDate(date - 1);
+            //                if (_date.solarTerm[6] == lunarDate(solarDate).Term) return true;  //清明节
+            //                solarDate.setDate(date - 1);
+            //                if (_date.solarTerm[6] == lunarDate(solarDate).Term) return true;  //清明节
+            //            }
+            //        }
+            //        break;
+            //    case 5:
+            //        if (date === 5) return true;  //端午节
+            //        if ((date === 6 || date == 7) && _date.WEEK.Monday == week) return true;  //周末是端午节，调休
+            //        break;
+            //    case 8:
+            //        if (date === 15) return true;  //中秋节
+            //        if ((date === 16 || date == 17) && _date.WEEK.Monday == week) return true;  //周末是中秋节，调休
+            //        break;
+            //    case 12:
+            //        if (date === 30) return true;  //除夕
+            //        break;
+            //}
+            //
+            //return false;
         }
     };
 
