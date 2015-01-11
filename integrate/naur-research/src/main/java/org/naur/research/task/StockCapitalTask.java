@@ -37,6 +37,7 @@ import java.util.Date;
 @Service
 public class StockCapitalTask extends Task implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockCapitalTask.class);
+    private static final long serialVersionUID = -349618193169585445L;
 
     @Autowired
     private StockWebService stockWebService;

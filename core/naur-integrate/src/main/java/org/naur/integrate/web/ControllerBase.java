@@ -47,18 +47,13 @@ public abstract class ControllerBase {
 
     /**
      * Inout: Map, Output: Func<Map, Information>
-     *
-     * @param params
-     * @param func
-     * @return
      */
     protected Information handler(Map params, Func<Map, Information> func) {
         Information information = null;
         try {
             information = func.execute(params);
         } catch (Exception ex) {
-            if (null == information)
-                information = new Information<String>();
+            information = new Information<String>();
             information.setKeywords(ex.toString());
             information.setLevel(InformationLevel.ERROR.value());
         }
@@ -67,17 +62,13 @@ public abstract class ControllerBase {
 
     /**
      * Inout: Non, Output: Sub<Information>
-     *
-     * @param func
-     * @return
      */
     protected Information handler(Sub<Information> func) {
         Information information = null;
         try {
             information = func.execute();
         } catch (Exception ex) {
-            if (null == information)
-                information = new Information<String>();
+            information = new Information<String>();
             information.setKeywords(ex.toString());
             information.setLevel(InformationLevel.ERROR.value());
         }

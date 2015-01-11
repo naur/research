@@ -6,12 +6,15 @@
 
 package org.naur.research.web.controllers.finance;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.naur.common.entities.Information;
 import org.naur.common.patterns.Tree;
 import org.naur.common.patterns.Type;
 import org.naur.common.patterns.exception.Func;
 import org.naur.integrate.web.ControllerBase;
 import org.naur.repositories.models.finance.Stock;
+import org.naur.repositories.models.finance.StockType;
 import org.naur.research.services.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,6 +64,20 @@ public class StockController extends ControllerBase {
             @Override
             public Information execute(Map map) throws Exception {
                 Information<List<Stock>> info = new Information<List<Stock>>();
+
+                if (!StringUtils.equalsIgnoreCase(StockType.SH.name(), type) &&
+                        !StringUtils.equalsIgnoreCase(StockType.SZ.name(), type)) {
+                    throw new Exception("type error.");
+                }
+
+                if (StringUtils.isEmpty(code)) {
+                    throw new Exception("code error.");
+                }
+
+                if (null == start || null == end || end.getTime() - start.getTime() > DateUtils.MILLIS_PER_DAY * 365) {
+                    throw new Exception("date error.");
+                }
+
                 info.setData(stockService.get(map));
                 return info;
             }

@@ -12,7 +12,7 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var global = {
-    queryUri: '/finance/stock', // /{type}/{code}/{start}/{end}
+    queryUri: '/finance/stock/{0}/{1}/{2}/{3}', // /{type}/{code}/{start}/{end}
     dom: {
         search: '#search',
         code: '#stock_code',
@@ -32,33 +32,33 @@ function init() {
     $(global.dom.search).on('click', function () {
 
         global.params = getParams();
-        var data = {
-            'stock': [
-                {key: '2014-12-26', value: 20},
-                {key: '2014-12-27', value: 60},
-                {key: '2014-12-28', value: 120},
-                {key: '2014-12-29', value: 10},
-                {key: '2015-01-02', value: 30}
-            ]
-        };
-        var option = global.echarts.getChartOption(global.params);
-        var series = global.echarts.getSeries(data, global.params);
-        global.chart.render({option: option, series: series});
 
-        //global.http.acquire({
-        //    uri: global.queryUri,
-        //    context: this,
-        //    error: function (err) {
-        //        $(tbody).html(global.utility.format(global.message.tableTemplate, err));
-        //    },
-        //    success: function (obj) {
-        //        if (0 == obj.output.information.level) {
-        //            $(tbody).html($.render.session(obj.output.information.data));
-        //        } else {
-        //            $(tbody).html(global.utility.format(global.message.tableTemplate, obj.output.information.keywords));
-        //        }
-        //    }
-        //});
+        global.http.acquire({
+            uri: global.utility.format(global.queryUri, global.params.type, global.params.code, global.params.start.global.params.end),
+            context: this,
+            error: function (err) {
+                $(tbody).html(global.utility.format(global.message.tableTemplate, err));
+            },
+            success: function (obj) {
+                if (0 == obj.output.information.level) {
+                    //obj.output.information.data
+                    var data = {
+                        'stock': [
+                            {key: '2014-12-26', value: 20},
+                            {key: '2014-12-27', value: 60},
+                            {key: '2014-12-28', value: 120},
+                            {key: '2014-12-29', value: 10},
+                            {key: '2015-01-02', value: 30}
+                        ]
+                    };
+                    var option = global.echarts.getChartOption(global.params);
+                    var series = global.echarts.getSeries(data, global.params);
+                    global.chart.render({option: option, series: series});
+                } else {
+                    //obj.output.information.keywords
+                }
+            }
+        });
     });
 }
 
@@ -80,9 +80,7 @@ function getParams() {
         title: '----',
         dataZoomLimit: 40,
         pointFilter: function (date) {
-            return global.date.stockHoliday(date, function (solar) {
-                return global.chineseLunar.solar2lunar(solar.getFullYear(), solar.getMonth() + 1, solar.getDate());
-            });
+            return global.date.stockHoliday(date);
         }
     };
     tmp.subtitle = new Date(tmp.start).format('yyyy年MM月dd日') + ' --- ' + new Date(tmp.end).format('yyyy年MM月dd日');

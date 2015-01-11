@@ -65,7 +65,10 @@ public class SecurityConfiguration {
         return ranges;
     }
 
-    public final Map<String, String> stockTypePrefix = new HashMap<String, String>() {{
+    public final Map<String, String> stockTypePrefix = new HashMap<String, String>() {
+        private static final long serialVersionUID = -5892367415336780892L;
+
+        {
         put("0", "SZ");
         put("3", "SZ");
         put("6", "SH");
