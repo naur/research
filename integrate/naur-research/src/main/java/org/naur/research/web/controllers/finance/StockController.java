@@ -19,6 +19,8 @@ import org.naur.research.services.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
@@ -52,7 +54,9 @@ public class StockController extends ControllerBase {
     }
 
     @RequestMapping("/{type}/{code}/{start}/{end}")
-    public Information query(@PathVariable final String type, @PathVariable final String code, @PathVariable final Date start, @PathVariable final Date end) {
+    public Information query(@PathVariable final String type, @PathVariable final String code,
+                             @PathVariable @DateTimeFormat(iso=ISO.DATE) final Date start,
+                             @PathVariable @DateTimeFormat(iso=ISO.DATE) final Date end) {
         //TODO 参数验证
         return handler(new HashMap<String, Object>() {{
             put("type", type);

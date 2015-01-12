@@ -34,7 +34,10 @@ function init() {
         global.params = getParams();
 
         global.http.acquire({
-            uri: global.utility.format(global.queryUri, global.params.type, global.params.code, global.params.start.global.params.end),
+            uri: global.utility.format(
+                global.queryUri, global.params.type, global.params.code,
+                global.params.start.format('yyyy-MM-dd'),
+                global.params.end.format('yyyy-MM-dd')),
             context: this,
             error: function (err) {
                 $(tbody).html(global.utility.format(global.message.tableTemplate, err));
