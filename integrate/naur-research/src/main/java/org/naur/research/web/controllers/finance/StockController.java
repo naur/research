@@ -59,7 +59,7 @@ public class StockController extends ControllerBase {
                              @PathVariable @DateTimeFormat(iso=ISO.DATE) final Date end) {
         //TODO 参数验证
         return handler(new HashMap<String, Object>() {{
-            put("type", type);
+            put("type", type.toUpperCase());
             put("code", code);
             put("quotes.date", new Tree(Type.Between)
                     .setLeft(new Tree<Date>(start))
