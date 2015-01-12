@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <pre>
@@ -57,7 +54,14 @@ public class SchedulerController extends ControllerBase {
         return handler(new Information<List<Scheduler>>(), new Func<Information, Information>() {
             @Override
             public Information execute(Information information) throws Exception {
-                information.setData(schedulerService.getTasks(false));
+                List<Scheduler> list = schedulerService.getTasks(false);
+                Collections.sort(list, new Comparator<Scheduler>() {
+                    @Override
+                    public int compare(Scheduler o1, Scheduler o2) {
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                });
+                information.setData(list);
                 information.setLevel(InformationLevel.SUCCESS.value());
                 return information;
             }
