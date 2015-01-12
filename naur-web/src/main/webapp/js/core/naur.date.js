@@ -222,9 +222,9 @@
     };
 
     if (typeof define === 'function') {
-        define('naur', function (NAUR) {
+        define(['naur'], function (NAUR) {
             NAUR.Date = _date;
-            return NAUR.Date;
+            return NAUR;
         });
     } else if (typeof exports === 'object') {
         module.exports = _chineseLunar;

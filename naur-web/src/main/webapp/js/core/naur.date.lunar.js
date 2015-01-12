@@ -14,7 +14,7 @@
  *
  */
 
-(function () {
++function () {
 
     var _chineseLunar = {
 
@@ -512,7 +512,7 @@
     };
 
     if (typeof define === 'function') {
-        define('naur.date', function (NAUR) {
+        define(['naur.date'], function (NAUR) {
             _chineseLunar.const = NAUR.Date;
             NAUR.Date.ChineseLunar = _chineseLunar;
             return NAUR;
@@ -522,4 +522,4 @@
     } else {
         window.chineseLunar = _chineseLunar;
     }
-})();
+}();
