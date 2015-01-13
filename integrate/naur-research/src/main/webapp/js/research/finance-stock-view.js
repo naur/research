@@ -12,7 +12,7 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var global = {
-    queryUri: '/finance/stock/{0}/{1}/{2}/{3}.json', // /{type}/{code}/{start}/{end}
+    queryUri: '/finance/stock/{0}/{1}/{2}.json', // /{type}/{code}/{start}/{end}
     dom: {
         search: '#search',
         stock: '#stock_code',
@@ -39,7 +39,7 @@ function init() {
 
         global.http.acquire({
             uri: global.utility.format(
-                global.queryUri, global.params.stock.substr(0, 2), global.params.stock.substr(2, 6),
+                global.queryUri, global.params.stock,
                 global.params.start.format('yyyy-MM-dd'),
                 global.params.end.format('yyyy-MM-dd')),
             context: this,
@@ -57,7 +57,7 @@ function init() {
                     var data = {};
                     for (var stock in stocks) {
                         //设置线段名
-                        global.params.lines[stocks[stock].code] = stocks[stock].type.toUpperCase() + stocks[stock].code;
+                        global.params.lines[stocks[stock].code] = stocks[stock].type.toLowerCase() + stocks[stock].code;
                         data[stocks[stock].code] = [];
                         for (var quote in stocks[stock].quotes) {
                             data[stocks[stock].code].push({
@@ -94,13 +94,12 @@ function getParams() {
         start: new Date($(global.dom.start).val() + 'T00:00:00+08:00'),
         end: new Date($(global.dom.end).val() + 'T00:00:00+08:00'),
         lines: {},
-        title: '----',
         dataZoomLimit: 40,
         pointFilter: function (date) {
             return global.date.stockHoliday(date);
         }
     };
-    tmp.subtitle = new Date(tmp.start).format('yyyy年MM月dd日') + ' --- ' + new Date(tmp.end).format('yyyy年MM月dd日');
+    tmp.title = new Date(tmp.start).format('yyyy年MM月dd日') + ' --- ' + new Date(tmp.end).format('yyyy年MM月dd日');
     tmp.points = global.echarts.parsePoints(tmp);
     return tmp;
 }

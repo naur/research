@@ -14,12 +14,12 @@ define(function () {
             y: "top",
             textStyle: {
                 fontWeight: 'normal',
-                color: "#274b6d",
+                color: "#a22e00",
                 fontFamily: "arial, sans-serif",
-                fontSize: "14px"
+                fontSize: "13px"
             },
             subtextStyle: {
-                color: "#a22e00",
+                color: "#274b6d",
                 fontFamily: "arial, sans-serif",
                 fontSize: "11px",
                 fontStyle: "italic"
