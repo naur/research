@@ -12,7 +12,7 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var global = {
-    queryUri: '/finance/stock/{0}/{1}/{2}/{3}', // /{type}/{code}/{start}/{end}
+    queryUri: '/finance/stock/{0}/{1}/{2}/{3}.json', // /{type}/{code}/{start}/{end}
     dom: {
         search: '#search',
         code: '#stock_code',
@@ -27,8 +27,8 @@ var global = {
 /*-------------------- 函数 START --------------------*/
 
 function init() {
-    $(global.dom.start).val(new Date(new Date().getTime() - WkMilli).format('yyyy-MM-dd'));
-    $(global.dom.end).val(new Date().format('yyyy-MM-dd'));
+    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - WkMilli).format('yyyy-MM-dd'));
+    $(global.dom.end).val(new Date(new Date().getTime() - DyMilli).format('yyyy-MM-dd'));
     $(global.dom.search).on('click', function () {
 
         global.params = getParams();
@@ -40,18 +40,34 @@ function init() {
                 global.params.end.format('yyyy-MM-dd')),
             context: this,
             error: function (err) {
-                $(tbody).html(global.utility.format(global.message.tableTemplate, err));
+                //TODO tbody
+                $(global.dom.chart).html(global.utility.format(global.message.tableTemplate, JSON.stringify(err)));
             },
             success: function (obj) {
                 if (0 == obj.output.information.level) {
-                    //obj.output.information.data
-                    var data = {
-                        'stock': [
-                            {key: '2014-12-26', value: 20},
-                            {key: '2014-12-27', value: 60},
-                            {key: '2014-12-28', value: 120},
-                            {key: '2014-12-29', value: 10},
-                            {key: '2015-01-02', value: 30}
+
+                    var stocks = obj.output.information.data;
+                    if (!stocks) {
+                        return;
+                    }
+                    var data = {};
+                    for (var stock in stocks) {
+                        //TODO
+                        //data[stocks[stock].id] = [];
+                        data['stock'] = [];
+                        for (var quote in stocks[stock].quotes) {
+                            data['stock'].push({
+                                key: new Date(stocks[stock].quotes[quote].date).format('yyyy-MM-dd'),
+                                value: stocks[stock].quotes[quote].close
+                            });
+                        }
+                    }
+                    data = {
+                        "stock": [
+                            {"key": "2015-01-06", "value": 21.49},
+                            {"key": "2015-01-07", "value": 21.25},
+                            {"key": "2015-01-08", "value": 21.44},
+                            {"key": "2015-01-09", "value": 21.33}
                         ]
                     };
                     var option = global.echarts.getChartOption(global.params);
@@ -77,8 +93,10 @@ function initEcharts() {
 
 function getParams() {
     var tmp = {
-        start: $(global.dom.start).val() + 'T00:00:00+08:00',
-        end: $(global.dom.end).val() + 'T00:00:00+08:00',
+        type: $(global.dom.code).val().substr(0, 2),
+        code: $(global.dom.code).val().substr(2, 6),
+        start: new Date($(global.dom.start).val() + 'T00:00:00+08:00'),
+        end: new Date($(global.dom.end).val() + 'T00:00:00+08:00'),
         lines: {stock: '---'},
         title: '----',
         dataZoomLimit: 40,
