@@ -56,24 +56,17 @@ function init() {
                     }
                     var data = {};
                     for (var stock in stocks) {
-                        //TODO
-                        //data[stocks[stock].id] = [];
-                        data['stock'] = [];
+                        //设置线段名
+                        global.params.lines[stocks[stock].code] = stocks[stock].type.toUpperCase() + stocks[stock].code;
+                        data[stocks[stock].code] = [];
                         for (var quote in stocks[stock].quotes) {
-                            data['stock'].push({
+                            data[stocks[stock].code].push({
                                 key: new Date(stocks[stock].quotes[quote].date).format('yyyy-MM-dd'),
                                 value: stocks[stock].quotes[quote].close
                             });
                         }
                     }
-                    data = {
-                        "stock": [
-                            {"key": "2015-01-06", "value": 21.49},
-                            {"key": "2015-01-07", "value": 21.25},
-                            {"key": "2015-01-08", "value": 21.44},
-                            {"key": "2015-01-09", "value": 21.33}
-                        ]
-                    };
+
                     var option = global.echarts.getChartOption(global.params);
                     var series = global.echarts.getSeries(data, global.params);
                     global.chart.render({option: option, series: series});
@@ -100,7 +93,7 @@ function getParams() {
         stock: $(global.dom.stock).val(),
         start: new Date($(global.dom.start).val() + 'T00:00:00+08:00'),
         end: new Date($(global.dom.end).val() + 'T00:00:00+08:00'),
-        lines: {stock: '---'},
+        lines: {},
         title: '----',
         dataZoomLimit: 40,
         pointFilter: function (date) {

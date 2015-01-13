@@ -15,6 +15,7 @@ import org.naur.common.patterns.exception.Func;
 import org.naur.integrate.web.ControllerBase;
 import org.naur.repositories.models.finance.Stock;
 import org.naur.repositories.models.finance.StockType;
+import org.naur.research.config.SecurityConfiguration;
 import org.naur.research.services.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,6 +46,9 @@ public class StockController extends ControllerBase {
     @Autowired
     private StockService stockService;
 
+    @Autowired
+    private SecurityConfiguration securityConfiguration;
+
     /**
      * 页面
      */
@@ -53,13 +57,12 @@ public class StockController extends ControllerBase {
         return view("stock-view");
     }
 
-    @RequestMapping("/{type}/{code}/{start}/{end}")
-    public Information query(@PathVariable final String type, @PathVariable final String code,
+    @RequestMapping("/{code}/{start}/{end}")
+    public Information query(@PathVariable final String code,
                              @PathVariable @DateTimeFormat(iso=ISO.DATE) final Date start,
                              @PathVariable @DateTimeFormat(iso=ISO.DATE) final Date end) {
         //TODO 参数验证
         return handler(new HashMap<String, Object>() {{
-            put("type", type.toUpperCase());
             put("code", code);
             put("quotes.date", new Tree(Type.Between)
                     .setLeft(new Tree<Date>(start))
@@ -69,11 +72,6 @@ public class StockController extends ControllerBase {
             public Information execute(Map map) throws Exception {
                 Information<List<Stock>> info = new Information<List<Stock>>();
 
-                if (!StringUtils.equalsIgnoreCase(StockType.SH.name(), type) &&
-                        !StringUtils.equalsIgnoreCase(StockType.SZ.name(), type)) {
-                    throw new Exception("type error.");
-                }
-
                 if (StringUtils.isEmpty(code)) {
                     throw new Exception("code error.");
                 }
@@ -81,6 +79,8 @@ public class StockController extends ControllerBase {
                 if (null == start || null == end || end.getTime() - start.getTime() > DateUtils.MILLIS_PER_DAY * 365) {
                     throw new Exception("date error.");
                 }
+
+                map.put("type", securityConfiguration.stockTypePrefix.get(code.substring(0, 1)));
 
                 info.setData(stockService.get(map));
                 return info;
