@@ -15,7 +15,7 @@ var global = {
     queryUri: '/finance/stock/{0}/{1}/{2}/{3}.json', // /{type}/{code}/{start}/{end}
     dom: {
         search: '#search',
-        code: '#stock_code',
+        stock: '#stock_code',
         start: '#stock_start_date',
         end: '#stock_end_date',
         chart: '#chart'
@@ -32,16 +32,20 @@ function init() {
     $(global.dom.search).on('click', function () {
 
         global.params = getParams();
+        if (!global.params.stock) {
+            //$(global.dom.chart).html(global.utility.format(global.message.tableTemplate, 'type+code'));
+            return;
+        }
 
         global.http.acquire({
             uri: global.utility.format(
-                global.queryUri, global.params.type, global.params.code,
+                global.queryUri, global.params.stock.substr(0, 2), global.params.stock.substr(2, 6),
                 global.params.start.format('yyyy-MM-dd'),
                 global.params.end.format('yyyy-MM-dd')),
             context: this,
             error: function (err) {
                 //TODO tbody
-                $(global.dom.chart).html(global.utility.format(global.message.tableTemplate, JSON.stringify(err)));
+                //$(global.dom.chart).html(global.utility.format(global.message.tableTemplate, JSON.stringify(err)));
             },
             success: function (obj) {
                 if (0 == obj.output.information.level) {
@@ -82,7 +86,7 @@ function init() {
 }
 
 function initEcharts() {
-    global.chart = global.echarts.core.init(document.getElementById(global.dom.chart.substr(1)));
+    global.chart = global.echarts.core.init(document.getElementById(global.dom.chart.substr(1)), global.echarts.theme);
     global.chart.render = function (opt) {
         if (opt.option)
             this.setOption(opt.option, true);
@@ -93,8 +97,7 @@ function initEcharts() {
 
 function getParams() {
     var tmp = {
-        type: $(global.dom.code).val().substr(0, 2),
-        code: $(global.dom.code).val().substr(2, 6),
+        stock: $(global.dom.stock).val(),
         start: new Date($(global.dom.start).val() + 'T00:00:00+08:00'),
         end: new Date($(global.dom.end).val() + 'T00:00:00+08:00'),
         lines: {stock: '---'},
