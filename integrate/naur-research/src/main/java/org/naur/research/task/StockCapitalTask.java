@@ -49,28 +49,33 @@ public class StockCapitalTask extends Task implements Serializable {
     @Override
     public void execute(TaskExecutionContext context) throws RuntimeException {
         Date date = DateUtil.getPrevWeekDay(Calendar.getInstance().getTime());
+        for (StockRange range : securityConfiguration.getStockRanges()) {
+            acquireStock(range, date);
+        }
+    }
+
+    private void acquireStock(StockRange range, Date date) {
         Stock stock = null;
         String id = null;
-        for (StockRange range : securityConfiguration.getStockRanges()) {
-            for (int i = range.start; i <= range.end; i++) {
-                id = range.getCode(i);
 
-                if (securityConfiguration.filter.contains(id)) {
-                    continue;
+        for (int i = range.start; i <= range.end; i++) {
+            id = range.getCode(i);
+
+            if (securityConfiguration.filter.contains(id)) {
+                continue;
+            }
+
+            try {
+                stock = stockWebService.getCapital(id);
+                //验证
+                if (null != stock) {
+                    stockService.edit(stock);
+                } else {
+                    LOGGER.info("Stock: " + id + ", NULL");
                 }
 
-                try {
-                    stock = stockWebService.getCapital(id);
-                    //验证
-                    if (null != stock) {
-                        stockService.edit(stock);
-                    } else {
-                        LOGGER.info("Stock: " + id + ", NULL");
-                    }
-
-                } catch (Exception e) {
-                    LOGGER.error("Stock: " + id + ", Date: " + date, e);
-                }
+            } catch (Exception e) {
+                LOGGER.error("Stock: " + id + ", Date: " + date, e);
             }
         }
     }
