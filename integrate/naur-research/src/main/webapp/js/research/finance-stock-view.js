@@ -14,6 +14,7 @@
 var global = {
     queryUri: '/finance/stock/{0}/{1}/{2}.json', // /{type}/{code}/{start}/{end}
     dom: {
+        message: '.row:eq(2) .col-md-12',
         search: '#search',
         stock: '#stock_code',
         start: '#stock_start_date',
@@ -33,9 +34,11 @@ function init() {
 
         global.params = getParams();
         if (!global.params.stock) {
-            //$(global.dom.chart).html(global.utility.format(global.message.tableTemplate, 'type+code'));
+            global.message.show({content: global.utility.format(global.message.text.paramsError, 'stock empty.')});
             return;
         }
+
+        global.message.show({content: global.message.text.loading});
 
         global.http.acquire({
             uri: global.utility.format(
@@ -45,10 +48,12 @@ function init() {
             context: this,
             error: function (err) {
                 //TODO tbody
-                //$(global.dom.chart).html(global.utility.format(global.message.tableTemplate, JSON.stringify(err)));
+                global.message.show({content: global.utility.format(global.message.text.error, JSON.stringify(err))});
             },
             success: function (obj) {
                 if (0 == obj.output.information.level) {
+
+                    global.message.empty();
 
                     var stocks = obj.output.information.data;
                     if (!stocks) {
@@ -113,6 +118,7 @@ function getParams() {
 
 require(['loading', 'research-template', 'naur.ui.echarts', 'naur.date.lunar'], function (mod) {
     global.message = mod.naur.Message;
+    $(global.dom.message).message({multiple: false});
     global.http = mod.naur.HTTP;
     global.utility = mod.naur.Utility;
     global.echarts = mod.naur.UI.Echarts;

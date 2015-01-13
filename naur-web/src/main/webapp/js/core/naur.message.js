@@ -39,7 +39,8 @@ define(['jquery', 'jquery.strings', 'naur', 'naur.utility'], function ($, $1, NA
 
         var text = {
             loading: '<span class="loading">正在努力获取数据，请稍候......</span>',
-            error: '<span class="error">获取数据错误，请稍后重试！</span>'
+            error: '<span class="error">获取数据错误，请稍后重试！{0}</span>',
+            paramsError: '<span class="error">参数错误：{0}</span>'
         };
 
         var isInit = false;
