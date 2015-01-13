@@ -76,7 +76,8 @@ function init() {
                     var series = global.echarts.getSeries(data, global.params);
                     global.chart.render({option: option, series: series});
                 } else {
-                    //obj.output.information.keywords
+                    //TODO 暴露了密码信息 global.message.show({content: global.utility.format(global.message.text.error, obj.output.information.keywords)});
+                    global.message.show({content: global.message.text.error});
                 }
             }
         });
