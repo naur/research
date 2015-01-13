@@ -232,15 +232,20 @@ table tbody tr .cellnowrap {
     /*background-image: url(/resources/themes/360buy/images/loading.gif);*/
 }
 
-.naur_loading {
-    color: red;
+.naur .error {
+    color: #A22E00;
     font: bold 12px arial, sans-serif;
 }
 
-.naur_title {
+.naur .loading {
+    color: red;
+    font: italic bold 12px arial, sans-serif;
+}
+
+.naur .title {
     font: 14px arial, sans-serif;
 }
 
-.naur_subtitle {
+.naur .subtitle {
     font: italic 11px arial, sans-serif;
 }

@@ -38,8 +38,8 @@ define(['jquery', 'jquery.strings', 'naur', 'naur.utility'], function ($, $1, NA
     NAUR.Message = (function () {
 
         var text = {
-            loading: '<span class="naur_loading">正在努力获取数据，请稍候......</span>',
-            error: '<span class="naur_error">获取数据错误，请稍后重试！</span>'
+            loading: '<span class="loading">正在努力获取数据，请稍候......</span>',
+            error: '<span class="error">获取数据错误，请稍后重试！</span>'
         };
 
         var isInit = false;
