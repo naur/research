@@ -27,12 +27,39 @@ var global = {
 
 /*-------------------- 函数 START --------------------*/
 
-function markUpDownLine() {
-    
+function markUpDownLine(data) {
+    var seriesIdx = 0;
+    var markPoints = null;
+    var t1, t2, t3;
+    for (var line in data) {
+        markPoints = [];
+        for (var point in data[line]) {
+            if (!t1) {
+                t1 = data[line][point];
+                continue;
+            }
+            if (!t2) {
+                t2 = data[line][point];
+                continue;
+            }
+            t3 = data[line][point];
+            if (t2.value > t1.value && t2.value > t3.value) {
+                markPoints.push(t2);
+            }
+            t1 = t2;
+            t2 = t3;
+        }
+        global.chart.addMarkLine(seriesIdx, global.charts.markDirectedPoint(markPoints, function (point) {
+            return {
+                xAxis: point.key,
+                yAxis: point.value
+            };
+        }));
+    }
 }
 
 function init() {
-    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - WkMilli).format('yyyy-MM-dd'));
+    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 6 * WkMilli).format('yyyy-MM-dd'));
     $(global.dom.end).val(new Date(new Date().getTime() - DyMilli).format('yyyy-MM-dd'));
     $(global.dom.search).on('click', function () {
 
@@ -63,13 +90,13 @@ function init() {
                     if (!stocks) {
                         return;
                     }
-                    global.chart.data = {};
+                    global.data = {};
                     for (var stock in stocks) {
                         //设置线段名
                         global.params.lines[stocks[stock].code] = stocks[stock].type.toLowerCase() + stocks[stock].code;
-                        global.chart.data[stocks[stock].code] = [];
+                        global.data[stocks[stock].code] = [];
                         for (var quote in stocks[stock].quotes) {
-                            global.chart.data[stocks[stock].code].push({
+                            global.data[stocks[stock].code].push({
                                 key: new Date(stocks[stock].quotes[quote].date).format('yyyy-MM-dd'),
                                 value: stocks[stock].quotes[quote].close
                             });
@@ -77,7 +104,7 @@ function init() {
                     }
 
                     var option = global.echarts.getChartOption(global.params);
-                    var series = global.echarts.getSeries(global.chart.data, global.params);
+                    var series = global.echarts.getSeries(global.data, global.params);
                     global.chart.render({option: option, series: series});
                 } else {
                     //TODO 暴露了密码信息 global.message.show({content: global.utility.format(global.message.text.error, obj.output.information.keywords)});

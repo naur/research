@@ -362,7 +362,6 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                                 points[line[j].key] = line[j].value;
                         }
 
-
                         tmp = utility.arraySplit(points);
                         series.push({
                             name: opt.lines[i],
@@ -378,6 +377,14 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                     }
                 }
                 return series;
+            };
+
+            echarts.markDirectedPoint = function (points, format) {
+                var directedPoint = [];
+                for (var i in points) {
+                    if (1 == i) continue;
+                    directedPoint.push([format(points[i - 1]), format(points[i])]);
+                }
             };
 
             return echarts
