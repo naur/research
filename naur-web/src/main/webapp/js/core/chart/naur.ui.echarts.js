@@ -243,7 +243,7 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                  *              title: "title",
                  *              subtitle: "subtitle",
                  *              dataZoomLimit: 可变坐标的最小刻度数量限制,
-                 *              position: 坐标的位置，取值为 x 或 y，
+                 *              position: 坐标的位置，取值为 x 或 y，如果是 'xy'，那么就是双数值轴折线
                  *              tooltipFormat: "tooltipFormat".
                  *              categoryAxisFormat: categoryAxisFormat',
                  *              valueAxisFormat: 'valueAxisFormat',
@@ -346,7 +346,7 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                     barMaxWidth: 30
                 }, axis);
 
-                var series = [], line = null;
+                var series = [], line = null, tmp;
 
                 //遍历多个线段
                 for (var i in opt.lines) {
@@ -362,6 +362,8 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                                 points[line[j].key] = line[j].value;
                         }
 
+
+                        tmp = utility.arraySplit(points);
                         series.push({
                             name: opt.lines[i],
                             type: opt.type,
@@ -370,7 +372,7 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                             itemStyle: opt.itemStyle,
                             barWidth: opt.barWidth,
                             barMaxWidth: opt.barMaxWidth,
-                            data: utility.arraySplit(points).values,
+                            data: 'xy' == axis.position ? tmp.matrix : tmp.values,
                             yAxisIndex: opt.yAxisIndex
                         });
                     }

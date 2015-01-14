@@ -148,13 +148,15 @@ define(['jquery', 'naur'], function ($, NAUR) {
             arraySplit: function (array) {
                 var buffer = {
                     keys: [],
-                    values: []
+                    values: [],
+                    matrix: []
                 };
 
                 for (var index in array) {
                     if (!array.hasOwnProperty(index)) continue;
                     buffer.keys.push(index);
                     buffer.values.push(array[index]);
+                    buffer.matrix.push([index, array[index]]);
                 }
                 return buffer;
             },
