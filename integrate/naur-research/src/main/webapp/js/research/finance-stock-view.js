@@ -19,7 +19,8 @@ var global = {
         stock: '#stock_code',
         start: '#stock_start_date',
         end: '#stock_end_date',
-        chart: '#chart'
+        chart: '#chart',
+        directedPoint: '#directed_point'
     }
 };
 
@@ -27,12 +28,64 @@ var global = {
 
 /*-------------------- 函数 START --------------------*/
 
+function search(self) {
+
+    global.params = getParams();
+    if (!global.params.stock) {
+        global.message.show({content: global.utility.format(global.message.text.paramsError, 'stock empty.')});
+        return;
+    }
+
+    global.message.show({content: global.message.text.loading});
+
+    global.http.acquire({
+        uri: global.utility.format(
+            global.queryUri, global.params.stock,
+            global.params.start.format('yyyy-MM-dd'),
+            global.params.end.format('yyyy-MM-dd')),
+        context: self,
+        error: function (err) {
+            //TODO tbody
+            global.message.show({content: global.utility.format(global.message.text.error, JSON.stringify(err))});
+        },
+        success: function (obj) {
+            if (0 == obj.output.information.level) {
+
+                global.message.empty();
+
+                var stocks = obj.output.information.data;
+                if (!stocks) {
+                    return;
+                }
+                global.data = {};
+                for (var stock in stocks) {
+                    //设置线段名
+                    global.params.lines[stocks[stock].code] = stocks[stock].type.toLowerCase() + stocks[stock].code;
+                    global.data[stocks[stock].code] = [];
+                    for (var quote in stocks[stock].quotes) {
+                        global.data[stocks[stock].code].push({
+                            key: new Date(stocks[stock].quotes[quote].date).format('yyyy-MM-dd'),
+                            value: stocks[stock].quotes[quote].close
+                        });
+                    }
+                }
+
+                var option = global.echarts.getChartOption(global.params);
+                var series = global.echarts.getSeries(global.data, global.params);
+                global.chart.render({option: option, series: series});
+            } else {
+                //TODO 暴露了密码信息 global.message.show({content: global.utility.format(global.message.text.error, obj.output.information.keywords)});
+                global.message.show({content: global.message.text.error});
+            }
+        }
+    });
+}
+
 function markUpDownLine(data) {
     var seriesIdx = 0;
-    var markPoints = null;
     var t1, t2, t3;
     for (var line in data) {
-        markPoints = [];
+        var markPoints = [];
         for (var point in data[line]) {
             if (!t1) {
                 t1 = data[line][point];
@@ -49,7 +102,7 @@ function markUpDownLine(data) {
             t1 = t2;
             t2 = t3;
         }
-        global.chart.addMarkLine(seriesIdx, global.charts.markDirectedPoint(markPoints, function (point) {
+        global.chart.addMarkLine(seriesIdx, global.echarts.markDirectedPoint(markPoints, function (point) {
             return {
                 xAxis: point.key,
                 yAxis: point.value
@@ -61,57 +114,11 @@ function markUpDownLine(data) {
 function init() {
     $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 6 * WkMilli).format('yyyy-MM-dd'));
     $(global.dom.end).val(new Date(new Date().getTime() - DyMilli).format('yyyy-MM-dd'));
+    $(global.dom.directedPoint).on('click', function () {
+        markUpDownLine(global.data);
+    });
     $(global.dom.search).on('click', function () {
-
-        global.params = getParams();
-        if (!global.params.stock) {
-            global.message.show({content: global.utility.format(global.message.text.paramsError, 'stock empty.')});
-            return;
-        }
-
-        global.message.show({content: global.message.text.loading});
-
-        global.http.acquire({
-            uri: global.utility.format(
-                global.queryUri, global.params.stock,
-                global.params.start.format('yyyy-MM-dd'),
-                global.params.end.format('yyyy-MM-dd')),
-            context: this,
-            error: function (err) {
-                //TODO tbody
-                global.message.show({content: global.utility.format(global.message.text.error, JSON.stringify(err))});
-            },
-            success: function (obj) {
-                if (0 == obj.output.information.level) {
-
-                    global.message.empty();
-
-                    var stocks = obj.output.information.data;
-                    if (!stocks) {
-                        return;
-                    }
-                    global.data = {};
-                    for (var stock in stocks) {
-                        //设置线段名
-                        global.params.lines[stocks[stock].code] = stocks[stock].type.toLowerCase() + stocks[stock].code;
-                        global.data[stocks[stock].code] = [];
-                        for (var quote in stocks[stock].quotes) {
-                            global.data[stocks[stock].code].push({
-                                key: new Date(stocks[stock].quotes[quote].date).format('yyyy-MM-dd'),
-                                value: stocks[stock].quotes[quote].close
-                            });
-                        }
-                    }
-
-                    var option = global.echarts.getChartOption(global.params);
-                    var series = global.echarts.getSeries(global.data, global.params);
-                    global.chart.render({option: option, series: series});
-                } else {
-                    //TODO 暴露了密码信息 global.message.show({content: global.utility.format(global.message.text.error, obj.output.information.keywords)});
-                    global.message.show({content: global.message.text.error});
-                }
-            }
-        });
+        search(this);
     });
 }
 

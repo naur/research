@@ -382,9 +382,10 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
             echarts.markDirectedPoint = function (points, format) {
                 var directedPoint = [];
                 for (var i in points) {
-                    if (1 == i) continue;
+                    if (0 == i) continue;
                     directedPoint.push([format(points[i - 1]), format(points[i])]);
                 }
+                return directedPoint;
             };
 
             return echarts
