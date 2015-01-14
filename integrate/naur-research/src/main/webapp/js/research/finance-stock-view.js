@@ -115,6 +115,10 @@ function init() {
     $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 6 * WkMilli).format('yyyy-MM-dd'));
     $(global.dom.end).val(new Date(new Date().getTime() - DyMilli).format('yyyy-MM-dd'));
     $(global.dom.directedPoint).on('click', function () {
+        if (!global.data) {
+            global.message.show({content: global.utility.format(global.message.text.paramsError, 'data empty.')});
+            return;
+        }
         markUpDownLine(global.data);
     });
     $(global.dom.search).on('click', function () {
