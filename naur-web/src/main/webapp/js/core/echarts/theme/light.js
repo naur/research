@@ -141,7 +141,7 @@ define(function () {
                     borderWidth: 1,
                     borderColor: '#fff',
                     lineStyle: {
-                        width: 0.5
+                        width: 1
                     }
                 },
                 emphasis: {

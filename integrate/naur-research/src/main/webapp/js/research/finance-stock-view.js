@@ -27,6 +27,10 @@ var global = {
 
 /*-------------------- 函数 START --------------------*/
 
+function markUpDownLine() {
+    
+}
+
 function init() {
     $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - WkMilli).format('yyyy-MM-dd'));
     $(global.dom.end).val(new Date(new Date().getTime() - DyMilli).format('yyyy-MM-dd'));
@@ -59,13 +63,13 @@ function init() {
                     if (!stocks) {
                         return;
                     }
-                    var data = {};
+                    global.chart.data = {};
                     for (var stock in stocks) {
                         //设置线段名
                         global.params.lines[stocks[stock].code] = stocks[stock].type.toLowerCase() + stocks[stock].code;
-                        data[stocks[stock].code] = [];
+                        global.chart.data[stocks[stock].code] = [];
                         for (var quote in stocks[stock].quotes) {
-                            data[stocks[stock].code].push({
+                            global.chart.data[stocks[stock].code].push({
                                 key: new Date(stocks[stock].quotes[quote].date).format('yyyy-MM-dd'),
                                 value: stocks[stock].quotes[quote].close
                             });
@@ -73,7 +77,7 @@ function init() {
                     }
 
                     var option = global.echarts.getChartOption(global.params);
-                    var series = global.echarts.getSeries(data, global.params);
+                    var series = global.echarts.getSeries(global.chart.data, global.params);
                     global.chart.render({option: option, series: series});
                 } else {
                     //TODO 暴露了密码信息 global.message.show({content: global.utility.format(global.message.text.error, obj.output.information.keywords)});
