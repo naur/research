@@ -100,7 +100,6 @@ function getParams() {
         start: new Date($(global.dom.start).val() + 'T00:00:00+08:00'),
         end: new Date($(global.dom.end).val() + 'T00:00:00+08:00'),
         lines: {},
-        position: 'xy',
         dataZoomLimit: 40,
         pointFilter: function (date) {
             return global.date.stockHoliday(date);
