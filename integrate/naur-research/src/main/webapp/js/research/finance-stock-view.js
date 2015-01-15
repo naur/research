@@ -85,23 +85,7 @@ function markUpDownLine(data) {
     var seriesIdx = 0;
     var t1, t2, t3;
     for (var line in data) {
-        var markPoints = [];
-        for (var point in data[line]) {
-            if (!t1) {
-                t1 = data[line][point];
-                continue;
-            }
-            if (!t2) {
-                t2 = data[line][point];
-                continue;
-            }
-            t3 = data[line][point];
-            if (t2.value > t1.value && t2.value > t3.value) {
-                markPoints.push(t2);
-            }
-            t1 = t2;
-            t2 = t3;
-        }
+        var markPoints = global.finance();
         global.chart.addMarkLine(seriesIdx, global.echarts.markDirectedPoint(markPoints, function (point) {
             return {
                 xAxis: point.key,
@@ -159,7 +143,7 @@ function getParams() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['loading', 'research-template', 'naur.ui.echarts', 'naur.date.lunar'], function (mod) {
+require(['loading', 'research-template', 'naur.ui.echarts', 'naur.date.lunar', 'naur.math.statistics.finance'], function (mod) {
     global.message = mod.naur.Message;
     $(global.dom.message).message({multiple: false});
     global.http = mod.naur.HTTP;
@@ -167,6 +151,7 @@ require(['loading', 'research-template', 'naur.ui.echarts', 'naur.date.lunar'], 
     global.echarts = mod.naur.UI.Echarts;
     global.date = mod.naur.Date;
     global.chineseLunar = mod.naur.Date.ChineseLunar;
+    global.finance = mod.naur.Math.Statistics.Finance;
     $(function () {
         init();
         initEcharts();

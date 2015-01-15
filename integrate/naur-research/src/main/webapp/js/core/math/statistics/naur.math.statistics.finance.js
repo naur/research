@@ -64,7 +64,8 @@ define(['jquery', 'naur', 'naur.math.structures', 'naur.math.statistics.js'], fu
                 var node;
                 for (var i = 1; i < n; i++) {
                     if (node)
-                        node = new structures.node({type: 4, info: '+',
+                        node = new structures.node({
+                            type: 4, info: '+',
                             left: new structures.node(),
                             right: new structures.node()
                         }); else
@@ -133,6 +134,34 @@ define(['jquery', 'naur', 'naur.math.structures', 'naur.math.statistics.js'], fu
             //
             //
             AdvanceDeclineLine: function () {
+            },
+
+            /**
+             *
+             * @param points  [{}, {}, {}]
+             * @param value
+             * @constructor
+             */
+            AdvanceDeclineLine: function (points, value) {
+                var buffer, t1, t2, t3;
+                for (var point in points) {
+                    if (!t1) {
+                        t1 = points[point];
+                        continue;
+                    }
+                    if (!t2) {
+                        t2 = points[point];
+                        continue;
+                    }
+                    t3 = points[point];
+                    if (value(t2) > value(t1) && value(t2) > value(t3)) {
+                        buffer.push(t2);
+                    } else if (value(t2) < value(t1) && value(t2) < value(t3)) {
+
+                    }
+                    t1 = t2;
+                    t2 = t3;
+                }
             }
 
         };
