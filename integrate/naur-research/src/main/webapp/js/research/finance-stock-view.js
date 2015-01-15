@@ -96,7 +96,8 @@ function markUpDownLine(data) {
 }
 
 function init() {
-    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 6 * WkMilli).format('yyyy-MM-dd'));
+    $(global.dom.stock).val('600247');
+    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 10 * WkMilli).format('yyyy-MM-dd'));
     $(global.dom.end).val(new Date(new Date().getTime() - DyMilli).format('yyyy-MM-dd'));
     $(global.dom.directedPoint).on('click', function () {
         if (!global.data) {
@@ -126,7 +127,7 @@ function getParams() {
         start: new Date($(global.dom.start).val() + 'T00:00:00+08:00'),
         end: new Date($(global.dom.end).val() + 'T00:00:00+08:00'),
         lines: {},
-        dataZoomLimit: 5,
+        dataZoomLimit: 40,
         pointFilter: function (date) {
             return global.date.stockHoliday(date);
         }

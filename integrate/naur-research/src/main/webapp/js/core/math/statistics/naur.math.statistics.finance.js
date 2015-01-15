@@ -39,15 +39,24 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                 this.t = 0; //成交额 turnover
                 this.d = d; //date
             },
-            //移动平均, 又称「移动平均线」简称均线,  MA
+
+            /**
+             * 移动平均, 又称「移动平均线」简称均线,  MA
+             */
             MovingAverage: function () {
                 var node1 = new structures.node({key: 1});
                 var node2 = new structures.node({key: 2});
             },
-            //简单移动平均,  SMA
-            //             p1 + p2 + p3 + ... + pn                                      p1      pn+1
-            // SMA = --------------------------        SMAt1 = SMAt0 - ---- +  ------
-            //                       n                                                         n        n
+
+            /**
+             * 简单移动平均,  SMA
+             *             p1 + p2 + p3 + ... + pn                                      p1      pn+1
+             *  SMA = --------------------------        SMAt1 = SMAt0 - ---- +  ------
+             *                        n                                                         n        n
+             * @param options
+             * @returns {Array}
+             * @constructor
+             */
             SimpleMovingAverage: function (options) {
                 var opt = $.extend({
                     p: [],
@@ -74,32 +83,47 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
 
                 return result;
             },
-            //加权移动平均  WMA
+
+            /**
+             * 加权移动平均  WMA
+             */
             WeightedMovingAverage: function () {
             },
-            //指数移动平均  EMA 或 EWMA
+
+            /**
+             * 指数移动平均  EMA 或 EWMA
+             */
             ExponentialMovingAverage: function () {
 
             },
 
-            //随机指标（Stochastic Oscillator，KD）
+            /**
+             * 随机指标（Stochastic Oscillator，KD）
+             */
             StochasticOscillator: function () {
             },
 
-            //未成熟随机值（Raw Stochastic Value，RSV）
-            //              Cn - Ln
-            //  RSV = ----------- X 100%
-            //              Hn -Ln
-            // 1. n: 是经过的交易期间（一般订为9日）
-            // 2.Cn: 是第n日的收盘价
-            // 3. Hn 和 Ln: 分别是过去日内的最高价和最低价，一般以9日为基准。
+            /**
+             * 未成熟随机值（Raw Stochastic Value，RSV）
+             *               Cn - Ln
+             *  RSV = ----------- X 100%
+             *               Hn -Ln
+             *  1. n: 是经过的交易期间（一般订为9日）
+             *  2.Cn: 是第n日的收盘价
+             *  3. Hn 和 Ln: 分别是过去日内的最高价和最低价，一般以9日为基准。
+             * @constructor
+             */
             RawStochasticValue: function () {
             },
 
-            //Accumulation/Distribution Line  累积/派发线
-            //     (收盘价 - 最低价) - (最高价 - 收盘价)
-            //   --------------------------------------------- X 成交量
-            //               (最高价 - 最低价)
+            /**
+             * Accumulation/Distribution Line  累积/派发线
+             *      (收盘价 - 最低价) - (最高价 - 收盘价)
+             *    --------------------------------------------- X 成交量
+             *                (最高价 - 最低价)
+             * @param options
+             * @constructor
+             */
             AccumulationDistributionLine: function (options) {
                 var opt = options;
                 var quote = opt.quotes[opt.linked.next];
@@ -122,28 +146,27 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                     arguments.callee(opt)
             },
 
-            //Accumulation Swing Index 累积摆动指标
-            //
-            // = 前期累积摆动指标 + 摆动指标
-            //
+            /**
+             * Accumulation Swing Index 累积摆动指标
+             *  = 前期累积摆动指标 + 摆动指标
+             */
             AccoumulationSwingIndex: function () {
             },
 
-            //Advance/Decline Line 上涨/下跌线
-            //
-            //
-            //
+            /**
+             * Advance/Decline Line 上涨/下跌线
+             */
             AdvanceDeclineLine: function () {
             },
 
             /**
-             *
+             *SupInfLine
              * @param points  [{}, {}, {}]
              * @param value
              * @constructor
              */
-            AdvanceDeclineLine: function (points, value) {
-                var buffer, t1, t2, t3;
+            SupInfLine: function (points, value) {
+                var buffer = {sup: [], inf: []}, t1, t2, t3;
                 for (var point in points) {
                     if (!t1) {
                         t1 = points[point];
@@ -155,15 +178,15 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                     }
                     t3 = points[point];
                     if (value(t2) > value(t1) && value(t2) > value(t3)) {
-                        buffer.push(t2);
+                        buffer.sup.push(t2);
                     } else if (value(t2) < value(t1) && value(t2) < value(t3)) {
-
+                        buffer.inf.push(t2);
                     }
                     t1 = t2;
                     t2 = t3;
                 }
+                return buffer;
             }
-
         };
 
         return finance;
