@@ -10,7 +10,7 @@
  *          12:22 12/3/2011
  */
 
-define(['jquery', 'naur.math.sets.js'], function ($, NAUR) {
+define(['jquery', 'naur.math.sets'], function ($, NAUR) {
 
     NAUR.Math.Sets.Tree = (function () {
         var tree = {

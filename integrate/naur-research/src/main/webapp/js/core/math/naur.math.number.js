@@ -9,7 +9,7 @@
  *
  */
 
-define(['naur.math.js'], function (NAUR) {
+define(['naur.math'], function (NAUR) {
 
     NAUR.Math.Number = (function () {
         var number = {
