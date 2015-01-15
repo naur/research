@@ -9,7 +9,7 @@
  *
  */
 
-define(['jquery', 'naur', 'naur.math.structures', 'naur.math.statistics.js'], function ($, NAUR) {
+define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, NAUR) {
 
     NAUR.Math.Statistics.Finance = (function () {
 
