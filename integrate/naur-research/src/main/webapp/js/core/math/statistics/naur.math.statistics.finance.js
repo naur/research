@@ -162,10 +162,8 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
             /**
              *SupInfLine
              * @param points  [{}, {}, {}]
-             * @param value
-             * @constructor
              */
-            SupInfLine: function (points, value) {
+            SupInfLine: function (points, sup, inf) {
                 var buffer = {sup: [], inf: []}, t1, t2, t3;
                 for (var point in points) {
                     if (!t1) {
@@ -177,9 +175,9 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                         continue;
                     }
                     t3 = points[point];
-                    if (value(t2) > value(t1) && value(t2) > value(t3)) {
+                    if (sup(t2) > sup(t1) && sup(t2) > sup(t3)) {
                         buffer.sup.push(t2);
-                    } else if (value(t2) < value(t1) && value(t2) < value(t3)) {
+                    } else if (inf(t2) < inf(t1) && inf(t2) < inf(t3)) {
                         buffer.inf.push(t2);
                     }
                     t1 = t2;

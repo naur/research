@@ -65,7 +65,12 @@ function search(self) {
                     for (var quote in stocks[stock].quotes) {
                         global.data[stocks[stock].code].push({
                             key: new Date(stocks[stock].quotes[quote].date).format('yyyy-MM-dd'),
-                            value: stocks[stock].quotes[quote].close
+                            value: stocks[stock].quotes[quote].close,
+                            open: stocks[stock].quotes[quote].open,
+                            high: stocks[stock].quotes[quote].high,
+                            low: stocks[stock].quotes[quote].low,
+                            close: stocks[stock].quotes[quote].close,
+                            volume: stocks[stock].quotes[quote].volume
                         });
                     }
                 }
@@ -85,7 +90,11 @@ function markUpDownLine(data) {
     var seriesIdx = 0;
     var t1, t2, t3;
     for (var line in data) {
-        var markPoints = global.finance();
+        var markPoints = global.finance.SupInfLine(data[line], function (point) {
+            return point.high;
+        }, function () {
+            return point.low;
+        });
         global.chart.addMarkLine(seriesIdx, global.echarts.markDirectedPoint(markPoints, function (point) {
             return {
                 xAxis: point.key,
