@@ -57,20 +57,22 @@ function search(self) {
                 if (!stocks) {
                     return;
                 }
+                var quote;
                 global.data = {};
                 for (var stock in stocks) {
                     //设置线段名
                     global.params.lines[stocks[stock].code] = stocks[stock].type.toLowerCase() + stocks[stock].code;
                     global.data[stocks[stock].code] = [];
                     for (var quote in stocks[stock].quotes) {
+                        quote = stocks[stock].quotes[quote];
                         global.data[stocks[stock].code].push({
-                            key: new Date(stocks[stock].quotes[quote].date).format('yyyy-MM-dd'),
-                            value: stocks[stock].quotes[quote].close,
-                            open: stocks[stock].quotes[quote].open,
-                            high: stocks[stock].quotes[quote].high,
-                            low: stocks[stock].quotes[quote].low,
-                            close: stocks[stock].quotes[quote].close,
-                            volume: stocks[stock].quotes[quote].volume
+                            key: new Date(quote.date).format('yyyy-MM-dd'),
+                            value: [quote.open, quote.close, quote.high, quote.low],
+                            open: quote.open,
+                            high: quote.high,
+                            low: quote.low,
+                            close: quote.close,
+                            volume: quote.volume
                         });
                     }
                 }
@@ -87,26 +89,30 @@ function search(self) {
 }
 
 function markUpDownLine(data) {
-    var seriesIdx = 0;
-    var t1, t2, t3;
+    var seriesIdx = 0, markPoints, markPoint = function (point) {
+        return {
+            xAxis: point.key,
+            yAxis: point.high
+        };
+    };
     for (var line in data) {
-        var markPoints = global.finance.SupInfLine(data[line], function (point) {
+        markPoints = global.finance.SupInfLine(data[line], function (point) {
             return point.high;
-        }, function () {
+        }, function (point) {
             return point.low;
         });
-        global.chart.addMarkLine(seriesIdx, global.echarts.markDirectedPoint(markPoints, function (point) {
-            return {
-                xAxis: point.key,
-                yAxis: point.value
-            };
-        }));
+        global.chart.addMarkLine(seriesIdx, {
+            data: global.echarts.markDirectedPoint(markPoints.sup, markPoint)
+        });
+        global.chart.addMarkLine(seriesIdx, {
+            data: global.echarts.markDirectedPoint(markPoints.inf, markPoint)
+        });
     }
 }
 
 function init() {
     $(global.dom.stock).val('600247');
-    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 10 * WkMilli).format('yyyy-MM-dd'));
+    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 6 * WkMilli).format('yyyy-MM-dd'));
     $(global.dom.end).val(new Date(new Date().getTime() - DyMilli).format('yyyy-MM-dd'));
     $(global.dom.directedPoint).on('click', function () {
         if (!global.data) {
@@ -136,6 +142,8 @@ function getParams() {
         start: new Date($(global.dom.start).val() + 'T00:00:00+08:00'),
         end: new Date($(global.dom.end).val() + 'T00:00:00+08:00'),
         lines: {},
+        type: 'k',
+        scale:true,
         dataZoomLimit: 40,
         pointFilter: function (date) {
             return global.date.stockHoliday(date);

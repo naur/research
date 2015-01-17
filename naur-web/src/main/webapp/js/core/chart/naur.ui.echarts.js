@@ -252,6 +252,7 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
             echarts.getChartOption = function (axis) {
                 //默认
                 if (!axis.position) axis.position = 'x';
+                if (!axis.scale) axis.scale = false;
 
                 var opt = {
                     title: {
@@ -273,6 +274,7 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                     },
                     xAxis: [
                         {
+                            scale: axis.scale,
                             splitLine: {show: false},
                             type: 'x' == axis.position ? 'category' : 'value',
                             data: 'x' == axis.position ? axis.points.keys : null,
