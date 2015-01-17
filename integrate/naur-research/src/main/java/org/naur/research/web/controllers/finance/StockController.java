@@ -59,13 +59,15 @@ public class StockController extends ControllerBase {
 
     @RequestMapping("/{code}/{start}/{end}")
     public Information query(@PathVariable final String code,
-                             @PathVariable @DateTimeFormat(iso=ISO.DATE) final Date start,
-                             @PathVariable @DateTimeFormat(iso=ISO.DATE) final Date end) {
-        //TODO 参数验证
+                             @PathVariable @DateTimeFormat(iso = ISO.DATE) final Date start,
+                             @PathVariable @DateTimeFormat(iso = ISO.DATE) final Date end) {
+
+        //MongoDB 数据日期是GMT时间
+        Date startTmp = DateUtils.addDays(start, -1);
         return handler(new HashMap<String, Object>() {{
             put("code", code);
             put("quotes.date", new Tree(Type.Between)
-                    .setLeft(new Tree<Date>(start))
+                    .setLeft(new Tree<Date>(startTmp))
                     .setRight(new Tree<Date>(end)));
         }}, new Func<Map, Information>() {
             @Override
