@@ -107,8 +107,9 @@
                     return false;
                 }
 
+                return _date.statutoryHolidays[year][month][date];
+
                 //return date >= range[0] && date <= range[1]
-                return false;
             }
         },
 
