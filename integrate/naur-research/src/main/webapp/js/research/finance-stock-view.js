@@ -129,7 +129,7 @@ function getParams() {
             res += '<br/>  close : ' + params[0].value[1] + '  low : ' + params[0].value[2];
             return res;
         },
-        dataZoomLimit: 40,
+        dataZoomLimit: 60,
         pointFilter: function (date) {
             return global.date.stockHoliday(date);
         }
@@ -145,7 +145,7 @@ function getParams() {
 
 function init() {
     $(global.dom.stock).val('600247');
-    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 6 * WkMilli).format('yyyy-MM-dd'));
+    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 10 * WkMilli).format('yyyy-MM-dd'));
     $(global.dom.end).val(new Date(new Date().getTime() - DyMilli).format('yyyy-MM-dd'));
     $(global.dom.directedPoint).on('click', function () {
         if (!global.data) {
