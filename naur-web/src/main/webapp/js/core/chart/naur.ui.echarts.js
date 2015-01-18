@@ -274,6 +274,7 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                     },
                     xAxis: [
                         {
+                            axisTick: {onGap:false},    //小标记是否显示为间隔
                             scale: axis.scale,
                             splitLine: {show: false},
                             type: 'x' == axis.position ? 'category' : 'value',

@@ -89,12 +89,7 @@ function search(self) {
 }
 
 function markUpDownLine(data) {
-    var seriesIdx = 0, markPoints, markPoint = function (point) {
-        return {
-            xAxis: point.key,
-            yAxis: point.high
-        };
-    };
+    var seriesIdx = 0, markPoints;
     for (var line in data) {
         markPoints = global.finance.SupInfLine(data[line], function (point) {
             return point.high;
@@ -102,10 +97,20 @@ function markUpDownLine(data) {
             return point.low;
         });
         global.chart.addMarkLine(seriesIdx, {
-            data: global.echarts.markDirectedPoint(markPoints.sup, markPoint)
+            data: global.echarts.markDirectedPoint(markPoints.sup, function (point) {
+                return {
+                    xAxis: point.key,
+                    yAxis: point.high
+                };
+            })
         });
         global.chart.addMarkLine(seriesIdx, {
-            data: global.echarts.markDirectedPoint(markPoints.inf, markPoint)
+            data: global.echarts.markDirectedPoint(markPoints.inf, function (point) {
+                return {
+                    xAxis: point.key,
+                    yAxis: point.low
+                };
+            })
         });
     }
 }
