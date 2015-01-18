@@ -3,7 +3,7 @@
  */
 
 
-define(['jquery', 'bootstrap', 'jquery.template',
+define(['jquery', 'bootstrap', 'bootstrap-datepicker', 'jquery.template',
         'naur.analytics', 'naur.utility', 'naur.ui', 'naur.message', 'naur.pattern.ajax'],
     function ($, $1, $2, naur) {
         //TODO 导航菜单

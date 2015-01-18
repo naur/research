@@ -115,32 +115,6 @@ function markUpDownLine(data) {
     }
 }
 
-function init() {
-    $(global.dom.stock).val('600247');
-    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 6 * WkMilli).format('yyyy-MM-dd'));
-    $(global.dom.end).val(new Date(new Date().getTime() - DyMilli).format('yyyy-MM-dd'));
-    $(global.dom.directedPoint).on('click', function () {
-        if (!global.data) {
-            global.message.show({content: global.utility.format(global.message.text.paramsError, 'data empty.')});
-            return;
-        }
-        markUpDownLine(global.data);
-    });
-    $(global.dom.search).on('click', function () {
-        search(this);
-    });
-}
-
-function initEcharts() {
-    global.chart = global.echarts.core.init(document.getElementById(global.dom.chart.substr(1)), global.echarts.theme);
-    global.chart.render = function (opt) {
-        if (opt.option)
-            this.setOption(opt.option, true);
-        if (opt.series)
-            this.setSeries(opt.series);
-    };
-}
-
 function getParams() {
     var tmp = {
         stock: $(global.dom.stock).val(),
@@ -168,6 +142,35 @@ function getParams() {
 /*-------------------- 函数 END ----------------------*/
 
 /*-------------------- 事件 START --------------------*/
+
+function init() {
+    $(global.dom.stock).val('600247');
+    $(global.dom.start).val(new Date(new Date().getTime() - DyMilli - 6 * WkMilli).format('yyyy-MM-dd'));
+    $(global.dom.end).val(new Date(new Date().getTime() - DyMilli).format('yyyy-MM-dd'));
+    $(global.dom.directedPoint).on('click', function () {
+        if (!global.data) {
+            global.message.show({content: global.utility.format(global.message.text.paramsError, 'data empty.')});
+            return;
+        }
+        markUpDownLine(global.data);
+    });
+    $(global.dom.search).on('click', function () {
+        search(this);
+    });
+    $(global.dom.start).datepicker();
+    $(global.dom.end).datepicker();
+}
+
+function initEcharts() {
+    global.chart = global.echarts.core.init(document.getElementById(global.dom.chart.substr(1)), global.echarts.theme);
+    global.chart.render = function (opt) {
+        if (opt.option)
+            this.setOption(opt.option, true);
+        if (opt.series)
+            this.setSeries(opt.series);
+    };
+}
+
 /*-------------------- 事件 END ----------------------*/
 
 /*-------------------- 初始化 START ------------------*/

@@ -31,6 +31,7 @@ require.config({
         'metro': jsprefix + '/js/core/metro.min',
         //bootstrap
         'bootstrap': jsprefix + '/js/core/bootstrap.min',
+        'bootstrap-datepicker': jsprefix + '/js/core/bootstrap.datepicker',
 
         'ajaxslt': jsprefix + '/js/core/ajaxslt',
 
