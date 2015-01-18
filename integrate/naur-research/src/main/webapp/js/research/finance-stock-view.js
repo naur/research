@@ -151,8 +151,8 @@ function getParams() {
         scale: true,
         tooltipFormat: function (params) {
             var res = params[0].seriesName + ' ' + params[0].name;
-            res += '<br/>  开盘 : ' + params[0].value[0] + '  最高 : ' + params[0].value[3];
-            res += '<br/>  收盘 : ' + params[0].value[1] + '  最低 : ' + params[0].value[2];
+            res += '<br/>  open : ' + params[0].value[0] + '  high : ' + params[0].value[3];
+            res += '<br/>  close : ' + params[0].value[1] + '  low : ' + params[0].value[2];
             return res;
         },
         dataZoomLimit: 40,
