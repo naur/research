@@ -67,7 +67,7 @@ function search(self) {
                         quote = stocks[stock].quotes[quote];
                         global.data[stocks[stock].code].push({
                             key: new Date(quote.date).format('yyyy-MM-dd'),
-                            value: [quote.open, quote.close, quote.high, quote.low],
+                            value: [quote.open, quote.close, quote.low, quote.high],
                             open: quote.open,
                             high: quote.high,
                             low: quote.low,
