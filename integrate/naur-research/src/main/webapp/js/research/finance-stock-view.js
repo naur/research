@@ -148,7 +148,13 @@ function getParams() {
         end: new Date($(global.dom.end).val() + 'T00:00:00+08:00'),
         lines: {},
         type: 'k',
-        scale:true,
+        scale: true,
+        tooltipFormat: function (params) {
+            var res = params[0].seriesName + ' ' + params[0].name;
+            res += '<br/>  开盘 : ' + params[0].value[0] + '  最高 : ' + params[0].value[3];
+            res += '<br/>  收盘 : ' + params[0].value[1] + '  最低 : ' + params[0].value[2];
+            return res;
+        },
         dataZoomLimit: 40,
         pointFilter: function (date) {
             return global.date.stockHoliday(date);
