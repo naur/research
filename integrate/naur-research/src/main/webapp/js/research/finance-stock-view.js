@@ -157,8 +157,8 @@ function init() {
     $(global.dom.search).on('click', function () {
         search(this);
     });
-    $(global.dom.start).datepicker();
-    $(global.dom.end).datepicker();
+    $(global.dom.start).datepicker({format: 'yyyy-mm-dd'});
+    $(global.dom.end).datepicker({format: 'yyyy-mm-dd'});
 }
 
 function initEcharts() {
