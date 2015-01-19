@@ -75,7 +75,7 @@ public class SchedulerService {
             for (TaskExecutor executor : list) {
                 taskId = executor.getGuid();
                 SchedulerStatus temp = new SchedulerStatus();
-                temp.setStartTime(new Date(executor.getStartTime()));
+                temp.setStartTime(executor.getStartTime());
                 temp.setMessage(executor.getStatusMessage());
                 temp.setDuration(executor.getCompleteness());
                 temp.setCanStopped(executor.canBeStopped());
