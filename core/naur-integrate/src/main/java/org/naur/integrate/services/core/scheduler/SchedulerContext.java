@@ -105,18 +105,14 @@ public class SchedulerContext {
         if (null != status.getCanStopped()) {
             temp.setCanStopped(status.getCanStopped());
         }
-        if (null != status.getCompleted()) {
-            temp.setCompleted(status.getCompleted());
-        }
+        temp.setCompleted(status.getCompleted());
         if (null != status.getDuration()) {
             temp.setDuration(status.getDuration());
         }
         if (null != status.getMessage()) {
             temp.setMessage(status.getMessage());
         }
-        if (null != status.getStartTime()) {
-            temp.setStartTime(status.getStartTime());
-        }
+        temp.setStartTime(status.getStartTime());
     }
 
     /**

@@ -7,6 +7,8 @@ import java.util.Date;
  */
 public class StockQuote extends Quote {
 
+    private static final long serialVersionUID = -6776156982669007482L;
+
     public StockQuote() {
 
     }

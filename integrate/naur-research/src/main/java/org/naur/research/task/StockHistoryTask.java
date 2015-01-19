@@ -11,6 +11,7 @@ import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.naur.common.patterns.Func;
 import org.naur.common.util.DateUtil;
 import org.naur.common.util.EnumerableUtils;
+import org.naur.integrate.services.core.scheduler.AbstractTask;
 import org.naur.integrate.services.core.scheduler.MyTaskExecutionContext;
 import org.naur.repositories.models.finance.Stock;
 import org.naur.repositories.models.finance.StockRange;
@@ -28,10 +29,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <pre>
@@ -44,7 +42,7 @@ import java.util.Map;
  * </pre>
  */
 @Service
-public class StockHistoryTask extends Task implements Serializable {
+public class StockHistoryTask extends AbstractTask implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockHistoryTask.class);
     private static final long serialVersionUID = 6330820682946511999L;
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -57,7 +55,7 @@ public class StockHistoryTask extends Task implements Serializable {
     private SecurityConfiguration securityConfiguration;
 
     @Override
-    public void execute(TaskExecutionContext context) throws RuntimeException {
+    public void process(MyTaskExecutionContext context) throws RuntimeException {
         //默认当天的前一个工作日
         Date start = DateUtil.getPrevWeekDay(Calendar.getInstance().getTime());
         Date end = start;
@@ -91,8 +89,12 @@ public class StockHistoryTask extends Task implements Serializable {
             acquireStock(stockRange, start, end);
         } else {
             //定时任务
-            for (StockRange range : securityConfiguration.getStockRanges()) {
+            List<StockRange> tmp = securityConfiguration.getStockRanges();
+            context.setLoop(tmp.size());
+            for (StockRange range : tmp) {
                 acquireStock(range, start, end);
+                context.setStatusMessage(range.toString());
+                this.loop(context);
             }
         }
     }

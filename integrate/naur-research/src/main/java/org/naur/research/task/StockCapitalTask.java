@@ -9,6 +9,8 @@ import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.naur.common.patterns.exception.Action;
 import org.naur.common.util.DateUtil;
+import org.naur.integrate.services.core.scheduler.AbstractTask;
+import org.naur.integrate.services.core.scheduler.MyTaskExecutionContext;
 import org.naur.repositories.models.finance.Stock;
 import org.naur.repositories.models.finance.StockRange;
 import org.naur.research.config.SecurityConfiguration;
@@ -23,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <pre>
@@ -35,7 +38,7 @@ import java.util.Date;
  * </pre>
  */
 @Service
-public class StockCapitalTask extends Task implements Serializable {
+public class StockCapitalTask extends AbstractTask implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockCapitalTask.class);
     private static final long serialVersionUID = -349618193169585445L;
 
@@ -47,10 +50,14 @@ public class StockCapitalTask extends Task implements Serializable {
     private SecurityConfiguration securityConfiguration;
 
     @Override
-    public void execute(TaskExecutionContext context) throws RuntimeException {
+    public void process(MyTaskExecutionContext context) throws RuntimeException {
         Date date = DateUtil.getPrevWeekDay(Calendar.getInstance().getTime());
-        for (StockRange range : securityConfiguration.getStockRanges()) {
+        List<StockRange> tmp = securityConfiguration.getStockRanges();
+        context.setLoop(tmp.size());
+        for (StockRange range : tmp) {
             acquireStock(range, date);
+            context.setStatusMessage(range.toString());
+            this.loop(context);
         }
     }
 

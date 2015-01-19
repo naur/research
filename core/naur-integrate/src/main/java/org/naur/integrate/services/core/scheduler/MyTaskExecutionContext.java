@@ -24,6 +24,9 @@ import java.util.Map;
  */
 public class MyTaskExecutionContext implements TaskExecutionContext {
 
+    //保存要循环的次数和计数器值，暂时这么定义
+    private int loop;
+    private int counter = 0;
     private Map params;
     private Scheduler scheduler;
 
@@ -64,5 +67,25 @@ public class MyTaskExecutionContext implements TaskExecutionContext {
 
     public Map getParams() {
         return params;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    public int getLoop() {
+        return loop;
+    }
+
+    public void setLoop(int loop) {
+        this.loop = loop;
+    }
+
+    public void counter() {
+        this.counter++;
     }
 }

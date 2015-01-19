@@ -5,6 +5,8 @@
  */
 package org.naur.repositories.models.finance;
 
+import org.naur.common.entities.Entity;
+
 /**
  * <pre>
  * author jiaruizhi
@@ -16,7 +18,8 @@ package org.naur.repositories.models.finance;
  * 评审人 ：
  * </pre>
  */
-public class StockRange {
+public class StockRange extends Entity {
+    private static final long serialVersionUID = 8700781440991060420L;
     public int start;
     public int end;
     public StockType type;
