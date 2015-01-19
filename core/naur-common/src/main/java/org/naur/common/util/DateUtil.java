@@ -8,6 +8,7 @@ package org.naur.common.util;
 import org.apache.commons.lang3.time.DateUtils;
 import org.naur.common.entities.WeekRange;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -25,6 +26,60 @@ import java.util.List;
  * </pre>
  */
 public class DateUtil {
+
+    /**
+     * @param diffpart 比较部分YEAR为比较年份 MONTH为比较月份 DATE为比较天数 WEEK比较星期数,
+     *                 如果传入的diffpart参数不为以上范围默认返回相差天数
+     * @param ts1      需要比较的日期
+     * @param ts2      需要比较的日期
+     * @return 相差的大小
+     */
+    public static int dateDiff(String diffpart, Date ts1, Date ts2) {
+        if ((ts1 == null) || (ts2 == null)) {
+            return -1;
+        }
+
+        Date date1, date2;
+        date1 = new Date(ts1.getTime());
+        date2 = new Date(ts2.getTime());
+
+        Calendar cal1, cal2;
+        cal1 = Calendar.getInstance();
+        cal2 = Calendar.getInstance();
+
+        // different date might have different offset
+        cal1.setTime(date1);
+        long ldate1 = date1.getTime() + cal1.get(Calendar.ZONE_OFFSET) + cal1.get(Calendar.DST_OFFSET);
+
+        cal2.setTime(date2);
+        long ldate2 = date2.getTime() + cal2.get(Calendar.ZONE_OFFSET) + cal2.get(Calendar.DST_OFFSET);
+
+        // Use integer calculation, truncate the decimals
+        int hr1 = (int) (ldate1 / 3600000); // 60*60*1000
+        int hr2 = (int) (ldate2 / 3600000);
+
+        int days1 = hr1 / 24;
+        int days2 = hr2 / 24;
+
+        int dateDiff = days2 - days1;
+        int weekOffset = (cal2.get(Calendar.DAY_OF_WEEK) - cal1.get(Calendar.DAY_OF_WEEK)) < 0 ? 1 : 0;
+        int weekDiff = dateDiff / 7 + weekOffset;
+        int yearDiff = cal2.get(Calendar.YEAR) - cal1.get(Calendar.YEAR);
+        int monthDiff = yearDiff * 12 + cal2.get(Calendar.MONTH) - cal1.get(Calendar.MONTH);
+
+        if ("YEAR".equals(diffpart)) {
+            return yearDiff;
+        } else if ("MONTH".equals(diffpart)) {
+            return monthDiff;
+        } else if ("DATE".equals(diffpart)) {
+            return dateDiff;
+        } else if ("WEEK".equals(diffpart)) {
+            return weekDiff;
+        } else {
+            return dateDiff;
+        }
+    }
+
     public static Date getPrevWeekDay(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

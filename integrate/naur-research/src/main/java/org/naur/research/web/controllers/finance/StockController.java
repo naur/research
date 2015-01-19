@@ -12,6 +12,7 @@ import org.naur.common.entities.Information;
 import org.naur.common.patterns.Tree;
 import org.naur.common.patterns.Type;
 import org.naur.common.patterns.exception.Func;
+import org.naur.common.util.DateUtil;
 import org.naur.integrate.web.ControllerBase;
 import org.naur.repositories.models.finance.Stock;
 import org.naur.repositories.models.finance.StockType;
@@ -63,8 +64,9 @@ public class StockController extends ControllerBase {
                              @PathVariable @DateTimeFormat(iso = ISO.DATE) final Date end) {
 
         //MongoDB 数据日期是GMT时间
-        Date startTmp = DateUtils.addDays(start, -1);
+        final Date startTmp = DateUtils.addDays(start, -1);
         return handler(new HashMap<String, Object>() {{
+            put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(DateUtil.dateDiff("DATE", start, end)), new Tree<Integer>(1)));
             put("code", code);
             put("quotes.date", new Tree(Type.Between)
                     .setLeft(new Tree<Date>(startTmp))
