@@ -21,12 +21,15 @@ import it.sauronsoftware.cron4j.TaskExecutionContext;
  */
 public abstract class AbstractTask extends Task {
 
+    private MyTaskExecutionContext context;
+
     @Override
-    public void execute(TaskExecutionContext context)
+    public void execute(TaskExecutionContext target)
             throws RuntimeException {
-        this.before(context);
-        this.process(new MyTaskExecutionContext(context));
-        this.after(context);
+        this.before(target);
+        //暂时这么处理，区分手动调用和框架自动调用的情况。
+        this.process(null == context ? new MyTaskExecutionContext(target) : context);
+        this.after(target);
     }
 
     public abstract void process(MyTaskExecutionContext context) throws RuntimeException;
@@ -44,5 +47,11 @@ public abstract class AbstractTask extends Task {
     protected void after(TaskExecutionContext context) {
         context.setStatusMessage(TaskStatus.End.name());
         context.setCompleteness(1);
+        //暂时这么处理，
+        this.context = null;
+    }
+
+    public void setContext(MyTaskExecutionContext context) {
+        this.context = context;
     }
 }

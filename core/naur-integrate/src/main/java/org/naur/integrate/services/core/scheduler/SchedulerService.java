@@ -61,10 +61,9 @@ public class SchedulerService {
             return;
         }
 
-        TaskExecutionContext context = new MyTaskExecutionContext(scheduler, params);
+        ((AbstractTask)task).setContext(new MyTaskExecutionContext(scheduler, params));
         //通过框架调用可以 notifyTaskLaunching
-        //TaskExecutor taskExecutor = scheduler.launch(task);
-        task.execute(context);
+        scheduler.launch(task);
     }
 
     /**
