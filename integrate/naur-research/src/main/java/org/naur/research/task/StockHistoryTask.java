@@ -85,7 +85,6 @@ public class StockHistoryTask extends AbstractTask implements Serializable {
         }
 
         if (null != stockRange) {
-            //页面传值
             acquireStock(stockRange, start, end);
         } else {
             //定时任务

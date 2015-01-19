@@ -62,19 +62,16 @@ public class DateUtil {
         int days2 = hr2 / 24;
 
         int dateDiff = days2 - days1;
-        int weekOffset = (cal2.get(Calendar.DAY_OF_WEEK) - cal1.get(Calendar.DAY_OF_WEEK)) < 0 ? 1 : 0;
-        int weekDiff = dateDiff / 7 + weekOffset;
         int yearDiff = cal2.get(Calendar.YEAR) - cal1.get(Calendar.YEAR);
-        int monthDiff = yearDiff * 12 + cal2.get(Calendar.MONTH) - cal1.get(Calendar.MONTH);
 
         if ("YEAR".equals(diffpart)) {
             return yearDiff;
         } else if ("MONTH".equals(diffpart)) {
-            return monthDiff;
+            return yearDiff * 12 + cal2.get(Calendar.MONTH) - cal1.get(Calendar.MONTH);
         } else if ("DATE".equals(diffpart)) {
             return dateDiff;
         } else if ("WEEK".equals(diffpart)) {
-            return weekDiff;
+            return dateDiff / 7 + ((cal2.get(Calendar.DAY_OF_WEEK) - cal1.get(Calendar.DAY_OF_WEEK)) < 0 ? 1 : 0);
         } else {
             return dateDiff;
         }
