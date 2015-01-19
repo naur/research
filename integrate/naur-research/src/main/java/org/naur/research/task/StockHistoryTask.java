@@ -61,8 +61,8 @@ public class StockHistoryTask extends AbstractTask implements Serializable {
         Date end = start;
         StockRange stockRange = null;
         //TODO 解析 params, 包含【start, end, stock】，stock 不包含sh,sz
-        if (context instanceof MyTaskExecutionContext) {
-            Map params = ((MyTaskExecutionContext) context).getParams();
+        Map params = context.getParams();
+        if (null != params) {
             try {
                 if (params.containsKey("start")) {
                     start = dateFormat.parse(params.get("start").toString());

@@ -29,15 +29,25 @@ public class MyTaskExecutionContext implements TaskExecutionContext {
     private int counter = 0;
     private Map params;
     private Scheduler scheduler;
+    private TaskExecutionContext target;
+
+    public MyTaskExecutionContext(TaskExecutionContext target) {
+        this(null, target, null);
+    }
 
     public MyTaskExecutionContext(Scheduler scheduler, Map params) {
+        this(scheduler, null, params);
+    }
+
+    public MyTaskExecutionContext(Scheduler scheduler, TaskExecutionContext target, Map params) {
         this.scheduler = scheduler;
+        this.target = target;
         this.params = params;
     }
 
     @Override
     public Scheduler getScheduler() {
-        return null;
+        return this.scheduler;
     }
 
     @Override
@@ -47,12 +57,17 @@ public class MyTaskExecutionContext implements TaskExecutionContext {
 
     @Override
     public void setStatusMessage(String message) {
-
+        if (null != target) {
+            target.setStatusMessage(message);
+        }
     }
+
 
     @Override
     public void setCompleteness(double completeness) {
-
+        if (null != target) {
+            target.setCompleteness(completeness);
+        }
     }
 
     @Override

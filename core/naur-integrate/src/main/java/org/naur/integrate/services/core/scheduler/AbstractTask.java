@@ -21,10 +21,11 @@ import it.sauronsoftware.cron4j.TaskExecutionContext;
  */
 public abstract class AbstractTask extends Task {
 
+    @Override
     public void execute(TaskExecutionContext context)
             throws RuntimeException {
         this.before(context);
-        this.process((MyTaskExecutionContext) context);
+        this.process(new MyTaskExecutionContext(context));
         this.after(context);
     }
 
