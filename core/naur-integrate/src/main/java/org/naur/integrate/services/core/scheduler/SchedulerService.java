@@ -61,7 +61,7 @@ public class SchedulerService {
             return;
         }
 
-        ((AbstractTask)task).setContext(new MyTaskExecutionContext(scheduler, params));
+        ((AbstractTask) task).setContext(new MyTaskExecutionContext(scheduler, params));
         //通过框架调用可以 notifyTaskLaunching
         scheduler.launch(task);
     }
@@ -143,13 +143,14 @@ public class SchedulerService {
                 LOGGER.error("Task: " + item.getTask() + " no exists.");
                 continue;
             }
+            //解析配置文件配置的 task 对应的 bean
+            AbstractTask task = (AbstractTask) applicationContext.getBean(item.getTask().toString());
+            task.setName(item.getName());
+
             schedulerContext.updateTask(
                     item.getName(),
-                    scheduling(
-                            item.getCron(),
-                            //解析配置文件配置的 task 对应的 bean
-                            (Task) applicationContext.getBean(item.getTask().toString())
-                    ));
+                    scheduling(item.getCron(), task)
+            );
             LOGGER.info("Task: " + item.getTask() + " scheduling.");
         }
         attachListener(taskSchedulerListener);
