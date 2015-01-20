@@ -115,6 +115,11 @@ public class SchedulerContext {
         temp.setStartTime(status.getStartTime());
     }
 
+    public void updateStatus(String taskName, SchedulerStatus status) {
+        String taskId = getTaskId(taskName);
+
+    }
+
     /**
      * 初始化定时任务，合并所有 SchedulerProperty 到当前的 schedulers 里
      */

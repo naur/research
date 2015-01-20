@@ -54,7 +54,7 @@ public class TaskSchedulerListener implements SchedulerListener {
     }
 
     private void updateStatus(TaskExecutor executor) {
-        String taskId = executor.getGuid();
+        String taskName = ((AbstractTask)executor.getTask()).getName();
         SchedulerStatus status = new SchedulerStatus();
         status.setRecent(Calendar.getInstance().getTime());
         status.setMessage(executor.getStatusMessage());
