@@ -44,7 +44,9 @@ import java.util.*;
 @Service
 public class StockHistoryTask extends AbstractTask implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockHistoryTask.class);
+
     private static final long serialVersionUID = 6330820682946511999L;
+
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
@@ -132,4 +134,6 @@ public class StockHistoryTask extends AbstractTask implements Serializable {
             return dateFormat.format(date);
         }
     };
+
+
 }

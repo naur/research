@@ -23,6 +23,8 @@ public abstract class AbstractTask extends Task {
 
     private MyTaskExecutionContext context;
 
+    private String name;
+
     @Override
     public void execute(TaskExecutionContext target)
             throws RuntimeException {
@@ -63,5 +65,13 @@ public abstract class AbstractTask extends Task {
     @Override
     public boolean supportsCompletenessTracking() {
         return true;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
