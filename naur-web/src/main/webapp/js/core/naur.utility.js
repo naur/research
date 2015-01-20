@@ -499,12 +499,12 @@ define(['jquery', 'naur'], function ($, NAUR) {
             o = {
                 "M": this.getUTCMonth() + 1, //month
                 "d": this.getUTCDate(), //day
-                "H": this.getUTCHours(), //hour
+                "h": this.getUTCHours(), //hour
                 "m": this.getUTCMinutes(), //minute
                 "s": this.getUTCSeconds(), //second
                 "q": Math.floor((this.getUTCMonth() + 3) / 3), //quarter
                 "f": this.getUTCMilliseconds() //millisecond
-            }
+            };
 
             if (/(y+)/.test(format)) {
                 format = format.replace(RegExp.$1, (this.getUTCFullYear() + "").substr(4 - RegExp.$1.length));
@@ -513,12 +513,12 @@ define(['jquery', 'naur'], function ($, NAUR) {
             o = {
                 "M": this.getMonth() + 1, //month
                 "d": this.getDate(), //day
-                "H": this.getHours(), //hour
+                "h": this.getHours(), //hour
                 "m": this.getMinutes(), //minute
                 "s": this.getSeconds(), //second
                 "q": Math.floor((this.getMonth() + 3) / 3), //quarter
                 "f": this.getMilliseconds() //millisecond
-            }
+            };
 
             if (/(y+)/.test(format)) {
                 format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));

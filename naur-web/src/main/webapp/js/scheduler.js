@@ -70,11 +70,16 @@ function search() {
                                 '        </div>' +
                                 '    </div>';
                                 return true;
-                            } else if ('status.recent' == prop) {
+                            } else if ('status.recent' == prop || 'status.startTime' == prop) {
                                 if (data.status && data.status.recent) {
-                                    result[prop] = new Date(data.status.recent);
+                                    result[prop] = new Date(data.status.recent).format('yyyy-MM-dd hh:mm:ss');
+                                    return true;
                                 }
-                                return true;
+                            } else if ('status.duration' == prop) {
+                                if (data.status && data.status.duration) {
+                                    result[prop] = data.status.duration / MinMilli;
+                                    return true;
+                                }
                             } else {
                                 return false;
                             }
@@ -162,7 +167,7 @@ function initEvelt() {
 
 /*-------------------- 初始化 START ------------------*/
 
-require(['loading', 'integrate-template'], function (mod) {
+require(['loading', 'integrate-template', 'naur.math'], function (mod) {
     global.http = mod.naur.HTTP;
     global.message = mod.naur.Message;
     global.utility = mod.naur.Utility;
