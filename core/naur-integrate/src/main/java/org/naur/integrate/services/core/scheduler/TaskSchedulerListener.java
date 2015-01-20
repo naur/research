@@ -39,28 +39,27 @@ public class TaskSchedulerListener implements SchedulerListener {
 
     @Override
     public void taskLaunching(TaskExecutor executor) {
-        this.updateStatus(executor.getGuid(), Calendar.getInstance().getTime(), executor.getStatusMessage(),
-                executor.getStartTime(), executor.getCompleteness());
+        this.updateStatus(executor);
     }
 
     @Override
     public void taskSucceeded(TaskExecutor executor) {
-        this.updateStatus(executor.getGuid(), Calendar.getInstance().getTime(), executor.getStatusMessage(), executor.getStartTime(), executor.getCompleteness());
+        this.updateStatus(executor);
     }
 
     @Override
     public void taskFailed(TaskExecutor executor, Throwable exception) {
-        this.updateStatus(executor.getGuid(), Calendar.getInstance().getTime(), executor.getStatusMessage(),
-                executor.getStartTime(), executor.getCompleteness());
+        this.updateStatus(executor);
         LOGGER.info(executor.getStatusMessage());
     }
 
-    private void updateStatus(String taskId, Date recent, String message, long startTime, double completed) {
+    private void updateStatus(TaskExecutor executor) {
+        String taskId = executor.getGuid();
         SchedulerStatus status = new SchedulerStatus();
-        status.setRecent(recent);
-        status.setMessage(message);
-        status.setStartTime(startTime);
-        status.setCompleted(completed);
+        status.setRecent(Calendar.getInstance().getTime());
+        status.setMessage(executor.getStatusMessage());
+        status.setStartTime(executor.getStartTime());
+        status.setCompleted(executor.getCompleteness());
         schedulerContext.updateStatus(taskId, status);
         LOGGER.info("Task: " + schedulerContext.getTaskName(taskId) + ", " + status.toString());
     }

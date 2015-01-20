@@ -34,7 +34,7 @@ public class SchedulerStatus extends Entity {
     //是否可以停止
     private Boolean canStopped;
     //运行持续时间
-    private Double duration;
+    private Long duration;
 
     public Date getRecent() {
         return recent;
@@ -84,11 +84,11 @@ public class SchedulerStatus extends Entity {
         this.canStopped = canStopped;
     }
 
-    public Double getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(Double duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
 }

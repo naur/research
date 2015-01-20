@@ -78,7 +78,8 @@ public class SchedulerService {
                 SchedulerStatus temp = new SchedulerStatus();
                 temp.setStartTime(executor.getStartTime());
                 temp.setMessage(executor.getStatusMessage());
-                temp.setDuration(executor.getCompleteness());
+                temp.setCompleted(executor.getCompleteness());
+                temp.setDuration(System.currentTimeMillis() - executor.getStartTime());
                 temp.setCanStopped(executor.canBeStopped());
                 temp.setCanStopped(executor.canBeStopped());
                 schedulerContext.updateStatus(taskId, temp);
