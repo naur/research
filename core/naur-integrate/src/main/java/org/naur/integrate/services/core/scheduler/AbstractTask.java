@@ -54,4 +54,14 @@ public abstract class AbstractTask extends Task {
     public void setContext(MyTaskExecutionContext context) {
         this.context = context;
     }
+
+    @Override
+    public boolean supportsStatusTracking() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsCompletenessTracking() {
+        return true;
+    }
 }

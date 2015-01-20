@@ -126,11 +126,6 @@ public class StockHistoryTask extends AbstractTask implements Serializable {
         }
     }
 
-    @Override
-    public boolean supportsStatusTracking() {
-        return true;
-    }
-
     private Func<Date, String> func = new Func<Date, String>() {
         @Override
         public String execute(Date date) {
