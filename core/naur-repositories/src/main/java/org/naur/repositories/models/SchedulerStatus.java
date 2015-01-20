@@ -26,7 +26,8 @@ public class SchedulerStatus extends Entity {
     //正在运行的开始时间
     private long startTime;
     //运行的进度
-    private double completed;
+    private boolean completed;
+    private double completeness;
     //运行信息
     private String message;
     //是否可以暂停
@@ -51,13 +52,21 @@ public class SchedulerStatus extends Entity {
     public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
-
-    public double getCompleted() {
+    
+    public boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(double completed) {
+    public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public double getCompleteness() {
+        return completeness;
+    }
+
+    public void setCompleteness(double completeness) {
+        this.completeness = completeness;
     }
 
     public String getMessage() {

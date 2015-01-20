@@ -6,6 +6,7 @@
 
 package org.naur.integrate.services.core.scheduler;
 
+import it.sauronsoftware.cron4j.TaskExecutor;
 import org.naur.repositories.models.Scheduler;
 import org.naur.repositories.models.SchedulerStatus;
 import org.slf4j.Logger;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <pre>
@@ -83,9 +81,10 @@ public class SchedulerContext {
     /**
      * Updatea Task Status
      */
-    public void updateStatus(String taskId, SchedulerStatus status) {
-
-        if (!tasks.containsKey(taskId)) {
+    public void updateStatus(TaskExecutor executor) {
+        String taskName = ((AbstractTask) executor.getTask()).getName();
+        String taskId = getTaskId(taskName);
+        if (null == taskId || !tasks.containsKey(taskId)) {
             LOGGER.warn("ExecutingTasks not contains in schedulerProperties.tasks");
             return;
         }
@@ -96,28 +95,17 @@ public class SchedulerContext {
             }
         }
         SchedulerStatus temp = schedulers.get(taskId).getStatus();
-        if (null != status.getRecent()) {
-            temp.setRecent(status.getRecent());
+        temp.setRecent(Calendar.getInstance().getTime());
+        temp.setCanPaused(executor.canBePaused());
+        temp.setCanStopped(executor.canBeStopped());
+        temp.setCompleteness(executor.getCompleteness());
+        temp.setCompleted(1D == executor.getCompleteness());
+        temp.setMessage(executor.getStatusMessage());
+        temp.setStartTime(executor.getStartTime());
+        if (-1 != executor.getStartTime()) {
+            temp.setDuration(System.currentTimeMillis() - -executor.getStartTime());
         }
-        if (null != status.getCanPaused()) {
-            temp.setCanPaused(status.getCanPaused());
-        }
-        if (null != status.getCanStopped()) {
-            temp.setCanStopped(status.getCanStopped());
-        }
-        temp.setCompleted(status.getCompleted());
-        if (null != status.getDuration()) {
-            temp.setDuration(status.getDuration());
-        }
-        if (null != status.getMessage()) {
-            temp.setMessage(status.getMessage());
-        }
-        temp.setStartTime(status.getStartTime());
-    }
-
-    public void updateStatus(String taskName, SchedulerStatus status) {
-        String taskId = getTaskId(taskName);
-
+        LOGGER.info("Task: " + taskName + ", " + temp.toString());
     }
 
     /**

@@ -39,28 +39,17 @@ public class TaskSchedulerListener implements SchedulerListener {
 
     @Override
     public void taskLaunching(TaskExecutor executor) {
-        this.updateStatus(executor);
+        schedulerContext.updateStatus(executor);
     }
 
     @Override
     public void taskSucceeded(TaskExecutor executor) {
-        this.updateStatus(executor);
+        schedulerContext.updateStatus(executor);
     }
 
     @Override
     public void taskFailed(TaskExecutor executor, Throwable exception) {
-        this.updateStatus(executor);
+        schedulerContext.updateStatus(executor);
         LOGGER.info(executor.getStatusMessage());
-    }
-
-    private void updateStatus(TaskExecutor executor) {
-        String taskName = ((AbstractTask)executor.getTask()).getName();
-        SchedulerStatus status = new SchedulerStatus();
-        status.setRecent(Calendar.getInstance().getTime());
-        status.setMessage(executor.getStatusMessage());
-        status.setStartTime(executor.getStartTime());
-        status.setCompleted(executor.getCompleteness());
-        schedulerContext.updateStatus(taskId, status);
-        LOGGER.info("Task: " + schedulerContext.getTaskName(taskId) + ", " + status.toString());
     }
 }
