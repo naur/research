@@ -41,7 +41,7 @@ public class SchedulerContext {
 
     //定时任务ID ：Map<taskId, scheduler>
     private Map<String, Scheduler> tasks = new HashMap<String, Scheduler>();
-    //定时任务Name ：Map<taskId, scheduler>
+    //定时任务Name ：Map<taskName, scheduler>
     private Map<String, Scheduler> schedulers;
 
     /**
@@ -83,19 +83,20 @@ public class SchedulerContext {
      */
     public void updateStatus(TaskExecutor executor) {
         String taskName = ((AbstractTask) executor.getTask()).getName();
-        String taskId = getTaskId(taskName);
-        if (null == taskId || !tasks.containsKey(taskId)) {
+        Scheduler scheduler = schedulers.get(taskName);
+        if (null == scheduler) {
             LOGGER.warn("ExecutingTasks not contains in schedulerProperties.tasks");
             return;
         }
 
-        if (null == schedulers.get(taskId).getStatus()) {
+        SchedulerStatus temp = scheduler.getStatus();
+        if (null == temp) {
             synchronized (lock) {
-                schedulers.get(taskId).setStatus(new SchedulerStatus());
+                temp = new SchedulerStatus();
+                scheduler.setStatus(temp);
             }
         }
 
-        SchedulerStatus temp = schedulers.get(taskId).getStatus();
         temp.setRecent(Calendar.getInstance().getTime());
         temp.setCanPaused(executor.canBePaused());
         temp.setCanStopped(executor.canBeStopped());

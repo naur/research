@@ -44,7 +44,7 @@ function search() {
 
     $(tbody).html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
     global.http.acquire({
-        uri: global.utility.format(global.searchUri, $(global.dom.realtime).val()),
+        uri: global.utility.format(global.searchUri, $(global.dom.realtime)[0].checked),
         error: function (err) {
             $(tbody).html(global.utility.format(global.message.tableTemplate, err));
         },
