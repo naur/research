@@ -17,15 +17,15 @@ var global = {
     runUri: '/scheduler/task/run/{0}.json',
     table: {
         name: 'NAME',
-        //cron: 'CRON',
-        //task: 'TASK',
+        cron: 'CRON',
+        task: 'TASK',
         'status.recent': 'RECENT',
-        //'status.startTime': 'STARTTIME',
-        //'status.completed': 'COMPLETED',
-        //'status.completeness': 'COMPLETENESS',
-        //'status.message': 'MESSAGE',
-        //'status.duration': 'DURATION',
-        //options: 'OPTIONS'
+        'status.startTime': 'STARTTIME',
+        'status.completed': 'COMPLETED',
+        'status.completeness': 'COMPLETENESS',
+        'status.message': 'MESSAGE',
+        'status.duration': 'DURATION',
+        options: 'OPTIONS'
     },
     dom: {
         container: '.row:eq(0) div:eq(0)',
