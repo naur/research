@@ -17,21 +17,25 @@ var global = {
     runUri: '/scheduler/task/run/{0}.json',
     table: {
         name: 'NAME',
-        cron: 'CRON',
-        task: 'TASK',
-        recent: 'RECENT',
-        startTime: 'STARTTIME',
-        completed: 'COMPLETED',
-        message: 'MESSAGE',
-        duration: 'DURATION',
-        options: 'OPTIONS'
+        //cron: 'CRON',
+        //task: 'TASK',
+        'status.recent': 'RECENT',
+        //'status.startTime': 'STARTTIME',
+        //'status.completed': 'COMPLETED',
+        //'status.completeness': 'COMPLETENESS',
+        //'status.message': 'MESSAGE',
+        //'status.duration': 'DURATION',
+        //options: 'OPTIONS'
     },
     dom: {
         container: '.row:eq(0) div:eq(0)',
         search: '#search',
         realtime: '#realtime',
         start: '#start',
-        run: '.run'
+        run: '.run',
+        recent: '.row_status.recent',
+        startTime: '.row_status.startTime',
+        duration: '.row_status.duration'
     }
 };
 
@@ -65,6 +69,11 @@ function search() {
                                 '          </div>' +
                                 '        </div>' +
                                 '    </div>';
+                                return true;
+                            } else if ('status.recent' == prop) {
+                                if (data.status && data.status.recent) {
+                                    result[prop] = new Date(data.status.recent);
+                                }
                                 return true;
                             } else {
                                 return false;
