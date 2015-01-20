@@ -5,6 +5,7 @@ dependencies {
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: jackson_version
     compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: fluent_hc_version
     compile group: 'org.codehaus.castor', name: 'castor', version: castor_version
+    compile group: 'org.codehaus.castor', name: 'castor-xml', version: castor_version
     compile group: 'it.sauronsoftware.cron4j', name: 'cron4j', version: cron4j_version
 }
 

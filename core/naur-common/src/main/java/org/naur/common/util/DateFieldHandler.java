@@ -5,7 +5,11 @@
  */
 package org.naur.common.util;
 
-import org.exolab.castor.mapping.GeneralizedFieldHandler;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.exolab.castor.mapping.FieldHandler;
+import org.exolab.castor.mapping.FieldDescriptor;
 import org.exolab.castor.mapping.ValidityException;
 
 import java.text.ParseException;
@@ -25,14 +29,13 @@ import java.util.Properties;
  * 评审人 ：
  * </pre>
  */
-public class DateFieldHandler extends GeneralizedFieldHandler {
-
-    private SimpleDateFormat formatter;
+public class DateFieldHandler extends FieldHandler {
+    private static final String FORMAT = "yyyy-MM-dd";
 
     /**
      * Creates a new MyDateHandler instance
      */
-    public DateFieldHandler() {
+    public MyDateHandler() {
         super();
     }
 
@@ -50,70 +53,79 @@ public class DateFieldHandler extends GeneralizedFieldHandler {
     }
 
     /**
-     * This method is used to convert the value when the
-     * getValue method is called. The getValue method will
-     * obtain the actual field value from given 'parent' object.
-     * This convert method is then invoked with the field's
-     * value. The value returned from this method will be
-     * the actual value returned by getValue method.
+     * Returns the value of the field from the object.
      *
-     * @param value the object value to convert after
-     *              performing a get operation
-     * @return the converted value.
+     * @param object The object
+     * @return The value of the field
+     * @throws IllegalStateException The Java object has changed and
+     *                               is no longer supported by this handler, or the handler is not
+     *                               compatible with the Java object
      */
-    public Object convertUponGet(Object value) {
+    public Object getValue(final Object object) throws IllegalStateException {
+        Root root = (Root) object;
+        Date value = root.getDate();
         if (value == null) return null;
+        SimpleDateFormat formatter = new SimpleDateFormat(FORMAT);
         Date date = (Date) value;
         return formatter.format(date);
     }
 
 
     /**
-     * This method is used to convert the value when the
-     * setValue method is called. The setValue method will
-     * call this method to obtain the converted value.
-     * The converted value will then be used as the value to
-     * set for the field.
+     * Sets the value of the field on the object.
      *
-     * @param value the object value to convert before
-     *              performing a set operation
-     * @return the converted value.
+     * @param object The object
+     * @param value  The new value
+     * @throws IllegalStateException    The Java object has changed and
+     *                                  is no longer supported by this handler, or the handler is not
+     *                                  compatible with the Java object
+     * @throws IllegalArgumentException The value passed is not of
+     *                                  a supported type
      */
-    public Object convertUponSet(Object value) {
+    public void setValue(Object object, Object value)
+            throws IllegalStateException, IllegalArgumentException {
+
+        Root root = (Root) object;
+        SimpleDateFormat formatter = new SimpleDateFormat(FORMAT);
         Date date = null;
         try {
             date = formatter.parse((String) value);
         } catch (ParseException px) {
             throw new IllegalArgumentException(px.getMessage());
         }
-        return date;
+        root.setDate(date);
     }
 
-    /**
-     * Returns the class type for the field that this
-     * GeneralizedFieldHandler converts to and from. This
-     * should be the type that is used in the
-     * object model.
-     *
-     * @return the class type of of the field
-     */
-    public Class getFieldType() {
-        return Date.class;
-    }
 
     /**
-     * Creates a new instance of the object described by
-     * this field.
+     * Creates a new instance of the object described by this field.
      *
      * @param parent The object for which the field is created
      * @return A new instance of the field's value
-     * @throws IllegalStateException This field is a simple
-     *                               type and cannot be instantiated
+     * @throws IllegalStateException This field is a simple type and
+     *                               cannot be instantiated
      */
-    public Object newInstance(Object parent)
-            throws IllegalStateException {
+    public Object newInstance(Object parent) throws IllegalStateException {
         //-- Since it's marked as a string...just return null,
         //-- it's not needed.
         return null;
     }
+
+
+    /**
+     * Sets the value of the field to a default value.
+     * <p/>
+     * Reference fields are set to null, primitive fields are set to
+     * their default value, collection fields are emptied of all
+     * elements.
+     *
+     * @param object The object
+     * @throws IllegalStateException The Java object has changed and
+     *                               is no longer supported by this handler, or the handler is not
+     *                               compatible with the Java object
+     */
+    public void resetValue(Object object) throws IllegalStateException, IllegalArgumentException {
+        ((Root) object).setDate(null);
+    }
+
 }
