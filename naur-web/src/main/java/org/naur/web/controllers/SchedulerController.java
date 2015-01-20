@@ -49,12 +49,12 @@ public class SchedulerController extends ControllerBase {
     /**
      * 获取定时任务信息
      */
-    @RequestMapping("task")
-    public Information task() {
+    @RequestMapping("task/{realtime}")
+    public Information task(@PathVariable final boolean realtime) {
         return handler(new Information<List<Scheduler>>(), new Func<Information, Information>() {
             @Override
             public Information execute(Information information) throws Exception {
-                List<Scheduler> list = schedulerService.getTasks(false);
+                List<Scheduler> list = schedulerService.getTasks(realtime);
                 Collections.sort(list, new Comparator<Scheduler>() {
                     @Override
                     public int compare(Scheduler o1, Scheduler o2) {

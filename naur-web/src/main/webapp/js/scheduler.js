@@ -12,7 +12,7 @@
 /*-------------------- 全局变量 START ----------------*/
 
 var global = {
-    searchUri: '/scheduler/task.json',
+    searchUri: '/scheduler/task/{0}.json',
     startUri: '/scheduler/task/start.json',
     runUri: '/scheduler/task/run/{0}.json',
     table: {
@@ -29,10 +29,11 @@ var global = {
     dom: {
         container: '.row:eq(0) div:eq(0)',
         search: '#search',
+        realtime: '#realtime',
         start: '#start',
         run: '.run'
     }
-}
+};
 
 /*-------------------- 全局变量 END ------------------*/
 
@@ -43,16 +44,17 @@ function search() {
 
     $(tbody).html(global.utility.format(global.message.tableTemplate, global.message.text.loading));
     global.http.acquire({
-        uri: global.searchUri,
+        uri: global.utility.format(global.searchUri, $(global.dom.realtime).val()),
         error: function (err) {
             $(tbody).html(global.utility.format(global.message.tableTemplate, err));
         },
         success: function (obj) {
             if (0 == obj.output.information.level) {
                 $(tbody).html($.render.row(
-                    $.views.toRow(global.table, obj.output.information.data, {before: function (data, prop, result) {
-                        if ('options' == prop) {
-                            result[prop] = '<div class="row">' +
+                    $.views.toRow(global.table, obj.output.information.data, {
+                        before: function (data, prop, result) {
+                            if ('options' == prop) {
+                                result[prop] = '<div class="row">' +
                                 '        <div class="col-md-10 col-md-offset-1">' +
                                 '            <div class="input-group input-group-sm">' +
                                 '                <input type="text"  class="form-control" />' +
@@ -63,11 +65,12 @@ function search() {
                                 '          </div>' +
                                 '        </div>' +
                                 '    </div>';
-                            return true;
-                        } else {
-                            return false;
+                                return true;
+                            } else {
+                                return false;
+                            }
                         }
-                    }})
+                    })
                 ));
                 $(global.dom.run).parent().prev().val(new Date().format('yyyy-MM-dd') + ', ' + new Date().format('yyyy-MM-dd') + ', ');
             } else {
@@ -88,7 +91,10 @@ function start() {
             if (0 == obj.output.information.level) {
                 global.message.show({content: 'Task Start OK.'});
             } else {
-                global.message.show({content: 'Task Start Error,' + obj.output.information.keywords + '.', color: 'red'});
+                global.message.show({
+                    content: 'Task Start Error,' + obj.output.information.keywords + '.',
+                    color: 'red'
+                });
             }
         }
     });

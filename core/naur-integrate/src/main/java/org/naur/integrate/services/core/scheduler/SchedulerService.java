@@ -72,17 +72,8 @@ public class SchedulerService {
     public List<Scheduler> getTasks(boolean realtime) {
         if (realtime) {
             TaskExecutor[] list = scheduler.getExecutingTasks();
-            String taskId = null;
             for (TaskExecutor executor : list) {
-                taskId = executor.getGuid();
-                SchedulerStatus temp = new SchedulerStatus();
-                temp.setStartTime(executor.getStartTime());
-                temp.setMessage(executor.getStatusMessage());
-                temp.setCompleted(executor.getCompleteness());
-                temp.setDuration(System.currentTimeMillis() - executor.getStartTime());
-                temp.setCanStopped(executor.canBeStopped());
-                temp.setCanStopped(executor.canBeStopped());
-                schedulerContext.updateStatus(taskId, temp);
+                schedulerContext.updateStatus(executor);
             }
         }
         return schedulerContext.getTasks();

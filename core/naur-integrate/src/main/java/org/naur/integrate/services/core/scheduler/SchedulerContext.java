@@ -94,6 +94,7 @@ public class SchedulerContext {
                 schedulers.get(taskId).setStatus(new SchedulerStatus());
             }
         }
+
         SchedulerStatus temp = schedulers.get(taskId).getStatus();
         temp.setRecent(Calendar.getInstance().getTime());
         temp.setCanPaused(executor.canBePaused());
