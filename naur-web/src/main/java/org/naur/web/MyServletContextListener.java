@@ -39,15 +39,19 @@ public class MyServletContextListener implements ServletContextListener {
 
         servletContext = servletContextEvent.getServletContext();
         applicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        if (null == applicationContext) {
+            LOGGER.info("applicationContext null.");
+            return;
+        }
 
         try {
-            if (null != applicationContext) {
-                SchedulerService schedulerService = applicationContext.getBean(SchedulerService.class);
-                if (null != schedulerService) {
-                    schedulerService.start();
-                    LOGGER.info("schedulerService start.");
-                }
+            SchedulerService schedulerService = applicationContext.getBean(SchedulerService.class);
+            if (null == schedulerService) {
+                LOGGER.info("schedulerService null.");
+                return;
             }
+            schedulerService.start();
+            LOGGER.info("schedulerService start.");
         } catch (Exception ex) {
             LOGGER.info("schedulerService exception.", ex);
         }
@@ -56,8 +60,11 @@ public class MyServletContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         SchedulerService schedulerService = applicationContext.getBean(SchedulerService.class);
+        if (null == schedulerService) {
+            LOGGER.info("schedulerService null.");
+            return;
+        }
         schedulerService.stop();
-
         LOGGER.info("schedulerService stop.");
     }
 }

@@ -36,6 +36,9 @@ public abstract class SchedulerProperty {
     private Map<String, Scheduler> schedulers;
 
     protected void schedulers(String schedluers) {
+
+        LOGGER.info("schedluers: " + schedluers);
+
         schedulers = new HashMap<String, Scheduler>();
 
         ObjectMapper mapper = new ObjectMapper();
