@@ -97,14 +97,14 @@ public class SchedulerContext {
             }
         }
 
-        temp.setRecent(Calendar.getInstance().getTime());
+        temp.setRecent(System.currentTimeMillis());
         temp.setCanPaused(executor.canBePaused());
         temp.setCanStopped(executor.canBeStopped());
         temp.setCompleteness(executor.getCompleteness());
         temp.setCompleted(1D == executor.getCompleteness());
         temp.setMessage(executor.getStatusMessage());
-        temp.setStartTime(executor.getStartTime());
         if (-1 != executor.getStartTime()) {
+            temp.setStartTime(executor.getStartTime());
             temp.setDuration(System.currentTimeMillis() - -executor.getStartTime());
         }
         LOGGER.info("Task: " + taskName + ", " + temp.toString());

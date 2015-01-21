@@ -22,7 +22,7 @@ import java.util.Date;
  */
 public class SchedulerStatus extends Entity {
     //最近运行时间
-    private Date recent;
+    private long recent;
     //正在运行的开始时间
     private long startTime;
     //运行的进度
@@ -35,14 +35,18 @@ public class SchedulerStatus extends Entity {
     //是否可以停止
     private Boolean canStopped;
     //运行持续时间
-    private Long duration;
+    private long duration;
 
-    public Date getRecent() {
+    public long getRecent() {
         return recent;
     }
 
-    public void setRecent(Date recent) {
+    public void setRecent(long recent) {
         this.recent = recent;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     public long getStartTime() {
