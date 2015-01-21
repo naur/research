@@ -6,6 +6,8 @@
 package org.naur.web;
 
 import org.naur.integrate.services.core.scheduler.SchedulerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -26,6 +28,8 @@ import javax.servlet.ServletContextListener;
  */
 public class MyServletContextListener implements ServletContextListener {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(MyServletContextListener.class);
+
     private ServletContext servletContext;
     private ApplicationContext applicationContext;
 
@@ -35,11 +39,15 @@ public class MyServletContextListener implements ServletContextListener {
         applicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
         SchedulerService schedulerService = applicationContext.getBean(SchedulerService.class);
         schedulerService.start();
+
+        LOGGER.info("schedulerService start.");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         SchedulerService schedulerService = applicationContext.getBean(SchedulerService.class);
         schedulerService.stop();
+
+        LOGGER.info("schedulerService stop.");
     }
 }
