@@ -115,6 +115,8 @@ public class SchedulerContext {
      */
     @PostConstruct
     public void init() {
+        LOGGER.info("SchedulerContext init.");
+
         schedulers = new HashMap<String, Scheduler>();
         //TODO 空判断
         for (SchedulerProperty property : properties) {

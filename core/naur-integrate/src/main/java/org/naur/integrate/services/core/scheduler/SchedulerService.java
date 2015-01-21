@@ -128,6 +128,8 @@ public class SchedulerService {
      */
     @PostConstruct
     public void init() {
+        LOGGER.info("SchedulerService init.");
+
         for (Scheduler item : schedulerContext.getSchedulers()) {
             if (!applicationContext.containsBean(item.getTask().toString())) {
                 //TODO

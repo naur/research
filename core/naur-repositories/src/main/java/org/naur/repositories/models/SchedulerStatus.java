@@ -21,6 +21,7 @@ import java.util.Date;
  * </pre>
  */
 public class SchedulerStatus extends Entity {
+    private static final long serialVersionUID = -229553609463944723L;
     //最近运行时间
     private long recent;
     //正在运行的开始时间
