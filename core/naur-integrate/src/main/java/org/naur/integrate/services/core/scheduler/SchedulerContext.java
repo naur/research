@@ -105,7 +105,7 @@ public class SchedulerContext {
         temp.setMessage(executor.getStatusMessage());
         if (-1 != executor.getStartTime()) {
             temp.setStartTime(executor.getStartTime());
-            temp.setDuration(System.currentTimeMillis() - -executor.getStartTime());
+            temp.setDuration(System.currentTimeMillis() - executor.getStartTime());
         }
         LOGGER.info("Task: " + taskName + ", " + temp.toString());
     }

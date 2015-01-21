@@ -77,7 +77,7 @@ function search() {
                                 }
                             } else if ('status.duration' == prop) {
                                 if (data.status && data.status.duration) {
-                                    result[prop] = data.status.duration / MinMilli;
+                                    result[prop] = new Date(data.status.duration).format('yyyy-MM-dd hh:mm:ss');
                                     return true;
                                 }
                             } else {
