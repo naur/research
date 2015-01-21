@@ -87,6 +87,7 @@ require.config({
         'arbor-renderer': jsprefix + '/js/arbor-renderer',
 
         'naur': jsprefix + '/js/core/naur',
+        'naur.constant': jsprefix + '/js/core/naur.constant',
         'naur.validate': jsprefix + '/js/core/naur.validate',
 
         'naur.date': jsprefix + '/js/core/naur.date',
