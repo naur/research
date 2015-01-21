@@ -28,7 +28,7 @@ import java.util.Properties;
  * 评审人 ：
  * </pre>
  */
-public class DateFieldHandler extends GeneralizedFieldHandler implements ConfigurableFieldHandler, ClonableFieldHandlerMarker {
+public class DateFieldHandler extends GeneralizedFieldHandler implements ConfigurableFieldHandler {
 
     private DateFormat format;
 
@@ -128,7 +128,7 @@ public class DateFieldHandler extends GeneralizedFieldHandler implements Configu
         this.format = format;
     }
 
-    @Override
+    //@Override
     public FieldHandler copyFieldHandler() {
         DateFieldHandler handler = new DateFieldHandler();
         handler.setFormat(this.getFormat());
