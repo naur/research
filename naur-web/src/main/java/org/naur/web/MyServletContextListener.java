@@ -40,15 +40,15 @@ public class MyServletContextListener implements ServletContextListener {
         servletContext = servletContextEvent.getServletContext();
         applicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
 
-//        try {
-//            SchedulerService schedulerService = applicationContext.getBean(SchedulerService.class);
-//            if (null != schedulerService) {
-//                schedulerService.start();
-//                LOGGER.info("schedulerService start.");
-//            }
-//        } catch (Exception ex) {
-//            LOGGER.info("schedulerService exception.", ex);
-//        }
+        try {
+            SchedulerService schedulerService = applicationContext.getBean(SchedulerService.class);
+            if (null != schedulerService) {
+                schedulerService.start();
+                LOGGER.info("schedulerService start.");
+            }
+        } catch (Exception ex) {
+            LOGGER.info("schedulerService exception.", ex);
+        }
     }
 
     @Override
