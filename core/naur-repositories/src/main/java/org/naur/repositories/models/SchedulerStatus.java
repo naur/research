@@ -46,10 +46,6 @@ public class SchedulerStatus extends Entity {
         this.recent = recent;
     }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
-
     public long getStartTime() {
         return startTime;
     }
@@ -98,11 +94,11 @@ public class SchedulerStatus extends Entity {
         this.canStopped = canStopped;
     }
 
-    public Long getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(Long duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 }
