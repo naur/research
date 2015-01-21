@@ -50,7 +50,7 @@ public abstract class SchedulerProperty {
                 schedulers.put(scheduler.getId(), scheduler);
             }
         } catch (Exception ex) {
-            LOGGER.equals(ex);
+            LOGGER.info("SchedulerProperty init error.", ex);
         }
     }
 
