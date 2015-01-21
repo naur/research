@@ -33,6 +33,8 @@ public class MyServletContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         servletContext = servletContextEvent.getServletContext();
         applicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        SchedulerService schedulerService = applicationContext.getBean(SchedulerService.class);
+        schedulerService.start();
     }
 
     @Override
