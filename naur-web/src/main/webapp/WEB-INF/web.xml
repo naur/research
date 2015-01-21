@@ -41,8 +41,7 @@
     <!--<listener>-->
         <!--<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
     <!--</listener>-->
-
-    <!--TODO 没有作用 -->
+    
     <listener>
         <listener-class>org.naur.web.MyServletContextListener</listener-class>
     </listener>
