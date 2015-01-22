@@ -19,11 +19,8 @@
  *      $('.link_className').flyout({prompt: '采购单号'});
  */
 
-define(['jquery', 'jquery.template'],
+define(['jquery', 'jquery.template', 'naur.constant'],
     function ($) {
-
-        var DOT = ".";
-        var UNDERLINE = "_";
 
         //TODO http://msdn.microsoft.com/zh-cn/magazine/hh975379.aspx
         //TODO http://msdn.microsoft.com/zh-cn/magazine/hh882454.aspx

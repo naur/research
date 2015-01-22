@@ -71,13 +71,13 @@ function search() {
                                 '    </div>';
                                 return true;
                             } else if ('status.recent' == prop || 'status.startTime' == prop) {
-                                if (data.status && data.status.recent) {
-                                    result[prop] = new Date(data.status.recent).format('yyyy-MM-dd hh:mm:ss');
+                                if (data.status) {
+                                    result[prop] = new Date(data.status[prop.split(DOT)[1]]).format('yyyy-MM-dd hh:mm:ss');
                                     return true;
                                 }
                             } else if ('status.duration' == prop) {
                                 if (data.status && data.status.duration) {
-                                    result[prop] = new Date(data.status.duration).format('yyyy-MM-dd hh:mm:ss');
+                                    result[prop] = new Date(data.status.duration).format('hh:mm:ss', true);
                                     return true;
                                 }
                             } else {

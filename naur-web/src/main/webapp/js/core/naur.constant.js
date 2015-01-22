@@ -16,6 +16,9 @@ var HrMilli = MinMilli * 60;
 var DyMilli = HrMilli * 24;
 var WkMilli = DyMilli * 7;
 
+var DOT = ".";
+var UNDERLINE = "_";
+
 +function () {
     if (typeof define === 'function') {
         define(['naur'], function (NAUR) {
