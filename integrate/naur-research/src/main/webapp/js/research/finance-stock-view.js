@@ -57,7 +57,7 @@ function search(self) {
                 if (!stocks) {
                     return;
                 }
-                var quote,stockName;
+                var quote, stockName;
                 global.data = {};
                 for (var stock in stocks) {
                     //设置线段名
@@ -161,6 +161,13 @@ function init() {
     });
     $(global.dom.start).datepicker({format: 'yyyy-mm-dd'});
     $(global.dom.end).datepicker({format: 'yyyy-mm-dd'});
+    global.rompt = new dropdownPrompt({
+        container: $(global.dom.stock),
+        data: ["jvm", "class-load-info", "thread", "tomcat-processors-info", "tomcat-runtime-info", "data-sources", "operating-system", "system-properties"],
+        onSelect: function (item) {
+            alert($(item).text());
+        }
+    });
 }
 
 function initEcharts() {

@@ -73,7 +73,7 @@ public class StockWebService {
      */
     public Stock getCapital(String stock) throws IOException {
         String data = RequestClient.getInstance().get(
-                MessageFormat.format(securityConfiguration.stockCapitalUri, stock)
+                MessageFormat.format(securityConfiguration.stockCapitalUri, stock.toLowerCase())
         );
 
         Stock result = null;
