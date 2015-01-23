@@ -8,7 +8,7 @@
  * Usage:
  */
 
-define(['jquery', 'naur'], function($, NAUR) {
+define(['jquery', 'naur'], function ($, NAUR) {
 
     /**
      * 下拉框提示
@@ -66,18 +66,18 @@ define(['jquery', 'naur'], function($, NAUR) {
                 $(opt.dom.prompt).css("left", $(opt.container).position().left);
                 if (opt.height) $(opt.dom.prompt).css("max-height", opt.height);
 
-                $(opt.container).off().on('focus', function () {
+                $(opt.container).off('focus').on('focus', function () {
                     //if (opt.data && opt.data.length > 0)
                     if ($(opt.dom.prompt).children().is('li'))
                         self.show();
                 });
 
-                $(opt.container).on('blur', function () {
+                $(opt.container).off('blur').on('blur', function () {
                     if (!opt.isActive)
                         self.hide();
                 });
 
-                $(opt.container).on('keydown', function () {
+                $(opt.container).off('keydown').on('keydown', function () {
                     self.hide();
                 });
 
@@ -93,15 +93,15 @@ define(['jquery', 'naur'], function($, NAUR) {
                 }
 
                 //事件
-                $(opt.container + ' + ' + opt.dom.promptNode).off('mouseover').on('mouseover', function () {
+                $(opt.container).parent().on('mouseover', opt.dom.promptNode, function () {
                     opt.isActive = true;
                     $(opt.dom.promptNode).removeClass(opt.dom.selectClass);
                     $(this).addClass(opt.dom.selectClass);
                 });
-                $(opt.container + ' + ' + opt.dom.promptNode).on('mouseout', function () {
+                $(opt.container).parent().on('mouseout', opt.dom.promptNode, function () {
                     opt.isActive = false;
                 });
-                $(opt.container + ' + ' + opt.dom.promptNode).on('click', function () {
+                $(opt.container).parent().on('click', opt.dom.promptNode, function () {
                     self.hide();
                     if (opt.onSelect)
                         opt.onSelect($(this));
@@ -264,7 +264,8 @@ define(['jquery', 'naur'], function($, NAUR) {
                         width: '600px',
                         height: '100px',
                         position: 'absolute'
-                    }}
+                    }
+                }
             }, options);
 
             this.save = function () {
@@ -326,7 +327,7 @@ define(['jquery', 'naur'], function($, NAUR) {
 
         return speedEdit;
     })();
-    
+
     /**
      * 翻页控件
      */
@@ -405,26 +406,26 @@ define(['jquery', 'naur'], function($, NAUR) {
     NAUR.UI.templet = (function (options) {
         var opt = $.extend({
             name: "",
-            container:null,
+            container: null,
 
-            context:null,
+            context: null,
 
-            error:null,
-            success:null
+            error: null,
+            success: null
         }, options);
 
         NAUR.HTTP.acquire({
             xmlUrl: '/xml/templet/' + opt.name + '.xml',
-            xmlCache:true,
+            xmlCache: true,
             //xslUrl: '/xsl/body.xsl',
             container: opt.container,
             context: opt.context,
-            error:function (ex) {
+            error: function (ex) {
                 if (opt.success != null) {
                     opt.success(ex);
                 }
             },
-            success:function(obj) {
+            success: function (obj) {
 //                $(opt.container).html(obj.xml.toString());
 //                obj.container = container;
                 if (opt.success != null) {

@@ -162,7 +162,7 @@ function init() {
     $(global.dom.start).datepicker({format: 'yyyy-mm-dd'});
     $(global.dom.end).datepicker({format: 'yyyy-mm-dd'});
     global.rompt = new global.ui.DropdownPrompt({
-        container: $(global.dom.stock),
+        container: global.dom.stock,
         data: ['000001', '000002', '399107', '399101', '399102', '399102', '399006', '000003', '399108',
             //'600265', '600793', '600689', '600247', '000509', '300157', '600421', '002248', '002063', '300024', '300227', '600768', '601099', '002579'
         ],
