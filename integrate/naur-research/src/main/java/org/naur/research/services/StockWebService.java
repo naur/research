@@ -12,7 +12,6 @@ import org.naur.research.config.SecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.castor.CastorMarshaller;
 import org.springframework.stereotype.Service;
-import org.springframework.util.PatternMatchUtils;
 
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
@@ -80,7 +79,7 @@ public class StockWebService {
         Stock result = null;
         Double totalCapital = null;
         Double currCapital = null;
-        String stockname = "";
+        String stockName = "";
 
         //从数据里提取提取[总股本]和[流通股本]
         //格式：
@@ -90,19 +89,19 @@ public class StockWebService {
         //      group3 = 5089.91
         //      group4 = .91
         //      group5 = stockname
-        Pattern p = Pattern.compile("totalcapital\\s=\\s(\\d+(\\D\\d+)?);[\\s\\S]+currcapital\\s=\\s(\\d+(\\D\\d+)?);[\\s\\S]+stockname\\s=\\s'([\\s\\S]+)';");
+        Pattern p = Pattern.compile("totalcapital\\s=\\s(\\d+(\\D\\d+)?);[\\s\\S]+currcapital\\s=\\s(\\d+(\\D\\d+)?);[\\s\\S]+stockname\\s=\\s'([^;]+)'; //");
         Matcher m = p.matcher(data);
         while (m.find()) {
             totalCapital = Double.parseDouble(m.group(1));
             currCapital = Double.parseDouble(m.group(3));
-            stockname = m.group(3);
+            stockName = new String(m.group(5).getBytes("ISO-8859-1"), "GB18030");
         }
 
         if (null != totalCapital && null != currCapital) {
             result = new Stock();
             result.setType(stock.substring(0, 2).toUpperCase());
             result.setCode(stock.substring(2));
-            result.setName(stockname);
+            result.setName(stockName);
             result.setTotalCapital(totalCapital);
             result.setCurrCapital(currCapital);
         }
