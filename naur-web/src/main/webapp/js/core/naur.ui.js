@@ -49,7 +49,7 @@ define(['jquery', 'naur'], function($, NAUR) {
 
             this.promptContainer = function () {
                 return $(opt.dom.prompt);
-            }
+            };
 
             this.show = function () {
                 $(opt.dom.prompt).show();
@@ -93,7 +93,7 @@ define(['jquery', 'naur'], function($, NAUR) {
                 }
 
                 //事件
-                $(opt.container + ' + ' + opt.dom.promptNode).off().on('mouseover', function () {
+                $(opt.container + ' + ' + opt.dom.promptNode).off('mouseover').on('mouseover', function () {
                     opt.isActive = true;
                     $(opt.dom.promptNode).removeClass(opt.dom.selectClass);
                     $(this).addClass(opt.dom.selectClass);
@@ -223,7 +223,7 @@ define(['jquery', 'naur'], function($, NAUR) {
             this.init = function () {
                 $(opt.container).html(opt.domElement);
                 //初始化 tagPanelItem 事件
-                $(opt.dom.tagPanelItem, opt.container).die().live('click', function () {
+                $(opt.dom.tagPanelItem, opt.container).off('click').on('click', function () {
                     if (opt.multiSelect)
                         if ($(this).attr('class'))
                             $(this).removeClass(opt.dom.tagPanelItemSelectStyle);
@@ -237,10 +237,10 @@ define(['jquery', 'naur'], function($, NAUR) {
                         opt.click(this);
                     }
                 });
-                $(opt.dom.tagPanelContent, opt.container).die().live('mouseout', function () {
+                $(opt.dom.tagPanelContent, opt.container).off('mouseout').on('mouseout', function () {
                     $(opt.dom.tagPanel, opt.container).addClass(opt.dom.tagPanelHover);
                 });
-                $(opt.dom.tagPanel, opt.container).die().live('mouseleave', function () {
+                $(opt.dom.tagPanel, opt.container).off('mouseleave').on('mouseleave', function () {
                     $(this).removeClass(opt.dom.tagPanelHover);
                 });
             };
@@ -385,7 +385,7 @@ define(['jquery', 'naur'], function($, NAUR) {
             if (opt.container) $(opt.container).html(str);
 
             //按钮事件
-            $(opt.container + ' a').die().on('click', function () {
+            $(opt.container + ' a').off('click').on('click', function () {
                 var currIndex = $(this).text();
                 if (currIndex == opt.index || currIndex == '...') return false;
                 if (currIndex == opt.prev) currIndex = opt.index - 1;
@@ -441,7 +441,7 @@ define(['jquery', 'naur'], function($, NAUR) {
         options.container = this;
         NAUR.UI.templet(options);
         return this;
-    }
+    };
 
     return NAUR;
 });

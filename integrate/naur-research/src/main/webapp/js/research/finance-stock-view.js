@@ -161,9 +161,11 @@ function init() {
     });
     $(global.dom.start).datepicker({format: 'yyyy-mm-dd'});
     $(global.dom.end).datepicker({format: 'yyyy-mm-dd'});
-    global.rompt = new dropdownPrompt({
+    global.rompt = new global.ui.DropdownPrompt({
         container: $(global.dom.stock),
-        data: ["jvm", "class-load-info", "thread", "tomcat-processors-info", "tomcat-runtime-info", "data-sources", "operating-system", "system-properties"],
+        data: ['000001', '000002', '399107', '399101', '399102', '399102', '399006', '000003', '399108',
+            //'600265', '600793', '600689', '600247', '000509', '300157', '600421', '002248', '002063', '300024', '300227', '600768', '601099', '002579'
+        ],
         onSelect: function (item) {
             alert($(item).text());
         }
@@ -187,6 +189,7 @@ function initEcharts() {
 require(['loading', 'research-template', 'naur.ui.echarts', 'naur.date.lunar', 'naur.math.statistics.finance'], function (mod) {
     global.message = mod.naur.Message;
     $(global.dom.message).message({multiple: false});
+    global.ui = mod.naur.UI;
     global.http = mod.naur.HTTP;
     global.utility = mod.naur.Utility;
     global.echarts = mod.naur.UI.Echarts;
