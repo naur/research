@@ -57,10 +57,11 @@ function search(self) {
                 if (!stocks) {
                     return;
                 }
-                var quote;
+                var quote,stockName;
                 global.data = {};
                 for (var stock in stocks) {
                     //设置线段名
+                    stockName = stocks[stock].name;
                     global.params.lines[stocks[stock].code] = stocks[stock].type.toLowerCase() + stocks[stock].code;
                     global.data[stocks[stock].code] = [];
                     for (var quote in stocks[stock].quotes) {
@@ -77,6 +78,7 @@ function search(self) {
                     }
                 }
 
+                global.params.title = stockName;
                 var option = global.echarts.getChartOption(global.params);
                 var series = global.echarts.getSeries(global.data, global.params);
                 global.chart.render({option: option, series: series});
@@ -134,7 +136,7 @@ function getParams() {
             return global.date.stockHoliday(date);
         }
     };
-    tmp.title = new Date(tmp.start).format('yyyy年MM月dd日') + ' --- ' + new Date(tmp.end).format('yyyy年MM月dd日');
+    tmp.subtitle = new Date(tmp.start).format('yyyy年MM月dd日') + ' --- ' + new Date(tmp.end).format('yyyy年MM月dd日');
     tmp.points = global.echarts.parsePoints(tmp);
     return tmp;
 }

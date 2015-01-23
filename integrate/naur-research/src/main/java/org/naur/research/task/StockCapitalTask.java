@@ -7,12 +7,14 @@ package org.naur.research.task;
 
 import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;
+import org.apache.commons.lang3.StringUtils;
 import org.naur.common.patterns.exception.Action;
 import org.naur.common.util.DateUtil;
 import org.naur.integrate.services.core.scheduler.AbstractTask;
 import org.naur.integrate.services.core.scheduler.MyTaskExecutionContext;
 import org.naur.repositories.models.finance.Stock;
 import org.naur.repositories.models.finance.StockRange;
+import org.naur.repositories.models.finance.StockType;
 import org.naur.research.config.SecurityConfiguration;
 import org.naur.research.services.StockService;
 import org.naur.research.services.StockWebService;
@@ -23,9 +25,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -52,15 +56,36 @@ public class StockCapitalTask extends AbstractTask implements Serializable {
     @Override
     public void process(MyTaskExecutionContext context) throws RuntimeException {
         Date date = DateUtil.getPrevWeekDay(Calendar.getInstance().getTime());
-        List<StockRange> tmp = securityConfiguration.getStockRanges();
-        context.setLoop(tmp.size());
-        for (StockRange range : tmp) {
-            acquireStock(range, date);
-            context.setStatusMessage(range.toString());
-            this.loop(context);
+        StockRange stockRange = null;
+        //TODO 解析 params, 包含【stock】，stock 不包含sh,sz
+        Map params = context.getParams();
+        if (null != params) {
+            //TODO 暂时只支持指定单独一个 stock: 000711
+            if (params.containsKey("stock")) {
+                String stock = params.get("stock").toString();
+                if (StringUtils.isNotEmpty(stock)) {
+                    String stockType = securityConfiguration.stockTypePrefix.get(stock.substring(0, 1));
+                    int stockCode = Integer.parseInt(stock);
+                    stockRange = new StockRange(StockType.valueOf(stockType), stockCode, stockCode);
+                }
+            }
+        }
+
+        if (null != stockRange) {
+            acquireStock(stockRange, date);
+        } else {
+            //定时任务
+            List<StockRange> tmp = securityConfiguration.getStockRanges();
+            context.setLoop(tmp.size());
+            for (StockRange range : tmp) {
+                acquireStock(range, date);
+                context.setStatusMessage(range.toString());
+                this.loop(context);
+            }
         }
     }
 
+    //date 参数无效
     private void acquireStock(StockRange range, Date date) {
         Stock stock = null;
         String id = null;

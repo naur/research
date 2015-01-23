@@ -80,6 +80,7 @@ public class StockWebService {
         Stock result = null;
         Double totalCapital = null;
         Double currCapital = null;
+        String stockname = "";
 
         //从数据里提取提取[总股本]和[流通股本]
         //格式：
@@ -88,17 +89,20 @@ public class StockWebService {
         //      group2 = .84
         //      group3 = 5089.91
         //      group4 = .91
-        Pattern p = Pattern.compile("totalcapital\\s=\\s(\\d+(\\D\\d+)?);[\\s\\S]+currcapital\\s=\\s(\\d+(\\D\\d+)?);");
+        //      group5 = stockname
+        Pattern p = Pattern.compile("totalcapital\\s=\\s(\\d+(\\D\\d+)?);[\\s\\S]+currcapital\\s=\\s(\\d+(\\D\\d+)?);[\\s\\S]+stockname\\s=\\s'([\\s\\S]+)';");
         Matcher m = p.matcher(data);
         while (m.find()) {
             totalCapital = Double.parseDouble(m.group(1));
             currCapital = Double.parseDouble(m.group(3));
+            stockname = m.group(3);
         }
 
         if (null != totalCapital && null != currCapital) {
             result = new Stock();
             result.setType(stock.substring(0, 2).toUpperCase());
             result.setCode(stock.substring(2));
+            result.setName(stockname);
             result.setTotalCapital(totalCapital);
             result.setCurrCapital(currCapital);
         }

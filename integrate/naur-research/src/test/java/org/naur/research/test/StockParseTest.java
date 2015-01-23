@@ -39,12 +39,19 @@ public class StockParseTest extends UnitTestBase {
     private String endDate = "20140702";
 
     @Test
-    public void test() throws IOException, ParseException {
+    public void history() throws IOException, ParseException {
         Stock result = stockWebService.getHistory(
                 stock,
                 dateFormat.parse(beginDate),
                 dateFormat.parse(endDate));
         Assert.assertNotNull(result);
         Assert.assertEquals(2, result.getQuotes().size());
+    }
+
+    @Test
+    public void capital() throws IOException, ParseException {
+        Stock result = stockWebService.getCapital(stock);
+        Assert.assertNotNull(result);
+        Assert.assertEquals("300197", result.getCode());
     }
 }

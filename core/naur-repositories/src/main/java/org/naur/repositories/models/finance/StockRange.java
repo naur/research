@@ -30,6 +30,7 @@ public class StockRange extends Entity {
         this.end = end;
     }
 
+    //证券代码, 包含sh,sz
     public String getCode(int stock) {
         return String.format(type + "%1$06d", stock);
     }

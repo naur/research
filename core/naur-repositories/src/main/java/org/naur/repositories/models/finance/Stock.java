@@ -13,7 +13,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class Stock extends Security<StockQuote> {
-    //证券代码
+    //证券代码,不包含sh,sz
     private String code;
     //证券名称
     private String name;
