@@ -29,7 +29,7 @@ public abstract class ControllerBase {
     }
 
     /**
-     * Inout: Information, Output: Func<Information, Information>
+     * Input: Information, Output: Func<Information, Information>
      *
      * @param information
      * @param func
@@ -46,7 +46,7 @@ public abstract class ControllerBase {
     }
 
     /**
-     * Inout: Map, Output: Func<Map, Information>
+     * Input: Map, Output: Func<Map, Information>
      */
     protected Information handler(Map params, Func<Map, Information> func) {
         Information information = null;
@@ -61,7 +61,7 @@ public abstract class ControllerBase {
     }
 
     /**
-     * Inout: Non, Output: Sub<Information>
+     * Input: Non, Output: Sub<Information>
      */
     protected Information handler(Sub<Information> func) {
         Information information = null;
