@@ -58,7 +58,9 @@ subprojects {
         spring_data_mongodb_version = '1.5.1.RELEASE'
         sleepycat_version = '5.0.103'
         cron4j_version = '2.2.5'
+        simpleframework_version = '2.6.4'
         httl_version = '1.0.11'
+        jsoup_version = '1.8.1'
     }
 
     compileJava {

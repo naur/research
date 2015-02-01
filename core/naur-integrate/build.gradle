@@ -21,7 +21,8 @@ dependencies {
     compile group: 'org.codehaus.castor', name: 'castor', version: castor_version
     compile group: 'xerces', name: 'xercesImpl', version: xerces_version
     compile group: 'rome', name: 'rome', version: rome_version
-    compile group: 'org.simpleframework', name: 'simple-xml', version: '2.6.4'
+    compile group: 'org.simpleframework', name: 'simple-xml', version: simpleframework_version
+    compile group: 'org.jsoup', name: 'jsoup', version: jsoup_version
 
     providedCompile group: 'javax.servlet', name: 'servlet-api', version: servlet_api_version
 }
