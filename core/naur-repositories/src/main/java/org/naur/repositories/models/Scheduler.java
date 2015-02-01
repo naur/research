@@ -10,13 +10,14 @@ import org.naur.common.entities.Entity;
 
 /**
  * 定时任务
- * <p/>
+ * <p>
  * 创建日期: 2014-07-09
  * 修改人 :
  * 修改说明:
  * 评审人 ：
  */
 public class Scheduler extends Entity {
+    private static final long serialVersionUID = -6380269181051050555L;
     //定时任务名字
     private String name;
     //定时任务名字
@@ -27,6 +28,10 @@ public class Scheduler extends Entity {
     private Object task;
     //任务运行状态
     private SchedulerStatus status;
+
+    public Scheduler(Object task) {
+        this.task = task;
+    }
 
     public String getName() {
         return name;

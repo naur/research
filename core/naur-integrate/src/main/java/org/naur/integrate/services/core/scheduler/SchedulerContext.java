@@ -7,15 +7,20 @@
 package org.naur.integrate.services.core.scheduler;
 
 import it.sauronsoftware.cron4j.TaskExecutor;
+import org.naur.common.patterns.SchedulerProperty;
 import org.naur.repositories.models.Scheduler;
 import org.naur.repositories.models.SchedulerStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -35,22 +40,22 @@ public class SchedulerContext {
     private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerContext.class);
 
     @Autowired
-    private List<SchedulerProperty> properties;
+    private List<AbstractTask> tasks;
 
     private Object lock = new Object();
 
     //定时任务ID ：Map<taskId, scheduler>
-    private Map<String, Scheduler> tasks = new HashMap<String, Scheduler>();
+    private Map<String, Scheduler> taskIds = new HashMap<String, Scheduler>();
     //定时任务Name ：Map<taskName, scheduler>
-    private Map<String, Scheduler> schedulers;
+    private Map<String, Scheduler> taskNames;
 
     /**
      * 根据 taskName 获取 taskId
      */
     public String getTaskId(String taskName) {
         String taskId = null;
-        if (schedulers.containsKey(taskName)) {
-            taskId = schedulers.get(taskName).getId();
+        if (taskNames.containsKey(taskName)) {
+            taskId = taskNames.get(taskName).getId();
         }
         return taskId;
     }
@@ -60,8 +65,8 @@ public class SchedulerContext {
      */
     public String getTaskName(String taskId) {
         String taskName = null;
-        if (tasks.containsKey(taskId)) {
-            taskName = tasks.get(taskId).getName();
+        if (taskIds.containsKey(taskId)) {
+            taskName = taskIds.get(taskId).getName();
         }
         return taskName;
     }
@@ -70,11 +75,11 @@ public class SchedulerContext {
      * 更新定时任务的 ID 号，并放到 tasks 里
      */
     public void updateTask(String taskName, String taskId) {
-        if (schedulers.containsKey(taskName)) {
-            schedulers.get(taskName).setId(taskId);
+        if (taskNames.containsKey(taskName)) {
+            taskNames.get(taskName).setId(taskId);
         }
-        if (!tasks.containsKey(taskId)) {
-            tasks.put(taskId, schedulers.get(taskName));
+        if (!taskIds.containsKey(taskId)) {
+            taskIds.put(taskId, taskNames.get(taskName));
         }
     }
 
@@ -83,7 +88,7 @@ public class SchedulerContext {
      */
     public void updateStatus(TaskExecutor executor) {
         String taskName = ((AbstractTask) executor.getTask()).getName();
-        Scheduler scheduler = schedulers.get(taskName);
+        Scheduler scheduler = taskNames.get(taskName);
         if (null == scheduler) {
             LOGGER.warn("ExecutingTasks not contains in schedulerProperties.tasks");
             return;
@@ -117,18 +122,22 @@ public class SchedulerContext {
     public void init() {
         LOGGER.info("SchedulerContext init.");
 
-        schedulers = new HashMap<String, Scheduler>();
+        taskNames = new HashMap<String, Scheduler>();
         //TODO 空判断
-        for (SchedulerProperty property : properties) {
-            schedulers.putAll(property.getSchedulers());
+        for (AbstractTask task : tasks) {
+            SchedulerProperty schedulerProperty = AnnotationUtils.getAnnotation(task.getClass(), SchedulerProperty.class);
+            if (null != schedulerProperty) {
+                Scheduler scheduler = new Scheduler(task);
+                scheduler.setName(task.getName());
+                scheduler.setCron(schedulerProperty.cron());
+                //scheduler.setName(schedulerProperty.name());
+                scheduler.setName(task.getName());
+                taskNames.put(task.getName(), scheduler);
+            }
         }
     }
 
-    public List<Scheduler> getSchedulers() {
-        return new ArrayList<Scheduler>(schedulers.values());
-    }
-
     public List<Scheduler> getTasks() {
-        return new ArrayList<Scheduler>(tasks.values());
+        return new ArrayList<Scheduler>(taskNames.values());
     }
 }

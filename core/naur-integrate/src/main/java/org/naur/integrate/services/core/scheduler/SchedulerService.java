@@ -130,19 +130,16 @@ public class SchedulerService {
     public void init() {
         LOGGER.info("SchedulerService init.");
 
-        for (Scheduler item : schedulerContext.getSchedulers()) {
+        for (Scheduler item : schedulerContext.getTasks()) {
             if (!applicationContext.containsBean(item.getTask().toString())) {
                 //TODO
                 LOGGER.error("Task: " + item.getTask() + " no exists.");
                 continue;
             }
-            //解析配置文件配置的 task 对应的 bean
-            AbstractTask task = (AbstractTask) applicationContext.getBean(item.getTask().toString());
-            task.setName(item.getName());
 
             schedulerContext.updateTask(
                     item.getName(),
-                    scheduling(item.getCron(), task)
+                    scheduling(item.getCron(), (AbstractTask)item.getTask())
             );
             LOGGER.info("Task: " + item.getTask() + " scheduling.");
         }

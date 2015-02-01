@@ -8,6 +8,7 @@ package org.naur.research.task;
 import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;
 import org.apache.commons.lang3.StringUtils;
+import org.naur.common.patterns.SchedulerProperty;
 import org.naur.common.patterns.exception.Action;
 import org.naur.common.util.DateUtil;
 import org.naur.integrate.services.core.scheduler.AbstractTask;
@@ -42,6 +43,7 @@ import java.util.Map;
  * </pre>
  */
 @Service
+@SchedulerProperty(cron = "0 1 1 1/3 *")
 public class StockCapitalTask extends AbstractTask implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockCapitalTask.class);
     private static final long serialVersionUID = -349618193169585445L;
