@@ -62,7 +62,6 @@ public class MyTaskExecutionContext implements TaskExecutionContext {
         }
     }
 
-
     @Override
     public void setCompleteness(double completeness) {
         if (null != target) {

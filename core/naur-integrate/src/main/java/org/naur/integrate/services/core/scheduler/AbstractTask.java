@@ -7,6 +7,8 @@ package org.naur.integrate.services.core.scheduler;
 
 import it.sauronsoftware.cron4j.Task;
 import it.sauronsoftware.cron4j.TaskExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <pre>
@@ -20,6 +22,8 @@ import it.sauronsoftware.cron4j.TaskExecutionContext;
  * </pre>
  */
 public abstract class AbstractTask extends Task {
+
+    protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private MyTaskExecutionContext context;
 

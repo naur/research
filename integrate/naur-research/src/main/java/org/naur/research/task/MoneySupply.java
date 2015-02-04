@@ -8,7 +8,10 @@ package org.naur.research.task;
 import org.naur.common.patterns.SchedulerProperty;
 import org.naur.integrate.services.core.scheduler.AbstractTask;
 import org.naur.integrate.services.core.scheduler.MyTaskExecutionContext;
+import org.naur.research.config.EconomyConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.jsoup.Jsoup;
 
 import java.io.Serializable;
 
@@ -24,12 +27,19 @@ import java.io.Serializable;
  * </pre>
  */
 @Service
-@SchedulerProperty(cron = "0 1 1 * *", name = "StockCapital")
+@SchedulerProperty(cron = "0 1 1 * *", name = "MoneySupply")
 public class MoneySupply extends AbstractTask implements Serializable {
     private static final long serialVersionUID = -7287939853407346039L;
 
+    @Autowired
+    private EconomyConfiguration configuration;
+
     @Override
     public void process(MyTaskExecutionContext context) throws RuntimeException {
-
+        try {
+            Jsoup.connect(configuration.moneySupply).get();
+        } catch (Exception ex) {
+            LOGGER.error("Jsoup.connect errro", ex);
+        }
     }
 }

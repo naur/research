@@ -11,6 +11,8 @@ import java.io.Serializable;
  */
 //表示市政地址。一个市政地址可以包括街道地址、邮政编码、省/直辖市/自治区和国家/地区等字段。
 public class CivicAddress implements Serializable {
+    private static final long serialVersionUID = -4512162933186214892L;
+
     public CivicAddress() {
     }
 
@@ -23,6 +25,7 @@ public class CivicAddress implements Serializable {
                         String postalCode,
                         String stateProvince
     ) {
+        //TODO
     }
 
     public String getAddressLine1() {
