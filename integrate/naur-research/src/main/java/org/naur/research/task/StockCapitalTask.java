@@ -43,7 +43,7 @@ import java.util.Map;
  * </pre>
  */
 @Service
-@SchedulerProperty(cron = "0 1 1 1/3 *")
+@SchedulerProperty(cron = "0 1 1 1/3 *", name = "StockCapital")
 public class StockCapitalTask extends AbstractTask implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockCapitalTask.class);
     private static final long serialVersionUID = -349618193169585445L;

@@ -128,6 +128,7 @@ public class SchedulerContext {
             SchedulerProperty schedulerProperty = AnnotationUtils.getAnnotation(task.getClass(), SchedulerProperty.class);
             if (null != schedulerProperty) {
                 String name = task.getClass().getSimpleName();
+                task.setName(name);
                 Scheduler scheduler = new Scheduler(task);
                 scheduler.setName(name);
                 scheduler.setFriendlyName(schedulerProperty.name());
