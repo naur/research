@@ -129,6 +129,7 @@ public class SchedulerContext {
             if (null != schedulerProperty) {
                 Scheduler scheduler = new Scheduler(task);
                 scheduler.setName(task.getName());
+                scheduler.setFriendlyName(task.getName());
                 scheduler.setCron(schedulerProperty.cron());
                 //scheduler.setName(schedulerProperty.name());
                 scheduler.setName(task.getName());
