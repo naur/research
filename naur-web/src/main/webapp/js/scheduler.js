@@ -16,9 +16,9 @@ var global = {
     startUri: '/scheduler/task/start.json',
     runUri: '/scheduler/task/run/{0}.json',
     table: {
-        name: 'NAME',
+        friendlyName: 'NAME',
         cron: 'CRON',
-        task: 'TASK',
+        'task.name': 'TASK',
         'status.recent': 'RECENT',
         'status.startTime': 'STARTTIME',
         'status.completed': 'COMPLETED',
