@@ -131,12 +131,6 @@ public class SchedulerService {
         LOGGER.info("SchedulerService init.");
 
         for (Scheduler item : schedulerContext.getTasks()) {
-            if (!applicationContext.containsBean(item.getTask().toString())) {
-                //TODO
-                LOGGER.error("Task: " + item.getTask() + " no exists.");
-                continue;
-            }
-
             schedulerContext.updateTask(
                     item.getName(),
                     scheduling(item.getCron(), (AbstractTask)item.getTask())
