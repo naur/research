@@ -1,5 +1,6 @@
 package org.naur.integrate.web;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.naur.common.entities.Information;
 import org.naur.common.entities.InformationLevel;
 import org.naur.common.patterns.exception.Func;
@@ -38,8 +39,9 @@ public abstract class ControllerBase {
     protected Information handler(Information information, Func<Information, Information> func) {
         try {
             information = func.execute(information);
+            //information.setLevel(InformationLevel.SUCCESS.value());
         } catch (Exception ex) {
-            information.setKeywords(ex.toString());
+            information.setKeywords(ExceptionUtils.getMessage(ex));
             information.setLevel(InformationLevel.ERROR.value());
         }
         return information;
@@ -52,9 +54,10 @@ public abstract class ControllerBase {
         Information information = null;
         try {
             information = func.execute(params);
+            //information.setLevel(InformationLevel.SUCCESS.value());
         } catch (Exception ex) {
             information = new Information<String>();
-            information.setKeywords(ex.toString());
+            information.setKeywords(ExceptionUtils.getMessage(ex));
             information.setLevel(InformationLevel.ERROR.value());
         }
         return information;
@@ -67,9 +70,10 @@ public abstract class ControllerBase {
         Information information = null;
         try {
             information = func.execute();
+            //information.setLevel(InformationLevel.SUCCESS.value());
         } catch (Exception ex) {
             information = new Information<String>();
-            information.setKeywords(ex.toString());
+            information.setKeywords(ExceptionUtils.getMessage(ex));
             information.setLevel(InformationLevel.ERROR.value());
         }
         return information;
