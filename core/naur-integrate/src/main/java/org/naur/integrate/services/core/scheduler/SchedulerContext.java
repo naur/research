@@ -42,7 +42,7 @@ public class SchedulerContext {
     @Autowired
     private List<AbstractTask> tasks;
 
-    private Object lock = new Object();
+    private final Object lock = new Object();
 
     //定时任务ID ：Map<taskId, scheduler>
     private Map<String, Scheduler> taskIds = new HashMap<String, Scheduler>();
@@ -127,13 +127,12 @@ public class SchedulerContext {
         for (AbstractTask task : tasks) {
             SchedulerProperty schedulerProperty = AnnotationUtils.getAnnotation(task.getClass(), SchedulerProperty.class);
             if (null != schedulerProperty) {
+                String name = task.getClass().getSimpleName();
                 Scheduler scheduler = new Scheduler(task);
-                scheduler.setName(task.getName());
-                scheduler.setFriendlyName(task.getName());
+                scheduler.setName(name);
+                scheduler.setFriendlyName(schedulerProperty.name());
                 scheduler.setCron(schedulerProperty.cron());
-                //scheduler.setName(schedulerProperty.name());
-                scheduler.setName(task.getName());
-                taskNames.put(task.getName(), scheduler);
+                taskNames.put(name, scheduler);
             }
         }
     }
