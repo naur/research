@@ -33,6 +33,8 @@ require.config({
         'bootstrap': jsprefix + '/js/core/bootstrap.min',
         'bootstrap-datepicker': jsprefix + '/js/core/bootstrap-datepicker',
 
+        //react
+        'react': jsprefix + '/js/core/react.min',
         'ajaxslt': jsprefix + '/js/core/ajaxslt',
 
         'moment': jsprefix + '/js/moment',
