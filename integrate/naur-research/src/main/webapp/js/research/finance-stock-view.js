@@ -92,9 +92,9 @@ function search(self) {
 
 function markUpDownLine(data) {
     var markPoints;
-    for (var line in data) {
+    for (var i = 0; i < data.length; i++) {
         //短期高低点
-        markPoints = highLowLine(line + '_短期', data[line], function (point) {
+        markPoints = highLowLine(i, data[line], function (point) {
             return point.high;
         }, function (point) {
             return point.low;
@@ -111,9 +111,9 @@ function highLowLine(seriesIdx, data, sup, inf) {
         points: data, filter: global.finance.RemoveInfDay,
         sup: sup,
         inf: inf
-    }).both;
+    });
     global.chart.addMarkLine(seriesIdx, {
-        data: global.echarts.markDirectedPoint(markPoints, function (point) {
+        data: global.echarts.markDirectedPoint(markPoints.both, function (point) {
             return {
                 xAxis: point.key,
                 yAxis: point.supInf(point)
@@ -121,7 +121,7 @@ function highLowLine(seriesIdx, data, sup, inf) {
         })
     });
 
-    return markPoints;
+    return markPoints.both;
 }
 
 function getParams() {
