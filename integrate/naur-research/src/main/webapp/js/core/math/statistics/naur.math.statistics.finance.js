@@ -164,7 +164,7 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
              * @param points [{}, {}, {}]
              * @constructor
              */
-            RemoveInfDay: function (points) {
+            RemoveLowDay: function (points) {
                 var prev = null, curr;
                 for (var i = 0; i < points.length; i++) {
                     curr = points[i];

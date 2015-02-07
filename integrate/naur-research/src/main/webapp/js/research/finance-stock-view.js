@@ -106,11 +106,11 @@ function markUpDownLine(data) {
     }
 }
 
-function highLowLine(seriesIdx, data, sup, inf) {
+function highLowLine(seriesIdx, data, high, low) {
     var markPoints = global.finance.HighLow({
-        points: data, filter: global.finance.RemoveInfDay,
-        sup: sup,
-        inf: inf
+        points: data, filter: global.finance.RemoveLowDay,
+        high: high,
+        low: low
     });
     global.chart.addMarkLine(seriesIdx, {
         data: global.echarts.markDirectedPoint(markPoints.both, function (point) {
