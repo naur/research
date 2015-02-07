@@ -157,11 +157,11 @@ define(function () {
             itemStyle: {
                 normal: {
                     color: 'red', //'#C1232B',       // 阳线填充颜色
-                    color0: '#B5C334',      // 阴线填充颜色
+                    color0: 'green',      // 阴线填充颜色
                     lineStyle: {
                         width: 0.5,
                         color: 'red',   // 阳线边框颜色
-                        color0: '#B5C334'   // 阴线边框颜色
+                        color0: 'green'   // 阴线边框颜色
                     }
                 }
             }
