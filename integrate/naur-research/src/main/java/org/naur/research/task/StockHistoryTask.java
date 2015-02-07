@@ -43,7 +43,7 @@ import java.util.*;
  * </pre>
  */
 @Service
-@SchedulerProperty(cron = "0 1 * * 1,2,3,4,5", name = "StockHistory")
+@SchedulerProperty(cron = "30 15 * * 1,2,3,4,5", name = "StockHistory")
 public class StockHistoryTask extends AbstractTask implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockHistoryTask.class);
 
@@ -60,8 +60,8 @@ public class StockHistoryTask extends AbstractTask implements Serializable {
 
     @Override
     public void process(MyTaskExecutionContext context) throws RuntimeException {
-        //默认当天的前一个工作日
-        Date start = DateUtil.getPrevWeekDay(Calendar.getInstance().getTime());
+        //默认当天
+        Date start = new Date(); //DateUtil.getPrevWeekDay(Calendar.getInstance().getTime());
         Date end = start;
         StockRange stockRange = null;
         //TODO 解析 params, 包含【start, end, stock】，stock 不包含sh,sz

@@ -160,25 +160,62 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
             },
 
             /**
-             *SupInfLine
-             * @param points  [{}, {}, {}]
+             * TODO 去掉内移交易日
+             * @param points [{}, {}, {}]
+             * @constructor
              */
-            SupInfLine: function (points, sup, inf) {
-                var buffer = {sup: [], inf: []}, t1, t2, t3;
-                for (var point in points) {
+            RemoveInfDay: function (points) {
+                var prev = null, curr;
+                for (var i = 0; i < points.length; i++) {
+                    curr = points[i];
+                    if (!prev) {
+                        prev = curr;
+                        continue;
+                    }
+                    if (curr.high < prev.high) {
+                        points[i] = null;
+                    }
+                }
+            },
+
+            /**
+             * SupInf
+             * @param options {points, sup, inf, filter}
+             * @returns {{sup: Array, inf: Array, both: Array}}
+             * @constructor
+             */
+            SupInf: function (options) {
+                var opt = $.extend({
+                    points: null,
+                    sup: null,
+                    inf: null,
+                    filter: null
+                }, options);
+
+                if (!opt.inf) opt.inf = opt.sup;
+                var buffer = {sup: [], inf: [], both: []}, t1, t2, t3;
+
+                if (!opt.filter) opt.points = opt.filter(opt.points);
+
+                for (var point in opt.points) {
+                    if (!point) continue;
                     if (!t1) {
-                        t1 = points[point];
+                        t1 = opt.points[point];
                         continue;
                     }
                     if (!t2) {
-                        t2 = points[point];
+                        t2 = opt.points[point];
                         continue;
                     }
-                    t3 = points[point];
-                    if (sup(t2) > sup(t1) && sup(t2) > sup(t3)) {
+                    t3 = opt.points[point];
+                    if (opt.sup(t2) > opt.sup(t1) && opt.sup(t2) > opt.sup(t3)) {
+                        t2.supInf = opt.sup;
                         buffer.sup.push(t2);
-                    } else if (inf(t2) < inf(t1) && inf(t2) < inf(t3)) {
+                        buffer.both.push(t2);
+                    } else if (opt.inf(t2) < opt.inf(t1) && opt.inf(t2) < opt.inf(t3)) {
+                        t2.supInf = opt.inf;
                         buffer.inf.push(t2);
+                        buffer.both.push(t2);
                     }
                     t1 = t2;
                     t2 = t3;
