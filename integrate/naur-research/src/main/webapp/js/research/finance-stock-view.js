@@ -91,38 +91,52 @@ function search(self) {
 }
 
 function markUpDownLine(data) {
-    var seriesIdx = 0, markPoints;
+    var seriesIdx = 0, termLevel = 1, markPoints;
     for (var line in data) {
-        //短期高低点
-        markPoints = highLowLine(seriesIdx, data[line], function (point) {
-            return point.high;
-        }, function (point) {
-            return point.low;
+
+        var markPoints = global.finance.HighLow({
+            points: data, filter: global.finance.RemoveLowDay,
+            high: high,
+            low: low,
+            level: termLevel
         });
+
+        //短期高低点
+        if (markPoints.shortTerm) {
+            global.chart.addMarkLine(seriesIdx, {
+                data: global.echarts.markDirectedPoint(markPoints.shortTerm, function (point) {
+                    return {
+                        xAxis: point.key,
+                        yAxis: point.highLow.val
+                    };
+                })
+            });
+            seriesIdx++;
+        }
+
         //中期高低点
-        //highLowLine(seriesIdx, markPoints, function (point) {
-        //    return point.highLow.val;
-        //});
+        if (markPoints.longTerm) {
+            global.chart.addMarkLine(seriesIdx, {
+                data: global.echarts.markDirectedPoint(markPoints.longTerm, function (point) {
+                    return {
+                        xAxis: point.key,
+                        yAxis: point.highLow.val
+                    };
+                })
+            });
+            seriesIdx++;
+        }
     }
 }
 
-function highLowLine(seriesIdx, data, high, low) {
-    var markPoints = global.finance.HighLow({
-        points: data, filter: global.finance.RemoveLowDay,
-        high: high,
-        low: low
-    });
-    global.chart.addMarkLine(seriesIdx, {
-        data: global.echarts.markDirectedPoint(markPoints.both, function (point) {
-            return {
-                xAxis: point.key,
-                yAxis: point.highLow.val
-            };
-        })
-    });
-    seriesIdx++;
-
-    return markPoints.both;
+function high(point) {
+    return point.high;
+}
+function low(point) {
+    return point.low;
+}
+function val(point) {
+    return point.highLow.val;
 }
 
 function getParams() {

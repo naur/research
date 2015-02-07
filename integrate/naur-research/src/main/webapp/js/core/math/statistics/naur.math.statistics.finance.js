@@ -179,24 +179,6 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
             },
 
             SupInf: function (options) {
-                var opt = $.extend({
-                    high: null,
-                    low: null
-                }, options);
-
-                var result = {sup: [], inf: [], both: []};
-                for (var point in opt.points) {
-                }
-                return result;
-            },
-
-            /**
-             * HighLow
-             * @param options {points, high, low, filter}
-             * @returns {{high: Array, low: Array, both: Array}}
-             * @constructor
-             */
-            HighLow: function (options) {
                 var opt = {
                     points: options.points,
                     high: function (point) {
@@ -210,45 +192,109 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                     },
                     filter: options.filter
                 };
+            },
 
-                var result = {high: [], low: [], both: []},
-                    buffer = {
-                        high: {t1: null, t2: null, t3: null},
-                        low: {t1: null, t2: null, t3: null}
-                    };
+            /**
+             * HighLow
+             * @param options {points, high, low, filter}
+             * @returns {{high: Array, low: Array, both: Array}}
+             * @constructor
+             */
+            HighLow: function (options) {
+                var opt = $.extend({
+                    points: null,
+                    high: null,
+                    low: null,
+                    filter: null,
+                    level: 1 //1,2,3 表示短期、中期、长期
+                }, options);
 
+                //数据过滤
                 if (!opt.filter) opt.points = opt.filter(opt.points);
 
-                var tmp;
-                for (var point in opt.points) {
-                    if (!point) continue;
+                //分类整理
+                var highLowArrange = function (points, high, low) {
+                    var t1, t2, t3, buffer = {high: [], low: [], both: null};
+                    if (!low) low = high;
 
-                    if (point.highLow)
-                        tmp = buffer[point.highLow.type];
-                    else tmp = buffer.high;
+                    for (var point in points) {
+                        if (!t1) {
+                            t1 = points[point];
+                            continue;
+                        }
+                        if (!t2) {
+                            t2 = points[point];
+                            continue;
+                        }
+                        t3 = points[point];
+                        if (high(t2) > high(t1) && high(t2) > high(t3)) {
+                            t2.highLow = {type: 'high', val: high(t2)};
+                            buffer.high.push(t2);
+                            buffer.both.push(t2);
+                        } else if (low(t2) < low(t1) && low(t2) < low(t3)) {
+                            t2.highLow = {type: 'low', val: low(t2)};
+                            buffer.low.push(t2);
+                            buffer.both.push(t2);
+                        }
+                        t1 = t2;
+                        t2 = t3;
+                    }
+                    return buffer;
+                };
 
-                    if (!tmp.t1) {
-                        tmp.t1 = opt.points[point];
-                        continue;
-                    }
-                    if (!tmp.t2) {
-                        tmp.t2 = opt.points[point];
-                        continue;
-                    }
-                    tmp.t3 = opt.points[point];
-                    if (opt.high(tmp.t2) > opt.high(tmp.t1) && opt.high(tmp.t2) > opt.high(tmp.t3)) {
-                        tmp.t2.highLow = {type: 'high', val: opt.high(tmp.t2)};
-                        result.high.push(tmp.t2);
-                        result.both.push(tmp.t2);
-                    } else if (opt.low(tmp.t2) < opt.low(tmp.t1) && opt.low(tmp.t2) < opt.low(tmp.t3)) {
-                        tmp.t2.highLow = {type: 'low', val: opt.low(tmp.t2)};
-                        result.low.push(tmp.t2);
-                        result.both.push(tmp.t2);
-                    }
-                    tmp.t1 = tmp.t2;
-                    tmp.t2 = tmp.t3;
+                //市场短期高点和低点
+                var shortTerm = function () {
+                    return highLowArrange(opt.points, opt.high, opt.low);
+                };
+
+                //市场中期高点和低点
+                var longTerm = function () {
+                    var buffer = highLowArrange(result.shortTerm, function (point) {
+                        return point.highLow.val;
+                    });
+                };
+
+                var result = {};
+                if (1 <= opt.level) {
+                    result.shortTerm = shortTerm();
                 }
-                return result;
+                if (2 <= opt.level) {
+                    longTerm(buffer.shortTerm);
+                }
+
+                return buffer;
+
+                //
+                //var tmp;
+                //for (var point in opt.points) {
+                //    if (!point) continue;
+                //
+                //    if (point.highLow)
+                //        tmp = buffer[point.highLow.type];
+                //    else tmp = buffer.high;
+                //
+                //    if (!tmp.t1) {
+                //        tmp.t1 = opt.points[point];
+                //        continue;
+                //    }
+                //    if (!tmp.t2) {
+                //        tmp.t2 = opt.points[point];
+                //        continue;
+                //    }
+                //    tmp.t3 = opt.points[point];
+                //    if (opt.high(tmp.t2) > opt.high(tmp.t1) && opt.high(tmp.t2) > opt.high(tmp.t3)) {
+                //        tmp.t2.highLow = {type: 'high', val: opt.high(tmp.t2)};
+                //        result.high.push(tmp.t2);
+                //        result.both.push(tmp.t2);
+                //    } else if (opt.low(tmp.t2) < opt.low(tmp.t1) && opt.low(tmp.t2) < opt.low(tmp.t3)) {
+                //        tmp.t2.highLow = {type: 'low', val: opt.low(tmp.t2)};
+                //        result.low.push(tmp.t2);
+                //        result.both.push(tmp.t2);
+                //    }
+                //    tmp.t1 = tmp.t2;
+                //    tmp.t2 = tmp.t3;
+                //}
+                //return result;
             }
         };
 
