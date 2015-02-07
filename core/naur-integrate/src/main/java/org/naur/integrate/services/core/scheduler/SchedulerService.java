@@ -58,6 +58,7 @@ public class SchedulerService {
         Task task = null;
         String taskId = schedulerContext.getTaskId(taskName);
         if (null == taskId || (task = scheduler.getTask(taskId)) == null) {
+            LOGGER.info("Task: " + taskName + " no run.");
             return;
         }
 
@@ -133,7 +134,7 @@ public class SchedulerService {
         for (Scheduler item : schedulerContext.getTasks()) {
             schedulerContext.updateTask(
                     item.getName(),
-                    scheduling(item.getCron(), (AbstractTask)item.getTask())
+                    scheduling(item.getCron(), (AbstractTask) item.getTask())
             );
             LOGGER.info("Task: " + item.getTask() + " scheduling.");
         }

@@ -124,7 +124,7 @@ function run(self) {
 
     global.message.show({content: 'Task Running......', clear: true});
     global.http.acquire({
-        uri: global.utility.format(global.runUri, $(self).parents('tr').children('.row_name').text()),
+        uri: global.utility.format(global.runUri, $(self).parents('tr').children('.row_task_name').text()),
         data: {
             start: stock[0],
             end: stock[1],
