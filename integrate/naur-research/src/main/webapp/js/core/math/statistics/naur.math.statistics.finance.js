@@ -214,7 +214,7 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
 
                 //分类整理
                 var highLowArrange = function (points, high, low) {
-                    var t1, t2, t3, buffer = {high: [], low: [], both: null};
+                    var t1, t2, t3, buffer = {high: [], low: [], both: []};
                     if (!low) low = high;
 
                     for (var point in points) {
@@ -244,7 +244,7 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
 
                 //市场短期高点和低点
                 var shortTerm = function () {
-                    return highLowArrange(opt.points, opt.high, opt.low);
+                    return highLowArrange(opt.points, opt.high, opt.low).both;
                 };
 
                 //市场中期高点和低点
@@ -259,10 +259,10 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                     result.shortTerm = shortTerm();
                 }
                 if (2 <= opt.level) {
-                    longTerm(buffer.shortTerm);
+                    result.longTerm = longTerm(result.shortTerm);
                 }
 
-                return buffer;
+                return result;
 
                 //
                 //var tmp;

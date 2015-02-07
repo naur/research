@@ -95,7 +95,7 @@ function markUpDownLine(data) {
     for (var line in data) {
 
         var markPoints = global.finance.HighLow({
-            points: data, filter: global.finance.RemoveLowDay,
+            points: data[line], filter: global.finance.RemoveLowDay,
             high: high,
             low: low,
             level: termLevel
