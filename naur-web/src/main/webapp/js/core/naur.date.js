@@ -107,7 +107,7 @@
                     return false;
                 }
 
-                return _date.statutoryHolidays[year][month][date];
+                return 0 <= $.inArray(date, _date.statutoryHolidays[year][month]);
 
                 //return date >= range[0] && date <= range[1]
             }
