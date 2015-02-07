@@ -193,34 +193,44 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                 }, options);
 
                 if (!opt.inf) opt.inf = opt.sup;
-                var buffer = {sup: [], inf: [], both: []}, t1, t2, t3;
+                var result = {sup: [], inf: [], both: []},
+                    buffer = {
+                        sup: {t1: null, t2: null, t3: null},
+                        inf: {t1: null, t2: null, t3: null}
+                    };
 
                 if (!opt.filter) opt.points = opt.filter(opt.points);
 
+                var tmp;
                 for (var point in opt.points) {
                     if (!point) continue;
-                    if (!t1) {
-                        t1 = opt.points[point];
+
+                    if (point.supInf)
+                        tmp = buffer[point.supInf.type];
+                    else tmp = buffer.sup;
+
+                    if (!tmp.t1) {
+                        tmp.t1 = opt.points[point];
                         continue;
                     }
-                    if (!t2) {
-                        t2 = opt.points[point];
+                    if (!tmp.t2) {
+                        tmp.t2 = opt.points[point];
                         continue;
                     }
-                    t3 = opt.points[point];
-                    if (opt.sup(t2) > opt.sup(t1) && opt.sup(t2) > opt.sup(t3)) {
-                        t2.supInf = opt.sup(t2);
-                        buffer.sup.push(t2);
-                        buffer.both.push(t2);
-                    } else if (opt.inf(t2) < opt.inf(t1) && opt.inf(t2) < opt.inf(t3)) {
-                        t2.supInf = opt.inf(t2);
-                        buffer.inf.push(t2);
-                        buffer.both.push(t2);
+                    tmp.t3 = opt.points[point];
+                    if (opt.sup(tmp.t2) > opt.sup(tmp.t1) && opt.sup(tmp.t2) > opt.sup(tmp.t3)) {
+                        tmp.t2.supInf = {type: 'sup', val: opt.sup(tmp.t2)};
+                        result.sup.push(tmp.t2);
+                        result.both.push(tmp.t2);
+                    } else if (opt.inf(tmp.t2) < opt.inf(tmp.t1) && opt.inf(tmp.t2) < opt.inf(tmp.t3)) {
+                        tmp.t2.supInf = {type: 'inf', val: opt.inf(tmp.t2)};
+                        result.inf.push(tmp.t2);
+                        result.both.push(tmp.t2);
                     }
-                    t1 = t2;
-                    t2 = t3;
+                    tmp.t1 = tmp.t2;
+                    tmp.t2 = tmp.t3;
                 }
-                return buffer;
+                return result;
             }
         };
 

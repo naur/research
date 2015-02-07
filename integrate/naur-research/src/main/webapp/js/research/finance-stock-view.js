@@ -101,7 +101,7 @@ function markUpDownLine(data) {
         });
         //中期高低点
         //highLowLine(seriesIdx, markPoints, function (point) {
-        //    return point.supInf;
+        //    return point.supInf.val;
         //});
     }
 }
@@ -116,7 +116,7 @@ function highLowLine(seriesIdx, data, sup, inf) {
         data: global.echarts.markDirectedPoint(markPoints.both, function (point) {
             return {
                 xAxis: point.key,
-                yAxis: point.supInf
+                yAxis: point.supInf.val
             };
         })
     });
