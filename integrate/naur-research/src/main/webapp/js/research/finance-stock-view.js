@@ -100,9 +100,9 @@ function markUpDownLine(data) {
             return point.low;
         });
         //中期高低点
-        highLowLine(seriesIdx, markPoints, function (point) {
-            return point.highLow.val;
-        });
+        //highLowLine(seriesIdx, markPoints, function (point) {
+        //    return point.highLow.val;
+        //});
     }
 }
 
