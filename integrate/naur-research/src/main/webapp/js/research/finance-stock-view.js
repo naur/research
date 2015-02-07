@@ -101,13 +101,13 @@ function markUpDownLine(data) {
         });
         //中期高低点
         highLowLine(seriesIdx, markPoints, function (point) {
-            return point.supInf.val;
+            return point.highLow.val;
         });
     }
 }
 
 function highLowLine(seriesIdx, data, sup, inf) {
-    var markPoints = global.finance.SupInf({
+    var markPoints = global.finance.HighLow({
         points: data, filter: global.finance.RemoveInfDay,
         sup: sup,
         inf: inf
@@ -116,7 +116,7 @@ function highLowLine(seriesIdx, data, sup, inf) {
         data: global.echarts.markDirectedPoint(markPoints.both, function (point) {
             return {
                 xAxis: point.key,
-                yAxis: point.supInf.val
+                yAxis: point.highLow.val
             };
         })
     });

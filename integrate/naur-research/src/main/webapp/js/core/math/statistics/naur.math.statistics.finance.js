@@ -178,31 +178,43 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                 }
             },
 
+            SupInf: function (options) {
+                var opt = $.extend({
+                    high: null,
+                    low: null
+                }, options);
+
+                var result = {sup: [], inf: [], both: []};
+                for (var point in opt.points) {
+                }
+                return result;
+            },
+
             /**
-             * SupInf
-             * @param options {points, sup, inf, filter}
-             * @returns {{sup: Array, inf: Array, both: Array}}
+             * HighLow
+             * @param options {points, high, low, filter}
+             * @returns {{high: Array, low: Array, both: Array}}
              * @constructor
              */
-            SupInf: function (options) {
+            HighLow: function (options) {
                 var opt = {
                     points: options.points,
-                    sup: function (point) {
-                        if (point.supInfo)  return point.supInf.val;
-                        else return options.sup(point);
+                    high: function (point) {
+                        if (point.highLow)  return point.highLow.val;
+                        else return options.high(point);
                     },
-                    inf: function (point) {
-                        if (point.supInfo) return point.supInf.val;
-                        else if (options.inf) return options.inf(point);
-                        else  return options.sup(point);
+                    low: function (point) {
+                        if (point.highLow) return point.highLow.val;
+                        else if (options.low) return options.low(point);
+                        else  return options.high(point);
                     },
                     filter: options.filter
                 };
 
-                var result = {sup: [], inf: [], both: []},
+                var result = {high: [], low: [], both: []},
                     buffer = {
-                        sup: {t1: null, t2: null, t3: null},
-                        inf: {t1: null, t2: null, t3: null}
+                        high: {t1: null, t2: null, t3: null},
+                        low: {t1: null, t2: null, t3: null}
                     };
 
                 if (!opt.filter) opt.points = opt.filter(opt.points);
@@ -211,9 +223,9 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                 for (var point in opt.points) {
                     if (!point) continue;
 
-                    if (point.supInf)
-                        tmp = buffer[point.supInf.type];
-                    else tmp = buffer.sup;
+                    if (point.highLow)
+                        tmp = buffer[point.highLow.type];
+                    else tmp = buffer.high;
 
                     if (!tmp.t1) {
                         tmp.t1 = opt.points[point];
@@ -224,13 +236,13 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                         continue;
                     }
                     tmp.t3 = opt.points[point];
-                    if (opt.sup(tmp.t2) > opt.sup(tmp.t1) && opt.sup(tmp.t2) > opt.sup(tmp.t3)) {
-                        tmp.t2.supInf = {type: 'sup', val: opt.sup(tmp.t2)};
-                        result.sup.push(tmp.t2);
+                    if (opt.high(tmp.t2) > opt.high(tmp.t1) && opt.high(tmp.t2) > opt.high(tmp.t3)) {
+                        tmp.t2.highLow = {type: 'high', val: opt.high(tmp.t2)};
+                        result.high.push(tmp.t2);
                         result.both.push(tmp.t2);
-                    } else if (opt.inf(tmp.t2) < opt.inf(tmp.t1) && opt.inf(tmp.t2) < opt.inf(tmp.t3)) {
-                        tmp.t2.supInf = {type: 'inf', val: opt.inf(tmp.t2)};
-                        result.inf.push(tmp.t2);
+                    } else if (opt.low(tmp.t2) < opt.low(tmp.t1) && opt.low(tmp.t2) < opt.low(tmp.t3)) {
+                        tmp.t2.highLow = {type: 'low', val: opt.low(tmp.t2)};
+                        result.low.push(tmp.t2);
                         result.both.push(tmp.t2);
                     }
                     tmp.t1 = tmp.t2;
