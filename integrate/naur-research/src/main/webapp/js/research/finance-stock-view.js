@@ -100,9 +100,9 @@ function markUpDownLine(data) {
             return point.low;
         });
         //中期高低点
-        //highLowLine(seriesIdx, markPoints, function (point) {
-        //    return point.supInf.val;
-        //});
+        highLowLine(seriesIdx, markPoints, function (point) {
+            return point.supInf.val;
+        });
     }
 }
 
@@ -155,7 +155,7 @@ function getParams() {
 
 function init() {
     $(global.dom.stock).val('600247');
-    $(global.dom.start).val(new Date(new Date().getTime() - 10 * WkMilli).format('yyyy-MM-dd'));
+    $(global.dom.start).val(new Date(new Date().getTime() - 12 * WkMilli).format('yyyy-MM-dd'));
     $(global.dom.end).val(new Date(new Date().getTime()).format('yyyy-MM-dd'));
     $(global.dom.directedPoint).on('click', function () {
         if (!global.data) {

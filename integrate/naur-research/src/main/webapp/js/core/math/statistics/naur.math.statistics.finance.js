@@ -185,14 +185,20 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
              * @constructor
              */
             SupInf: function (options) {
-                var opt = $.extend({
-                    points: null,
-                    sup: null,
-                    inf: null,
-                    filter: null
-                }, options);
+                var opt = {
+                    points: options.points,
+                    sup: function (point) {
+                        if (point.supInfo)  return point.supInf.val;
+                        else return options.sup(point);
+                    },
+                    inf: function (point) {
+                        if (point.supInfo) return point.supInf.val;
+                        else if (options.inf) return options.inf(point);
+                        else  return options.sup(point);
+                    },
+                    filter: options.filter
+                };
 
-                if (!opt.inf) opt.inf = opt.sup;
                 var result = {sup: [], inf: [], both: []},
                     buffer = {
                         sup: {t1: null, t2: null, t3: null},
