@@ -91,10 +91,10 @@ function search(self) {
 }
 
 function markUpDownLine(data) {
-    var markPoints;
-    for (var i = 0; i < data.length; i++) {
+    var seriesIdx = 0, markPoints;
+    for (var line in data) {
         //短期高低点
-        markPoints = highLowLine(i, data[line], function (point) {
+        markPoints = highLowLine(seriesIdx, data[line], function (point) {
             return point.high;
         }, function (point) {
             return point.low;
@@ -120,7 +120,8 @@ function highLowLine(seriesIdx, data, sup, inf) {
             };
         })
     });
-
+    seriesIdx++;
+    
     return markPoints.both;
 }
 
