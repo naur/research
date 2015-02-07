@@ -209,11 +209,11 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                     }
                     t3 = opt.points[point];
                     if (opt.sup(t2) > opt.sup(t1) && opt.sup(t2) > opt.sup(t3)) {
-                        t2.supInf = opt.sup;
+                        t2.supInf = opt.sup(t2);
                         buffer.sup.push(t2);
                         buffer.both.push(t2);
                     } else if (opt.inf(t2) < opt.inf(t1) && opt.inf(t2) < opt.inf(t3)) {
-                        t2.supInf = opt.inf;
+                        t2.supInf = opt.inf(t2);
                         buffer.inf.push(t2);
                         buffer.both.push(t2);
                     }
