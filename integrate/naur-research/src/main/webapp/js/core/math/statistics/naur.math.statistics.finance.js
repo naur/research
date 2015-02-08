@@ -214,30 +214,40 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
 
                 //分类整理
                 var highLowArrange = function (points, high, low) {
-                    var t1, t2, t3, buffer = {high: [], low: [], both: []};
+                    var tmp, t = {
+                        high: {t1: null, t2: null, t3: null},
+                        low: {t1: null, t2: null, t3: null}
+                    }, buffer = {high: [], low: [], both: []};
                     if (!low) low = high;
 
                     for (var point in points) {
-                        if (!t1) {
-                            t1 = points[point];
+
+                        if (point.highLow.type) {
+                            tmp = t[point.highLow.type];
+                        } else {
+                            tmp = t.high;   //默认就用 hight 的 t1、t2、y3
+                        }
+
+                        if (!tmp.t1) {
+                            tmp.t1 = points[point];
                             continue;
                         }
-                        if (!t2) {
-                            t2 = points[point];
+                        if (!tmp.t2) {
+                            tmp.t2 = points[point];
                             continue;
                         }
-                        t3 = points[point];
-                        if (high(t2) > high(t1) && high(t2) > high(t3)) {
-                            t2.highLow = {type: 'high', val: high(t2)};
-                            buffer.high.push(t2);
-                            buffer.both.push(t2);
-                        } else if (low(t2) < low(t1) && low(t2) < low(t3)) {
-                            t2.highLow = {type: 'low', val: low(t2)};
-                            buffer.low.push(t2);
-                            buffer.both.push(t2);
+                        tmp.t3 = points[point];
+                        if (high(tmp.t2) > high(tmp.t1) && high(tmp.t2) > high(tmp.t3)) {
+                            tmp.t2.highLow = {type: 'high', val: high(tmp.t2)};
+                            buffer.high.push(tmp.t2);
+                            buffer.both.push(tmp.t2);
+                        } else if (low(tmp.t2) < low(tmp.t1) && low(tmp.t2) < low(tmp.t3)) {
+                            tmp.t2.highLow = {type: 'low', val: low(tmp.t2)};
+                            buffer.low.push(tmp.t2);
+                            buffer.both.push(tmp.t2);
                         }
-                        t1 = t2;
-                        t2 = t3;
+                        tmp.t1 = tmp.t2;
+                        tmp.t2 = tmp.t3;
                     }
                     return buffer;
                 };
@@ -248,10 +258,18 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                 };
 
                 //市场中期高点和低点
-                var longTerm = function () {
-                    var buffer = highLowArrange(result.shortTerm, function (point) {
+                var longTerm = function (points) {
+                    var val = function (point) {
                         return point.highLow.val;
-                    });
+                    };
+
+                    //从排序
+                    points = highLowArrange(points, val).both;
+
+                    //计算次高点和次低点
+                    points = highLowArrange(points, val).both;
+
+                    return result;
                 };
 
                 var result = {};
@@ -263,38 +281,6 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                 }
 
                 return result;
-
-                //
-                //var tmp;
-                //for (var point in opt.points) {
-                //    if (!point) continue;
-                //
-                //    if (point.highLow)
-                //        tmp = buffer[point.highLow.type];
-                //    else tmp = buffer.high;
-                //
-                //    if (!tmp.t1) {
-                //        tmp.t1 = opt.points[point];
-                //        continue;
-                //    }
-                //    if (!tmp.t2) {
-                //        tmp.t2 = opt.points[point];
-                //        continue;
-                //    }
-                //    tmp.t3 = opt.points[point];
-                //    if (opt.high(tmp.t2) > opt.high(tmp.t1) && opt.high(tmp.t2) > opt.high(tmp.t3)) {
-                //        tmp.t2.highLow = {type: 'high', val: opt.high(tmp.t2)};
-                //        result.high.push(tmp.t2);
-                //        result.both.push(tmp.t2);
-                //    } else if (opt.low(tmp.t2) < opt.low(tmp.t1) && opt.low(tmp.t2) < opt.low(tmp.t3)) {
-                //        tmp.t2.highLow = {type: 'low', val: opt.low(tmp.t2)};
-                //        result.low.push(tmp.t2);
-                //        result.both.push(tmp.t2);
-                //    }
-                //    tmp.t1 = tmp.t2;
-                //    tmp.t2 = tmp.t3;
-                //}
-                //return result;
             }
         };
 
