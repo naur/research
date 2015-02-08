@@ -286,7 +286,6 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                                 textStyle: {
                                     color: '#000080',
                                     fontSize: '11px',
-                                    fontStyle: "italic",
                                     fontFamily: "arial, sans-serif"
                                 }
                             }
