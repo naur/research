@@ -164,7 +164,7 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
              * @param points [{}, {}, {}]
              * @constructor
              */
-            RemoveLowDay: function (points) {
+            RemoveInsideDay: function (points) {
                 var prev = null, curr;
                 for (var i = 0; i < points.length; i++) {
                     curr = points[i];
@@ -189,7 +189,7 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                     points: null,
                     high: null,
                     low: null,
-                    filter: null,
+                    filter: finance.RemoveInsideDay,
                     level: 1 //1,2,3 表示短期、中期、长期
                 }, options);
 
@@ -242,7 +242,7 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                 };
 
                 //市场中期高点和低点
-                var longTerm = function (points) {
+                var intermediateTerm =function (points) {
                     var val = function (point) {
                         return point.highLow.val;
                     };
@@ -256,12 +256,19 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                     return points;
                 };
 
+                //TODO 市场长期高点和低点
+                var longTerm = function (points) {
+                };
+
                 var result = {};
                 if (1 <= opt.level) {
                     result.shortTerm = shortTerm();
                 }
                 if (2 <= opt.level) {
-                    result.longTerm = longTerm(result.shortTerm);
+                    result.intermediateTerm = intermediateTerm(result.shortTerm);
+                }
+                if (3 <= opt.level) {
+                    result.longTerm = longTerm(result.intermediateTerm);
                 }
 
                 return result;

@@ -91,11 +91,11 @@ function search(self) {
 }
 
 function markUpDownLine(data) {
-    var seriesIdx = 0, termLevel = 1, markPoints;
+    var seriesIdx = 0, termLevel = 2, markPoints;
     for (var line in data) {
 
-        var markPoints = global.finance.HighLow({
-            points: data[line], filter: global.finance.RemoveLowDay,
+        markPoints = global.finance.HighLow({
+            points: data[line],
             high: high,
             low: low,
             level: termLevel
@@ -115,9 +115,9 @@ function markUpDownLine(data) {
         }
 
         //中期高低点
-        if (markPoints.longTerm) {
+        if (markPoints.intermediateTerm) {
             global.chart.addMarkLine(seriesIdx, {
-                data: global.echarts.markDirectedPoint(markPoints.longTerm, function (point) {
+                data: global.echarts.markDirectedPoint(markPoints.intermediateTerm, function (point) {
                     return {
                         xAxis: point.key,
                         yAxis: point.highLow.val

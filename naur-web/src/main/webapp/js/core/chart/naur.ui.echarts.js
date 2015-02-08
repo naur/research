@@ -285,7 +285,9 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                                 rotate: 45,
                                 textStyle: {
                                     color: '#000080',
-                                    fontSize: '11'
+                                    fontSize: '11px',
+                                    fontStyle: "italic",
+                                    fontFamily: "arial, sans-serif"
                                 }
                             }
                         }
