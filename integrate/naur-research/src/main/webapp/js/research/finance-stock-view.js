@@ -91,7 +91,7 @@ function search(self) {
 }
 
 function markUpDownLine(data) {
-    var seriesIdx = 0, termLevel = 1, markPoints;
+    var seriesIdx = 0, termLevel = 2, markPoints;
     for (var line in data) {
 
         markPoints = global.finance.HighLow({

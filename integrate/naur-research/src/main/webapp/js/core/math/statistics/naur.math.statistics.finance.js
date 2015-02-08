@@ -199,19 +199,41 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                 //分类整理
                 var highLowArrange = function (points, high, low) {
                     var _t, t = {
+                        none: {t1: null, t2: null, t3: null},
                         high: {t1: null, t2: null, t3: null},
                         low: {t1: null, t2: null, t3: null}
                     }, buffer = {high: [], low: [], both: []};
                     if (!low) low = high;
 
+                    var comparer = {
+                        high: function (t1, t2, t3) {
+                            if (high(t2) > high(t1) && high(t2) > high(t3)) {
+                                t2.highLow = {type: 'high', val: high(t2)};
+                                buffer.high.push(t2);
+                                buffer.both.push(t2);
+                            }
+                        },
+                        low: function (t1, t2, t3) {
+                            if (low(t2) < low(t1) && low(t2) < low(t3)) {
+                                t2.highLow = {type: 'low', val: low(t2)};
+                                buffer.low.push(t2);
+                                buffer.both.push(t2);
+                            }
+                        },
+                        none: function (t1, t2, t3) {
+                            comparer.high(t1, t2, t3);
+                            comparer.low(t1, t2, t3);
+                        }
+                    };
+
+                    var point, comparerType = 'none'; //默认就用 none 的 t1、t2、y3
                     for (var index in points) {
-                        var point = points[index];
+                        point = points[index];
 
                         if (point.highLow && point.highLow.type) {
-                            _t = t[point.highLow.type];
-                        } else {
-                            _t = t.high;   //默认就用 hight 的 t1、t2、y3
+                            comparerType = point.highLow.type;
                         }
+                        _t = t[comparerType];
 
                         if (!_t.t1) {
                             _t.t1 = point;
@@ -222,15 +244,9 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                             continue;
                         }
                         _t.t3 = point;
-                        if (high(_t.t2) > high(_t.t1) && high(_t.t2) > high(_t.t3)) {
-                            _t.t2.highLow = {type: 'high', val: high(_t.t2)};
-                            buffer.high.push(_t.t2);
-                            buffer.both.push(_t.t2);
-                        } else if (low(_t.t2) < low(_t.t1) && low(_t.t2) < low(_t.t3)) {
-                            _t.t2.highLow = {type: 'low', val: low(_t.t2)};
-                            buffer.low.push(_t.t2);
-                            buffer.both.push(_t.t2);
-                        }
+
+                        comparer[comparerType](_t.t1, _t.t2, _t.t3);
+
                         _t.t1 = _t.t2;
                         _t.t2 = _t.t3;
                     }
