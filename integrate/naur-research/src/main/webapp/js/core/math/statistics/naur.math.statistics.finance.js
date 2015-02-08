@@ -178,22 +178,6 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                 }
             },
 
-            SupInf: function (options) {
-                var opt = {
-                    points: options.points,
-                    high: function (point) {
-                        if (point.highLow)  return point.highLow.val;
-                        else return options.high(point);
-                    },
-                    low: function (point) {
-                        if (point.highLow) return point.highLow.val;
-                        else if (options.low) return options.low(point);
-                        else  return options.high(point);
-                    },
-                    filter: options.filter
-                };
-            },
-
             /**
              * HighLow
              * @param options {points, high, low, filter}
@@ -214,7 +198,7 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
 
                 //分类整理
                 var highLowArrange = function (points, high, low) {
-                    var tmp, t = {
+                    var _t, t = {
                         high: {t1: null, t2: null, t3: null},
                         low: {t1: null, t2: null, t3: null}
                     }, buffer = {high: [], low: [], both: []};
@@ -222,32 +206,32 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
 
                     for (var point in points) {
 
-                        if (point.highLow.type) {
-                            tmp = t[point.highLow.type];
+                        if (point.highLow && point.highLow.type) {
+                            _t = t[point.highLow.type];
                         } else {
-                            tmp = t.high;   //默认就用 hight 的 t1、t2、y3
+                            _t = t.high;   //默认就用 hight 的 t1、t2、y3
                         }
 
-                        if (!tmp.t1) {
-                            tmp.t1 = points[point];
+                        if (!_t.t1) {
+                            _t.t1 = points[point];
                             continue;
                         }
-                        if (!tmp.t2) {
-                            tmp.t2 = points[point];
+                        if (!_t.t2) {
+                            _t.t2 = points[point];
                             continue;
                         }
-                        tmp.t3 = points[point];
-                        if (high(tmp.t2) > high(tmp.t1) && high(tmp.t2) > high(tmp.t3)) {
-                            tmp.t2.highLow = {type: 'high', val: high(tmp.t2)};
-                            buffer.high.push(tmp.t2);
-                            buffer.both.push(tmp.t2);
-                        } else if (low(tmp.t2) < low(tmp.t1) && low(tmp.t2) < low(tmp.t3)) {
-                            tmp.t2.highLow = {type: 'low', val: low(tmp.t2)};
-                            buffer.low.push(tmp.t2);
-                            buffer.both.push(tmp.t2);
+                        _t.t3 = points[point];
+                        if (high(_t.t2) > high(_t.t1) && high(_t.t2) > high(_t.t3)) {
+                            _t.t2.highLow = {type: 'high', val: high(_t.t2)};
+                            buffer.high.push(_t.t2);
+                            buffer.both.push(_t.t2);
+                        } else if (low(_t.t2) < low(_t.t1) && low(_t.t2) < low(_t.t3)) {
+                            _t.t2.highLow = {type: 'low', val: low(_t.t2)};
+                            buffer.low.push(_t.t2);
+                            buffer.both.push(_t.t2);
                         }
-                        tmp.t1 = tmp.t2;
-                        tmp.t2 = tmp.t3;
+                        _t.t1 = _t.t2;
+                        _t.t2 = _t.t3;
                     }
                     return buffer;
                 };
@@ -269,7 +253,7 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                     //计算次高点和次低点
                     points = highLowArrange(points, val).both;
 
-                    return result;
+                    return points;
                 };
 
                 var result = {};
