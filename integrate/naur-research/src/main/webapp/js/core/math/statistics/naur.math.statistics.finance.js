@@ -204,7 +204,8 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                     }, buffer = {high: [], low: [], both: []};
                     if (!low) low = high;
 
-                    for (var point in points) {
+                    for (var index in points) {
+                        var point = points[index];
 
                         if (point.highLow && point.highLow.type) {
                             _t = t[point.highLow.type];
@@ -213,14 +214,14 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
                         }
 
                         if (!_t.t1) {
-                            _t.t1 = points[point];
+                            _t.t1 = point;
                             continue;
                         }
                         if (!_t.t2) {
-                            _t.t2 = points[point];
+                            _t.t2 = point;
                             continue;
                         }
-                        _t.t3 = points[point];
+                        _t.t3 = point;
                         if (high(_t.t2) > high(_t.t1) && high(_t.t2) > high(_t.t3)) {
                             _t.t2.highLow = {type: 'high', val: high(_t.t2)};
                             buffer.high.push(_t.t2);
@@ -238,22 +239,28 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
 
                 //市场短期高点和低点
                 var shortTerm = function () {
+                    for (var index in opt.points) {
+                        opt.points[index].highLow = null;
+                    }
                     return highLowArrange(opt.points, opt.high, opt.low).both;
                 };
 
                 //市场中期高点和低点
-                var intermediateTerm =function (points) {
+                var intermediateTerm = function (points) {
                     var val = function (point) {
                         return point.highLow.val;
                     };
 
                     //从排序
-                    points = highLowArrange(points, val).both;
+                    for (var index in points) {
+                        if (points[index].highLow) points[index].highLow.type = null;
+                    }
+                    var _points = highLowArrange(points, val).both;
 
                     //计算次高点和次低点
-                    points = highLowArrange(points, val).both;
+                    _points = highLowArrange(_points, val).both;
 
-                    return points;
+                    return _points;
                 };
 
                 //TODO 市场长期高点和低点

@@ -91,7 +91,7 @@ function search(self) {
 }
 
 function markUpDownLine(data) {
-    var seriesIdx = 0, termLevel = 2, markPoints;
+    var seriesIdx = 0, termLevel = 1, markPoints;
     for (var line in data) {
 
         markPoints = global.finance.HighLow({
@@ -168,8 +168,8 @@ function getParams() {
 /*-------------------- 事件 START --------------------*/
 
 function init() {
-    $(global.dom.stock).val('600247');
-    $(global.dom.start).val(new Date(new Date().getTime() - 12 * WkMilli).format('yyyy-MM-dd'));
+    $(global.dom.stock).val('300157');
+    $(global.dom.start).val(new Date(new Date().getTime() - 5 * WkMilli).format('yyyy-MM-dd'));
     $(global.dom.end).val(new Date(new Date().getTime()).format('yyyy-MM-dd'));
     $(global.dom.directedPoint).on('click', function () {
         if (!global.data) {

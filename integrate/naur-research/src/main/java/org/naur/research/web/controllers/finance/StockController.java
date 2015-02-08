@@ -67,6 +67,7 @@ public class StockController extends ControllerBase {
         final Date startTmp = DateUtils.addDays(start, -1);
         return handler(new HashMap<String, Object>() {{
             put(Type.Paging.name(), new Tree(Type.Paging, new Tree<Integer>(DateUtil.dateDiff("DATE", start, end)), new Tree<Integer>(1)));
+            put(Type.Sort.name(), new Tree<String>(Type.Sort, "date"));
             put("code", code);
             put("quotes.date", new Tree(Type.Between)
                     .setLeft(new Tree<Date>(startTmp))
