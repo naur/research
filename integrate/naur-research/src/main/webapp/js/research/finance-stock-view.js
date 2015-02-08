@@ -102,17 +102,17 @@ function markUpDownLine(data) {
         });
 
         //短期高低点
-        if (markPoints.shortTerm) {
-            global.chart.addMarkLine(seriesIdx, {
-                data: global.echarts.markDirectedPoint(markPoints.shortTerm, function (point) {
-                    return {
-                        xAxis: point.key,
-                        yAxis: point.highLow.val
-                    };
-                })
-            });
-            seriesIdx++;
-        }
+        //if (markPoints.shortTerm) {
+        //    global.chart.addMarkLine(seriesIdx, {
+        //        data: global.echarts.markDirectedPoint(markPoints.shortTerm, function (point) {
+        //            return {
+        //                xAxis: point.key,
+        //                yAxis: point.highLow.val
+        //            };
+        //        })
+        //    });
+        //    seriesIdx++;
+        //}
 
         //中期高低点
         if (markPoints.intermediateTerm) {
