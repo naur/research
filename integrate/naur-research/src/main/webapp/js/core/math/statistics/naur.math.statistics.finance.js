@@ -207,14 +207,14 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
 
                     var comparer = {
                         high: function (t1, t2, t3) {
-                            if (high(t2) > high(t1) && high(t2) > high(t3)) {
+                            if (high(t2) > high(t1) && (!t3 || high(t2) > high(t3))) {
                                 t2.highLow = {type: 'high', val: high(t2)};
                                 buffer.high.push(t2);
                                 buffer.both.push(t2);
                             }
                         },
                         low: function (t1, t2, t3) {
-                            if (low(t2) < low(t1) && low(t2) < low(t3)) {
+                            if (low(t2) < low(t1) && (!t3 || low(t2) < low(t3))) {
                                 t2.highLow = {type: 'low', val: low(t2)};
                                 buffer.low.push(t2);
                                 buffer.both.push(t2);
@@ -228,6 +228,8 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
 
                     var point, comparerType = 'none'; //默认就用 none 的 t1、t2、y3
                     for (var index in points) {
+                        //第一个point
+
                         point = points[index];
 
                         if (point.highLow && point.highLow.type) {
@@ -249,6 +251,11 @@ define(['jquery', 'naur.math.structures', 'naur.math.statistics'], function ($, 
 
                         _t.t1 = _t.t2;
                         _t.t2 = _t.t3;
+
+                        //最后一个point
+                        if (index == points.length - 1) {
+                            comparer[comparerType](_t.t1, _t.t2, null);
+                        }
                     }
                     return buffer;
                 };
