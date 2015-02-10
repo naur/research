@@ -69,16 +69,6 @@ public class SecurityConfiguration {
         return ranges;
     }
 
-    private final Map<String, String> stockTypePrefix = new HashMap<String, String>() {
-        private static final long serialVersionUID = -5892367415336780892L;
-
-        {
-            put("0", "SZ");
-            put("3", "SZ");
-            put("6", "SH");
-        }
-    };
-
     /**
      * 返回 stock 的类型 [sh or sz]
      *
@@ -94,6 +84,16 @@ public class SecurityConfiguration {
         }
     }
 
+    private final Map<String, String> stockTypePrefix = new HashMap<String, String>() {
+        private static final long serialVersionUID = -5892367415336780892L;
+
+        {
+            put("0", "SZ");
+            put("3", "SZ");
+            put("6", "SH");
+        }
+    };
+    
     @Value("${security.stock.sh}")
     public String sh;
     @Value("${security.stock.sz}")
