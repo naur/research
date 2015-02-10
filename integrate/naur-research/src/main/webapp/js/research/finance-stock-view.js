@@ -168,7 +168,7 @@ function getParams() {
 /*-------------------- 事件 START --------------------*/
 
 function init() {
-    $(global.dom.stock).val('600247');
+    $(global.dom.stock).val('600265');
     $(global.dom.start).val(new Date(new Date().getTime() - 12 * WkMilli).format('yyyy-MM-dd'));
     $(global.dom.end).val(new Date(new Date().getTime()).format('yyyy-MM-dd'));
     $(global.dom.directedPoint).on('click', function () {
@@ -185,8 +185,8 @@ function init() {
     $(global.dom.end).datepicker({format: 'yyyy-mm-dd'});
     global.rompt = new global.ui.DropdownPrompt({
         container: global.dom.stock,
-        data: ['000001', '000002', '399107', '399101', '399102', '399102', '399006', '000003', '399108',
-            '600265', '600793', '600689', '600247', '000509', '300157', '600421', '002248', '002063', '300024', '300227', '600768', '601099', '002579'
+        data: ['600265', '600793', '600689', '600247', '000509', '300157', '600421', '002248', '002063', '300024', '300227', '600768', '601099', '002579',
+            '000001', '000002', '399107', '399101', '399102', '399102', '399006', '000003', '399108',ie
         ]
     });
 }
