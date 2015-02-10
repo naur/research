@@ -93,7 +93,7 @@ public class SecurityConfiguration {
             put("6", "SH");
         }
     };
-    
+
     @Value("${security.stock.sh}")
     public String sh;
     @Value("${security.stock.sz}")

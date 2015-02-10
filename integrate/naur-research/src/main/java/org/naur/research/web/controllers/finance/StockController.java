@@ -85,7 +85,7 @@ public class StockController extends ControllerBase {
                     throw new Exception("date error.");
                 }
 
-                map.put("type", securityConfiguration.stockTypePrefix.get(code.substring(0, 1)));
+                map.put("type", securityConfiguration.getType(code));
 
                 info.setData(stockService.get(map));
                 return info;
