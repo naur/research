@@ -62,6 +62,10 @@ public class SecurityConfiguration {
             arrs = item.split(WHIPPLETREE);
             ranges.add(new StockRange(StockType.SZ, Integer.parseInt(arrs[0]), Integer.parseInt(arrs[1])));
         }
+        for (String item : specify.split(COMMA)) {
+            ranges.add(new StockRange(Enum.valueOf(StockType.class, item.substring(0, 2).toUpperCase()),
+                    Integer.parseInt(item.substring(2)), Integer.parseInt(item.substring(2))));
+        }
         return ranges;
     }
 
@@ -69,15 +73,18 @@ public class SecurityConfiguration {
         private static final long serialVersionUID = -5892367415336780892L;
 
         {
-        put("0", "SZ");
-        put("3", "SZ");
-        put("6", "SH");
-    }};
+            put("0", "SZ");
+            put("3", "SZ");
+            put("6", "SH");
+        }
+    };
 
     @Value("${security.stock.sh}")
     public String sh;
     @Value("${security.stock.sz}")
     public String sz;
+    @Value("${security.stock.specify}")
+    public String specify;
     @Value("${security.stock.filter}")
     public String filter;
     @Value("${security.stock.realtime.uri}")
