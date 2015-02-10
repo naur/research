@@ -69,7 +69,7 @@ public class SecurityConfiguration {
         return ranges;
     }
 
-    public final Map<String, String> stockTypePrefix = new HashMap<String, String>() {
+    private final Map<String, String> stockTypePrefix = new HashMap<String, String>() {
         private static final long serialVersionUID = -5892367415336780892L;
 
         {
@@ -78,6 +78,21 @@ public class SecurityConfiguration {
             put("6", "SH");
         }
     };
+
+    /**
+     * 返回 stock 的类型 [sh or sz]
+     *
+     * @param stock 不包含 sh sz
+     */
+    public String getType(String stock) {
+        int index = specify.indexOf(stock);
+        if (-1 < index) {
+            //TODO 暂时根据 index 来取值
+            return specify.substring(index - 2, index + 6);
+        } else {
+            return stockTypePrefix.get(stock.substring(0, 1));
+        }
+    }
 
     @Value("${security.stock.sh}")
     public String sh;

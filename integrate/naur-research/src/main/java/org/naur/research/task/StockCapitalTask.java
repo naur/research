@@ -66,7 +66,7 @@ public class StockCapitalTask extends AbstractTask implements Serializable {
             if (params.containsKey("stock")) {
                 String stock = params.get("stock").toString();
                 if (StringUtils.isNotEmpty(stock)) {
-                    String stockType = securityConfiguration.stockTypePrefix.get(stock.substring(0, 1));
+                    String stockType = securityConfiguration.getType(stock);
                     int stockCode = Integer.parseInt(stock);
                     stockRange = new StockRange(StockType.valueOf(stockType), stockCode, stockCode);
                 }
