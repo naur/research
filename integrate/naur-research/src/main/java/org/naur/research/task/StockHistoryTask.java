@@ -43,7 +43,7 @@ import java.util.*;
  * </pre>
  */
 @Service
-@SchedulerProperty(cron = "30 15 * * 1,2,3,4,5", name = "StockHistory")
+@SchedulerProperty(cron = "0 16 * * 1,2,3,4,5", name = "StockHistory")
 public class StockHistoryTask extends AbstractTask implements Serializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(StockHistoryTask.class);
 
