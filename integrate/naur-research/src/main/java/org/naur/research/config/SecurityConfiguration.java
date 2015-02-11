@@ -78,7 +78,7 @@ public class SecurityConfiguration {
         int index = specify.indexOf(stock);
         if (-1 < index) {
             //TODO 暂时根据 index 来取值
-            return specify.substring(index - 2, index + 6);
+            return specify.substring(index - 2, index).toUpperCase();
         } else {
             return stockTypePrefix.get(stock.substring(0, 1));
         }
