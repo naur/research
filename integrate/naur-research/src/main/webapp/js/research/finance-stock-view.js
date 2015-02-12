@@ -186,8 +186,7 @@ function init() {
     global.rompt = new global.ui.DropdownPrompt({
         container: global.dom.stock,
         data: ['600265', '600793', '600689', '600247', '000509', '300157', '600421', '002248', '002063', '300024', '300227', '600768', '601099', '002579',
-            '000001', '000002', '399107', '399101', '399102', '399102', '399006', '000003', '399108'
-        ]
+            '000001', '000002', '399107', '399101', '399102', '399102', '399006', '000003', '399108']
     });
 }
 
@@ -196,8 +195,10 @@ function initEcharts() {
     global.chart.render = function (opt) {
         if (opt.option)
             this.setOption(opt.option, true);
-        if (opt.series)
+        if (opt.series && 0 < opt.series.length)
             this.setSeries(opt.series);
+        else
+            this.clear();
     };
 }
 
