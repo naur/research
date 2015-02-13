@@ -190,6 +190,36 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                         },
                         calculable: false
                     }
+                },
+                markLine: {
+                    level1: {
+                        itemStyle: {
+                            normal: {
+                                color: 'red', //'#C1232B',       // 阳线填充颜色
+                                color0: 'green',      // 阴线填充颜色
+                                lineStyle: {
+                                    width: 0.2,
+                                    type: 'dotted',
+                                    color: 'red',   // 阳线边框颜色
+                                    color0: 'green'   // 阴线边框颜色
+                                }
+                            }
+                        }
+                    },
+                    level2: {
+                        itemStyle: {
+                            normal: {
+                                color: 'red', //'#C1232B',       // 阳线填充颜色
+                                color0: 'green',      // 阴线填充颜色
+                                lineStyle: {
+                                    width: 0.4,
+                                    type: 'dashed',
+                                    color: 'yellow',   // 阳线边框颜色
+                                    color0: 'green'   // 阴线边框颜色
+                                }
+                            }
+                        }
+                    }
                 }
             };
 

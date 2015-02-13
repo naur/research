@@ -104,6 +104,7 @@ function markUpDownLine(data) {
         //短期高低点
         if (markPoints.shortTerm) {
             global.chart.addMarkLine(seriesIdx, {
+                itemStyle: global.echarts.markLine.level1,
                 data: global.echarts.markDirectedPoint(markPoints.shortTerm, function (point) {
                     return {
                         xAxis: point.key,
@@ -117,6 +118,7 @@ function markUpDownLine(data) {
         //中期高低点
         if (markPoints.intermediateTerm) {
             global.chart.addMarkLine(seriesIdx, {
+                itemStyle: global.echarts.markLine.level2,
                 data: global.echarts.markDirectedPoint(markPoints.intermediateTerm, function (point) {
                     return {
                         xAxis: point.key,
