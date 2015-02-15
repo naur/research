@@ -214,7 +214,7 @@ define(['naur.ui', 'naur.utility', 'echarts-main', 'echarts-theme-light'], funct
                                 lineStyle: {
                                     width: 0.4,
                                     type: 'dashed',
-                                    color: 'yellow',   // 阳线边框颜色
+                                    color: '#ADFF2F',   // 阳线边框颜色
                                     color0: 'green'   // 阴线边框颜色
                                 }
                             }
