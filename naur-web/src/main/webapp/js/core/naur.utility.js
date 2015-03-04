@@ -492,7 +492,7 @@ define(['jquery', 'naur'], function ($, NAUR) {
     Date.prototype.format = function (format, utc) {
         /*
          * eg:format="YYYY-MM-dd hh:mm:ss";
-         *                  yyyy-MM-dd HH:mm:ss fff
+         *                  yyyy-MM-dd HH:mm:ss fff [这个作废]
          */
         var o;
         if (utc) {

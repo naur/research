@@ -68,7 +68,7 @@ define(['jquery', 'jquery.strings', 'naur', 'naur.utility'], function ($, $1, NA
                 fadeDefaultColor: 'green',
                 datehide: false,
                 overlay: null, //left-bottom
-                dateformat: 'HH:mm:ss.fff'        //yyyy-MM-dd HH:mm:ss fff
+                dateformat: 'hh:mm:ss.fff'        //yyyy-MM-dd hh:mm:ss fff
             },
             empty: function () {
                 $('.naur-message').hide();
