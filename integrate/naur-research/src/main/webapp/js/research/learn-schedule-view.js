@@ -308,6 +308,8 @@ function AddLearningSchedule(schedule, context) {
             if (obj.context) $(obj.context).attr('disabled', false);
 
             global.message.show({content: JSON.stringify(schedule)});
+
+            $(global.dom.upload)[0].scrollIntoView();
         }
     });
 }
