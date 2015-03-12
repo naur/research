@@ -107,16 +107,16 @@
                 //['399108', 0, 0, 'sz']
             ],
             stocks: [
-                ['600265', 2700, 35640.00, 'sh'],  //7.58
-                ['600793', 2000, 26400.00, 'sh'],  //9.85
-                ['600247', 2000, 12186.84, 'sh'],
-                ['000557', 4000, 23858.0, 'sz'],
-                ['600145', 3700, 20368.00, 'sh'],
-                ['002163', 3000, 23328.00, 'sz'],
-                ['000509', 1000, 5410.00, 'sz'],
-                ['300157', 1300, 17348.00, 'sz'],
-                ['601116', 1000, 9010, 'sh'],
-                ['600689', 1000, 11500, 'sh'],
+                ['600265', 2700, 13.20, 'sh'],  //7.58
+                ['600793', 2000, 13.20, 'sh'],  //9.85
+                ['600247', 2000, 8.00, 'sh'],
+                ['000557', 4000, 6.00, 'sz'],
+                ['600145', 3700, 5.60, 'sh'],
+                ['002163', 3000, 7.80, 'sz'],
+                ['000509', 1000, 5.50, 'sz'],
+                ['300157', 1300, 13.40, 'sz'],
+                ['601116', 1000, 9.10, 'sh'],
+                ['600689', 1000, 11.50, 'sh'],
 
 
                 ['600694', 0, 0, 'sh'],
@@ -297,7 +297,7 @@
                 global.message.show({
                     content: $.format(global.messageTemplate, global.clock,
                             global.totalAmount.thousandsSeparator(),
-                            global.currAmount.thousandsSeparator(), (global.currAmount - global.totalAmount).thousandsSeparator(), 
+                            global.currAmount.thousandsSeparator(), (global.currAmount - global.totalAmount).thousandsSeparator(),
                             ((global.currAmount - global.totalAmount) / global.totalAmount * 100).toFixed(2)) + ' %'
                 });
             }, error: function (err) {
@@ -381,17 +381,24 @@
 
         global.stockHtmlTemplate.body += td + '</td>';
 
+        var _code, _type, _num, _cost, _amount, _curr;
         for (var index in stocks) {
             if (!stocks.hasOwnProperty(index)) continue;
+            _code = stocks[index][0];
+            _type = stocks[index][3];
+            _num = stocks[index][1];
+            _cost = stocks[index][2];
+            _curr = 0; //TODO stocks[index][5];
             //计算总成本
-            if (0 != stocks[index][1]) {
-                global.totalAmount += stocks[index][2];
+            if (0 != _num) {
+                _amount = _num * _cost;
+                global.totalAmount += _amount;
             }
             html += $.format(global.stockHtmlTemplate.body,
-                    stocks[index][3], stocks[index][0],
-                    0 != stocks[index][1] ? stocks[index][1] : '',
-                    0 == stocks[index][1] ? '' : (stocks[index][2] / stocks[index][1]).toFixed(3), stocks[index][2],
-                    stocks[index][5] ? stocks[index][5] : 0, stocks[index][2].thousandsSeparator());
+                    _type, _code,     //{0} {1}
+                    0 != _num ? _num : '', //{2}
+                    _cost.toFixed(2), 0 == _num ? '' : (_cost * _num).toFixed(3), //{3} {4}
+                    0, _amount.thousandsSeparator()); // {5} {6}
             codes.push(stocks[index][3] + stocks[index][0]);
         }
         stockMarket.stocks.codes = codes;

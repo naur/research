@@ -160,9 +160,9 @@ function handleFile() {
                     schedule = {
                         pages: schedule[0].trim(),
                         days: isNaN(parseInt(schedule[0].trim())) ? null : (parseInt(schedule[0].trim()) / global.dayOfPage).toFixed(),
-                        time: schedule[2].trim(),
-                        path: schedule[3].trim(),
-                        heading: schedule[4].trim()
+                        time: schedule[1].trim(),
+                        path: schedule[2].trim(),
+                        heading: schedule[3].trim()
                     };
 
                     //todo
