@@ -58,7 +58,7 @@ public class EnumerableUtils {
      * @return boolean 返回值
      */
     public static <T> boolean contains(final List<T> list,
-                                       final Comparator comparator,
+                                       final Comparator<T> comparator,
                                        final T... value) {
         for (T item : list) {
             if (null != item && comparator.compare(
@@ -99,13 +99,14 @@ public class EnumerableUtils {
      * @return boolean 返回值
      */
     public static <T> List<T> where(final List<T> list,
-                                    final Comparator comparator,
+                                    final Comparator<T> comparator,
                                     final T... value) {
         List<T> temp = new ArrayList<T>();
         for (T item : list) {
             if (comparator.compare(item,
-                    value.length == 0 ? null : value[0]) >= 0)
+                    value.length == 0 ? null : value[0]) >= 0) {
                 temp.add(item);
+            }
         }
         return temp;
     }
@@ -121,9 +122,14 @@ public class EnumerableUtils {
     public static <T> List<T> where(final List<T> list,
                                     final Func<T, Boolean> comparator) {
         List<T> temp = new ArrayList<T>();
+        if (null == list || list.isEmpty()) {
+            return temp;
+        }
+
         for (T item : list) {
-            if (comparator.execute(item))
+            if (comparator.execute(item)) {
                 temp.add(item);
+            }
         }
         return temp;
     }
@@ -160,12 +166,15 @@ public class EnumerableUtils {
     public static <T> T find(final List<T> list,
                              final Comparator comparator,
                              final T... value) {
-        if (null == list || list.isEmpty()) return null;
+        if (null == list || list.isEmpty()) {
+			return null;
+		}
 
         for (T item : list) {
             if (null != item && comparator.compare(item,
-                    value.length == 0 ? null : value[0]) >= 0)
+                    value.length == 0 ? null : value[0]) >= 0) {
                 return item;
+            }
         }
         return null;
     }
@@ -181,8 +190,9 @@ public class EnumerableUtils {
     public static <T> T find(final List<T> list,
                              final Func<T, Boolean> comparator) {
         for (T item : list) {
-            if (null != item && comparator.execute(item))
+            if (null != item && comparator.execute(item)) {
                 return item;
+            }
         }
         return null;
     }
@@ -200,13 +210,16 @@ public class EnumerableUtils {
                              final Comparator comparator,
                              final T... value) {
         T t = null;
-        if (null == set || set.isEmpty() || !set.iterator().hasNext()) return t;
+        if (null == set || set.isEmpty() || !set.iterator().hasNext()) {
+            return t;
+        }
 
         for (Iterator<T> iter = set.iterator(); iter.hasNext(); ) {
             t = iter.next();
             if (null != t && comparator.compare(t,
-                    value.length == 0 ? null : value[0]) >= 0)
+                    value.length == 0 ? null : value[0]) >= 0) {
                 return t;
+            }
         }
         return null;
     }
@@ -223,12 +236,15 @@ public class EnumerableUtils {
     public static <T, U> T find(final Set<T> set,
                                 final Func<T, Boolean> comparator) {
         T t = null;
-        if (null == set || set.isEmpty() || !set.iterator().hasNext()) return t;
+        if (null == set || set.isEmpty() || !set.iterator().hasNext()) {
+            return t;
+        }
 
         for (Iterator<T> iter = set.iterator(); iter.hasNext(); ) {
             t = iter.next();
-            if (null != t && comparator.execute(t))
+            if (null != t && comparator.execute(t)) {
                 return t;
+            }
         }
         return null;
     }
@@ -272,11 +288,40 @@ public class EnumerableUtils {
     public static <T, U> List<U> select(final List<T> list,
                                         final Func<T, U> selector) {
         List<U> temp = new ArrayList<U>();
-        if (null == list || list.isEmpty()) return temp;
+        if (null == list || list.isEmpty()) {
+            return temp;
+        }
         U u = null;
         for (T t : list) {
             if (null != t && null != (u = selector.execute(t))) {
                 temp.add(u);
+            }
+        }
+        return temp;
+    }
+	
+	    /**
+     * select.
+     *
+     * @param list     入参
+     * @param selector 比较器
+     * @param <T>      入参类型
+     * @param <U>      入参类型
+     * @return boolean 返回值
+     */
+    public static <T, U> Set<U> select(final Set<T> list,
+                                        final Func<T, U> selector) {
+        Set<U> temp = new HashSet<U>();
+        if (null == list || list.isEmpty()) {
+            return temp;
+        }
+        U u = null;
+        for (T t : list) {
+            if (null != t) {
+                u = selector.execute(t);
+                if (null != u) {
+                    temp.add(u);
+                }
             }
         }
         return temp;
@@ -295,7 +340,9 @@ public class EnumerableUtils {
                                             final Func<T, List<U>> selector) {
         List<U> temp = new ArrayList<U>();
         List<U> result = null;
-        if (null == list || list.isEmpty()) return temp;
+        if (null == list || list.isEmpty()) {
+            return temp;
+        }
         for (T t : list) {
             if (null != t && null != (result = selector.execute(t))) {
                 temp.addAll(result);
